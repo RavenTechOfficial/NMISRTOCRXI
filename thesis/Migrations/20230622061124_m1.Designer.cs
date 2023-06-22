@@ -12,8 +12,8 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20230621173415_m2")]
-    partial class m2
+    [Migration("20230622061124_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -307,14 +307,9 @@ namespace thesis.Migrations
                     b.Property<string>("AccountDetailsId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("MeatEstablishmentId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountDetailsId");
-
-                    b.HasIndex("MeatEstablishmentId");
 
                     b.ToTable("inspectors");
                 });
@@ -327,12 +322,11 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MeatEstablishmentId")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MeatEstablishmentId");
 
                     b.ToTable("meatDealers");
                 });
@@ -371,6 +365,36 @@ namespace thesis.Migrations
                     b.HasIndex("MeatEstablishmentRepresentativeId");
 
                     b.ToTable("meatEstablishments");
+                });
+
+            modelBuilder.Entity("thesis.Models.MeatEstablishmentInspector", b =>
+                {
+                    b.Property<int>("MeatEstablishmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InspectorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MeatEstablishmentId", "InspectorId");
+
+                    b.HasIndex("InspectorId");
+
+                    b.ToTable("meatEstablishmentInspectors");
+                });
+
+            modelBuilder.Entity("thesis.Models.MeatEstablishmentMeatDealer", b =>
+                {
+                    b.Property<int>("MeatEstablishmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MeatDealerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MeatEstablishmentId", "MeatDealerId");
+
+                    b.HasIndex("MeatDealerId");
+
+                    b.ToTable("meatEstablishmentMeatDealers");
                 });
 
             modelBuilder.Entity("thesis.Models.MeatEstablishmentRepresentative", b =>
@@ -425,9 +449,6 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ReceivingId")
-                        .HasColumnType("int");
-
                     b.Property<string>("RepDate")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -443,8 +464,6 @@ namespace thesis.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReceivingId");
 
                     b.HasIndex("SummaryAndDistributionOfMICId");
 
@@ -533,7 +552,7 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("InspectorId")
+                    b.Property<int?>("MeatInspectionReportId")
                         .HasColumnType("int");
 
                     b.Property<string>("RecDate")
@@ -542,7 +561,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InspectorId");
+                    b.HasIndex("MeatInspectionReportId");
 
                     b.ToTable("receivings");
                 });
@@ -560,6 +579,21 @@ namespace thesis.Migrations
                     b.HasIndex("ConductOfInspectionId");
 
                     b.ToTable("receivingConductOfInspections");
+                });
+
+            modelBuilder.Entity("thesis.Models.ReceivingMeatEstablishment", b =>
+                {
+                    b.Property<int>("MeatEstablishmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReceivingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MeatEstablishmentId", "ReceivingId");
+
+                    b.HasIndex("ReceivingId");
+
+                    b.ToTable("receivingMeatEstablishments");
                 });
 
             modelBuilder.Entity("thesis.Models.ReceivingPassedForSlaughter", b =>
@@ -606,9 +640,6 @@ namespace thesis.Migrations
                     b.Property<int>("LiveWeighInKg")
                         .HasColumnType("int");
 
-                    b.Property<int>("MeatDealerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("NoOfHeads")
                         .HasColumnType("int");
 
@@ -624,6 +655,9 @@ namespace thesis.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ReceivingId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ShipmentBatchCode")
                         .HasColumnType("int");
 
@@ -637,9 +671,24 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeatDealerId");
+                    b.HasIndex("ReceivingId");
 
                     b.ToTable("receivingReports");
+                });
+
+            modelBuilder.Entity("thesis.Models.ReceivingReportMeatEstablishment", b =>
+                {
+                    b.Property<int>("MeatEstablishmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReceivingReportId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MeatEstablishmentId", "ReceivingReportId");
+
+                    b.HasIndex("ReceivingReportId");
+
+                    b.ToTable("receivingReportMeatEstablishments");
                 });
 
             modelBuilder.Entity("thesis.Models.SecondaryMeatEstablishmentReport", b =>
@@ -880,26 +929,7 @@ namespace thesis.Migrations
                         .WithMany()
                         .HasForeignKey("AccountDetailsId");
 
-                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
-                        .WithMany()
-                        .HasForeignKey("MeatEstablishmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("AccountDetails");
-
-                    b.Navigation("MeatEstablishment");
-                });
-
-            modelBuilder.Entity("thesis.Models.MeatDealer", b =>
-                {
-                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
-                        .WithMany()
-                        .HasForeignKey("MeatEstablishmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MeatEstablishment");
                 });
 
             modelBuilder.Entity("thesis.Models.MeatEstablishment", b =>
@@ -913,6 +943,44 @@ namespace thesis.Migrations
                     b.Navigation("MeatEstablishmentRepresentative");
                 });
 
+            modelBuilder.Entity("thesis.Models.MeatEstablishmentInspector", b =>
+                {
+                    b.HasOne("thesis.Models.Inspector", "Inspector")
+                        .WithMany("meatEstablishmentInspectors")
+                        .HasForeignKey("InspectorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
+                        .WithMany("meatEstablishmentInspectors")
+                        .HasForeignKey("MeatEstablishmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Inspector");
+
+                    b.Navigation("MeatEstablishment");
+                });
+
+            modelBuilder.Entity("thesis.Models.MeatEstablishmentMeatDealer", b =>
+                {
+                    b.HasOne("thesis.Models.MeatDealer", "MeatDealer")
+                        .WithMany("meatEstablishmentMeatDealers")
+                        .HasForeignKey("MeatDealerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
+                        .WithMany("meatEstablishmentMeatDealers")
+                        .HasForeignKey("MeatEstablishmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MeatDealer");
+
+                    b.Navigation("MeatEstablishment");
+                });
+
             modelBuilder.Entity("thesis.Models.MeatEstablishmentRepresentative", b =>
                 {
                     b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
@@ -924,12 +992,6 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.MeatInspectionReport", b =>
                 {
-                    b.HasOne("thesis.Models.Receiving", "Receiving")
-                        .WithMany()
-                        .HasForeignKey("ReceivingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("thesis.Models.SummaryAndDistributionOfMIC", "SummaryAndDistributionOfMIC")
                         .WithMany()
                         .HasForeignKey("SummaryAndDistributionOfMICId")
@@ -942,8 +1004,6 @@ namespace thesis.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Receiving");
-
                     b.Navigation("SummaryAndDistributionOfMIC");
 
                     b.Navigation("TotalNoFitForHumanConsumption");
@@ -951,13 +1011,9 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.Receiving", b =>
                 {
-                    b.HasOne("thesis.Models.Inspector", "Inspector")
-                        .WithMany()
-                        .HasForeignKey("InspectorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Inspector");
+                    b.HasOne("thesis.Models.MeatInspectionReport", null)
+                        .WithMany("Receiving")
+                        .HasForeignKey("MeatInspectionReportId");
                 });
 
             modelBuilder.Entity("thesis.Models.ReceivingConductOfInspection", b =>
@@ -975,6 +1031,25 @@ namespace thesis.Migrations
                         .IsRequired();
 
                     b.Navigation("ConductOfInspection");
+
+                    b.Navigation("Receiving");
+                });
+
+            modelBuilder.Entity("thesis.Models.ReceivingMeatEstablishment", b =>
+                {
+                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
+                        .WithMany("receivingMeatEstablishments")
+                        .HasForeignKey("MeatEstablishmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("thesis.Models.Receiving", "Receiving")
+                        .WithMany("receivingMeatEstablishments")
+                        .HasForeignKey("ReceivingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MeatEstablishment");
 
                     b.Navigation("Receiving");
                 });
@@ -1019,13 +1094,32 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.ReceivingReport", b =>
                 {
-                    b.HasOne("thesis.Models.MeatDealer", "MeatDealer")
+                    b.HasOne("thesis.Models.Receiving", "Receiving")
                         .WithMany()
-                        .HasForeignKey("MeatDealerId")
+                        .HasForeignKey("ReceivingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MeatDealer");
+                    b.Navigation("Receiving");
+                });
+
+            modelBuilder.Entity("thesis.Models.ReceivingReportMeatEstablishment", b =>
+                {
+                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
+                        .WithMany("receivingReportMeatEstablishments")
+                        .HasForeignKey("MeatEstablishmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("thesis.Models.ReceivingReport", "ReceivingReport")
+                        .WithMany("receivingReportMeatEstablishments")
+                        .HasForeignKey("ReceivingReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MeatEstablishment");
+
+                    b.Navigation("ReceivingReport");
                 });
 
             modelBuilder.Entity("thesis.Models.SecondaryMeatEstablishmentReport", b =>
@@ -1079,6 +1173,32 @@ namespace thesis.Migrations
                     b.Navigation("receivingConductOfInspections");
                 });
 
+            modelBuilder.Entity("thesis.Models.Inspector", b =>
+                {
+                    b.Navigation("meatEstablishmentInspectors");
+                });
+
+            modelBuilder.Entity("thesis.Models.MeatDealer", b =>
+                {
+                    b.Navigation("meatEstablishmentMeatDealers");
+                });
+
+            modelBuilder.Entity("thesis.Models.MeatEstablishment", b =>
+                {
+                    b.Navigation("meatEstablishmentInspectors");
+
+                    b.Navigation("meatEstablishmentMeatDealers");
+
+                    b.Navigation("receivingMeatEstablishments");
+
+                    b.Navigation("receivingReportMeatEstablishments");
+                });
+
+            modelBuilder.Entity("thesis.Models.MeatInspectionReport", b =>
+                {
+                    b.Navigation("Receiving");
+                });
+
             modelBuilder.Entity("thesis.Models.PassedForSlaughter", b =>
                 {
                     b.Navigation("receivingPassedForSlaughters");
@@ -1093,9 +1213,16 @@ namespace thesis.Migrations
                 {
                     b.Navigation("receivingConductOfInspections");
 
+                    b.Navigation("receivingMeatEstablishments");
+
                     b.Navigation("receivingPassedForSlaughters");
 
                     b.Navigation("receivingPostmortemReports");
+                });
+
+            modelBuilder.Entity("thesis.Models.ReceivingReport", b =>
+                {
+                    b.Navigation("receivingReportMeatEstablishments");
                 });
 #pragma warning restore 612, 618
         }

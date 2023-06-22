@@ -72,6 +72,19 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "meatDealers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_meatDealers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "meatInspectionCertUtilizations",
                 columns: table => new
                 {
@@ -116,6 +129,22 @@ namespace thesis.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_passedForSlaughters", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "postmortemReports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AnimalPart = table.Column<int>(type: "int", nullable: false),
+                    Cause = table.Column<int>(type: "int", nullable: false),
+                    WeightInKg = table.Column<int>(type: "int", nullable: false),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_postmortemReports", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,6 +305,24 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "inspectors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_inspectors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_inspectors_AspNetUsers_AccountDetailsId",
+                        column: x => x.AccountDetailsId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "meatEstablishmentRepresentatives",
                 columns: table => new
                 {
@@ -320,89 +367,29 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "meatEstablishments",
+                name: "meatInspectionReports",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    establishmentType = table.Column<int>(type: "int", nullable: false),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    region = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    licenseToOperateNumber = table.Column<int>(type: "int", nullable: false),
-                    MeatEstablishmentRepresentativeId = table.Column<int>(type: "int", nullable: false)
+                    RepDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalNoFitForHumanConsumptionId = table.Column<int>(type: "int", nullable: false),
+                    SummaryAndDistributionOfMICId = table.Column<int>(type: "int", nullable: false),
+                    VerifiedByPOSMSHead = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_meatEstablishments", x => x.Id);
+                    table.PrimaryKey("PK_meatInspectionReports", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_meatEstablishments_meatEstablishmentRepresentatives_MeatEstablishmentRepresentativeId",
-                        column: x => x.MeatEstablishmentRepresentativeId,
-                        principalTable: "meatEstablishmentRepresentatives",
+                        name: "FK_meatInspectionReports_summaryAndDistributionOfMICs_SummaryAndDistributionOfMICId",
+                        column: x => x.SummaryAndDistributionOfMICId,
+                        principalTable: "summaryAndDistributionOfMICs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "inspectors",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_inspectors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_inspectors_AspNetUsers_AccountDetailsId",
-                        column: x => x.AccountDetailsId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_inspectors_meatEstablishments_MeatEstablishmentId",
-                        column: x => x.MeatEstablishmentId,
-                        principalTable: "meatEstablishments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "meatDealers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_meatDealers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_meatDealers_meatEstablishments_MeatEstablishmentId",
-                        column: x => x.MeatEstablishmentId,
-                        principalTable: "meatEstablishments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "receivings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RecDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    InspectorId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_receivings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_receivings_inspectors_InspectorId",
-                        column: x => x.InspectorId,
-                        principalTable: "inspectors",
+                        name: "FK_meatInspectionReports_totalNoFitForHumanConsumptions_TotalNoFitForHumanConsumptionId",
+                        column: x => x.TotalNoFitForHumanConsumptionId,
+                        principalTable: "totalNoFitForHumanConsumptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -473,87 +460,92 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "receivingReports",
+                name: "meatEstablishments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RecTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShipmentBatchCode = table.Column<int>(type: "int", nullable: false),
-                    SpeciesTypeOfFoodAnimals = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    LiveWeighInKg = table.Column<int>(type: "int", nullable: false),
-                    MeatDealerId = table.Column<int>(type: "int", nullable: false),
-                    OriginOfFoodAnimals = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShippingDocuments = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HoldingPenNo = table.Column<int>(type: "int", nullable: false),
-                    ReceivedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    establishmentType = table.Column<int>(type: "int", nullable: false),
+                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    region = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    licenseToOperateNumber = table.Column<int>(type: "int", nullable: false),
+                    MeatEstablishmentRepresentativeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_receivingReports", x => x.Id);
+                    table.PrimaryKey("PK_meatEstablishments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_receivingReports_meatDealers_MeatDealerId",
+                        name: "FK_meatEstablishments_meatEstablishmentRepresentatives_MeatEstablishmentRepresentativeId",
+                        column: x => x.MeatEstablishmentRepresentativeId,
+                        principalTable: "meatEstablishmentRepresentatives",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "receivings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RecDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MeatInspectionReportId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_receivings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_receivings_meatInspectionReports_MeatInspectionReportId",
+                        column: x => x.MeatInspectionReportId,
+                        principalTable: "meatInspectionReports",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "meatEstablishmentInspectors",
+                columns: table => new
+                {
+                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false),
+                    InspectorId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_meatEstablishmentInspectors", x => new { x.MeatEstablishmentId, x.InspectorId });
+                    table.ForeignKey(
+                        name: "FK_meatEstablishmentInspectors_inspectors_InspectorId",
+                        column: x => x.InspectorId,
+                        principalTable: "inspectors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_meatEstablishmentInspectors_meatEstablishments_MeatEstablishmentId",
+                        column: x => x.MeatEstablishmentId,
+                        principalTable: "meatEstablishments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "meatEstablishmentMeatDealers",
+                columns: table => new
+                {
+                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false),
+                    MeatDealerId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_meatEstablishmentMeatDealers", x => new { x.MeatEstablishmentId, x.MeatDealerId });
+                    table.ForeignKey(
+                        name: "FK_meatEstablishmentMeatDealers_meatDealers_MeatDealerId",
                         column: x => x.MeatDealerId,
                         principalTable: "meatDealers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "meatInspectionReports",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RepDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReceivingId = table.Column<int>(type: "int", nullable: false),
-                    TotalNoFitForHumanConsumptionId = table.Column<int>(type: "int", nullable: false),
-                    SummaryAndDistributionOfMICId = table.Column<int>(type: "int", nullable: false),
-                    VerifiedByPOSMSHead = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_meatInspectionReports", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_meatInspectionReports_receivings_ReceivingId",
-                        column: x => x.ReceivingId,
-                        principalTable: "receivings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_meatInspectionReports_summaryAndDistributionOfMICs_SummaryAndDistributionOfMICId",
-                        column: x => x.SummaryAndDistributionOfMICId,
-                        principalTable: "summaryAndDistributionOfMICs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_meatInspectionReports_totalNoFitForHumanConsumptions_TotalNoFitForHumanConsumptionId",
-                        column: x => x.TotalNoFitForHumanConsumptionId,
-                        principalTable: "totalNoFitForHumanConsumptions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "postmortemReports",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReceivingId = table.Column<int>(type: "int", nullable: false),
-                    AnimalPart = table.Column<int>(type: "int", nullable: false),
-                    Cause = table.Column<int>(type: "int", nullable: false),
-                    WeightInKg = table.Column<int>(type: "int", nullable: false),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_postmortemReports", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_postmortemReports_receivings_ReceivingId",
-                        column: x => x.ReceivingId,
-                        principalTable: "receivings",
+                        name: "FK_meatEstablishmentMeatDealers_meatEstablishments_MeatEstablishmentId",
+                        column: x => x.MeatEstablishmentId,
+                        principalTable: "meatEstablishments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -576,6 +568,30 @@ namespace thesis.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_receivingConductOfInspections_receivings_ReceivingId",
+                        column: x => x.ReceivingId,
+                        principalTable: "receivings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "receivingMeatEstablishments",
+                columns: table => new
+                {
+                    ReceivingId = table.Column<int>(type: "int", nullable: false),
+                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_receivingMeatEstablishments", x => new { x.MeatEstablishmentId, x.ReceivingId });
+                    table.ForeignKey(
+                        name: "FK_receivingMeatEstablishments_meatEstablishments_MeatEstablishmentId",
+                        column: x => x.MeatEstablishmentId,
+                        principalTable: "meatEstablishments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_receivingMeatEstablishments_receivings_ReceivingId",
                         column: x => x.ReceivingId,
                         principalTable: "receivings",
                         principalColumn: "Id",
@@ -607,20 +623,77 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "postmortemInspections",
+                name: "receivingPostmortemReports",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReceivingId = table.Column<int>(type: "int", nullable: false),
                     PostmortemReportId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_postmortemInspections", x => x.Id);
+                    table.PrimaryKey("PK_receivingPostmortemReports", x => new { x.ReceivingId, x.PostmortemReportId });
                     table.ForeignKey(
-                        name: "FK_postmortemInspections_postmortemReports_PostmortemReportId",
+                        name: "FK_receivingPostmortemReports_postmortemReports_PostmortemReportId",
                         column: x => x.PostmortemReportId,
                         principalTable: "postmortemReports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_receivingPostmortemReports_receivings_ReceivingId",
+                        column: x => x.ReceivingId,
+                        principalTable: "receivings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "receivingReports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RecTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShipmentBatchCode = table.Column<int>(type: "int", nullable: false),
+                    SpeciesTypeOfFoodAnimals = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    LiveWeighInKg = table.Column<int>(type: "int", nullable: false),
+                    OriginOfFoodAnimals = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShippingDocuments = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HoldingPenNo = table.Column<int>(type: "int", nullable: false),
+                    ReceivedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReceivingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_receivingReports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_receivingReports_receivings_ReceivingId",
+                        column: x => x.ReceivingId,
+                        principalTable: "receivings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "receivingReportMeatEstablishments",
+                columns: table => new
+                {
+                    ReceivingReportId = table.Column<int>(type: "int", nullable: false),
+                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_receivingReportMeatEstablishments", x => new { x.MeatEstablishmentId, x.ReceivingReportId });
+                    table.ForeignKey(
+                        name: "FK_receivingReportMeatEstablishments_meatEstablishments_MeatEstablishmentId",
+                        column: x => x.MeatEstablishmentId,
+                        principalTable: "meatEstablishments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_receivingReportMeatEstablishments_receivingReports_ReceivingReportId",
+                        column: x => x.ReceivingReportId,
+                        principalTable: "receivingReports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -680,14 +753,14 @@ namespace thesis.Migrations
                 column: "AccountDetailsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_inspectors_MeatEstablishmentId",
-                table: "inspectors",
-                column: "MeatEstablishmentId");
+                name: "IX_meatEstablishmentInspectors_InspectorId",
+                table: "meatEstablishmentInspectors",
+                column: "InspectorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_meatDealers_MeatEstablishmentId",
-                table: "meatDealers",
-                column: "MeatEstablishmentId");
+                name: "IX_meatEstablishmentMeatDealers_MeatDealerId",
+                table: "meatEstablishmentMeatDealers",
+                column: "MeatDealerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_meatEstablishmentRepresentatives_AccountDetailsId",
@@ -700,11 +773,6 @@ namespace thesis.Migrations
                 column: "MeatEstablishmentRepresentativeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_meatInspectionReports_ReceivingId",
-                table: "meatInspectionReports",
-                column: "ReceivingId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_meatInspectionReports_SummaryAndDistributionOfMICId",
                 table: "meatInspectionReports",
                 column: "SummaryAndDistributionOfMICId");
@@ -715,19 +783,14 @@ namespace thesis.Migrations
                 column: "TotalNoFitForHumanConsumptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_postmortemInspections_PostmortemReportId",
-                table: "postmortemInspections",
-                column: "PostmortemReportId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_postmortemReports_ReceivingId",
-                table: "postmortemReports",
-                column: "ReceivingId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_receivingConductOfInspections_ConductOfInspectionId",
                 table: "receivingConductOfInspections",
                 column: "ConductOfInspectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_receivingMeatEstablishments_ReceivingId",
+                table: "receivingMeatEstablishments",
+                column: "ReceivingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_receivingPassedForSlaughters_PassedForSlaughterId",
@@ -735,14 +798,24 @@ namespace thesis.Migrations
                 column: "PassedForSlaughterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_receivingReports_MeatDealerId",
-                table: "receivingReports",
-                column: "MeatDealerId");
+                name: "IX_receivingPostmortemReports_PostmortemReportId",
+                table: "receivingPostmortemReports",
+                column: "PostmortemReportId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_receivings_InspectorId",
+                name: "IX_receivingReportMeatEstablishments_ReceivingReportId",
+                table: "receivingReportMeatEstablishments",
+                column: "ReceivingReportId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_receivingReports_ReceivingId",
+                table: "receivingReports",
+                column: "ReceivingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_receivings_MeatInspectionReportId",
                 table: "receivings",
-                column: "InspectorId");
+                column: "MeatInspectionReportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_secondaryMeatEstablishmentReports_InspectorId",
@@ -792,19 +865,25 @@ namespace thesis.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "meatInspectionReports");
+                name: "meatEstablishmentInspectors");
 
             migrationBuilder.DropTable(
-                name: "postmortemInspections");
+                name: "meatEstablishmentMeatDealers");
 
             migrationBuilder.DropTable(
                 name: "receivingConductOfInspections");
 
             migrationBuilder.DropTable(
+                name: "receivingMeatEstablishments");
+
+            migrationBuilder.DropTable(
                 name: "receivingPassedForSlaughters");
 
             migrationBuilder.DropTable(
-                name: "receivingReports");
+                name: "receivingPostmortemReports");
+
+            migrationBuilder.DropTable(
+                name: "receivingReportMeatEstablishments");
 
             migrationBuilder.DropTable(
                 name: "secondaryMeatEstablishmentReports");
@@ -816,13 +895,7 @@ namespace thesis.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "summaryAndDistributionOfMICs");
-
-            migrationBuilder.DropTable(
-                name: "totalNoFitForHumanConsumptions");
-
-            migrationBuilder.DropTable(
-                name: "postmortemReports");
+                name: "meatDealers");
 
             migrationBuilder.DropTable(
                 name: "conductOfInspections");
@@ -831,7 +904,13 @@ namespace thesis.Migrations
                 name: "passedForSlaughters");
 
             migrationBuilder.DropTable(
-                name: "meatDealers");
+                name: "postmortemReports");
+
+            migrationBuilder.DropTable(
+                name: "meatEstablishments");
+
+            migrationBuilder.DropTable(
+                name: "receivingReports");
 
             migrationBuilder.DropTable(
                 name: "meatInspectionCertUtilizations");
@@ -840,22 +919,28 @@ namespace thesis.Migrations
                 name: "meatInspectionSummaries");
 
             migrationBuilder.DropTable(
-                name: "serviceTransactionDescriptionReports");
-
-            migrationBuilder.DropTable(
-                name: "receivings");
-
-            migrationBuilder.DropTable(
                 name: "inspectors");
 
             migrationBuilder.DropTable(
-                name: "meatEstablishments");
+                name: "serviceTransactionDescriptionReports");
 
             migrationBuilder.DropTable(
                 name: "meatEstablishmentRepresentatives");
 
             migrationBuilder.DropTable(
+                name: "receivings");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "meatInspectionReports");
+
+            migrationBuilder.DropTable(
+                name: "summaryAndDistributionOfMICs");
+
+            migrationBuilder.DropTable(
+                name: "totalNoFitForHumanConsumptions");
         }
     }
 }

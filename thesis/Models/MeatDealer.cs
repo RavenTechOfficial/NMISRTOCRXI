@@ -7,6 +7,6 @@ namespace thesis.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public MeatEstablishment MeatEstablishment { get; set;}
+        public ICollection<MeatEstablishmentMeatDealer> meatEstablishmentMeatDealers { get; set; }
     }
 }

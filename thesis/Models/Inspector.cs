@@ -7,9 +7,6 @@ namespace thesis.Models
     {
         public int Id { get; set; }
         public AccountDetails AccountDetails { get; set; }
-
-        [ForeignKey("MeatEstablishment")]
-        public int MeatEstablishmentId { get; set; }
-        public MeatEstablishment MeatEstablishment { get; set;}
+        public ICollection<MeatEstablishmentInspector> meatEstablishmentInspectors { get; set; }
     }
 }
