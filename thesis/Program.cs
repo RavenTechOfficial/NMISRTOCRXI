@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using thesis.Areas.Identity.Data;
+using thesis.Core.IRepositories;
 using thesis.Data;
+using thesis.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("thesisContextConnection") ?? throw new InvalidOperationException("Connection string 'thesisContextConnection' not found.");
 
@@ -13,6 +16,14 @@ builder.Services.AddDefaultIdentity<AccountDetails>(options => options.SignIn.Re
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+#region Authorization
+
+AddAuthorizationPolicies();
+AddScoped();
+
+#endregion
 
 var app = builder.Build();
 
@@ -38,3 +49,14 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+
+void AddScoped()
+{
+    builder.Services.AddScoped<IMeatEstablishmentRepository, MeatEstablishmentRepository>();
+}
+
+void AddAuthorizationPolicies()
+{
+
+}
