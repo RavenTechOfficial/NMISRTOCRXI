@@ -5,7 +5,7 @@ namespace thesis.Models
     public class ReceivingReport
     {
         public int Id { get; set; } 
-        public string RecTime { get; set; }
+        public DateTime RecTime { get; set; }
         public int ShipmentBatchCode { get; set; }
         public string SpeciesTypeOfFoodAnimals { get; set; }
         public int NoOfHeads { get; set; }
