@@ -75,6 +75,30 @@ namespace thesis.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            /// 
+            [Required]
+            [Display(Name = "FirstName")]
+            public string firstName { get; set; }
+
+            [Required]
+            [Display(Name = "LastName")]
+            public string lastName { get; set; }
+
+            [Required]
+            [Display(Name = "middleName")]
+            public string middleName { get; set; }
+
+            [Required]
+            [Display(Name = "Address")]
+            public string address { get; set; }
+
+            [Required]
+            [Display(Name = "contactNo")]
+            public string contactNo { get; set; }
+            
+            [Display(Name = "Image")]
+            public string image { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -114,6 +138,14 @@ namespace thesis.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                user.firstName = Input.firstName;
+                user.lastName = Input.lastName;
+                user.middleName = Input.middleName;
+                user.contactNo = Input.contactNo;
+                user.address = Input.address;
+                user.image = Input.image;
+
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
