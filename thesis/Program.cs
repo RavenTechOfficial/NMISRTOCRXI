@@ -53,7 +53,9 @@ app.Run();
 
 void AddScoped()
 {
-    builder.Services.AddScoped<IMeatEstablishmentRepository, MeatEstablishmentRepository>();
+    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+    builder.Services.AddScoped<IReceivingReportRepository, ReceivingReportRepository>();
+    builder.Services.AddScoped<IMeatInspectionReportRepository, MeatInspectionReportRepository>();
 }
 
 void AddAuthorizationPolicies()
