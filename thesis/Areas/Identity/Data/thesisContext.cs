@@ -34,6 +34,10 @@ public class thesisContext : IdentityDbContext<AccountDetails>
     public DbSet<ReceivingConductOfInspection> receivingConductOfInspections { get; set; }
     public DbSet<ReceivingPassedForSlaughter> receivingPassedForSlaughters { get; set; }
     public DbSet<ReceivingPostmortemReport> receivingPostmortemReports { get; set; }
+    public DbSet<MeatEstablishmentInspector> meatEstablishmentInspectors { get; set; }
+    public DbSet<MeatEstablishmentMeatDealer> meatEstablishmentMeatDealers { get; set; }
+    public DbSet<ReceivingReportMeatEstablishment> receivingReportMeatEstablishments { get; set; }
+    public DbSet<ReceivingMeatEstablishment> receivingMeatEstablishments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -72,5 +76,48 @@ public class thesisContext : IdentityDbContext<AccountDetails>
             .WithMany(uc => uc.receivingPostmortemReports)
             .HasForeignKey(c => c.PostmortemReportId);
 
+        modelBuilder.Entity<MeatEstablishmentInspector>()
+                .HasKey(uc => new { uc.MeatEstablishmentId, uc.InspectorId });
+        modelBuilder.Entity<MeatEstablishmentInspector>()
+            .HasOne(u => u.MeatEstablishment)
+            .WithMany(uc => uc.meatEstablishmentInspectors)
+            .HasForeignKey(u => u.MeatEstablishmentId);
+        modelBuilder.Entity<MeatEstablishmentInspector>()
+            .HasOne(c => c.Inspector)
+            .WithMany(uc => uc.meatEstablishmentInspectors)
+            .HasForeignKey(c => c.InspectorId);
+
+        modelBuilder.Entity<MeatEstablishmentMeatDealer>()
+                .HasKey(uc => new { uc.MeatEstablishmentId, uc.MeatDealerId });
+        modelBuilder.Entity<MeatEstablishmentMeatDealer>()
+            .HasOne(u => u.MeatEstablishment)
+            .WithMany(uc => uc.meatEstablishmentMeatDealers)
+            .HasForeignKey(u => u.MeatEstablishmentId);
+        modelBuilder.Entity<MeatEstablishmentMeatDealer>()
+            .HasOne(c => c.MeatDealer)
+            .WithMany(uc => uc.meatEstablishmentMeatDealers)
+            .HasForeignKey(c => c.MeatDealerId);
+
+        modelBuilder.Entity<ReceivingReportMeatEstablishment>()
+                .HasKey(uc => new { uc.MeatEstablishmentId, uc.ReceivingReportId });
+        modelBuilder.Entity<ReceivingReportMeatEstablishment>()
+            .HasOne(u => u.MeatEstablishment)
+            .WithMany(uc => uc.receivingReportMeatEstablishments)
+            .HasForeignKey(u => u.MeatEstablishmentId);
+        modelBuilder.Entity<ReceivingReportMeatEstablishment>()
+            .HasOne(c => c.ReceivingReport)
+            .WithMany(uc => uc.receivingReportMeatEstablishments)
+            .HasForeignKey(c => c.ReceivingReportId);
+
+        modelBuilder.Entity<ReceivingMeatEstablishment>()
+                .HasKey(uc => new { uc.MeatEstablishmentId, uc.ReceivingId });
+        modelBuilder.Entity<ReceivingMeatEstablishment>()
+            .HasOne(u => u.MeatEstablishment)
+            .WithMany(uc => uc.receivingMeatEstablishments)
+            .HasForeignKey(u => u.MeatEstablishmentId);
+        modelBuilder.Entity<ReceivingMeatEstablishment>()
+            .HasOne(c => c.Receiving)
+            .WithMany(uc => uc.receivingMeatEstablishments)
+            .HasForeignKey(c => c.ReceivingId);
     }
 }
