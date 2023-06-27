@@ -10,6 +10,15 @@
     <Folder Include="Core\Dto\" />
     <Folder Include="Core\ViewModel\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Views\Amirs\MeatEstablishmentRepresentative\" />
+    <Folder Include="Views\Amirs\NMISAdminNavBar\" />
+    <Folder Include="Views\InspectorAdmin\Home\" />
+    <Folder Include="Views\InspectorAdmin\MIC\" />
+    <Folder Include="Views\InspectorAdmin\Reports\MeatInspectionReports\" />
+    <Folder Include="Views\InspectorAdmin\Reports\CondemnationReports\" />
+    <Folder Include="Views\InspectorAdmin\Reports\SlaughterReports\" />
+    <Folder Include="Views\InspectorAdmin\STDR\" />
+    <Folder Include="Views\InspectorAdmin\UserManagement\" />
   </ItemGroup>
 
   <ItemGroup>
