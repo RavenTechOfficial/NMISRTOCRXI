@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using thesis.Core.IRepositories;
 
 namespace thesis.Controllers
@@ -11,6 +12,7 @@ namespace thesis.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+        [Authorize(Policy = "RequireSuperAdmin")]
         public IActionResult Index()
         {
             return View();

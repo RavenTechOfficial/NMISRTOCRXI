@@ -12,6 +12,7 @@ builder.Services.AddDbContext<thesisContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<AccountDetails>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<thesisContext>();
 
 // Add services to the container.
@@ -60,5 +61,10 @@ void AddScoped()
 
 void AddAuthorizationPolicies()
 {
-
+    builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("RequireSuperAdmin", policy => policy.RequireRole("SuperAdministrator"));
+        options.AddPolicy("RequireInspectorAdmin", policy => policy.RequireRole("InspectorAdministrator"));
+        options.AddPolicy("RequireMTVAdmin", policy => policy.RequireRole("MTVAdministrator"));
+    });
 }

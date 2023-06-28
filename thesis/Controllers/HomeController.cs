@@ -15,6 +15,18 @@ namespace thesis.Controllers
 
         public IActionResult Index()
         {
+            if(User.Identity.IsAuthenticated && User.IsInRole("SuperAdministrator"))
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+            else if (User.Identity.IsAuthenticated && User.IsInRole("InspectorAdministrator"))
+            {
+                return RedirectToAction("Index", "InspectorAdmin");
+            }
+            else if (User.Identity.IsAuthenticated && User.IsInRole("MTVAdministrator"))
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
 
