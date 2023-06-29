@@ -1,5 +1,74 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using thesis.Data.Enum;
+
+<h1>Decision-Support System (Analytics)</h1>
+<div class="form-group">
+    <label for="exampleDropdown">Time series</label>
+    <select class="form-control" id="exampleDropdown">
+        <option value="">Yearly</option>
+        <option value="option2">Monthly</option>
+        <option value="option3">Daily</option>
+    </select>
+    <label for="exampleDropdown">Specie</label>
+    <select asp-items="@Html.GetEnumSelectList<Species>()" class="form-control" id="exampleDropdown">
+    </select>
+    <label for="exampleDropdown">Meat Establishment</label>
+    <select asp-items="@Html.GetEnumSelectList<EstablishmentType>()" class="form-control" id="exampleDropdown">
+    </select>
+</div>
+
+
+<canvas id="lineChart" class="mt-4 p-xl-5" style="width: 400px; height: 200px;"></canvas>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    //line
+    var ctxL = document.getElementById("lineChart").getContext('2d');
+    var myLineChart = new Chart(ctxL, {
+        type: 'line',
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            datasets: [{
+                label: "My First dataset",
+                data: [65, 59, 80, 81, 56, 55, 40, 4, 9, 12, 52, 60],
+                backgroundColor: [
+                    'rgba(105, 0, 132, .2)',
+                ],
+                borderColor: [
+                    'rgba(200, 99, 132, .7)',
+                ],
+                borderWidth: 2
+            },
+            {
+                label: "My Second dataset",
+                data: [28, 48, 40, 19, 86, 27, 90, 87, 32, 52, 88, 24],
+                backgroundColor: [
+                    'rgba(0, 137, 132, .2)',
+                ],
+                borderColor: [
+                    'rgba(0, 10, 130, .7)',
+                ],
+                borderWidth: 2
+            },
+            {
+                label: "My third dataset",
+                data: [40, 8, 20, 22, 1, 4, 66, 28, 48, 40, 19, 1],
+                backgroundColor: [
+                    'rgba(0, 137, 132, .2)',
+                ],
+                borderColor: [
+                    '#3F2305',
+                ],
+                borderWidth: 2
+            }
+            ]
+
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+
