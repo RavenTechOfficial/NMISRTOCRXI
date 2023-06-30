@@ -7,15 +7,18 @@ namespace thesis.Repositories
         public IReceivingReportRepository ReceivingReport { get; }
 
         public IMeatInspectionReportRepository MeatInspectionReport { get; }
-        
+
+        public IDashboardRepository Dashboard { get; }
 
         public UnitOfWork(
             IReceivingReportRepository receivingReport,
-            IMeatInspectionReportRepository meatInspectionReport
+            IMeatInspectionReportRepository meatInspectionReport,
+            IDashboardRepository dashboard
         ) 
         {
             ReceivingReport = receivingReport;
             MeatInspectionReport = meatInspectionReport;
+            Dashboard = dashboard;
         }
     }
 }

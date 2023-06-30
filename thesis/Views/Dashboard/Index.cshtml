@@ -1,6 +1,17 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using thesis.Core.ViewModel;
+@using thesis.Data.Enum;
+@model TotalWeightViewModel
 <h1>DASHBOARD</h1>
+
+@using (Html.BeginForm("Index", "Dashboard", FormMethod.Get))
+{
+    @Html.DropDownListFor(model => model.SelectedSpecies, new SelectList(Enum.GetValues(typeof(Species))), "Select Species")
+    <input type="submit" value="Filter" />
+}
+
+<h1>Total Weight: @Model.TotalWeight</h1>
+
+<h2>Daily Weight: @Model.DailyWeight</h2>
+<h2>Weekly Weight: @Model.WeeklyWeight</h2>
+<h2>Monthly Weight: @Model.MonthlyWeight</h2>
+<h2>Yearly Weight: @Model.YearlyWeight</h2>
