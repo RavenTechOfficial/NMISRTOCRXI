@@ -1,14 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using thesis.Core.IRepositories;
+using thesis.Data.Enum;
 
 namespace thesis.Controllers
 {
     public class DashboardController : Controller
     {
-        [Authorize(Policy = "RequireSuperAdmin")]
-        public IActionResult Index()
+        private readonly IUnitOfWork _unitOfWork;
+
+        public DashboardController(IUnitOfWork unitOfWork)
         {
-            return View();
+            _unitOfWork = unitOfWork;
+        }
+
+        [Authorize(Policy = "RequireSuperAdmin")]
+        public IActionResult Index(Species? selectedSpecies)
+        {
+            var species = selectedSpecies ?? Species.Carabao;
+            var totalWeightModel = _unitOfWork.Dashboard.GetTotalOfMeatPerTimeSeries(species);
+            return View(totalWeightModel);
         }
     }
 }

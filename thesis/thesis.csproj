@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <Folder Include="Core\Dto\" />
-    <Folder Include="Core\ViewModel\" />
     <Folder Include="Migrations\" />
     <Folder Include="Views\InspectorAdmin\Home\" />
     <Folder Include="Views\InspectorAdmin\MIC\" />
