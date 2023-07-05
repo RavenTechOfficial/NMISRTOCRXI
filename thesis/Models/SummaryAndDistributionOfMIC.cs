@@ -1,14 +1,18 @@
-﻿using thesis.Data.Enum;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using thesis.Data.Enum;
 
 namespace thesis.Models
 {
     public class SummaryAndDistributionOfMIC
     {
+        [Key]
         public int Id { get; set; }
-        public int NoOfHeads { get; set; }
-        public int WeightInKg { get; set; }
-        public string Destination { get; set; }
-        public MeatInspectionCertificateStatus MeatInspectionCertificateStatus { get; set; }
-
+        [ForeignKey("TotalNoFitForHumanConsumption")]
+        public int TotalNoFitForHumanConsumptionId { get; set; }
+        public totalNoFitForHumanConsumptions TotalNoFitForHumanConsumption { get; set; }
+        public string DestinationName { get; set; }
+        public string DestinationAddress { get; set; }
+        public CertificateStatus CertificateStatus { get; set; }
     }
 }

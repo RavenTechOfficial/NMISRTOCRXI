@@ -1,8 +1,8 @@
 ﻿namespace thesis.Data.Enum
 {
-    public enum AntemortemIssue
+    public enum Issue
     {
-        SuspectHold,
+        Suspect,
         Rejected,
         Condemned
     }

@@ -15,11 +15,12 @@ namespace thesis.Repositories
         }
         public async Task<ICollection<MeatInspectionReport>> GetAllMeatInspectionReports()
         {
-            return await _context.meatInspectionReports
-                .Include(q => q.TotalNoFitForHumanConsumption)
-                .Include(q => q.SummaryAndDistributionOfMIC)
-                .Include(r => r.Receiving)
-                .ToListAsync();
+            //return await _context.meatInspectionReports
+            //    .Include(q => q.TotalNoFitForHumanConsumption)
+            //    .Include(q => q.SummaryAndDistributionOfMIC)
+            //    .Include(r => r.Receiving)
+            //    .ToListAsync();
+            throw new NotImplementedException();
         }
     }
 }

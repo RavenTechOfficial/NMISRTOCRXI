@@ -1,4 +1,4 @@
-namespace thesis.Models
+﻿namespace thesis.Models
 {
     public class ErrorViewModel
     {

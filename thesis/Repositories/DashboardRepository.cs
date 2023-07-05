@@ -15,11 +15,12 @@ namespace thesis.Repositories
         {
             _context = context;
         }
-        public async Task<ICollection<TotalNoFitForHumanConsumption>> GetTotalNoFitForHumanConsumptions()
+        public async Task<ICollection<totalNoFitForHumanConsumptions>> GetTotalNoFitForHumanConsumptions()
         {
-            return await _context.totalNoFitForHumanConsumptions
-                .OrderBy(p => p.Id)
-                .ToListAsync();
+            //return await _context.totalNoFitForHumanConsumptions
+            //    .OrderBy(p => p.Id)
+            //    .ToListAsync();
+            throw new NotImplementedException();
         }
 
         public TotalWeightViewModel GetTotalOfMeatPerTimeSeries(Species species)
@@ -29,35 +30,36 @@ namespace thesis.Repositories
             var startDateOfMonth = DateTime.Now.AddDays(-31);
             var startDateOfYear = DateTime.Now.AddDays(-365);
 
-            var dailyWeight = _context.totalNoFitForHumanConsumptions
-                .Where(p => p.Species == species && p.Date.Date >= currentDate.Date)
-                .Sum(p => p.DressedWeightInKg);
+            //var dailyWeight = _context.totalNoFitForHumanConsumptions
+            //    .Where(p => p.Species == species && p.Date.Date >= currentDate.Date)
+            //    .Sum(p => p.DressedWeightInKg);
 
-            var weeklyWeight = _context.totalNoFitForHumanConsumptions
-                .Where(p => p.Species == species && p.Date.Date >= startDateOfWeek.Date)
-                .Sum(p => p.DressedWeightInKg);
+            //var weeklyWeight = _context.totalNoFitForHumanConsumptions
+            //    .Where(p => p.Species == species && p.Date.Date >= startDateOfWeek.Date)
+            //    .Sum(p => p.DressedWeightInKg);
 
-            var monthlyWeight = _context.totalNoFitForHumanConsumptions
-                .Where(p => p.Species == species && p.Date.Date >= startDateOfMonth.Date)
-                .Sum(p => p.DressedWeightInKg);
+            //var monthlyWeight = _context.totalNoFitForHumanConsumptions
+            //    .Where(p => p.Species == species && p.Date.Date >= startDateOfMonth.Date)
+            //    .Sum(p => p.DressedWeightInKg);
 
-            var yearlyWeight = _context.totalNoFitForHumanConsumptions
-                .Where(p => p.Species == species && p.Date.Date >= startDateOfYear.Date)
-                .Sum(p => p.DressedWeightInKg);
+            //var yearlyWeight = _context.totalNoFitForHumanConsumptions
+            //    .Where(p => p.Species == species && p.Date.Date >= startDateOfYear.Date)
+            //    .Sum(p => p.DressedWeightInKg);
 
-            var totalWeight = _context.totalNoFitForHumanConsumptions
-                .Where(p => p.Species == species)
-                .Sum(p => p.DressedWeightInKg);
+            //var totalWeight = _context.totalNoFitForHumanConsumptions
+            //    .Where(p => p.Species == species)
+            //    .Sum(p => p.DressedWeightInKg);
 
-            return new TotalWeightViewModel
-            {
-                TotalWeight = totalWeight,
-                SelectedSpecies = species,
-                DailyWeight = dailyWeight,
-                WeeklyWeight = weeklyWeight,
-                MonthlyWeight = monthlyWeight,
-                YearlyWeight = yearlyWeight
-            };
+            //return new TotalWeightViewModel
+            //{
+            //    TotalWeight = totalWeight,
+            //    SelectedSpecies = species,
+            //    DailyWeight = dailyWeight,
+            //    WeeklyWeight = weeklyWeight,
+            //    MonthlyWeight = monthlyWeight,
+            //    YearlyWeight = yearlyWeight
+            //};
+            throw new NotImplementedException();
         }
     }
 }

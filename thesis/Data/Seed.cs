@@ -16,42 +16,42 @@ namespace thesis.Data
 
                 if (context.totalNoFitForHumanConsumptions.Any())
                 {
-                    context.totalNoFitForHumanConsumptions.AddRange(new List<TotalNoFitForHumanConsumption>()
+                    context.totalNoFitForHumanConsumptions.AddRange(new List<totalNoFitForHumanConsumptions>()
                     {
-                        new TotalNoFitForHumanConsumption()
+                        new totalNoFitForHumanConsumptions()
                         {
                             Species = Species.Swine,
-                            NoOfAnimals = 2,
-                            DressedWeightInKg = 1,
-                            Date = DateTime.Now.AddDays(-7),
+                            //NoOfAnimals = 2,
+                            //DressedWeightInKg = 1,
+                            //Date = DateTime.Now.AddDays(-7),
                         },
-                        new TotalNoFitForHumanConsumption()
+                        new totalNoFitForHumanConsumptions()
                         {
                             Species = Species.Swine,
-                            NoOfAnimals = 2,
-                            DressedWeightInKg = 2,
-                            Date = DateTime.Now.AddDays(-6),
+                            //NoOfAnimals = 2,
+                            //DressedWeightInKg = 2,
+                            //Date = DateTime.Now.AddDays(-6),
                         },
-                        new TotalNoFitForHumanConsumption()
+                        new totalNoFitForHumanConsumptions()
                         {
                             Species = Species.Swine,
-                            NoOfAnimals = 2,
-                            DressedWeightInKg = 3,
-                            Date = DateTime.Now.AddDays(-5),
+                            //NoOfAnimals = 2,
+                            //DressedWeightInKg = 3,
+                            //Date = DateTime.Now.AddDays(-5),
                         },
-                        new TotalNoFitForHumanConsumption()
+                        new totalNoFitForHumanConsumptions()
                         {
                             Species = Species.Swine,
-                            NoOfAnimals = 2,
-                            DressedWeightInKg = 4,
-                            Date = DateTime.Now.AddDays(-4),
+                            //NoOfAnimals = 2,
+                            //DressedWeightInKg = 4,
+                            //Date = DateTime.Now.AddDays(-4),
                         },
-                        new TotalNoFitForHumanConsumption()
+                        new totalNoFitForHumanConsumptions()
                         {
                             Species = Species.Swine,
-                            NoOfAnimals = 2,
-                            DressedWeightInKg = 5,
-                            Date = DateTime.Now.AddDays(-3),
+                            //NoOfAnimals = 2,
+                            //DressedWeightInKg = 5,
+                            //Date = DateTime.Now.AddDays(-3),
                         }
 
                     });
