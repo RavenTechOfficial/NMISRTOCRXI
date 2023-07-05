@@ -28,9 +28,9 @@ AddScoped();
 
 var app = builder.Build();
 
-if (args.Length == 1 && args[0].ToLower() == "seeddata")
+if (args.Length == 1 && args[0].ToLower() == "seeddatas")
 {
-    Seed.SeedData(app);
+    Seed.SeedDatas(app);
 }
 
 // Configure the HTTP request pipeline.
@@ -63,6 +63,7 @@ void AddScoped()
     builder.Services.AddScoped<IReceivingReportRepository, ReceivingReportRepository>();
     builder.Services.AddScoped<IMeatInspectionReportRepository, MeatInspectionReportRepository>();
     builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+    builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
 }
 
 void AddAuthorizationPolicies()

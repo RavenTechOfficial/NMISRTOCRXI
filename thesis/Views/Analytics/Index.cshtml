@@ -1,20 +1,39 @@
-﻿@using thesis.Data.Enum;
+﻿@using thesis.Core.ViewModel;
+@model AnalyticsViewModel
 
-<h1>Decision-Support System (Analytics)</h1>
-<div class="form-group">
-    <label for="exampleDropdown">Time series</label>
-    <select class="form-control" id="exampleDropdown">
-        <option value="">Yearly</option>
-        <option value="option2">Monthly</option>
-        <option value="option3">Daily</option>
-    </select>
-    <label for="exampleDropdown">Specie</label>
-    <select asp-items="@Html.GetEnumSelectList<Species>()" class="form-control" id="exampleDropdown">
-    </select>
-    <label for="exampleDropdown">Meat Establishment</label>
-    <select asp-items="@Html.GetEnumSelectList<EstablishmentType>()" class="form-control" id="exampleDropdown">
-    </select>
-</div>
+@using (Html.BeginForm("Index", "Analytics", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(m => m.SelectedSpecies)
+        @Html.DropDownListFor(m => m.SelectedSpecies, Model.SpeciesList)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.SelectedTimeSeries)
+        @Html.DropDownListFor(m => m.SelectedTimeSeries, Model.TimeSeriesList, "--Select a Time--")
+    </div>
+
+    <button type="submit">Submit</button>
+}
+
+@*@if (Model.DressedWeight != null && Model.DressedWeight.Any())
+{
+    <ul>
+        @foreach (var dataPoint in Model.DressedWeight)
+        {
+            <li>@dataPoint</li>
+        }
+        @foreach (var dataPoint in Model.Dates)
+        {
+            <li>@dataPoint</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No analytics data available.</p>
+}*@
+
 
 
 <canvas id="lineChart" class="mt-4 p-xl-5" style="width: 400px; height: 200px;"></canvas>
@@ -26,40 +45,33 @@
 <script>
     //line
     var ctxL = document.getElementById("lineChart").getContext('2d');
+    var labels = [@if (Model.Dates != null && Model.Dates.Any())
+    {
+        @foreach (var date in Model.Dates)
+        {
+            @Html.Raw("'" + date + "',")
+        }
+    }
+        ];
+
     var myLineChart = new Chart(ctxL, {
         type: 'line',
         data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        labels: labels,
             datasets: [{
                 label: "My First dataset",
-                data: [65, 59, 80, 81, 56, 55, 40, 4, 9, 12, 52, 60],
+                data: [@if (Model.DressedWeight != null && Model.DressedWeight.Any())
+                {
+                    foreach (var weight in Model.DressedWeight)
+                    {
+                        @Html.Raw(weight.ToString() + ",")
+                    }
+                }],
                 backgroundColor: [
                     'rgba(105, 0, 132, .2)',
                 ],
                 borderColor: [
                     'rgba(200, 99, 132, .7)',
-                ],
-                borderWidth: 2
-            },
-            {
-                label: "My Second dataset",
-                data: [28, 48, 40, 19, 86, 27, 90, 87, 32, 52, 88, 24],
-                backgroundColor: [
-                    'rgba(0, 137, 132, .2)',
-                ],
-                borderColor: [
-                    'rgba(0, 10, 130, .7)',
-                ],
-                borderWidth: 2
-            },
-            {
-                label: "My third dataset",
-                data: [40, 8, 20, 22, 1, 4, 66, 28, 48, 40, 19, 1],
-                backgroundColor: [
-                    'rgba(0, 137, 132, .2)',
-                ],
-                borderColor: [
-                    '#3F2305',
                 ],
                 borderWidth: 2
             }
@@ -71,4 +83,3 @@
         }
     });
 </script>
-

@@ -6,7 +6,7 @@ namespace thesis.Models
     public class Inspector
     {
         public int Id { get; set; }
-        public AccountDetails AccountDetails { get; set; }
+        public string MeatEstAssigned { get; set; }
         public ICollection<MeatEstablishmentInspector> meatEstablishmentInspectors { get; set; }
     }
 }

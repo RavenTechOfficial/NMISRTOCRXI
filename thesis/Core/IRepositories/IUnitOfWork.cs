@@ -5,5 +5,6 @@
         IReceivingReportRepository ReceivingReport { get; }
         IMeatInspectionReportRepository MeatInspectionReport { get; }
         IDashboardRepository Dashboard { get; }
+        IAnalyticsRepository Analytics { get; }
     }
 }

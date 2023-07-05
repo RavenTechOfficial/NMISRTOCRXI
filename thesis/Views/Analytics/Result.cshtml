@@ -1,0 +1,18 @@
+﻿
+@using thesis.Core.ViewModel;
+@model AnalyticsViewModel
+<h2>Result Page</h2>
+
+@if (Model.DressedWeight != null && Model.DressedWeight.Any())
+{
+    <ul>
+        @foreach (var dataPoint in Model.DressedWeight)
+        {
+            <li>@dataPoint</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No analytics data available.</p>
+}
