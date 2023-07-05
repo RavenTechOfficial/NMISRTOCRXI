@@ -5,7 +5,7 @@
 
 @using (Html.BeginForm("Index", "Dashboard", FormMethod.Get))
 {
-    @Html.DropDownListFor(model => model.SelectedSpecies, new SelectList(Enum.GetValues(typeof(Species))), "Select Species")
+    @Html.DropDownListFor(model => model.SelectedSpecies, new SelectList(Enum.GetValues(typeof(Species))))
     <input type="submit" value="Filter" />
 }
 

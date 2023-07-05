@@ -42,6 +42,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             @if (User.IsInRole("SuperAdministrator"))
+                            
                             {
                                     <li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
@@ -59,7 +60,7 @@
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Geolocation" asp-action="Index">GeoLocations</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="RegisterAccount" asp-action="Index">RegisterAccounts</a>
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">RegisterAccounts</a>
                                     </li>
                                     @*<li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-controller="MeatInspectorList" asp-action="Index">Meat Inspector List</a>
