@@ -1,6 +1,6 @@
 ﻿namespace thesis.Data.Enum
 {
-    public enum MeatInspectionCertificateStatus
+    public enum CertificateStatus
     {
         Issued,
         Cancelled

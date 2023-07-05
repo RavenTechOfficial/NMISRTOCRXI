@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thesis.Data;
 
@@ -11,9 +12,11 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    partial class thesisContextModelSnapshot : ModelSnapshot
+    [Migration("20230705135336_m1")]
+    partial class m1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,194 +326,6 @@ namespace thesis.Migrations
                     b.ToTable("ConductOfInspections");
                 });
 
-            modelBuilder.Entity("thesis.Models.DisapprovedApplication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MTVInspectionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MTVInspectionId");
-
-                    b.ToTable("DisapprovedApplications");
-                });
-
-            modelBuilder.Entity("thesis.Models.MTVApplication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AccountRolesId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DriverLicense")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DriverName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EstablishmentType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("HelperName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MTVDetailsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Quiz")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Seminar")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VehicleDestination")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountRolesId");
-
-                    b.HasIndex("MTVDetailsId");
-
-                    b.ToTable("MTVApplications");
-                });
-
-            modelBuilder.Entity("thesis.Models.MTVApplicationResult", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MTVInspectionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Processed")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Received")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MTVInspectionId");
-
-                    b.ToTable("MTVApplicationResults");
-                });
-
-            modelBuilder.Entity("thesis.Models.MTVDetails", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ApplicantType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ControlNo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EngineNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FaxNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LTOCR")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LTOOR")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlateNo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RegisteredOwner")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VehicleMaker")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MTVDetails");
-                });
-
-            modelBuilder.Entity("thesis.Models.MTVInspection", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CorrectlyInstalled")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Enclosed")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Insulated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MTVApplicationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PlasticCurtains")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TempControlled")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MTVApplicationId");
-
-                    b.ToTable("MTVInspection");
-                });
-
             modelBuilder.Entity("thesis.Models.MeatDealers", b =>
                 {
                     b.Property<int>("Id")
@@ -623,28 +438,6 @@ namespace thesis.Migrations
                     b.HasIndex("ConductOfInspectionId");
 
                     b.ToTable("PassedForSlaughters");
-                });
-
-            modelBuilder.Entity("thesis.Models.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MTVApplicationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PaymentReceipt")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MTVApplicationId");
-
-                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("thesis.Models.Postmortem", b =>
@@ -903,58 +696,6 @@ namespace thesis.Migrations
                     b.Navigation("Antemortem");
                 });
 
-            modelBuilder.Entity("thesis.Models.DisapprovedApplication", b =>
-                {
-                    b.HasOne("thesis.Models.MTVInspection", "MTVInspection")
-                        .WithMany()
-                        .HasForeignKey("MTVInspectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MTVInspection");
-                });
-
-            modelBuilder.Entity("thesis.Models.MTVApplication", b =>
-                {
-                    b.HasOne("thesis.Models.AccountRoles", "AccountRoles")
-                        .WithMany()
-                        .HasForeignKey("AccountRolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("thesis.Models.MTVDetails", "MTVDetails")
-                        .WithMany()
-                        .HasForeignKey("MTVDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AccountRoles");
-
-                    b.Navigation("MTVDetails");
-                });
-
-            modelBuilder.Entity("thesis.Models.MTVApplicationResult", b =>
-                {
-                    b.HasOne("thesis.Models.MTVInspection", "MTVInspection")
-                        .WithMany()
-                        .HasForeignKey("MTVInspectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MTVInspection");
-                });
-
-            modelBuilder.Entity("thesis.Models.MTVInspection", b =>
-                {
-                    b.HasOne("thesis.Models.MTVApplication", "MTVApplication")
-                        .WithMany()
-                        .HasForeignKey("MTVApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MTVApplication");
-                });
-
             modelBuilder.Entity("thesis.Models.MeatDealers", b =>
                 {
                     b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
@@ -986,17 +727,6 @@ namespace thesis.Migrations
                         .IsRequired();
 
                     b.Navigation("ConductOfInspection");
-                });
-
-            modelBuilder.Entity("thesis.Models.Payment", b =>
-                {
-                    b.HasOne("thesis.Models.MTVApplication", "MTVApplication")
-                        .WithMany()
-                        .HasForeignKey("MTVApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MTVApplication");
                 });
 
             modelBuilder.Entity("thesis.Models.Postmortem", b =>

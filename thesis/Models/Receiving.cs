@@ -6,12 +6,8 @@ namespace thesis.Models
     {
         public int Id { get; set; }
         public DateTime RecDate { get; set; }
-        public ICollection<ReceivingMeatEstablishment> receivingMeatEstablishments { get; set; }
-        public ICollection<ReceivingConductOfInspection> receivingConductOfInspections { get; set; }
-        public ICollection<ReceivingPassedForSlaughter> receivingPassedForSlaughters { get; set; }
-        public ICollection<ReceivingPostmortemReport> receivingPostmortemReports { get; set; }
-
-        //public ReceivingReport ReceivingReport { get; set; }
-
+        [ForeignKey("AccountRoles")]
+        public int AccountRolesId { get; set; }
+        public AccountRoles AccountRoles { get; set; }
     }
 }
