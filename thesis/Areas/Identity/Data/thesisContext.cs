@@ -12,7 +12,6 @@ public class thesisContext : IdentityDbContext<AccountDetails>
         : base(options)
     {
     }
-    public DbSet<AccountRoles> AccountRoles { get; set; }
     public DbSet<Antemortem> Antemortems { get; set; }
     public DbSet<ConductOfInspection> ConductOfInspections { get; set; }
     public DbSet<DisapprovedApplication> DisapprovedApplications { get; set; }

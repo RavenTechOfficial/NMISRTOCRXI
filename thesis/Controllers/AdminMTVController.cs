@@ -3,14 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace thesis.Controllers
 {
-    public class InspectorAdminController : Controller
+    public class AdminMTVController : Controller
     {
-        [Authorize(Policy = "RequireInspectorAdmin")]
+        [Authorize(Policy = "RequireMTVAdmin")]
         public IActionResult Index()
-        {
-            return View();
-        }
-        public IActionResult Result()
         {
             return View();
         }

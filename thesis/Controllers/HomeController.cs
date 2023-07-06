@@ -25,7 +25,7 @@ namespace thesis.Controllers
             }
             else if (User.Identity.IsAuthenticated && User.IsInRole("MTVAdministrator"))
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "AdminMTV");
             }
             return View();
         }

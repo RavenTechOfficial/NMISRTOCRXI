@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using thesis.Areas.Identity.Data;
 using thesis.Data.Enum;
 
 namespace thesis.Models
@@ -18,8 +19,8 @@ namespace thesis.Models
         [ForeignKey("MTVDetails")]
         public int MTVDetailsId { get; set; }
         public MTVDetails MTVDetails { get; set; }
-        [ForeignKey("AccountRoles")]
-        public int AccountRolesId { get; set; }
-        public AccountRoles AccountRoles { get; set; }
+        [ForeignKey("AccountDetails")]
+        public string AccountDetailsId { get; set; }
+        public AccountDetails AccountDetails { get; set; }
     }
 }
