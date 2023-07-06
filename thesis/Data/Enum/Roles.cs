@@ -4,9 +4,9 @@
     {
         SuperAdmin,
         AdminInspector,
+        AdminMTV,
         MeatEstablishmentRepresentative,
         MeatInspector,
-        AdminMTV,
         MTVInspector,
         MTVUsers
     }

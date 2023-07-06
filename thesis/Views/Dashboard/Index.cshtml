@@ -3,15 +3,15 @@
 @model TotalWeightViewModel
 <h1>DASHBOARD</h1>
 
-@using (Html.BeginForm("Index", "Dashboard", FormMethod.Get))
+@*@using (Html.BeginForm("Index", "Dashboard", FormMethod.Get))
 {
     @Html.DropDownListFor(model => model.SelectedSpecies, new SelectList(Enum.GetValues(typeof(Species))))
     <input type="submit" value="Filter" />
-}
+}*@
 
-<h1>Total Weight: @Model.TotalWeight</h1>
+@*<h1>Total Weight: @Model.TotalWeight</h1>
 
 <h2>Daily Weight: @Model.DailyWeight</h2>
 <h2>Weekly Weight: @Model.WeeklyWeight</h2>
 <h2>Monthly Weight: @Model.MonthlyWeight</h2>
-<h2>Yearly Weight: @Model.YearlyWeight</h2>
+<h2>Yearly Weight: @Model.YearlyWeight</h2>*@

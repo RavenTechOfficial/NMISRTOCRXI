@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using thesis.Areas.Identity.Data;
 
 namespace thesis.Models
 {
@@ -6,8 +7,8 @@ namespace thesis.Models
     {
         public int Id { get; set; }
         public DateTime RecDate { get; set; }
-        [ForeignKey("AccountRoles")]
-        public int AccountRolesId { get; set; }
-        public AccountRoles AccountRoles { get; set; }
+        [ForeignKey("AccountDetails")]
+        public string AccountDetailsId { get; set; }
+        public AccountDetails AccountDetails { get; set; }
     }
 }

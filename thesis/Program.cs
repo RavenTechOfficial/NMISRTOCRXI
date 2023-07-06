@@ -68,8 +68,15 @@ void AddScoped()
 
 void AddAuthorizationPolicies()
 {
+
     builder.Services.AddAuthorization(options =>
     {
+        options.AddPolicy("RequireAllAdmins", policy =>
+        {
+            policy.RequireRole("SuperAdministrator");
+            policy.RequireRole("InspectorAdministrator");
+            policy.RequireRole("MTVAdministrator");
+        });
         options.AddPolicy("RequireSuperAdmin", policy => policy.RequireRole("SuperAdministrator"));
         options.AddPolicy("RequireInspectorAdmin", policy => policy.RequireRole("InspectorAdministrator"));
         options.AddPolicy("RequireMTVAdmin", policy => policy.RequireRole("MTVAdministrator"));

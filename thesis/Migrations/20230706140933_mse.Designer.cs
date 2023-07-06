@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thesis.Data;
 
@@ -11,9 +12,11 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    partial class thesisContextModelSnapshot : ModelSnapshot
+    [Migration("20230706140933_mse")]
+    partial class mse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,6 +259,28 @@ namespace thesis.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("thesis.Models.AccountRoles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountDetailsId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Roles")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountDetailsId");
+
+                    b.ToTable("AccountRoles");
+                });
+
             modelBuilder.Entity("thesis.Models.Antemortem", b =>
                 {
                     b.Property<int>("Id")
@@ -330,9 +355,8 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AccountDetailsId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AccountRolesId")
+                        .HasColumnType("int");
 
                     b.Property<string>("DriverLicense")
                         .IsRequired()
@@ -366,7 +390,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountDetailsId");
+                    b.HasIndex("AccountRolesId");
 
                     b.HasIndex("MTVDetailsId");
 
@@ -669,16 +693,15 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AccountDetailsId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AccountRolesId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RecDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountDetailsId");
+                    b.HasIndex("AccountRolesId");
 
                     b.ToTable("Receivings");
                 });
@@ -854,6 +877,17 @@ namespace thesis.Migrations
                     b.Navigation("MeatEstablishment");
                 });
 
+            modelBuilder.Entity("thesis.Models.AccountRoles", b =>
+                {
+                    b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
+                        .WithMany()
+                        .HasForeignKey("AccountDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AccountDetails");
+                });
+
             modelBuilder.Entity("thesis.Models.Antemortem", b =>
                 {
                     b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
@@ -889,9 +923,9 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.MTVApplication", b =>
                 {
-                    b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
+                    b.HasOne("thesis.Models.AccountRoles", "AccountRoles")
                         .WithMany()
-                        .HasForeignKey("AccountDetailsId")
+                        .HasForeignKey("AccountRolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -901,7 +935,7 @@ namespace thesis.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AccountDetails");
+                    b.Navigation("AccountRoles");
 
                     b.Navigation("MTVDetails");
                 });
@@ -985,13 +1019,13 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.Receiving", b =>
                 {
-                    b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
+                    b.HasOne("thesis.Models.AccountRoles", "AccountRoles")
                         .WithMany()
-                        .HasForeignKey("AccountDetailsId")
+                        .HasForeignKey("AccountRolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AccountDetails");
+                    b.Navigation("AccountRoles");
                 });
 
             modelBuilder.Entity("thesis.Models.ReceivingReport", b =>

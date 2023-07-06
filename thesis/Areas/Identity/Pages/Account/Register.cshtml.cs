@@ -19,9 +19,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using thesis.Areas.Identity.Data;
+using thesis.Data.Enum;
+using thesis.Models;
 
 namespace thesis.Areas.Identity.Pages.Account
 {
+    
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<AccountDetails> _signInManager;
@@ -76,6 +79,10 @@ namespace thesis.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             /// 
+            public MeatEstablishment MeatEstablishment { get; set;}
+
+            public Roles Roles { get; set;}
+
             [Required]
             [Display(Name = "FirstName")]
             public string firstName { get; set; }
@@ -124,13 +131,12 @@ namespace thesis.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-
+        
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
-
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -145,6 +151,15 @@ namespace thesis.Areas.Identity.Pages.Account
                 user.contactNo = Input.contactNo;
                 user.address = Input.address;
                 user.image = Input.image;
+
+                user.Roles = Input.Roles;
+                user.MeatEstablishment = new MeatEstablishment
+                {
+                    Type = Input.MeatEstablishment.Type ?? new EstablishmentType(),
+                    Name = Input.MeatEstablishment.Name,
+                    Address = Input.MeatEstablishment.Address,
+                    LicenseToOperateNumber = Input.MeatEstablishment.LicenseToOperateNumber
+                };
 
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -186,7 +201,6 @@ namespace thesis.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
-
         private AccountDetails CreateUser()
         {
             try
@@ -200,7 +214,6 @@ namespace thesis.Areas.Identity.Pages.Account
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
-
         private IUserEmailStore<AccountDetails> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)

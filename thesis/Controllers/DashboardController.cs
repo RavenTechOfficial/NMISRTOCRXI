@@ -17,9 +17,9 @@ namespace thesis.Controllers
         [Authorize(Policy = "RequireSuperAdmin")]
         public IActionResult Index(Species? selectedSpecies)
         {
-            var species = selectedSpecies ?? Species.Cattle;
-            var totalWeightModel = _unitOfWork.Dashboard.GetTotalOfMeatPerTimeSeries(species);
-            return View(totalWeightModel);
+            //var species = selectedSpecies ?? Species.Cattle;
+            //var totalWeightModel = _unitOfWork.Dashboard.GetTotalOfMeatPerTimeSeries(species);
+            return View();
         }
     }
 }
