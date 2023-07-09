@@ -26,50 +26,43 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    middleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    contactNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MeatEstablishments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LicenseToOperateNumber = table.Column<int>(type: "int", nullable: false)
+                    Type = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LicenseToOperateNumber = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MeatEstablishments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MTVDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ControlNo = table.Column<int>(type: "int", nullable: false),
+                    ApplicantType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegisteredOwner = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TelNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FaxNumber = table.Column<int>(type: "int", nullable: false),
+                    VehicleMaker = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PlateNo = table.Column<int>(type: "int", nullable: false),
+                    LTOOR = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LTOCR = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EngineNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MTVDetails", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,6 +82,110 @@ namespace thesis.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Antemortems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Antemortems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Antemortems_MeatEstablishments_MeatEstablishmentId",
+                        column: x => x.MeatEstablishmentId,
+                        principalTable: "MeatEstablishments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    middleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    contactNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Roles = table.Column<int>(type: "int", nullable: false),
+                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_MeatEstablishments_MeatEstablishmentId",
+                        column: x => x.MeatEstablishmentId,
+                        principalTable: "MeatEstablishments",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MeatDealers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MeatDealers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MeatDealers_MeatEstablishments_MeatEstablishmentId",
+                        column: x => x.MeatEstablishmentId,
+                        principalTable: "MeatEstablishments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConductOfInspections",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Issue = table.Column<int>(type: "int", nullable: false),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<int>(type: "int", nullable: false),
+                    Cause = table.Column<int>(type: "int", nullable: false),
+                    AntemortemId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConductOfInspections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ConductOfInspections_Antemortems_AntemortemId",
+                        column: x => x.AntemortemId,
+                        principalTable: "Antemortems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -179,70 +276,34 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AccountRoles",
+                name: "MTVApplications",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Roles = table.Column<int>(type: "int", nullable: false),
-                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: true)
+                    DriverName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DriverLicense = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HelperName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Seminar = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quiz = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EstablishmentType = table.Column<int>(type: "int", nullable: false),
+                    VehicleDestination = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MTVDetailsId = table.Column<int>(type: "int", nullable: false),
+                    AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountRoles", x => x.Id);
+                    table.PrimaryKey("PK_MTVApplications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AccountRoles_AspNetUsers_AccountDetailsId",
+                        name: "FK_MTVApplications_AspNetUsers_AccountDetailsId",
                         column: x => x.AccountDetailsId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AccountRoles_MeatEstablishments_MeatEstablishmentId",
-                        column: x => x.MeatEstablishmentId,
-                        principalTable: "MeatEstablishments",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Antemortems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Antemortems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Antemortems_MeatEstablishments_MeatEstablishmentId",
-                        column: x => x.MeatEstablishmentId,
-                        principalTable: "MeatEstablishments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MeatDealers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MeatDealers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MeatDealers_MeatEstablishments_MeatEstablishmentId",
-                        column: x => x.MeatEstablishmentId,
-                        principalTable: "MeatEstablishments",
+                        name: "FK_MTVApplications_MTVDetails_MTVDetailsId",
+                        column: x => x.MTVDetailsId,
+                        principalTable: "MTVDetails",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -254,38 +315,80 @@ namespace thesis.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RecDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AccountRolesId = table.Column<int>(type: "int", nullable: false)
+                    AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Receivings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Receivings_AccountRoles_AccountRolesId",
-                        column: x => x.AccountRolesId,
-                        principalTable: "AccountRoles",
+                        name: "FK_Receivings_AspNetUsers_AccountDetailsId",
+                        column: x => x.AccountDetailsId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ConductOfInspections",
+                name: "PassedForSlaughters",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Issue = table.Column<int>(type: "int", nullable: false),
                     NoOfHeads = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<int>(type: "int", nullable: false),
-                    Cause = table.Column<int>(type: "int", nullable: false),
-                    AntemortemId = table.Column<int>(type: "int", nullable: false)
+                    ConductOfInspectionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ConductOfInspections", x => x.Id);
+                    table.PrimaryKey("PK_PassedForSlaughters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ConductOfInspections_Antemortems_AntemortemId",
-                        column: x => x.AntemortemId,
-                        principalTable: "Antemortems",
+                        name: "FK_PassedForSlaughters_ConductOfInspections_ConductOfInspectionId",
+                        column: x => x.ConductOfInspectionId,
+                        principalTable: "ConductOfInspections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MTVInspection",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MTVApplicationId = table.Column<int>(type: "int", nullable: false),
+                    Enclosed = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Insulated = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TempControlled = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PlasticCurtains = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CorrectlyInstalled = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MTVInspection", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MTVInspection_MTVApplications_MTVApplicationId",
+                        column: x => x.MTVApplicationId,
+                        principalTable: "MTVApplications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaymentReceipt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MTVApplicationId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_MTVApplications_MTVApplicationId",
+                        column: x => x.MTVApplicationId,
+                        principalTable: "MTVApplications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -327,22 +430,65 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PassedForSlaughters",
+                name: "Postmortems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    PassedForSlaughterId = table.Column<int>(type: "int", nullable: false),
+                    AnimalPart = table.Column<int>(type: "int", nullable: false),
+                    Cause = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<int>(type: "int", nullable: false),
-                    ConductOfInspectionId = table.Column<int>(type: "int", nullable: false)
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    Images = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PassedForSlaughters", x => x.Id);
+                    table.PrimaryKey("PK_Postmortems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PassedForSlaughters_ConductOfInspections_ConductOfInspectionId",
-                        column: x => x.ConductOfInspectionId,
-                        principalTable: "ConductOfInspections",
+                        name: "FK_Postmortems_PassedForSlaughters_PassedForSlaughterId",
+                        column: x => x.PassedForSlaughterId,
+                        principalTable: "PassedForSlaughters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DisapprovedApplications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MTVInspectionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DisapprovedApplications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DisapprovedApplications_MTVInspection_MTVInspectionId",
+                        column: x => x.MTVInspectionId,
+                        principalTable: "MTVInspection",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MTVApplicationResults",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MTVInspectionId = table.Column<int>(type: "int", nullable: false),
+                    Received = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Processed = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MTVApplicationResults", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MTVApplicationResults_MTVInspection_MTVInspectionId",
+                        column: x => x.MTVInspectionId,
+                        principalTable: "MTVInspection",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -364,30 +510,6 @@ namespace thesis.Migrations
                         name: "FK_MeatInspectionReports_ReceivingReports_ReceivingReportId",
                         column: x => x.ReceivingReportId,
                         principalTable: "ReceivingReports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Postmortems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PassedForSlaughterId = table.Column<int>(type: "int", nullable: false),
-                    AnimalPart = table.Column<int>(type: "int", nullable: false),
-                    Cause = table.Column<int>(type: "int", nullable: false),
-                    Weight = table.Column<int>(type: "int", nullable: false),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    Images = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Postmortems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Postmortems_PassedForSlaughters_PassedForSlaughterId",
-                        column: x => x.PassedForSlaughterId,
-                        principalTable: "PassedForSlaughters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -437,16 +559,6 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccountRoles_AccountDetailsId",
-                table: "AccountRoles",
-                column: "AccountDetailsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AccountRoles_MeatEstablishmentId",
-                table: "AccountRoles",
-                column: "MeatEstablishmentId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Antemortems_MeatEstablishmentId",
                 table: "Antemortems",
                 column: "MeatEstablishmentId");
@@ -484,6 +596,11 @@ namespace thesis.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_MeatEstablishmentId",
+                table: "AspNetUsers",
+                column: "MeatEstablishmentId");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -496,6 +613,11 @@ namespace thesis.Migrations
                 column: "AntemortemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DisapprovedApplications_MTVInspectionId",
+                table: "DisapprovedApplications",
+                column: "MTVInspectionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MeatDealers_MeatEstablishmentId",
                 table: "MeatDealers",
                 column: "MeatEstablishmentId");
@@ -506,9 +628,34 @@ namespace thesis.Migrations
                 column: "ReceivingReportId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MTVApplicationResults_MTVInspectionId",
+                table: "MTVApplicationResults",
+                column: "MTVInspectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MTVApplications_AccountDetailsId",
+                table: "MTVApplications",
+                column: "AccountDetailsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MTVApplications_MTVDetailsId",
+                table: "MTVApplications",
+                column: "MTVDetailsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MTVInspection_MTVApplicationId",
+                table: "MTVInspection",
+                column: "MTVApplicationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PassedForSlaughters_ConductOfInspectionId",
                 table: "PassedForSlaughters",
                 column: "ConductOfInspectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_MTVApplicationId",
+                table: "Payments",
+                column: "MTVApplicationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Postmortems_PassedForSlaughterId",
@@ -526,9 +673,9 @@ namespace thesis.Migrations
                 column: "ReceivingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Receivings_AccountRolesId",
+                name: "IX_Receivings_AccountDetailsId",
                 table: "Receivings",
-                column: "AccountRolesId");
+                column: "AccountDetailsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SummaryAndDistributionOfMICs_TotalNoFitForHumanConsumptionId",
@@ -560,7 +707,16 @@ namespace thesis.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "DisapprovedApplications");
+
+            migrationBuilder.DropTable(
                 name: "MeatInspectionReports");
+
+            migrationBuilder.DropTable(
+                name: "MTVApplicationResults");
+
+            migrationBuilder.DropTable(
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "SummaryAndDistributionOfMICs");
@@ -572,6 +728,9 @@ namespace thesis.Migrations
                 name: "ReceivingReports");
 
             migrationBuilder.DropTable(
+                name: "MTVInspection");
+
+            migrationBuilder.DropTable(
                 name: "totalNoFitForHumanConsumptions");
 
             migrationBuilder.DropTable(
@@ -581,16 +740,19 @@ namespace thesis.Migrations
                 name: "Receivings");
 
             migrationBuilder.DropTable(
+                name: "MTVApplications");
+
+            migrationBuilder.DropTable(
                 name: "Postmortems");
 
             migrationBuilder.DropTable(
-                name: "AccountRoles");
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "MTVDetails");
 
             migrationBuilder.DropTable(
                 name: "PassedForSlaughters");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "ConductOfInspections");

@@ -5,16 +5,17 @@
 namespace thesis.Migrations
 {
     /// <inheritdoc />
-    public partial class some : Migration
+    public partial class m2 : Migration
     {
+        /// <inheritdoc />
         private string SuperAdminRoleId = Guid.NewGuid().ToString();
         private string InspectorAdminRoleId = Guid.NewGuid().ToString();
         private string MTVAdminRoleId = Guid.NewGuid().ToString();
         private string UserRoleId = Guid.NewGuid().ToString();
 
-        private string User1Id = "1879a62f-717a-4c00-92e0-daaeec2efd8c"; //gerico team
-        private string User2Id = "8bf64eb8-7d9d-4773-bb59-ccf1e5a43857"; //mary team
-        private string User3Id = "e0a3bd77-c4bf-49bc-a4df-f70816102952"; //karlo team
+        private string User1Id = "3646c7fa-3a20-4f9e-b0e0-542ac8941347"; //gerico team
+        private string User2Id = "afc037a4-1a6f-4e42-9952-67d0cc121b23"; //mary team
+        private string User3Id = "5ca9d0b5-fced-4687-9e7e-5579050584d6"; //karlo team
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {

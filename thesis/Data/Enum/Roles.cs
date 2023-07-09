@@ -2,12 +2,12 @@
 {
     public enum Roles
     {
-        SuperAdmin,
-        AdminInspector,
-        AdminMTV,
-        MeatEstablishmentRepresentative,
-        MeatInspector,
-        MTVInspector,
-        MTVUsers
+        SUPERADMIN,
+        INSPECTORADMIN,
+        MTVADMIN,
+        MEATESTABLISHMENTREPRESENTATIVE,
+        MEATINSPECTOR,
+        MTVINSPECTOR,
+        MTVUSERS
     }
 }

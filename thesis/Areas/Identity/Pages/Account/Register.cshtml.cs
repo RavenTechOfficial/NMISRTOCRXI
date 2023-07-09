@@ -144,6 +144,7 @@ namespace thesis.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                
 
                 user.firstName = Input.firstName;
                 user.lastName = Input.lastName;
@@ -152,6 +153,7 @@ namespace thesis.Areas.Identity.Pages.Account
                 user.address = Input.address;
                 user.image = Input.image;
 
+                
                 user.Roles = Input.Roles;
                 user.MeatEstablishment = new MeatEstablishment
                 {
@@ -160,7 +162,6 @@ namespace thesis.Areas.Identity.Pages.Account
                     Address = Input.MeatEstablishment.Address,
                     LicenseToOperateNumber = Input.MeatEstablishment.LicenseToOperateNumber
                 };
-
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -178,7 +179,7 @@ namespace thesis.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
-
+                    await _userManager.AddToRoleAsync(user, Input.Roles.ToString());
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 

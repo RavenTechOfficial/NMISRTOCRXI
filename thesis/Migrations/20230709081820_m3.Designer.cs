@@ -12,8 +12,8 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20230705141654_karlo")]
-    partial class karlo
+    [Migration("20230709081820_m3")]
+    partial class m3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -187,6 +187,9 @@ namespace thesis.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int?>("MeatEstablishmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -203,6 +206,9 @@ namespace thesis.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int>("Roles")
+                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -240,6 +246,8 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MeatEstablishmentId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -249,33 +257,6 @@ namespace thesis.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("thesis.Models.AccountRoles", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AccountDetailsId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("MeatEstablishmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Roles")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountDetailsId");
-
-                    b.HasIndex("MeatEstablishmentId");
-
-                    b.ToTable("AccountRoles");
                 });
 
             modelBuilder.Entity("thesis.Models.Antemortem", b =>
@@ -352,8 +333,9 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccountRolesId")
-                        .HasColumnType("int");
+                    b.Property<string>("AccountDetailsId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DriverLicense")
                         .IsRequired()
@@ -387,7 +369,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountRolesId");
+                    b.HasIndex("AccountDetailsId");
 
                     b.HasIndex("MTVDetailsId");
 
@@ -554,24 +536,22 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.MeatEstablishment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LicenseToOperateNumber")
+                    b.Property<int?>("LicenseToOperateNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
+                    b.Property<int?>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -692,15 +672,16 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccountRolesId")
-                        .HasColumnType("int");
+                    b.Property<string>("AccountDetailsId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("RecDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountRolesId");
+                    b.HasIndex("AccountDetailsId");
 
                     b.ToTable("Receivings");
                 });
@@ -867,19 +848,11 @@ namespace thesis.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("thesis.Models.AccountRoles", b =>
+            modelBuilder.Entity("thesis.Areas.Identity.Data.AccountDetails", b =>
                 {
-                    b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
-                        .WithMany()
-                        .HasForeignKey("AccountDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
                         .WithMany()
                         .HasForeignKey("MeatEstablishmentId");
-
-                    b.Navigation("AccountDetails");
 
                     b.Navigation("MeatEstablishment");
                 });
@@ -919,9 +892,9 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.MTVApplication", b =>
                 {
-                    b.HasOne("thesis.Models.AccountRoles", "AccountRoles")
+                    b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
                         .WithMany()
-                        .HasForeignKey("AccountRolesId")
+                        .HasForeignKey("AccountDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -931,7 +904,7 @@ namespace thesis.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AccountRoles");
+                    b.Navigation("AccountDetails");
 
                     b.Navigation("MTVDetails");
                 });
@@ -1015,13 +988,13 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.Receiving", b =>
                 {
-                    b.HasOne("thesis.Models.AccountRoles", "AccountRoles")
+                    b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
                         .WithMany()
-                        .HasForeignKey("AccountRolesId")
+                        .HasForeignKey("AccountDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AccountRoles");
+                    b.Navigation("AccountDetails");
                 });
 
             modelBuilder.Entity("thesis.Models.ReceivingReport", b =>
