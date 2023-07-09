@@ -11,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("thesisContextC
 builder.Services.AddDbContext<thesisContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<AccountDetails>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<AccountDetails>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<thesisContext>();
 

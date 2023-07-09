@@ -25,3 +25,8 @@ public class AccountDetails : IdentityUser
 
 }
 
+public class ApplicationRole : IdentityRole
+{
+
+}
+

@@ -4,7 +4,7 @@ namespace thesis.Models
 {
     public class MeatEstablishment
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public EstablishmentType? Type { get; set; }
         public string? Name { get; set; }
         public string? Address { get; set; }

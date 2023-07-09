@@ -16,19 +16,19 @@
                 <select asp-for="Input.Roles">
                     @if (User.IsInRole("SuperAdministrator"))
                     {
-                        <option>SuperAdmin</option>
-                        <option>AdminInspector</option>
-                        <option>AdminMTV</option>
+                        <option>SUPERADMIN</option>
+                        <option>INSPECTORADMIN</option>
+                        <option>MTVADMIN</option>
                     }
                     @if (User.IsInRole("InspectorAdministrator"))
                     {
-                        <option>MeatEstablishmentRepresentative</option>
-                        <option>MeatInspector</option>
+                        <option>MEATESTABLISHMENTREPRESENTATIVE</option>
+                        <option>MEATINSPECTOR</option>
                     }
                     @if (User.IsInRole("MTVAdministrator"))
                     {
-                        <option>MTVInspector</option>
-                        <option>MTVUsers</option>
+                        <option>MTVINSPECTOR</option>
+                        <option>MTVUSERS</option>
                     }
                 
                 </select>
@@ -87,6 +87,13 @@
                         <span asp-validation-for="Input.MeatEstablishment.LicenseToOperateNumber" class="text-danger"></span>
                     </div>
                     @*end*@
+                }else{
+                    <select asp-for="Input.MeatEstablishment.Type" hidden>
+                        <option>SLH</option>
+                        <option>PDP</option>
+                        <option>MCP</option>
+                        <option>CSW</option>
+                    </select>
                 }
 
                 <div class="form-floating">
