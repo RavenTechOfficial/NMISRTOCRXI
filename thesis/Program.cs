@@ -80,5 +80,9 @@ void AddAuthorizationPolicies()
         options.AddPolicy("RequireSuperAdmin", policy => policy.RequireRole("SuperAdministrator"));
         options.AddPolicy("RequireInspectorAdmin", policy => policy.RequireRole("InspectorAdministrator"));
         options.AddPolicy("RequireMTVAdmin", policy => policy.RequireRole("MTVAdministrator"));
+        options.AddPolicy("RequireMeatEstablishmentRep", policy => policy.RequireRole("MeatEstablishmentRepresentative"));
+        options.AddPolicy("RequireMeatInspector", policy => policy.RequireRole("MeatInspector"));
+        options.AddPolicy("RequireMtvInspector", policy => policy.RequireRole("MtvInspector"));
+        options.AddPolicy("RequireMtvUsers", policy => policy.RequireRole("MtvUsers"));
     });
 }

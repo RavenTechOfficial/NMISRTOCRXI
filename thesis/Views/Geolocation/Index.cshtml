@@ -1,17 +1,43 @@
-﻿<link rel="stylesheet" href="~/css/geolocation.css" asp-append-version="true" />
+﻿<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="" />
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
 
-<h1>Map location</h1>
-
-<div class="form-group">
-    <label for="exampleDropdown">Filter</label>
-    <select class="form-control" id="exampleDropdown">
-        <option value="">Dealers</option>
-    </select>
-</div>
+<link rel="stylesheet" href="~/css/geolocation.css" asp-append-version="true" />
 
 
-<div id="map"></div>
+<section id="content">
+    <nav>
+        <i class='bx bx-menu'></i>
+        <a href="#" class="nav-link">Categories</a>
+        <form action="#">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+            </div>
+        </form>
+        <input type="checkbox" id="switch-mode" hidden>
+        <label for="switch-mode" class="switch-mode"></label>
+        <a href="#" class="notification">
+            <i class='bx bxs-bell'></i>
+            <span class="num">8</span>
+        </a>
+        <a href="#" class="profile">
+            <img src="~/img/people.png">
+        </a>
+    </nav>
 
+
+
+<div id="map" style="height: 100vh; width: 100vw;"></div>
+
+</section>
+
+<script src="~/js/shared.js" asp-append-version="true"></script>
 <script>
     var map = L.map('map');
     map.setView([7.1907, 125.4553], 13);
@@ -34,3 +60,4 @@
     var marker = L.marker([7.052543, 125.593201]).addTo(map);
 
 </script>
+

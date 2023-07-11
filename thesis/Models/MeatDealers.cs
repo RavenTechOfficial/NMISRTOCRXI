@@ -14,6 +14,6 @@ namespace thesis.Models
         public string ContactNo { get; set; }
         [ForeignKey("MeatEstablishment")]
         public int MeatEstablishmentId { get; set; }
-        public MeatEstablishment MeatEstablishment { get; set; }
+        public MeatEstablishmentReport MeatEstablishment { get; set; }
     }
 }

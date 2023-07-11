@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Humanizer;
+using Microsoft.EntityFrameworkCore;
 using thesis.Core.IRepositories;
 using thesis.Core.ViewModel;
 using thesis.Data;
@@ -17,49 +18,56 @@ namespace thesis.Repositories
         }
         public async Task<ICollection<totalNoFitForHumanConsumptions>> GetTotalNoFitForHumanConsumptions()
         {
-            //return await _context.totalNoFitForHumanConsumptions
-            //    .OrderBy(p => p.Id)
-            //    .ToListAsync();
             throw new NotImplementedException();
         }
 
-        public TotalWeightViewModel GetTotalOfMeatPerTimeSeries(Species species)
+        public TotalWeightViewModel GetTotalOfMeatPerTimeSeries()
         {
             var currentDate = DateTime.Now.AddDays(-1);
-            var startDateOfWeek = DateTime.Now.AddDays(-7);
-            var startDateOfMonth = DateTime.Now.AddDays(-31);
-            var startDateOfYear = DateTime.Now.AddDays(-365);
+            var startDateOfWeek = DateTime.Today.AddDays(-((int)DateTime.Today.DayOfWeek + 7));
+            var startDateOfMonth = DateTime.Today.AddMonths(-1).AddDays(-(DateTime.Today.Day - 1));
+            var startDateOfYear = new DateTime(DateTime.Now.AddYears(-1).Year, 1, 1);
 
-            //var dailyWeight = _context.totalNoFitForHumanConsumptions
-            //    .Where(p => p.Species == species && p.Date.Date >= currentDate.Date)
-            //    .Sum(p => p.DressedWeightInKg);
 
-            //var weeklyWeight = _context.totalNoFitForHumanConsumptions
-            //    .Where(p => p.Species == species && p.Date.Date >= startDateOfWeek.Date)
-            //    .Sum(p => p.DressedWeightInKg);
+            var dailyWeight = InspectionWithinDataRange(currentDate);
+            var weeklyWeight = InspectionWithinDataRange(startDateOfWeek);
+            var monthlyWeight = InspectionWithinDataRange(startDateOfMonth);
+            var yearlyWeight = InspectionWithinDataRange(startDateOfYear);
+            var totalWeight= _context.totalNoFitForHumanConsumptions
+                .Sum(p => p.DressedWeight);
 
-            //var monthlyWeight = _context.totalNoFitForHumanConsumptions
-            //    .Where(p => p.Species == species && p.Date.Date >= startDateOfMonth.Date)
-            //    .Sum(p => p.DressedWeightInKg);
+            //for bar data
 
-            //var yearlyWeight = _context.totalNoFitForHumanConsumptions
-            //    .Where(p => p.Species == species && p.Date.Date >= startDateOfYear.Date)
-            //    .Sum(p => p.DressedWeightInKg);
+            var dailyInspection = InspectionDate(currentDate);
 
-            //var totalWeight = _context.totalNoFitForHumanConsumptions
-            //    .Where(p => p.Species == species)
-            //    .Sum(p => p.DressedWeightInKg);
 
-            //return new TotalWeightViewModel
-            //{
-            //    TotalWeight = totalWeight,
-            //    SelectedSpecies = species,
-            //    DailyWeight = dailyWeight,
-            //    WeeklyWeight = weeklyWeight,
-            //    MonthlyWeight = monthlyWeight,
-            //    YearlyWeight = yearlyWeight
-            //};
-            throw new NotImplementedException();
+            return new TotalWeightViewModel
+            {
+                TotalWeight = totalWeight,
+                DailyWeight = dailyWeight,
+                WeeklyWeight = weeklyWeight,
+                MonthlyWeight = monthlyWeight,
+                YearlyWeight = yearlyWeight
+            };
+        }
+
+        public int InspectionWithinDataRange(DateTime dates)
+        {
+            var inspectionWithinDataRange = _context.totalNoFitForHumanConsumptions
+                .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport)
+                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date >= dates.Date)
+                .Sum(p => p.DressedWeight);
+
+            return inspectionWithinDataRange;
+        }
+        public int InspectionDate(DateTime dates)
+        {
+            var conduct = _context.ConductOfInspections
+                .Include(p => p.Antemortem.MeatInspectionReport)
+                .Where(p => p.Antemortem.MeatInspectionReport.RepDate.Date >= dates.Date)
+                .Sum(p => p.NoOfHeads);
+
+            return conduct;
         }
     }
 }

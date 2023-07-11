@@ -15,11 +15,10 @@ namespace thesis.Controllers
         }
 
         [Authorize(Policy = "RequireSuperAdmin")]
-        public IActionResult Index(Species? selectedSpecies)
+        public IActionResult Index()
         {
-            //var species = selectedSpecies ?? Species.Cattle;
-            //var totalWeightModel = _unitOfWork.Dashboard.GetTotalOfMeatPerTimeSeries(species);
-            return View();
+            var totalWeightModel = _unitOfWork.Dashboard.GetTotalOfMeatPerTimeSeries();
+            return View(totalWeightModel);
         }
     }
 }

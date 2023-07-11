@@ -7,6 +7,6 @@ namespace thesis.Core.IRepositories
     public interface IDashboardRepository
     {
         Task<ICollection<totalNoFitForHumanConsumptions>> GetTotalNoFitForHumanConsumptions();
-        TotalWeightViewModel GetTotalOfMeatPerTimeSeries(Species species);
+        TotalWeightViewModel GetTotalOfMeatPerTimeSeries();
     }
 }

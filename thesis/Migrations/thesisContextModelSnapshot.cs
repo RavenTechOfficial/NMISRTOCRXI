@@ -264,12 +264,12 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MeatEstablishmentId")
+                    b.Property<int>("MeatInspectionReportId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeatEstablishmentId");
+                    b.HasIndex("MeatInspectionReportId");
 
                     b.ToTable("Antemortems");
                 });
@@ -531,7 +531,7 @@ namespace thesis.Migrations
                     b.ToTable("MeatDealers");
                 });
 
-            modelBuilder.Entity("thesis.Models.MeatEstablishment", b =>
+            modelBuilder.Entity("thesis.Models.MeatEstablishmentReport", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -847,7 +847,7 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Areas.Identity.Data.AccountDetails", b =>
                 {
-                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
+                    b.HasOne("thesis.Models.MeatEstablishmentReport", "MeatEstablishment")
                         .WithMany()
                         .HasForeignKey("MeatEstablishmentId");
 
@@ -856,13 +856,13 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.Antemortem", b =>
                 {
-                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
+                    b.HasOne("thesis.Models.MeatInspectionReport", "MeatInspectionReport")
                         .WithMany()
-                        .HasForeignKey("MeatEstablishmentId")
+                        .HasForeignKey("MeatInspectionReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MeatEstablishment");
+                    b.Navigation("MeatInspectionReport");
                 });
 
             modelBuilder.Entity("thesis.Models.ConductOfInspection", b =>
@@ -930,7 +930,7 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.MeatDealers", b =>
                 {
-                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
+                    b.HasOne("thesis.Models.MeatEstablishmentReport", "MeatEstablishment")
                         .WithMany()
                         .HasForeignKey("MeatEstablishmentId")
                         .OnDelete(DeleteBehavior.Cascade)

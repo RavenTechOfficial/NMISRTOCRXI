@@ -7,9 +7,9 @@ namespace thesis.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("MeatEstablishment")]
-        public int MeatEstablishmentId { get; set; }
-        public MeatEstablishment MeatEstablishment { get; set; }
+        [ForeignKey("MeatInspectionReport")]
+        public int MeatInspectionReportId { get; set; }
+        public MeatInspectionReport MeatInspectionReport { get; set; }
 
     }
 }

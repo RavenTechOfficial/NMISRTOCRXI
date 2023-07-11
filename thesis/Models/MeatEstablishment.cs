@@ -2,7 +2,7 @@
 
 namespace thesis.Models
 {
-    public class MeatEstablishment
+    public class MeatEstablishmentReport
     {
         public int? Id { get; set; }
         public EstablishmentType? Type { get; set; }
