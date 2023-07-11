@@ -12,8 +12,8 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20230709121556_m5")]
-    partial class m5
+    [Migration("20230711162249_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -267,12 +267,12 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MeatEstablishmentReportId")
+                    b.Property<int>("MeatInspectionReportId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeatEstablishmentReportId");
+                    b.HasIndex("MeatInspectionReportId");
 
                     b.ToTable("Antemortems");
                 });
@@ -534,7 +534,7 @@ namespace thesis.Migrations
                     b.ToTable("MeatDealers");
                 });
 
-            modelBuilder.Entity("thesis.Models.MeatEstablishmentReport", b =>
+            modelBuilder.Entity("thesis.Models.MeatEstablishment", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -556,7 +556,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MeatEstablishments");
+                    b.ToTable("MeatEstablishment");
                 });
 
             modelBuilder.Entity("thesis.Models.MeatInspectionReport", b =>
@@ -567,7 +567,7 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ReceivingReportId")
+                    b.Property<int?>("ReceivingReportId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RepDate")
@@ -694,42 +694,40 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BatchCode")
+                    b.Property<int?>("BatchCode")
                         .HasColumnType("int");
 
-                    b.Property<int>("Category")
+                    b.Property<int?>("Category")
                         .HasColumnType("int");
 
-                    b.Property<int>("HoldingPenNo")
+                    b.Property<int?>("HoldingPenNo")
                         .HasColumnType("int");
 
-                    b.Property<int>("LiveWeight")
+                    b.Property<int?>("LiveWeight")
                         .HasColumnType("int");
 
-                    b.Property<int>("MeatDealersId")
+                    b.Property<int?>("MeatDealersId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NoOfHeads")
+                    b.Property<int?>("NoOfHeads")
                         .HasColumnType("int");
 
                     b.Property<string>("Origin")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RecTime")
+                    b.Property<DateTime?>("RecTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ReceivingBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReceivingId")
+                    b.Property<int?>("ReceivingId")
                         .HasColumnType("int");
 
                     b.Property<int>("ShippingDoc")
                         .HasColumnType("int");
 
-                    b.Property<int>("Species")
+                    b.Property<int?>("Species")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -850,7 +848,7 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Areas.Identity.Data.AccountDetails", b =>
                 {
-                    b.HasOne("thesis.Models.MeatEstablishmentReport", "MeatEstablishment")
+                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
                         .WithMany()
                         .HasForeignKey("MeatEstablishmentId");
 
@@ -859,13 +857,13 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.Antemortem", b =>
                 {
-                    b.HasOne("thesis.Models.MeatEstablishmentReport", "MeatEstablishmentReport")
+                    b.HasOne("thesis.Models.MeatInspectionReport", "MeatInspectionReport")
                         .WithMany()
-                        .HasForeignKey("MeatEstablishmentReportId")
+                        .HasForeignKey("MeatInspectionReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MeatEstablishmentReport");
+                    b.Navigation("MeatInspectionReport");
                 });
 
             modelBuilder.Entity("thesis.Models.ConductOfInspection", b =>
@@ -933,7 +931,7 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.MeatDealers", b =>
                 {
-                    b.HasOne("thesis.Models.MeatEstablishmentReport", "MeatEstablishment")
+                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
                         .WithMany()
                         .HasForeignKey("MeatEstablishmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -946,9 +944,7 @@ namespace thesis.Migrations
                 {
                     b.HasOne("thesis.Models.ReceivingReport", "ReceivingReport")
                         .WithMany()
-                        .HasForeignKey("ReceivingReportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReceivingReportId");
 
                     b.Navigation("ReceivingReport");
                 });
@@ -1001,15 +997,11 @@ namespace thesis.Migrations
                 {
                     b.HasOne("thesis.Models.MeatDealers", "MeatDealers")
                         .WithMany()
-                        .HasForeignKey("MeatDealersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MeatDealersId");
 
                     b.HasOne("thesis.Models.Receiving", "Receiving")
                         .WithMany()
-                        .HasForeignKey("ReceivingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReceivingId");
 
                     b.Navigation("MeatDealers");
 

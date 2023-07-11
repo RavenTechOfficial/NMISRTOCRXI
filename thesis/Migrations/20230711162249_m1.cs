@@ -26,7 +26,7 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MeatEstablishments",
+                name: "MeatEstablishment",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -38,7 +38,7 @@ namespace thesis.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MeatEstablishments", x => x.Id);
+                    table.PrimaryKey("PK_MeatEstablishment", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,25 +87,6 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Antemortems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Antemortems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Antemortems_MeatEstablishments_MeatEstablishmentId",
-                        column: x => x.MeatEstablishmentId,
-                        principalTable: "MeatEstablishments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -137,9 +118,9 @@ namespace thesis.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_MeatEstablishments_MeatEstablishmentId",
+                        name: "FK_AspNetUsers_MeatEstablishment_MeatEstablishmentId",
                         column: x => x.MeatEstablishmentId,
-                        principalTable: "MeatEstablishments",
+                        principalTable: "MeatEstablishment",
                         principalColumn: "Id");
                 });
 
@@ -160,32 +141,9 @@ namespace thesis.Migrations
                 {
                     table.PrimaryKey("PK_MeatDealers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MeatDealers_MeatEstablishments_MeatEstablishmentId",
+                        name: "FK_MeatDealers_MeatEstablishment_MeatEstablishmentId",
                         column: x => x.MeatEstablishmentId,
-                        principalTable: "MeatEstablishments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ConductOfInspections",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Issue = table.Column<int>(type: "int", nullable: false),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    Weight = table.Column<int>(type: "int", nullable: false),
-                    Cause = table.Column<int>(type: "int", nullable: false),
-                    AntemortemId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ConductOfInspections", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ConductOfInspections_Antemortems_AntemortemId",
-                        column: x => x.AntemortemId,
-                        principalTable: "Antemortems",
+                        principalTable: "MeatEstablishment",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -329,27 +287,6 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PassedForSlaughters",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    Weight = table.Column<int>(type: "int", nullable: false),
-                    ConductOfInspectionId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PassedForSlaughters", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PassedForSlaughters_ConductOfInspections_ConductOfInspectionId",
-                        column: x => x.ConductOfInspectionId,
-                        principalTable: "ConductOfInspections",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MTVInspection",
                 columns: table => new
                 {
@@ -399,18 +336,18 @@ namespace thesis.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RecTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BatchCode = table.Column<int>(type: "int", nullable: false),
-                    Species = table.Column<int>(type: "int", nullable: false),
-                    Category = table.Column<int>(type: "int", nullable: false),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    LiveWeight = table.Column<int>(type: "int", nullable: false),
-                    MeatDealersId = table.Column<int>(type: "int", nullable: false),
-                    Origin = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    BatchCode = table.Column<int>(type: "int", nullable: true),
+                    Species = table.Column<int>(type: "int", nullable: true),
+                    Category = table.Column<int>(type: "int", nullable: true),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: true),
+                    LiveWeight = table.Column<int>(type: "int", nullable: true),
+                    MeatDealersId = table.Column<int>(type: "int", nullable: true),
+                    Origin = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShippingDoc = table.Column<int>(type: "int", nullable: false),
-                    HoldingPenNo = table.Column<int>(type: "int", nullable: false),
-                    ReceivingBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReceivingId = table.Column<int>(type: "int", nullable: false)
+                    HoldingPenNo = table.Column<int>(type: "int", nullable: true),
+                    ReceivingBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceivingId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -419,38 +356,12 @@ namespace thesis.Migrations
                         name: "FK_ReceivingReports_MeatDealers_MeatDealersId",
                         column: x => x.MeatDealersId,
                         principalTable: "MeatDealers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ReceivingReports_Receivings_ReceivingId",
                         column: x => x.ReceivingId,
                         principalTable: "Receivings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Postmortems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PassedForSlaughterId = table.Column<int>(type: "int", nullable: false),
-                    AnimalPart = table.Column<int>(type: "int", nullable: false),
-                    Cause = table.Column<int>(type: "int", nullable: false),
-                    Weight = table.Column<int>(type: "int", nullable: false),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    Images = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Postmortems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Postmortems_PassedForSlaughters_PassedForSlaughterId",
-                        column: x => x.PassedForSlaughterId,
-                        principalTable: "PassedForSlaughters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -501,7 +412,7 @@ namespace thesis.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RepDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     VerifiedByPOSMSHead = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReceivingReportId = table.Column<int>(type: "int", nullable: false)
+                    ReceivingReportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -510,6 +421,92 @@ namespace thesis.Migrations
                         name: "FK_MeatInspectionReports_ReceivingReports_ReceivingReportId",
                         column: x => x.ReceivingReportId,
                         principalTable: "ReceivingReports",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Antemortems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MeatInspectionReportId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Antemortems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Antemortems_MeatInspectionReports_MeatInspectionReportId",
+                        column: x => x.MeatInspectionReportId,
+                        principalTable: "MeatInspectionReports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConductOfInspections",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Issue = table.Column<int>(type: "int", nullable: false),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<int>(type: "int", nullable: false),
+                    Cause = table.Column<int>(type: "int", nullable: false),
+                    AntemortemId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConductOfInspections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ConductOfInspections_Antemortems_AntemortemId",
+                        column: x => x.AntemortemId,
+                        principalTable: "Antemortems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PassedForSlaughters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<int>(type: "int", nullable: false),
+                    ConductOfInspectionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PassedForSlaughters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PassedForSlaughters_ConductOfInspections_ConductOfInspectionId",
+                        column: x => x.ConductOfInspectionId,
+                        principalTable: "ConductOfInspections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Postmortems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PassedForSlaughterId = table.Column<int>(type: "int", nullable: false),
+                    AnimalPart = table.Column<int>(type: "int", nullable: false),
+                    Cause = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<int>(type: "int", nullable: false),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    Images = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Postmortems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Postmortems_PassedForSlaughters_PassedForSlaughterId",
+                        column: x => x.PassedForSlaughterId,
+                        principalTable: "PassedForSlaughters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -559,9 +556,9 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Antemortems_MeatEstablishmentId",
+                name: "IX_Antemortems_MeatInspectionReportId",
                 table: "Antemortems",
-                column: "MeatEstablishmentId");
+                column: "MeatInspectionReportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -710,9 +707,6 @@ namespace thesis.Migrations
                 name: "DisapprovedApplications");
 
             migrationBuilder.DropTable(
-                name: "MeatInspectionReports");
-
-            migrationBuilder.DropTable(
                 name: "MTVApplicationResults");
 
             migrationBuilder.DropTable(
@@ -725,28 +719,16 @@ namespace thesis.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ReceivingReports");
-
-            migrationBuilder.DropTable(
                 name: "MTVInspection");
 
             migrationBuilder.DropTable(
                 name: "totalNoFitForHumanConsumptions");
 
             migrationBuilder.DropTable(
-                name: "MeatDealers");
-
-            migrationBuilder.DropTable(
-                name: "Receivings");
-
-            migrationBuilder.DropTable(
                 name: "MTVApplications");
 
             migrationBuilder.DropTable(
                 name: "Postmortems");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "MTVDetails");
@@ -761,7 +743,22 @@ namespace thesis.Migrations
                 name: "Antemortems");
 
             migrationBuilder.DropTable(
-                name: "MeatEstablishments");
+                name: "MeatInspectionReports");
+
+            migrationBuilder.DropTable(
+                name: "ReceivingReports");
+
+            migrationBuilder.DropTable(
+                name: "MeatDealers");
+
+            migrationBuilder.DropTable(
+                name: "Receivings");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "MeatEstablishment");
         }
     }
 }

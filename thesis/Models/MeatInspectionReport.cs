@@ -10,8 +10,8 @@ namespace thesis.Models
         public DateTime RepDate { get; set; }
         public string VerifiedByPOSMSHead { get; set; }
         [ForeignKey("ReceivingReport")]
-        public int ReceivingReportId { get; set; }
-        public ReceivingReport ReceivingReport { get; set; }
+        public int? ReceivingReportId { get; set; }
+        public ReceivingReport? ReceivingReport { get; set; }
 
     }
 }

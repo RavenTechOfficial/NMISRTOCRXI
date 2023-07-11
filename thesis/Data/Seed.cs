@@ -21,40 +21,76 @@ namespace thesis.Data
                         new totalNoFitForHumanConsumptions()
                         {
                             Species = Species.Swine,
-                            //NoOfAnimals = 2,
-                            //DressedWeightInKg = 1,
-                            //Date = DateTime.Now.AddDays(-7),
+                            NoOfHeads = 12,
+                            DressedWeight = 10,
+                            Postmortem = new Postmortem()
+                            {
+                                AnimalPart = AnimalPart.Liver,
+                                Cause = Cause.something,
+                                Weight = 10,
+                                NoOfHeads = 9,
+                                Images = "Dwadwd",
+                                PassedForSlaughter = new PassedForSlaughter()
+                                {
+                                    NoOfHeads = 10,
+                                    Weight = 9,
+                                    ConductOfInspection = new ConductOfInspection()
+                                    {
+                                        Issue = Issue.Suspect,
+                                        NoOfHeads = 10,
+                                        Weight = 11,
+                                        Cause = Cause.something,
+                                        Antemortem = new Antemortem()
+                                        {
+                                            MeatInspectionReport = new MeatInspectionReport()
+                                            {
+                                                RepDate = DateTime.Now.Date,
+                                                VerifiedByPOSMSHead = "something"
+                                                
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        new totalNoFitForHumanConsumptions()
-                        {
-                            Species = Species.Swine,
-                            //NoOfAnimals = 2,
-                            //DressedWeightInKg = 2,
-                            //Date = DateTime.Now.AddDays(-6),
-                        },
-                        new totalNoFitForHumanConsumptions()
-                        {
-                            Species = Species.Swine,
-                            //NoOfAnimals = 2,
-                            //DressedWeightInKg = 3,
-                            //Date = DateTime.Now.AddDays(-5),
-                        },
-                        new totalNoFitForHumanConsumptions()
-                        {
-                            Species = Species.Swine,
-                            //NoOfAnimals = 2,
-                            //DressedWeightInKg = 4,
-                            //Date = DateTime.Now.AddDays(-4),
-                        },
-                        new totalNoFitForHumanConsumptions()
-                        {
-                            Species = Species.Swine,
-                            //NoOfAnimals = 2,
-                            //DressedWeightInKg = 5,
-                            //Date = DateTime.Now.AddDays(-3),
-                        }
+						new totalNoFitForHumanConsumptions()
+						{
+							Species = Species.Carabao,
+							NoOfHeads = 21,
+							DressedWeight = 30,
+							Postmortem = new Postmortem()
+							{
+								AnimalPart = AnimalPart.Trimmings,
+								Cause = Cause.something,
+								Weight = 90,
+								NoOfHeads = 32,
+								Images = "Dwadwd",
+								PassedForSlaughter = new PassedForSlaughter()
+								{
+									NoOfHeads = 20,
+									Weight = 10,
+									ConductOfInspection = new ConductOfInspection()
+									{
+										Issue = Issue.Rejected,
+										NoOfHeads = 10,
+										Weight = 11,
+										Cause = Cause.something,
+										Antemortem = new Antemortem()
+										{
+											MeatInspectionReport = new MeatInspectionReport()
+											{
+												RepDate = DateTime.Now.AddHours(6).AddMinutes(30),
+												VerifiedByPOSMSHead = "something"
 
-                    });
+											}
+										}
+									}
+								}
+							}
+						},
+
+
+					});
                     context.SaveChanges();
                 }
             }

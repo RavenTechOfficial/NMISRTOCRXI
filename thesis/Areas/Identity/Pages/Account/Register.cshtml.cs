@@ -79,7 +79,7 @@ namespace thesis.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             /// 
-            public MeatEstablishmentReport MeatEstablishment { get; set;}
+            public MeatEstablishment MeatEstablishment { get; set;}
 
             public Roles Roles { get; set;}
 
@@ -155,7 +155,7 @@ namespace thesis.Areas.Identity.Pages.Account
 
                 
                 user.Roles = Input.Roles;
-                user.MeatEstablishment = new MeatEstablishmentReport
+                user.MeatEstablishment = new MeatEstablishment
                 {
                     Type = Input.MeatEstablishment.Type ?? new EstablishmentType(),
                     Name = Input.MeatEstablishment.Name,

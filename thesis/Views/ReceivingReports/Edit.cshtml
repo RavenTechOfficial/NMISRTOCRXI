@@ -1,0 +1,89 @@
+﻿@model thesis.Models.ReceivingReport
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ReceivingReport</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="RecTime" class="control-label"></label>
+                <input asp-for="RecTime" class="form-control" />
+                <span asp-validation-for="RecTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BatchCode" class="control-label"></label>
+                <input asp-for="BatchCode" class="form-control" />
+                <span asp-validation-for="BatchCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Species" class="control-label"></label>
+                <input asp-for="Species" class="form-control" />
+                <span asp-validation-for="Species" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NoOfHeads" class="control-label"></label>
+                <input asp-for="NoOfHeads" class="form-control" />
+                <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LiveWeight" class="control-label"></label>
+                <input asp-for="LiveWeight" class="form-control" />
+                <span asp-validation-for="LiveWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MeatDealersId" class="control-label"></label>
+                <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId"></select>
+                <span asp-validation-for="MeatDealersId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Origin" class="control-label"></label>
+                <input asp-for="Origin" class="form-control" />
+                <span asp-validation-for="Origin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingDoc" class="control-label"></label>
+                <select asp-for="ShippingDoc" class="form-control"></select>
+                <span asp-validation-for="ShippingDoc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoldingPenNo" class="control-label"></label>
+                <input asp-for="HoldingPenNo" class="form-control" />
+                <span asp-validation-for="HoldingPenNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReceivingBy" class="control-label"></label>
+                <input asp-for="ReceivingBy" class="form-control" />
+                <span asp-validation-for="ReceivingBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReceivingId" class="control-label"></label>
+                <select asp-for="ReceivingId" class="form-control" asp-items="ViewBag.ReceivingId"></select>
+                <span asp-validation-for="ReceivingId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

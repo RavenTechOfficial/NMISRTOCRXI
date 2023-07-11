@@ -11,10 +11,11 @@ namespace thesis.Core.ViewModel
         public int MonthlyWeight { get; set; }
         public int YearlyWeight { get; set; }
         // for bar data
-        public Issue Issue { get; set; }
-        public int NoOfHeads { get; set; }
-        //for area chart
-        public int weight { get; set; }
+        public int MonthlySuspect { get; set; }
+        public int MonthlyRejected { get; set; }
+        public int MonthlyCondemned { get; set; }
+		//for area chart
+		public int weight { get; set; }
 
     }
 }

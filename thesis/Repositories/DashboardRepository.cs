@@ -8,7 +8,7 @@ using thesis.Models;
 
 namespace thesis.Repositories
 {
-    public class DashboardRepository : IDashboardRepository
+	public class DashboardRepository : IDashboardRepository
     {
         private readonly thesisContext _context;
 
@@ -23,22 +23,20 @@ namespace thesis.Repositories
 
         public TotalWeightViewModel GetTotalOfMeatPerTimeSeries()
         {
-            var currentDate = DateTime.Now.AddDays(-1);
-            var startDateOfWeek = DateTime.Today.AddDays(-((int)DateTime.Today.DayOfWeek + 7));
-            var startDateOfMonth = DateTime.Today.AddMonths(-1).AddDays(-(DateTime.Today.Day - 1));
-            var startDateOfYear = new DateTime(DateTime.Now.AddYears(-1).Year, 1, 1);
+			var currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+			var startDateOfWeek = DateTime.Now.AddDays(-7);
+			var startDateOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+			var startDateOfYear = new DateTime(DateTime.Now.Year, 1, 1);
 
 
-            var dailyWeight = InspectionWithinDataRange(currentDate);
+			var dailyWeight = InspectionWithinDataRange(currentDate);
             var weeklyWeight = InspectionWithinDataRange(startDateOfWeek);
             var monthlyWeight = InspectionWithinDataRange(startDateOfMonth);
             var yearlyWeight = InspectionWithinDataRange(startDateOfYear);
             var totalWeight= _context.totalNoFitForHumanConsumptions
                 .Sum(p => p.DressedWeight);
 
-            //for bar data
-
-            var dailyInspection = InspectionDate(currentDate);
+            
 
 
             return new TotalWeightViewModel
@@ -51,7 +49,32 @@ namespace thesis.Repositories
             };
         }
 
-        public int InspectionWithinDataRange(DateTime dates)
+		public TotalWeightViewModel ConductOfInspectionTimeSeries()
+		{
+			var startDateOfYear = new DateTime(DateTime.Now.Year, 1, 1);
+
+			var suspect = Issue.Suspect;
+            var rejected = Issue.Rejected;
+            var condemned = Issue.Condemned;
+
+            var monthlySuspect = InspectionDate(startDateOfYear, suspect);
+            var monthlyRejected = InspectionDate(startDateOfYear, rejected);
+            var monthlyCondemned = InspectionDate(startDateOfYear, condemned);
+
+            return new TotalWeightViewModel
+            {
+				MonthlySuspect = monthlySuspect,
+                MonthlyRejected = monthlyRejected,  
+                MonthlyCondemned = monthlyCondemned
+			};
+		}
+
+		public TotalWeightViewModel AreaChartTimeSeries()
+		{
+			throw new NotImplementedException();
+		}
+
+		public int InspectionWithinDataRange(DateTime dates)
         {
             var inspectionWithinDataRange = _context.totalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport)
@@ -60,14 +83,16 @@ namespace thesis.Repositories
 
             return inspectionWithinDataRange;
         }
-        public int InspectionDate(DateTime dates)
+        public int InspectionDate(DateTime dates, Issue issue)
         {
             var conduct = _context.ConductOfInspections
                 .Include(p => p.Antemortem.MeatInspectionReport)
-                .Where(p => p.Antemortem.MeatInspectionReport.RepDate.Date >= dates.Date)
+                .Where(p => p.Antemortem.MeatInspectionReport.RepDate.Date >= dates.Date && p.Issue == issue)
                 .Sum(p => p.NoOfHeads);
 
             return conduct;
         }
-    }
+
+		
+	}
 }
