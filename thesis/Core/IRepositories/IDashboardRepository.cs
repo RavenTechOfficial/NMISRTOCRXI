@@ -8,5 +8,8 @@ namespace thesis.Core.IRepositories
     {
         Task<ICollection<totalNoFitForHumanConsumptions>> GetTotalNoFitForHumanConsumptions();
         TotalWeightViewModel GetTotalOfMeatPerTimeSeries();
+		TotalWeightViewModel ConductOfInspectionTimeSeries();
+		TotalWeightViewModel AreaChartTimeSeries();
+
     }
 }

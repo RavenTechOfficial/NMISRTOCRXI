@@ -16,7 +16,7 @@ public class thesisContext : IdentityDbContext<AccountDetails>
     public DbSet<ConductOfInspection> ConductOfInspections { get; set; }
     public DbSet<DisapprovedApplication> DisapprovedApplications { get; set; }
     public DbSet<MeatDealers> MeatDealers { get; set; }
-    public DbSet<MeatEstablishmentReport> MeatEstablishments { get; set; }
+    public DbSet<MeatEstablishment> MeatEstablishment { get; set; }
     public DbSet<MeatInspectionReport> MeatInspectionReports { get; set; }
     public DbSet<MTVApplication> MTVApplications { get; set; }
     public DbSet<MTVApplicationResult> MTVApplicationResults { get; set; }

@@ -15,7 +15,7 @@ allSideMenu.forEach(item => {
 
 
 // TOGGLE SIDEBAR Hide SideNav Starts
-const menuBar = document.querySelector('#content nav .bx.bx-menu');
+const menuBar = document.querySelector('#navbar nav .bx.bx-menu');
 const sidebar = document.getElementById('sidebar');
 
 menuBar.addEventListener('click', function () {
@@ -38,9 +38,9 @@ window.addEventListener('resize', function () {
 
 // TOGGLE SIDEBAR Hide SideNav Ends
 
-const searchButton = document.querySelector('#content nav form .form-input button');
-const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
-const searchForm = document.querySelector('#content nav form');
+const searchButton = document.querySelector('#navbar nav form .form-input button');
+const searchButtonIcon = document.querySelector('#navbar nav form .form-input button .bx');
+const searchForm = document.querySelector('#navbar nav form');
 
 searchButton.addEventListener('click', function (e) {
 	if (window.innerWidth < 576) {
@@ -77,10 +77,23 @@ window.addEventListener('resize', function () {
 // //light-mode to dark-mode and vice-versa
 const switchMode = document.getElementById('switch-mode');
 
+// Load previously saved mode from localStorage
+const currentMode = localStorage.getItem('mode');
+
+if (currentMode === 'dark') {
+	document.body.classList.add('dark');
+	switchMode.checked = true;
+} else {
+	document.body.classList.remove('dark');
+	switchMode.checked = false;
+}
+
 switchMode.addEventListener('change', function () {
 	if (this.checked) {
 		document.body.classList.add('dark');
+		localStorage.setItem('mode', 'dark'); // Save mode to localStorage
 	} else {
 		document.body.classList.remove('dark');
+		localStorage.setItem('mode', 'light'); // Save mode to localStorage
 	}
-})
+});

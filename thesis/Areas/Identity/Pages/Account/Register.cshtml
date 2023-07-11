@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Register";
 }
-@if (User.Identity.IsAuthenticated)
+@if (!User.Identity.IsAuthenticated)
 {
 <h1>@ViewData["Title"]</h1>
 
@@ -14,18 +14,18 @@
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <select asp-for="Input.Roles">
-                    @if (User.IsInRole("SuperAdministrator"))
+                    @if (!User.IsInRole("SuperAdministrator"))
                     {
                         <option>SUPERADMIN</option>
                         <option>INSPECTORADMIN</option>
                         <option>MTVADMIN</option>
                     }
-                    @if (User.IsInRole("InspectorAdministrator"))
+                    @if (!User.IsInRole("InspectorAdministrator"))
                     {
                         <option>MEATESTABLISHMENTREPRESENTATIVE</option>
                         <option>MEATINSPECTOR</option>
                     }
-                    @if (User.IsInRole("MTVAdministrator"))
+                    @if (!User.IsInRole("MTVAdministrator"))
                     {
                         <option>MTVINSPECTOR</option>
                         <option>MTVUSERS</option>
