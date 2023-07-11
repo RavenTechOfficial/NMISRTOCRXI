@@ -6,118 +6,141 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - thesis</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thesis.styles.css" asp-append-version="true" />
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
-    <title>Sidebar template</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin="" />
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
 
+   @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">*@
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="~/css/sidenav.css" asp-append-version="true" />
+
+    <title>@ViewData["Title"] - thesis</title>
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    @*<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />*@
+    @*<link rel="stylesheet" href="~/thesis.styles.css" asp-append-version="true" />*@
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">*@
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.40.0/apexcharts.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">thesis</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            @if (User.IsInRole("SuperAdministrator"))
-                            
-                            {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
-                                    </li>
-                                    @*<li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="ReceivingReport" asp-action="Index">Receiving Report</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="MeatInspectionReport" asp-action="Index">Meat Insp. Reports</a>
-                                    </li>*@
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Analytics" asp-action="Index">Analytics</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Geolocation" asp-action="Index">GeoLocations</a>
-                                    </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">RegisterAccounts</a>
-                                    </li>
-                                    @*<li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="MeatInspectorList" asp-action="Index">Meat Inspector List</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="MTVInspectorList" asp-action="Index">MTV Inspector List</a>
-                                    </li>*@
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="RegisteredMTV" asp-action="Index">RegisteredMTV</a>
-                                    </li>
-                            }
-                            @if (User.IsInRole("InspectorAdministrator"))
-                            {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="InspectorAdmin" asp-action="Index"> Inspector Admin</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">RegisterAccounts</a>
-                                    </li>
-                            }
-                            @if (User.IsInRole("MTVAdministrator"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="AdminMTV" asp-action="Index"> Dashboard ni karlo</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">RegisterAccounts</a>
-                                </li>
-                            }
+    @if (User.Identity.IsAuthenticated)
+    {
+        @if (User.IsInRole("SuperAdministrator"))
 
-                        }
-                        else{
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                                </li>
-                        }
-                        
-                    </ul>
+        {
+            <section id="sidebar">
+
+            <div class="head">
+                <div class="logo">
+                    <a asp-area="" asp-controller="Dashboard" asp-action="Index">
+                        <img src="~/img/logo.png" />
+                    </a>
+                
                 </div>
-                <partial name="_LoginPartial" />
+                <div class="details">
+                    <p class="office">NMIS</p>
+                    <p class="region">RTOC XI</p>
+                </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
+
+            <ul class="side-menu top">
+                <p class="title">Main</p>
+                <li>
+                    <a asp-area="" asp-controller="Dashboard" asp-action="Index">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Analytics" asp-action="Index">
+                        <i class='bx bxs-doughnut-chart'></i>
+                        <span class="text">Analytics</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="GeoLocation" asp-action="Index">
+                        <i class='bx bx-current-location'></i>
+                        <span class="text">GeoLocation</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="Identity" asp-page="/Account/Register">
+                        <i class='bx bxs-user-account'></i>
+                        <span class="text">Register Admin Accounts</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="MeatInspectorList" asp-action="Index">
+                        <i class='bx bxs-report'></i>
+                        <span class="text">Meat Inspection Reports</span>
+                        <i class="bx bxs-chevron-down dropdown-icon"></i>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="MTVInspectorList" asp-action="Index">
+                        <i class='bx bxs-report'></i>
+                        <span class="text">MTV Registration Reports</span>
+                        <i class="bx bxs-chevron-down dropdown-icon"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="side-menu bot">
+                <p class="title">Others</p>
+                <li>
+                    <a asp-area="Identity" asp-page="/Account/Manage/Index">
+                        <i class='bx bxs-cog'></i>
+                        <span class="text">Settings</span>
+                    </a>
+                </li>
+                <li>
+                    @*<a href="#" class="logout">
+                        <i class='bx bxs-log-out-circle'></i>
+                        <span class="text">Logout</span>
+                    </a>*@
+                    <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="logout">
+                        <i class='bx bxs-log-out-circle'></i>
+                        <span class="text">Logout</span>
+                    </a>
+                </li>
+            </ul>
+    </section>
+        }
+
+    }
+    else
+    {
+        <partial name="_LoginPartial" />
+    }
+
+    
+        @RenderBody()
+
+    @*<div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
+    </div>*@
 
     @*<footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2023 - thesis - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>*@
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+    
+    
+    
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

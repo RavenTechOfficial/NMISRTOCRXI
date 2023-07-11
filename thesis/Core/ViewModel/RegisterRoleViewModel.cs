@@ -46,6 +46,6 @@ namespace thesis.Core.ViewModel
         public string image { get; set; }
 
         [Display(Name = "Roles")]
-        public MeatEstablishment MeatEstablishment { get; set; }
+        public MeatEstablishmentReport MeatEstablishment { get; set; }
     }
 }
