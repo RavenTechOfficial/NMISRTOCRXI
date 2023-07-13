@@ -72,12 +72,7 @@ namespace thesis.Controllers
             return View();
         }
 
-        //[Authorize(Policy = "RequireSuperAdmin")]
-        public ActionResult Result()
-        {
-            // Show the result page
-            return View();
-        }
+        
 
     }
 }

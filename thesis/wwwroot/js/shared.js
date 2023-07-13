@@ -1,9 +1,17 @@
 //Side Navigation Bar
 //Side Navigation Bar
 const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
+const currentPage = window.location.href;
 
 allSideMenu.forEach(item => {
 	const li = item.parentElement;
+
+	// Compare item href with current page
+	if (item.href === currentPage) {
+		li.classList.add('active');
+	} else {
+		li.classList.remove('active');
+	}
 
 	item.addEventListener('click', function () {
 		allSideMenu.forEach(i => {
@@ -12,7 +20,6 @@ allSideMenu.forEach(item => {
 		li.classList.add('active');
 	})
 });
-
 
 // TOGGLE SIDEBAR Hide SideNav Starts
 const menuBar = document.querySelector('#navbar nav .bx.bx-menu');

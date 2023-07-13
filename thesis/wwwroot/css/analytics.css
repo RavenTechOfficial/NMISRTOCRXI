@@ -1,0 +1,154 @@
+﻿/* Filters Starts */
+
+#filtersContainer {
+    display: none;
+    flex-wrap: wrap;
+}
+
+#toggleFiltersButton {
+    margin-bottom: 10px;
+    border: 1px solid var(--blue);
+    background-color: var(--blue);
+    padding: 5px 10px;
+    color: var(--light);
+    border-radius: 15px;
+}
+
+.filter-box {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    color: var(--dark);
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.filter {
+    width: 160px;
+    padding: 10px;
+    color: var(--dark);
+    border: 1px solid var(--dark);
+    background-color: var(--light);
+    border-radius: 5px;
+}
+
+    .filter.meatEstablishment {
+        width: 250px;
+    }
+
+.input-wrapper label {
+    margin-bottom: 5px;
+}
+
+/* Media Query for screen width 1100px and below */
+@media (max-width: 1100px) {
+    .input-wrapper {
+        width: 100%;
+        margin-left: 0;
+        flex-basis: 5%;
+    }
+
+    .calendar-box .input-wrapper {
+        flex-basis: 5%;
+    }
+}
+
+
+/* Filters Ends */
+
+/* first Layer Starts */
+#content main .FirstLayer {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 90%;
+    margin-left: 5%;
+    color: var(--dark);
+}
+
+    #content main .FirstLayer > div {
+        border-radius: 20px;
+        background: var(--light);
+        padding: 24px;
+        overflow-x: auto;
+    }
+
+    #content main .FirstLayer .head {
+        display: flex;
+        align-items: center;
+        grid-gap: 16px;
+        margin-bottom: 24px;
+    }
+
+        #content main .FirstLayer .head h3 {
+            margin-right: auto;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        #content main .FirstLayer .head .bx {
+            cursor: pointer;
+        }
+
+
+
+/* Second Layer STARTS */
+
+/* Area Charts STARTS*/
+#content main .charts {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 90%;
+    margin-left: 5%;
+    color: var(--dark);
+}
+
+    #content main .charts > div {
+        border-radius: 20px;
+        background: var(--light);
+        padding: 24px;
+        overflow-x: auto;
+    }
+
+#content main .head {
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    margin-bottom: 24px;
+}
+
+    #content main .head h3 {
+        margin-right: auto;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+#content main .supply-chart, #content main .antemortem-chart {
+    flex-grow: 1;
+    flex-basis: 500px;
+}
+
+/* Second Layer ENDS */
+
+/* MAIN */
+
+
+@media screen and (max-width: 576px) {
+
+    #content main .FirstLayer .head {
+        min-width: 420px;
+    }
+
+    #content main .FirstLayer .applications table {
+        min-width: 420px;
+    }
+}

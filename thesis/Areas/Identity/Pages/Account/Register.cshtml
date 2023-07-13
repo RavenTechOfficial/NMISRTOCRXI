@@ -1,31 +1,31 @@
 ﻿@page
 @model RegisterModel
-@{
-    ViewData["Title"] = "Register";
-}
-@if (!User.Identity.IsAuthenticated)
-{
-<h1>@ViewData["Title"]</h1>
 
-    <div class="row">
+
+<link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    @*<div class="row">
         <div class="col-md-4">
             <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                 <h2>Create a new account.</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <select asp-for="Input.Roles">
-                    @if (!User.IsInRole("SuperAdministrator"))
+                    @if (User.IsInRole("SuperAdministrator"))
                     {
                         <option>SUPERADMIN</option>
                         <option>INSPECTORADMIN</option>
                         <option>MTVADMIN</option>
                     }
-                    @if (!User.IsInRole("InspectorAdministrator"))
+                    @if (User.IsInRole("InspectorAdministrator"))
                     {
                         <option>MEATESTABLISHMENTREPRESENTATIVE</option>
                         <option>MEATINSPECTOR</option>
                     }
-                    @if (!User.IsInRole("MTVAdministrator"))
+                    @if (User.IsInRole("MTVAdministrator"))
                     {
                         <option>MTVINSPECTOR</option>
                         <option>MTVUSERS</option>
@@ -64,7 +64,6 @@
                 </div>
                 @if (User.IsInRole("InspectorAdministrator"))
                 {
-                    @*meatestablishment*@
                     <select asp-for="Input.MeatEstablishment.Type">
                         <option>SLH</option>
                         <option>PDP</option>
@@ -86,7 +85,6 @@
                         <label asp-for="Input.MeatEstablishment.LicenseToOperateNumber"></label>
                         <span asp-validation-for="Input.MeatEstablishment.LicenseToOperateNumber" class="text-danger"></span>
                     </div>
-                    @*end*@
                 }else{
                     <select asp-for="Input.MeatEstablishment.Type" hidden>
                         <option>SLH</option>
@@ -115,7 +113,213 @@
             </form>
         </div>
     
-    </div>
+    </div>*@
+
+	<section id="content">
+
+
+		<!-- MAIN STARTS-->
+		<main class="registration">
+			<div class="container">
+				<header>Registration Form</header>
+				<form action="#" class="form">
+					<div class="column">
+						<div class="input-box">
+							<label>First Name</label>
+							<input type="text" placeholder="Enter your First Name" required />
+						</div>
+						<div class="input-box">
+							<label>Middle Name</label>
+							<input type="text" placeholder="Enter your Middle Name" required />
+						</div>
+						<div class="input-box">
+							<label>Last Name</label>
+							<input type="text" placeholder="Enter your Last Name" required />
+						</div>
+					</div>
+
+					<div class="input-box address">
+						<label>Address</label>
+						<div class="column">
+							<div class="select-box">
+								<select id="regionSelect" onchange="populateProvinces()">
+									<option hidden>Region</option>
+								</select>
+							</div>
+							<div class="select-box">
+								<select id="provinceSelect" onchange="populateCities()">
+									<option hidden>Province</option>
+								</select>
+							</div>
+						</div>
+						<div class="column">
+							<div class="select-box">
+								<select id="citySelect" onchange="populateBarangays()">
+									<option hidden>City/Municipality</option>
+								</select>
+							</div>
+							<div class="select-box">
+								<select id="barangaySelect">
+									<option hidden>Barangay</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="column">
+						<div class="row">
+							<div class="input-box">
+								<label>Phone Number</label>
+								<input type="number" placeholder="Enter phone number" required />
+							</div>
+							<div class="input-box">
+								<label>Birth Date</label>
+								<input type="date" placeholder="Enter birth date" required />
+							</div>
+
+							<div class="column">
+								<div class="input-box roles">
+									<label>Roles</label>
+									<div class="select-box">
+										<select>
+											<option hidden>Select Role</option>
+											<option>SuperAdmin</option>
+											<option>Meat Inspection Admin</option>
+											<option>MTV Inspection Admin</option>
+										</select>
+									</div>
+								</div>
+								<div class="sex-box">
+									<h3>Sex</h3>
+									<div class="sex-option">
+										<div class="sex">
+											<input type="radio" id="check-male" name="sex" checked />
+											<label for="check-male">Male</label>
+										</div>
+										<div class="sex">
+											<input type="radio" id="check-female" name="sex" />
+											<label for="check-female">Female</label>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="upload-box">
+								<label>Upload Image for Profile</label>
+								<div class="container">
+									<input type="file" id="file" accept="image/*" hidden>
+									<div class="img-area" data-img="">
+										<i class='bx bxs-cloud-upload icon'></i>
+										<h3>Upload Image</h3>
+										<p>Image size must be less than <span>5MB</span></p>
+									</div>
+									<button class="select-image" type="button">Select Image</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+					<div class="column">
+						<div class="input-box">
+							<label>Email</label>
+							<input type="email" placeholder="Put an Email" class="text" required />
+						</div>
+						<div class="input-box">
+							<label>Password</label>
+							<input type="password" placeholder="Put a Password" class="text" required />
+						</div>
+						<div class="input-box">
+							<label>Confirm Password</label>
+							<input type="password" placeholder="Confirm Password" class="text" required />
+						</div>
+					</div>
+					<button>Submit</button>
+				</form>
+			</div>
+				<div class="table-container">
+					<table id="admin-accounts" class="table table-striped" style="width:100%">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Role</th>
+								<th>Email</th>
+								<th>Phone Number</th>
+								<th>Address</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Basuel, Adrianne John</td>
+								<td>MTV Inspection Admin</td>
+								<td>adrianne10160103@gmail.com</td>
+								<td>09336842863</td>
+								<td>Maa, Davao City	</td>
+							</tr>
+							<tr>
+								<td>Arreza, Jess Clarence</td>
+								<td>Meat Inspection Admin</td>
+								<td>jess@gmail.com</td>
+								<td>09322132482</td>
+								<td>Maa, Davao City	</td>
+							</tr>
+							<tr>
+								<td>Alagon, Gerico</td>
+								<td>Meat Inspection Admin</td>
+								<td>gerico@gmail.com</td>
+								<td>09665522451</td>
+								<td>Matina, Davao City</td>
+							</tr>
+							<tr>
+								<td>Badilles, Karlo Sam</td>
+								<td>MTV Inspection Admin</td>
+								<td>karlo@gmail.com</td>
+								<td>09445511685</td>
+								<td>Cabantian, Davao City	</td>
+							</tr>
+							<tr>
+								<td>Tarroja, Ralph</td>
+								<td>MTV Inspection Admin</td>
+								<td>ralph@gmail.com</td>
+								<td>09754488242</td>
+								<td>Panacan, Davao City	</td>
+							</tr>
+							<tr>
+								<td>Inayawan, Mary</td>
+								<td>Meat Inspection Admin</td>
+								<td>mary@gmail.com</td>
+								<td>09152246253</td>
+								<td>Catalunan Grande, Davao City</td>
+							</tr>
+							<tr>
+								<td>Kawaling, Dexter</td>
+								<td>Meat Inspection Admin</td>
+								<td>dexter@gmail.com</td>
+								<td>09334526845</td>
+								<td>Marilug, Davao City</td>
+							</tr>
+							<tr>
+								<td>Batao, Rogene</td>
+								<td>Meat Inspection Admin</td>
+								<td>rogene@gmail.com</td>
+								<td>09785542641</td>
+								<td>Boulevard, Davao City</td>
+							</tr>
+
+						</tbody>
+
+					</table>
+				</div>
+
+
+		</main>
+		<!-- MAIN ENDS -->
+
+	</section>
+
 }
 else
 {
@@ -123,7 +327,7 @@ else
         <h1>Page Not Available</h1>
     </div>
 }
-
+<script src="~/js/register.js"></script>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
