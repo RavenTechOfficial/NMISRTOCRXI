@@ -15,7 +15,7 @@ namespace thesis.Controllers
 	public class MeatDealersController : Controller
     {
         private readonly thesisContext _context;
-
+ 
         public MeatDealersController(thesisContext context)
         {
             _context = context;
