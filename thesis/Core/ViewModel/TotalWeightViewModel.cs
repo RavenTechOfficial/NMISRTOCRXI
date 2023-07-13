@@ -14,8 +14,9 @@ namespace thesis.Core.ViewModel
         public int MonthlySuspect { get; set; }
         public int MonthlyRejected { get; set; }
         public int MonthlyCondemned { get; set; }
-		//for area chart
-		public int weight { get; set; }
-
-    }
+        // for area chart
+		public List<int> monthlyRangeApproved { get; set; }
+		public List<int> monthlyRangeCondemned { get; set; }
+		public string[] monthAbbreviationsArray { get; set; }
+	}
 }
