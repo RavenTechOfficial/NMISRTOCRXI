@@ -36,17 +36,47 @@ namespace thesis.Repositories
             var totalWeight= _context.totalNoFitForHumanConsumptions
                 .Sum(p => p.DressedWeight);
 
-            
+			var monthRangesApproved = new List<int>();
+			for (DateTime date = startDateOfYear; date < currentDate; date = date.AddMonths(1))
+			{
+				var startOfMonth = date;
+				var endOfMonth = date.AddMonths(1);
+
+				var monthRangeApproved = AreaChartTimeSeriesRangeApproved(startOfMonth, endOfMonth);
+				monthRangesApproved.Add(monthRangeApproved);
+			}
+			var monthRangesCondemned = new List<int>();
+			for (DateTime date = startDateOfYear; date < currentDate; date = date.AddMonths(1))
+			{
+				var startOfMonth = date;
+				var endOfMonth = date.AddMonths(1);
+
+				var monthRangeCondemned = AreaChartTimeSeriesRangeCondemned(startOfMonth, endOfMonth);
+				monthRangesCondemned.Add(monthRangeCondemned);
+			}
+
+			var monthAbbreviations = new string[]
+			{
+				"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+			};
+
+			var currentMonth = DateTime.Now.Month;
+			var monthAbbreviationsArray = monthAbbreviations.Take(currentMonth).ToArray();
 
 
-            return new TotalWeightViewModel
+
+			return new TotalWeightViewModel
             {
                 TotalWeight = totalWeight,
                 DailyWeight = dailyWeight,
                 WeeklyWeight = weeklyWeight,
                 MonthlyWeight = monthlyWeight,
-                YearlyWeight = yearlyWeight
-            };
+                YearlyWeight = yearlyWeight,
+				monthlyRangeApproved = monthRangesApproved,
+				monthlyRangeCondemned = monthRangesCondemned,
+				monthAbbreviationsArray = monthAbbreviationsArray
+
+			};
         }
 
 		public TotalWeightViewModel ConductOfInspectionTimeSeries()
@@ -69,10 +99,30 @@ namespace thesis.Repositories
 			};
 		}
 
-		public TotalWeightViewModel AreaChartTimeSeries()
-		{
-			throw new NotImplementedException();
+		
+
+        public int AreaChartTimeSeriesRangeApproved(DateTime start, DateTime end)
+        {
+			var areaChart = _context.totalNoFitForHumanConsumptions
+				.Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport)
+				.Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
+				&& p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date)
+				.Sum(p => p.DressedWeight);
+
+            return areaChart;
 		}
+
+		public int AreaChartTimeSeriesRangeCondemned(DateTime start, DateTime end)
+		{
+			var areaChart = _context.totalNoFitForHumanConsumptions
+				.Include(p => p.Postmortem)
+				.Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
+				&& p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date)
+				.Sum(p => p.Postmortem.Weight);
+
+			return areaChart;
+		}
+
 
 		public int InspectionWithinDataRange(DateTime dates)
         {

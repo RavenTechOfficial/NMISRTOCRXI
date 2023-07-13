@@ -314,10 +314,10 @@
         let areaChartOptions = {
             series: [{
                 name: "Approved Meat",
-                data: [150659, 864732, 94320, 112321, 141212, 103854, 10483],
+                data: [@string.Join(",", Model.monthlyRangeApproved)],
             }, {
                 name: "Condemned Meat",
-                data: [30232, 20123, 32143, 43532, 32154, 29321, 3203],
+                data: [@string.Join(",", Model.monthlyRangeCondemned)],
             }],
             chart: {
                 type: "area",
@@ -330,7 +330,7 @@
             },
             colors: ["#00ab57", "#d50000"],
             xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                categories: @Html.Raw(Json.Serialize(Model.monthAbbreviationsArray)),
                 labels: {
                     style: {
                         colors: labelColor,
