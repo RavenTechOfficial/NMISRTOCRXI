@@ -6,135 +6,26 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-
-    @*<div class="row">
-        <div class="col-md-4">
-            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <h2>Create a new account.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <select asp-for="Input.Roles">
-                    @if (User.IsInRole("SuperAdministrator"))
-                    {
-                        <option>SUPERADMIN</option>
-                        <option>INSPECTORADMIN</option>
-                        <option>MTVADMIN</option>
-                    }
-                    @if (User.IsInRole("InspectorAdministrator"))
-                    {
-                        <option>MEATESTABLISHMENTREPRESENTATIVE</option>
-                        <option>MEATINSPECTOR</option>
-                    }
-                    @if (User.IsInRole("MTVAdministrator"))
-                    {
-                        <option>MTVINSPECTOR</option>
-                        <option>MTVUSERS</option>
-                    }
-                
-                </select>
-                <div class="form-floating">
-                    <input asp-for="Input.firstName" class="form-control" autocomplete="firstname" aria-required="true" />
-                    <label asp-for="Input.firstName"></label>
-                    <span asp-validation-for="Input.firstName" class="text-danger"></span>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.lastName" class="form-control" autocomplete="lastname" aria-required="true" />
-                    <label asp-for="Input.lastName"></label>
-                    <span asp-validation-for="Input.lastName" class="text-danger"></span>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.middleName" class="form-control" autocomplete="middlename" aria-required="true" />
-                    <label asp-for="Input.middleName"></label>
-                    <span asp-validation-for="Input.middleName" class="text-danger"></span>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.address" class="form-control" autocomplete="address" aria-required="true" />
-                    <label asp-for="Input.address"></label>
-                    <span asp-validation-for="Input.address" class="text-danger"></span>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.contactNo" class="form-control" autocomplete="contactno" aria-required="true" />
-                    <label asp-for="Input.contactNo"></label>
-                    <span asp-validation-for="Input.contactNo" class="text-danger"></span>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.image" class="form-control" autocomplete="image" aria-required="true" />
-                    <label asp-for="Input.image"></label>
-                    <span asp-validation-for="Input.image" class="text-danger"></span>
-                </div>
-                @if (User.IsInRole("InspectorAdministrator"))
-                {
-                    <select asp-for="Input.MeatEstablishment.Type">
-                        <option>SLH</option>
-                        <option>PDP</option>
-                        <option>MCP</option>
-                        <option>CSW</option>
-                    </select>
-                    <div class="form-floating">
-                        <input asp-for="Input.MeatEstablishment.Name" class="form-control" autocomplete="image" aria-required="true" />
-                        <label asp-for="Input.MeatEstablishment.Name"></label>
-                        <span asp-validation-for="Input.MeatEstablishment.Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating">
-                        <input asp-for="Input.MeatEstablishment.Address" class="form-control" autocomplete="image" aria-required="true" />
-                        <label asp-for="Input.MeatEstablishment.Address"></label>
-                        <span asp-validation-for="Input.MeatEstablishment.Address" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating">
-                        <input asp-for="Input.MeatEstablishment.LicenseToOperateNumber" class="form-control" autocomplete="image" aria-required="true" />
-                        <label asp-for="Input.MeatEstablishment.LicenseToOperateNumber"></label>
-                        <span asp-validation-for="Input.MeatEstablishment.LicenseToOperateNumber" class="text-danger"></span>
-                    </div>
-                }else{
-                    <select asp-for="Input.MeatEstablishment.Type" hidden>
-                        <option>SLH</option>
-                        <option>PDP</option>
-                        <option>MCP</option>
-                        <option>CSW</option>
-                    </select>
-                }
-
-                <div class="form-floating">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                    <label asp-for="Input.Email"></label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
-                    <label asp-for="Input.Password"></label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-                    <label asp-for="Input.ConfirmPassword"></label>
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                </div>
-                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-            </form>
-        </div>
-    
-    </div>*@
-
+	
 	<section id="content">
-
-
 		<!-- MAIN STARTS-->
 		<main class="registration">
 			<div class="container">
 				<header>Registration Form</header>
-				<form action="#" class="form">
+
+				<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form" enctype="multipart/form-data">
 					<div class="column">
 						<div class="input-box">
 							<label>First Name</label>
-							<input type="text" placeholder="Enter your First Name" required />
+							<input asp-for="Input.firstName" autocomplete="firstname" aria-required="true" type="text" placeholder="Enter your First Name" required />
 						</div>
 						<div class="input-box">
 							<label>Middle Name</label>
-							<input type="text" placeholder="Enter your Middle Name" required />
+							<input type="text" asp-for="Input.middleName" autocomplete="middlename" aria-required="true"  placeholder="Enter your Middle Name" required />
 						</div>
 						<div class="input-box">
 							<label>Last Name</label>
-							<input type="text" placeholder="Enter your Last Name" required />
+							<input type="text" asp-for="Input.lastName" autocomplete="lastname" aria-required="true"  placeholder="Enter your Last Name" required />
 						</div>
 					</div>
 
@@ -144,11 +35,13 @@
 							<div class="select-box">
 								<select id="regionSelect" onchange="populateProvinces()">
 									<option hidden>Region</option>
+									<!-- Add region options here -->
 								</select>
 							</div>
 							<div class="select-box">
 								<select id="provinceSelect" onchange="populateCities()">
 									<option hidden>Province</option>
+									<!-- Add province options here -->
 								</select>
 							</div>
 						</div>
@@ -156,60 +49,76 @@
 							<div class="select-box">
 								<select id="citySelect" onchange="populateBarangays()">
 									<option hidden>City/Municipality</option>
+									<!-- Add city options here -->
 								</select>
 							</div>
 							<div class="select-box">
 								<select id="barangaySelect">
 									<option hidden>Barangay</option>
+									<!-- Add barangay options here -->
 								</select>
 							</div>
 						</div>
+						<input type="hidden" id="addressInput" asp-for="Input.address" />
 					</div>
+
+
 
 					<div class="column">
 						<div class="row">
 							<div class="input-box">
 								<label>Phone Number</label>
-								<input type="number" placeholder="Enter phone number" required />
+								<input type="number" asp-for="Input.contactNo" autocomplete="contactno" aria-required="true"  placeholder="Enter phone number" required />
 							</div>
 							<div class="input-box">
 								<label>Birth Date</label>
-								<input type="date" placeholder="Enter birth date" required />
+								<input type="date" placeholder="Enter birth date" asp-for="Input.Birthdate" aria-required="true" required />
 							</div>
 
 							<div class="column">
 								<div class="input-box roles">
 									<label>Roles</label>
 									<div class="select-box">
-										<select>
-											<option hidden>Select Role</option>
-											<option>SuperAdmin</option>
-											<option>Meat Inspection Admin</option>
-											<option>MTV Inspection Admin</option>
+										<select asp-for="Input.Roles">
+											@if (User.IsInRole("SuperAdministrator"))
+											{
+												<option>SUPERADMIN</option>
+												<option>INSPECTORADMIN</option>
+												<option>MTVADMIN</option>
+											}
+											@if (User.IsInRole("InspectorAdministrator"))
+											{
+												<option>MEATESTABLISHMENTREPRESENTATIVE</option>
+												<option>MEATINSPECTOR</option>
+											}
+											@if (User.IsInRole("MTVAdministrator"))
+											{
+												<option>MTVINSPECTOR</option>
+												<option>MTVUSERS</option>
+											}
 										</select>
 									</div>
 								</div>
 								<div class="sex-box">
 									<h3>Sex</h3>
 									<div class="sex-option">
-										<div class="sex">
-											<input type="radio" id="check-male" name="sex" checked />
-											<label for="check-male">Male</label>
-										</div>
-										<div class="sex">
-											<input type="radio" id="check-female" name="sex" />
+											<div class="sex">
+												@Html.RadioButtonFor(Model => Model.Input.Sex, "Male", new { id = "check-male" })
+												<label for="check-male">Male</label>
+											</div>
+											<div class="sex">
+												@Html.RadioButtonFor(Model => Model.Input.Sex, "Female", new { id = "check-female" })
 											<label for="check-female">Female</label>
-										</div>
+											</div>
 									</div>
 								</div>
-
 							</div>
 						</div>
 						<div class="row">
 							<div class="upload-box">
 								<label>Upload Image for Profile</label>
 								<div class="container">
-									<input type="file" id="file" accept="image/*" hidden>
+									<input type="file" id="file" accept="image/*" asp-for="Input.image" hidden>
 									<div class="img-area" data-img="">
 										<i class='bx bxs-cloud-upload icon'></i>
 										<h3>Upload Image</h3>
@@ -221,99 +130,31 @@
 						</div>
 					</div>
 
-
+					@*this is hidden -dont touch-*@
+					<select asp-for="Input.MeatEstablishment.Type" hidden>
+						<option>SLH</option>
+						<option>PDP</option>
+						<option>MCP</option>
+						<option>CSW</option>
+					</select>
 
 					<div class="column">
 						<div class="input-box">
 							<label>Email</label>
-							<input type="email" placeholder="Put an Email" class="text" required />
+							<input type="email" asp-for="Input.Email" autocomplete="username" aria-required="true" placeholder="Put an Email" class="text" required />
 						</div>
 						<div class="input-box">
 							<label>Password</label>
-							<input type="password" placeholder="Put a Password" class="text" required />
+							<input type="password" asp-for="Input.Password" autocomplete="new-password" aria-required="true" placeholder="Put a Password" class="text" required />
 						</div>
 						<div class="input-box">
 							<label>Confirm Password</label>
-							<input type="password" placeholder="Confirm Password" class="text" required />
+							<input type="password" asp-for="Input.ConfirmPassword" autocomplete="new-password" aria-required="true"  placeholder="Confirm Password" class="text" required />
 						</div>
 					</div>
-					<button>Submit</button>
+					<button id="registerSubmit" type="submit">Register</button>
 				</form>
 			</div>
-				<div class="table-container">
-					<table id="admin-accounts" class="table table-striped" style="width:100%">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Role</th>
-								<th>Email</th>
-								<th>Phone Number</th>
-								<th>Address</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Basuel, Adrianne John</td>
-								<td>MTV Inspection Admin</td>
-								<td>adrianne10160103@gmail.com</td>
-								<td>09336842863</td>
-								<td>Maa, Davao City	</td>
-							</tr>
-							<tr>
-								<td>Arreza, Jess Clarence</td>
-								<td>Meat Inspection Admin</td>
-								<td>jess@gmail.com</td>
-								<td>09322132482</td>
-								<td>Maa, Davao City	</td>
-							</tr>
-							<tr>
-								<td>Alagon, Gerico</td>
-								<td>Meat Inspection Admin</td>
-								<td>gerico@gmail.com</td>
-								<td>09665522451</td>
-								<td>Matina, Davao City</td>
-							</tr>
-							<tr>
-								<td>Badilles, Karlo Sam</td>
-								<td>MTV Inspection Admin</td>
-								<td>karlo@gmail.com</td>
-								<td>09445511685</td>
-								<td>Cabantian, Davao City	</td>
-							</tr>
-							<tr>
-								<td>Tarroja, Ralph</td>
-								<td>MTV Inspection Admin</td>
-								<td>ralph@gmail.com</td>
-								<td>09754488242</td>
-								<td>Panacan, Davao City	</td>
-							</tr>
-							<tr>
-								<td>Inayawan, Mary</td>
-								<td>Meat Inspection Admin</td>
-								<td>mary@gmail.com</td>
-								<td>09152246253</td>
-								<td>Catalunan Grande, Davao City</td>
-							</tr>
-							<tr>
-								<td>Kawaling, Dexter</td>
-								<td>Meat Inspection Admin</td>
-								<td>dexter@gmail.com</td>
-								<td>09334526845</td>
-								<td>Marilug, Davao City</td>
-							</tr>
-							<tr>
-								<td>Batao, Rogene</td>
-								<td>Meat Inspection Admin</td>
-								<td>rogene@gmail.com</td>
-								<td>09785542641</td>
-								<td>Boulevard, Davao City</td>
-							</tr>
-
-						</tbody>
-
-					</table>
-				</div>
-
 
 		</main>
 		<!-- MAIN ENDS -->
@@ -328,6 +169,139 @@ else
     </div>
 }
 <script src="~/js/register.js"></script>
+<script>
+	//integration of Philippines Address JSON
+	fetch('@Url.Content("~/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
+		.then(response => response.json())
+		.then(data => {
+			const regionSelect = document.getElementById('regionSelect');
+			const provinceSelect = document.getElementById('provinceSelect');
+			const citySelect = document.getElementById('citySelect');
+			const barangaySelect = document.getElementById('barangaySelect');
+			var addressInput = document.getElementById('addressInput');
+
+			// Define the desired order of regions
+			const regionOrder = [
+				{ regionCode: "NCR", regionName: "National Capital Region" },
+				{ regionCode: "CAR", regionName: "Cordillera Administrative Region" },
+				{ regionCode: "01", regionName: "Region I" },
+				{ regionCode: "02", regionName: "Region II" },
+				{ regionCode: "03", regionName: "Region III" },
+				{ regionCode: "04A", regionName: "Region IV-A" },
+				{ regionCode: "04B", regionName: "Region IV-B" },
+				{ regionCode: "05", regionName: "Region V" },
+				{ regionCode: "06", regionName: "Region VI" },
+				{ regionCode: "07", regionName: "Region VII" },
+				{ regionCode: "08", regionName: "Region VIII" },
+				{ regionCode: "09", regionName: "Region IX" },
+				{ regionCode: "10", regionName: "Region X" },
+				{ regionCode: "11", regionName: "Region XI" },
+				{ regionCode: "12", regionName: "Region XII" },
+				{ regionCode: "13", regionName: "Region XIII" },
+				{ regionCode: "BARMM", regionName: "Bangsamoro Autonomous Region in Muslim Mindanao" }
+			];
+
+			// Populate regions dropdown
+			regionOrder.forEach(region => {
+				const option = document.createElement('option');
+				option.value = region.regionCode;
+				option.textContent = region.regionName;
+				regionSelect.appendChild(option);
+			});
+
+			// Function to populate provinces based on the selected region
+			function populateProvinces() {
+				const selectedRegion = regionSelect.value;
+				provinceSelect.innerHTML = "<option hidden>Select Province</option>";
+				citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
+				barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+
+				if (selectedRegion !== "") {
+					const regionData = data[selectedRegion];
+					const provinceList = regionData.province_list;
+
+					for (const [provinceCode, province] of Object.entries(provinceList)) {
+						const option = document.createElement('option');
+						option.value = provinceCode;
+						option.textContent = provinceCode;
+						provinceSelect.appendChild(option);
+					}
+				}
+			}
+
+			// Function to populate cities/municipalities based on the selected province
+			function populateCities() {
+				const selectedRegion = regionSelect.value;
+				const selectedProvince = provinceSelect.value;
+				citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
+				barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+
+				if (selectedRegion !== "" && selectedProvince !== "") {
+					const regionData = data[selectedRegion];
+					const provinceData = regionData.province_list[selectedProvince];
+					const municipalityList = provinceData.municipality_list;
+
+					for (const [municipalityCode, municipality] of Object.entries(municipalityList)) {
+						const option = document.createElement('option');
+						option.value = municipalityCode;
+						option.textContent = municipalityCode;
+						citySelect.appendChild(option);
+					}
+				}
+			}
+
+			// Function to populate barangays based on the selected city/municipality
+			function populateBarangays() {
+				const selectedRegion = regionSelect.value;
+				const selectedProvince = provinceSelect.value;
+				const selectedCity = citySelect.value;
+				barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+
+				if (selectedRegion !== "" && selectedProvince !== "" && selectedCity !== "") {
+					const regionData = data[selectedRegion];
+					const provinceData = regionData.province_list[selectedProvince];
+					const municipalityData = provinceData.municipality_list[selectedCity];
+					const barangayList = municipalityData.barangay_list;
+
+					for (const barangay of barangayList) {
+						const option = document.createElement('option');
+						option.value = barangay;
+						option.textContent = barangay;
+						barangaySelect.appendChild(option);
+					}
+				}
+			}
+			function updateAddress() {
+				var regionSelect = document.getElementById('regionSelect');
+				var provinceSelect = document.getElementById('provinceSelect');
+				var citySelect = document.getElementById('citySelect');
+				var barangaySelect = document.getElementById('barangaySelect');
+				var addressInput = document.getElementById('addressInput');
+
+				var region = regionSelect.value || '';
+				var province = provinceSelect.value || '';
+				var city = citySelect.value || '';
+				var barangay = barangaySelect.value || '';
+
+				var address = region + ', ' + province + ', ' + city + ', ' + barangay;
+				addressInput.value = address;
+			}
+
+
+			// Add event listeners to call the populate functions on change
+			regionSelect.addEventListener('change', populateProvinces);
+			provinceSelect.addEventListener('change', populateCities);
+			citySelect.addEventListener('change', populateBarangays);
+			document.getElementById('regionSelect').addEventListener('change', updateAddress);
+			document.getElementById('provinceSelect').addEventListener('change', updateAddress);
+			document.getElementById('citySelect').addEventListener('change', updateAddress);
+			document.getElementById('barangaySelect').addEventListener('change', updateAddress);
+		})
+		.catch(error => console.error('Error fetching JSON:', error));
+
+</script>
+
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

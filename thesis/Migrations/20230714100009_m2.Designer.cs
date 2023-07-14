@@ -12,7 +12,7 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20230711164251_m2")]
+    [Migration("20230714100009_m2")]
     partial class m2
     {
         /// <inheritdoc />
@@ -221,8 +221,10 @@ namespace thesis.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("birthdate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("contactNo")
                         .IsRequired()
@@ -234,13 +236,17 @@ namespace thesis.Migrations
 
                     b.Property<string>("image")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("lastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("middleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("sex")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
