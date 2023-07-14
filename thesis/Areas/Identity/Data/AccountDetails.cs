@@ -18,6 +18,8 @@ public class AccountDetails : IdentityUser
     public string address { get; set; }
     public string contactNo { get; set; }
     public string image { get; set; }
+    public DateTime birthdate { get; set; }
+    public string sex { get; set; }
     public Roles Roles { get; set; }
     [ForeignKey("MeatEstablishment")]
     public int? MeatEstablishmentId { get; set; }
