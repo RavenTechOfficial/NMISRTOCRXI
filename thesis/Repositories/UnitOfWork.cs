@@ -2,7 +2,7 @@
 
 namespace thesis.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+	public class UnitOfWork : IUnitOfWork
     {
         public IReceivingReportRepository ReceivingReport { get; }
 
@@ -12,17 +12,24 @@ namespace thesis.Repositories
 
         public IAnalyticsRepository Analytics { get; }
 
-        public UnitOfWork(
+		public IUsersManangementRepository UsersManangement { get; }
+		public IGeolocationRepository Geolocation { get; }
+
+		public UnitOfWork(
             IReceivingReportRepository receivingReport,
             IMeatInspectionReportRepository meatInspectionReport,
             IDashboardRepository dashboard,
-            IAnalyticsRepository analytics
+            IAnalyticsRepository analytics,
+            IUsersManangementRepository usersManangement,
+            IGeolocationRepository geolocation
         ) 
         {
             ReceivingReport = receivingReport;
             MeatInspectionReport = meatInspectionReport;
             Dashboard = dashboard;
             Analytics = analytics;
+            UsersManangement = usersManangement;
+            Geolocation = geolocation;
         }
     }
 }

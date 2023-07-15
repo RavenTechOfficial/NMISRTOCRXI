@@ -1,4 +1,194 @@
-﻿#map {
+﻿/* main and Map */
+#content main {
+    overflow: hidden;
+}
+
+#content #map {
+    margin-top: -70px;
+    margin-left: -70px;
     height: 100vh;
     width: 100vw;
+    z-index: 1;
+}
+
+/* Filters */
+#content .geolocation .geo-filter {
+    height: 50px;
+    margin-top: -20px;
+    margin-left: -15px;
+}
+
+/* Search Bar */
+#content .geolocation .search {
+    position: absolute;
+    box-shadow: 0 0 3px var(--dark);
+    width: 100%;
+    max-width: 400px;
+    z-index: 5001;
+}
+
+    #content .geolocation .search input {
+        height: 50px;
+        text-indent: 25px;
+        border: 1.5px solid var(--dark);
+        background: var(--light);
+        color: var(--dark);
+    }
+
+        #content .geolocation .search input:focus {
+            box-shadow: none;
+            border: 2px solid var(--blue);
+        }
+
+    #content .geolocation .search .bx-search {
+        position: absolute;
+        top: 18px;
+        left: 16px;
+        color: var(--dark);
+    }
+
+    #content .geolocation .search button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        height: 40px;
+        width: 110px;
+        background: var(--blue);
+    }
+
+/* Multi-select Dropdown */
+
+#content .geolocation .container {
+    position: absolute;
+    max-width: 320px;
+    width: 100%;
+    z-index: 100000;
+    margin-left: 400px;
+}
+
+#content .geolocation .select-btn {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: var(--light);
+    border: 1.5px solid var(--dark);
+    box-shadow: 0 0 3px var(--dark);
+}
+
+    #content .geolocation .select-btn .btn-text {
+        font-size: 17px;
+        font-weight: 400;
+        color: var(--dark);
+    }
+
+    #content .geolocation .select-btn .arrow-dwn {
+        display: flex;
+        height: 21px;
+        width: 21px;
+        color: var(--light);
+        font-size: 14px;
+        border-radius: 50%;
+        background: var(--blue);
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+    }
+
+    #content .geolocation .select-btn.open .arrow-dwn {
+        transform: rotate(-180deg);
+    }
+
+#content .geolocation .list-items {
+    position: relative;
+    margin-top: 15px;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: var(--light);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+#content .geolocation .select-btn.open ~ .list-items {
+    display: block;
+}
+
+#content .geolocation .list-items .item {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    height: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 0 15px;
+    border-radius: 8px;
+}
+
+    #content .geolocation .list-items .item:hover {
+        background-color: var(--light-blue);
+    }
+
+.item .item-text {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--dark);
+}
+
+#content .geolocation .item .checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16px;
+    width: 16px;
+    border-radius: 4px;
+    margin-right: 12px;
+    border: 1.5px solid #c0c0c0;
+    transition: all 0.3s ease-in-out;
+}
+
+#content .geolocation .item.checked .checkbox {
+    background-color: var(--blue);
+    border-color: var(--blue);
+}
+
+#content .geolocation .checkbox .check-icon {
+    color: var(--light);
+    font-size: 16px;
+    transform: scale(0);
+    transition: all 0.2s ease-in-out;
+}
+
+#content .geolocation .item.checked .check-icon {
+    transform: scale(1);
+}
+
+#content .geolocation .container button {
+    display: block;
+    height: 50%;
+    margin-left: 16px;
+    margin-top: 5px;
+}
+
+@media (max-width: 1000px) {
+    #content .geolocation .search {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    #content .geolocation .container {
+        max-width: 315px;
+        width: 100%;
+        margin-left: -15px;
+        margin-top: 60px;
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 270px) {
+    #content .geolocation .geo-filter {
+        display: none;
+    }
 }

@@ -147,7 +147,8 @@
         }
 
         .registration .img-area p {
-            color: #999;
+            text-align:center;
+            color: black;
         }
 
             .registration .img-area p span {

@@ -64,6 +64,8 @@ void AddScoped()
     builder.Services.AddScoped<IMeatInspectionReportRepository, MeatInspectionReportRepository>();
     builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
     builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
+    builder.Services.AddScoped<IUsersManangementRepository, UsersManagementRepository>();
+    builder.Services.AddScoped<IGeolocationRepository, GeolocationRepository>();
 }
 
 void AddAuthorizationPolicies()

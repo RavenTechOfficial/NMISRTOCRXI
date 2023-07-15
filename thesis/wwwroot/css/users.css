@@ -1,0 +1,27 @@
+﻿body {
+    text-size-adjust: initial;
+    font-weight: 50;
+}
+
+#content main {
+    max-height: 100%;
+}
+
+.registration .table-container {
+    position: relative;
+    max-width: 1350px;
+    width: 100%;
+    background: #FFF;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin-left: 5%;
+    margin-top: 50px;
+}
+
+/*Responsive*/
+@media screen and (max-width: 1060px) {
+    .registration .table-container {
+        width: 1200px;
+    }
+}
