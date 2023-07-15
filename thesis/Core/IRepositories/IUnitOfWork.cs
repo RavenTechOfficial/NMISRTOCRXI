@@ -6,5 +6,7 @@
         IMeatInspectionReportRepository MeatInspectionReport { get; }
         IDashboardRepository Dashboard { get; }
         IAnalyticsRepository Analytics { get; }
+        IUsersManangementRepository UsersManangement { get; }
+        IGeolocationRepository Geolocation { get; }
     }
 }
