@@ -3,6 +3,7 @@
 	public class GeolocationViewModel
 	{
 		public string[] address { get; set; }
+		public string[] colors { get; set; }
 		public bool SlaughterHouses { get; set; }
 		public bool PoultryDressingPlants { get; set; }
 		public bool MeatCuttingPlants { get; set; }

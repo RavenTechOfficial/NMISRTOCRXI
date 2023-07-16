@@ -29,13 +29,22 @@ namespace thesis.Repositories
 			bool nmisrtocxi = geolocationData.NMISRTOCXI;
 
 			var addressList = new List<string>();
+			var colors = new List<string>();
 			if (meatDealer)
 			{
 				addressList.AddRange(meatDealers.Where(address => !string.IsNullOrEmpty(address)));
+				if (meatDealers != null)
+				{
+					colors.AddRange(Enumerable.Repeat("red", meatDealers.Count));
+				}
 			}
 			if (meatDestination)
 			{
 				addressList.AddRange(summary.Where(address => !string.IsNullOrEmpty(address)));
+				if (summary != null)
+				{
+					colors.AddRange(Enumerable.Repeat("blue", summary.Count));
+				}
 			}
 			if (slaughterhouses)
 			{
@@ -43,6 +52,7 @@ namespace thesis.Repositories
 				if (meatEst != null)
 				{
 					addressList.AddRange(meatEst.Where(address => !string.IsNullOrEmpty(address)));
+					colors.AddRange(Enumerable.Repeat("green", meatEst.Count));
 				}
 			}
 			if (poultryDressingPlants)
@@ -51,6 +61,7 @@ namespace thesis.Repositories
 				if (meatEst != null)
 				{
 					addressList.AddRange(meatEst.Where(address => !string.IsNullOrEmpty(address)));
+					colors.AddRange(Enumerable.Repeat("blue", meatEst.Count));
 				}
 			}
 			if (meatcuttinplants)
@@ -59,6 +70,7 @@ namespace thesis.Repositories
 				if (meatEst != null)
 				{
 					addressList.AddRange(meatEst.Where(address => !string.IsNullOrEmpty(address)));
+					colors.AddRange(Enumerable.Repeat("white", meatEst.Count));
 				}
 			}
 			if (coldstoragewarehouse)
@@ -67,12 +79,14 @@ namespace thesis.Repositories
 				if (meatEst != null)
 				{
 					addressList.AddRange(meatEst.Where(address => !string.IsNullOrEmpty(address)));
+					colors.AddRange(Enumerable.Repeat("black", meatEst.Count));
 				}
 			}
 
 			return new GeolocationViewModel()
 			{
 				address = addressList.ToArray(),
+				colors = colors.ToArray(),
 			};
 		}
 

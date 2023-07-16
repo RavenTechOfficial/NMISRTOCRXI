@@ -110,32 +110,45 @@
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 	
-	
-	@foreach (var address in Model.address)
+	@{
+		var addressCount = Model.address.Length;
+	}
+
+	@for (var i = 0; i < addressCount; i++)
 	{
-		@:fetchGeolocation('@address');
+		var address = Model.address[i];
+		var color = Model.colors[i];
+		@:fetchGeolocation('@address', '@color');
 	}
-	function fetchGeolocation(address) {
-				var url = 'https://geocode.maps.co/search?q=' + encodeURIComponent(address);
 
-				fetch(url)
-					.then(response => response.json())
-					.then(data => {
-						// Extract the latitude and longitude from the response
-						var lat = data[0].lat;
-						var lon = data[0].lon;
-						// Add a marker to the map using the retrieved coordinates
-						var marker = L.marker([lat, lon]).addTo(map);
+	function fetchGeolocation(address, color) {
+			var url = 'https://geocode.maps.co/search?q=' + encodeURIComponent(address);
 
-					})
-					.catch(error => {
-						console.error('Error fetching geolocation:', error);
-					});
-	}
-	Console.log("hello world")
-	//if (!nmisrtocxi) {
-	//	var marker = L.marker([7.072326, 125.60047]).addTo(map);
-	//}
+			fetch(url)
+				.then(response => response.json())
+				.then(data => {
+					// Extract the latitude and longitude from the response
+					var lat = data[0].lat;
+					var lon = data[0].lon;
+
+					// Add a marker to the map using the retrieved coordinates
+					var marker = L.marker([lat, lon]).addTo(map);
+
+					// Create a circle with the specified color for the address
+					var circle = L.circle([lat, lon], {
+						color: color,
+						fillColor: color,
+						fillOpacity: 0.5,
+						radius: 500
+					}).addTo(map);
+				})
+				.catch(error => {
+					console.error('Error fetching geolocation:', error);
+				});
+		}
+
+	
+	
 	
 	
 
