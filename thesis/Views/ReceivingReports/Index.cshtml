@@ -45,9 +45,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.ReceivingBy)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Receiving)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -86,9 +83,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ReceivingBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Receiving.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

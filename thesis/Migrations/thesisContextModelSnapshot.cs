@@ -549,6 +549,9 @@ namespace thesis.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("LicenseStatus")
+                        .HasColumnType("int");
+
                     b.Property<int?>("LicenseToOperateNumber")
                         .HasColumnType("int");
 
@@ -698,47 +701,49 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BatchCode")
+                    b.Property<string>("AccountDetailsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BatchCode")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Category")
+                    b.Property<int>("Category")
                         .HasColumnType("int");
 
-                    b.Property<int?>("HoldingPenNo")
+                    b.Property<int>("HoldingPenNo")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LiveWeight")
+                    b.Property<int>("LiveWeight")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MeatDealersId")
+                    b.Property<int>("MeatDealersId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NoOfHeads")
+                    b.Property<int>("NoOfHeads")
                         .HasColumnType("int");
 
                     b.Property<string>("Origin")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("RecTime")
+                    b.Property<DateTime>("RecTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ReceivingBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ReceivingId")
-                        .HasColumnType("int");
 
                     b.Property<int>("ShippingDoc")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Species")
+                    b.Property<int>("Species")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeatDealersId");
+                    b.HasIndex("AccountDetailsId");
 
-                    b.HasIndex("ReceivingId");
+                    b.HasIndex("MeatDealersId");
 
                     b.ToTable("ReceivingReports");
                 });
@@ -999,17 +1004,19 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.ReceivingReport", b =>
                 {
+                    b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
+                        .WithMany()
+                        .HasForeignKey("AccountDetailsId");
+
                     b.HasOne("thesis.Models.MeatDealers", "MeatDealers")
                         .WithMany()
-                        .HasForeignKey("MeatDealersId");
+                        .HasForeignKey("MeatDealersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("thesis.Models.Receiving", "Receiving")
-                        .WithMany()
-                        .HasForeignKey("ReceivingId");
+                    b.Navigation("AccountDetails");
 
                     b.Navigation("MeatDealers");
-
-                    b.Navigation("Receiving");
                 });
 
             modelBuilder.Entity("thesis.Models.SummaryAndDistributionOfMIC", b =>

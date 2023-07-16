@@ -25,7 +25,7 @@ public class thesisContext : IdentityDbContext<AccountDetails>
     public DbSet<PassedForSlaughter> PassedForSlaughters { get; set; }
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Postmortem> Postmortems { get; set; }
-    public DbSet<Receiving> Receivings { get; set; }
+    public DbSet<Receiving> Receivings{ get; set; }
     public DbSet<ReceivingReport> ReceivingReports { get; set; }
     public DbSet<SummaryAndDistributionOfMIC> SummaryAndDistributionOfMICs { get; set; }
     public DbSet<totalNoFitForHumanConsumptions> totalNoFitForHumanConsumptions { get; set; }
