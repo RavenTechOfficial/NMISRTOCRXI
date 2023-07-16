@@ -28,7 +28,7 @@ namespace thesis.Repositories
 			var startDateOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 			var startDateOfYear = new DateTime(DateTime.Now.Year, 1, 1);
 
-
+			//cards
 			var dailyWeight = InspectionWithinDataRange(currentDate);
             var weeklyWeight = InspectionWithinDataRange(startDateOfWeek);
             var monthlyWeight = InspectionWithinDataRange(startDateOfMonth);
@@ -36,26 +36,36 @@ namespace thesis.Repositories
             var totalWeight= _context.totalNoFitForHumanConsumptions
                 .Sum(p => p.DressedWeight);
 
-			var monthRangesApproved = new List<int>();
-			for (DateTime date = startDateOfYear; date < currentDate; date = date.AddMonths(1))
-			{
-				var startOfMonth = date;
-				var endOfMonth = date.AddMonths(1);
 
-				var monthRangeApproved = AreaChartTimeSeriesRangeApproved(startOfMonth, endOfMonth);
-				monthRangesApproved.Add(monthRangeApproved);
-			}
-			var monthRangesCondemned = new List<int>();
-			for (DateTime date = startDateOfYear; date < currentDate; date = date.AddMonths(1))
-			{
-				var startOfMonth = date;
-				var endOfMonth = date.AddMonths(1);
+            //area cahrt
+            var monthRangesApproved = new List<int>();
+            var monthRangesCondemned = new List<int>();
+            //bar chart
+            var suspects = new List<int>();
+            var condemneds = new List<int>();
+            var passes = new List<int>();
 
-				var monthRangeCondemned = AreaChartTimeSeriesRangeCondemned(startOfMonth, endOfMonth);
-				monthRangesCondemned.Add(monthRangeCondemned);
-			}
+            for (DateTime date = startDateOfYear; date < currentDate; date = date.AddMonths(1))
+            {
+                var startOfMonth = date;
+                var endOfMonth = date.AddMonths(1);
 
-			var monthAbbreviations = new string[]
+                var monthRangeApproved = AreaChartTimeSeriesRangeApproved(startOfMonth, endOfMonth);
+                var monthRangeCondemned = AreaChartTimeSeriesRangeCondemned(startOfMonth, endOfMonth);
+
+                var suspect = BarChartTimeSeriesAntemortem(Issue.Suspect, startOfMonth, endOfMonth);
+                var condemned = BarChartTimeSeriesAntemortem(Issue.Condemned, startOfMonth, endOfMonth);
+                var pass = BarChartTimeSeriesAntemortem(Issue.Pass, startOfMonth, endOfMonth);
+
+                monthRangesApproved.Add(monthRangeApproved);
+                monthRangesCondemned.Add(monthRangeCondemned);
+
+                suspects.Add(suspect);
+                condemneds.Add(condemned);
+                passes.Add(pass);
+            }
+
+            var monthAbbreviations = new string[]
 			{
 				"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 			};
@@ -74,32 +84,26 @@ namespace thesis.Repositories
                 YearlyWeight = yearlyWeight,
 				monthlyRangeApproved = monthRangesApproved,
 				monthlyRangeCondemned = monthRangesCondemned,
-				monthAbbreviationsArray = monthAbbreviationsArray
+				monthAbbreviationsArray = monthAbbreviationsArray,
+                Pass = passes,
+                Condemned = condemneds,
+                Suspect = suspects
 
 			};
         }
 
-		public TotalWeightViewModel ConductOfInspectionTimeSeries()
-		{
-			var startDateOfYear = new DateTime(DateTime.Now.Year, 1, 1);
+        public int BarChartTimeSeriesAntemortem(Issue issue, DateTime start, DateTime end)
+        {
+            var barchart = _context.ConductOfInspections
+                .Include(p => p.Antemortem.MeatInspectionReport)
+                .Where(p => p.Issue == issue
+                && p.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
+                && p.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date)
+                .Sum(p => p.NoOfHeads);
 
-			var suspect = Issue.Suspect;
-            var rejected = Issue.Rejected;
-            var condemned = Issue.Condemned;
+            return barchart;
+        }
 
-            var monthlySuspect = InspectionDate(startDateOfYear, suspect);
-            var monthlyRejected = InspectionDate(startDateOfYear, rejected);
-            var monthlyCondemned = InspectionDate(startDateOfYear, condemned);
-
-            return new TotalWeightViewModel
-            {
-				MonthlySuspect = monthlySuspect,
-                MonthlyRejected = monthlyRejected,  
-                MonthlyCondemned = monthlyCondemned
-			};
-		}
-
-		
 
         public int AreaChartTimeSeriesRangeApproved(DateTime start, DateTime end)
         {

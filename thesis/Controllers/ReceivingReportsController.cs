@@ -24,7 +24,7 @@ namespace thesis.Controllers
         // GET: ReceivingReports
         public async Task<IActionResult> Index()
         {
-            var thesisContext = _context.ReceivingReports.Include(r => r.MeatDealers).Include(r => r.Receiving);
+            var thesisContext = _context.ReceivingReports.Include(r => r.MeatDealers);
             return View(await thesisContext.ToListAsync());
         }
 
@@ -38,7 +38,6 @@ namespace thesis.Controllers
 
             var receivingReport = await _context.ReceivingReports
                 .Include(r => r.MeatDealers)
-                .Include(r => r.Receiving)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (receivingReport == null)
             {
@@ -70,7 +69,6 @@ namespace thesis.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
-            ViewData["ReceivingId"] = new SelectList(_context.Receivings, "Id", "Id", receivingReport.ReceivingId);
             return View(receivingReport);
         }
 
@@ -88,7 +86,6 @@ namespace thesis.Controllers
                 return NotFound();
             }
             ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
-            ViewData["ReceivingId"] = new SelectList(_context.Receivings, "Id", "Id", receivingReport.ReceivingId);
             return View(receivingReport);
         }
 
@@ -125,7 +122,6 @@ namespace thesis.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
-            ViewData["ReceivingId"] = new SelectList(_context.Receivings, "Id", "Id", receivingReport.ReceivingId);
             return View(receivingReport);
         }
 
@@ -139,7 +135,6 @@ namespace thesis.Controllers
 
             var receivingReport = await _context.ReceivingReports
                 .Include(r => r.MeatDealers)
-                .Include(r => r.Receiving)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (receivingReport == null)
             {

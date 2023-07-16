@@ -9,5 +9,6 @@ namespace thesis.Models
         public string? Name { get; set; }
         public string? Address { get; set; }
         public int? LicenseToOperateNumber { get; set; }
+        public LicenseStatus? LicenseStatus { get; set; }
     }
 }

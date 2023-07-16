@@ -1,4 +1,5 @@
-﻿using thesis.Core.IRepositories;
+﻿using Microsoft.EntityFrameworkCore;
+using thesis.Core.IRepositories;
 using thesis.Core.ViewModel;
 using thesis.Data;
 using thesis.Data.Enum;
@@ -14,84 +15,202 @@ namespace thesis.Repositories
         {
             _context = context;
         }
-        public IList<int> GetAnalytics(Species species, string dateTime)
+        public AnalyticsViewModel GetTotalOfMeatPerTimeSeries()
         {
 
-            var time = dateTime == "Weekly" ? DateTime.Now.AddDays(-7) :
-                        dateTime == "Monthly" ? DateTime.Now.AddDays(-31) :
-                        dateTime == "Yearly" ? DateTime.Now.AddDays(-365) :
-                        DateTime.Now.AddDays(-1);
+            var currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var startDateOfWeek = DateTime.Now.AddDays(-7);
+            var startDateOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var startDateOfYear = new DateTime(DateTime.Now.Year, 1, 1);
+            var currentMonth = DateTime.Now.Month;
 
-            //if (dateTime == "Total")
-            //{
-            //    return _context.totalNoFitForHumanConsumptions
-            //        .Where(p => p.Species == species)
-            //        .OrderBy(p => p.Date)
-            //        .Select(p => p.DressedWeightInKg)
-            //        .ToList();
-            //}
-            //else
-            //{
-            //    return _context.totalNoFitForHumanConsumptions
-            //        .Where(p => p.Species == species && p.Date.Date >= time.Date)
-            //        .OrderBy(p => p.Date)
-            //        .Select(p => p.DressedWeightInKg)
-            //        .ToList();
-            //}
-            throw new NotImplementedException();
+            //area chart 
+            var monthRangesApproved = new List<int>();
+            var monthRangesCondemned = new List<int>();
+            //horizontal bar chart
+            var monthRangesOfHead = new List<int>();
+            var monthRangesOfLiveWeight = new List<int>();
+            //vertical bar chart
+            var suspects = new List<int>();
+            var condemneds = new List<int>();
+            var passes = new List<int>();
+            //piechart
+            var animalType = new List<int>();
+            //stack bars 100 chart
+            var cattles = new List<int>();
+            var carabaos = new List<int>();
+            var swines = new List<int>();
+            var goats = new List<int>();
+            var chickens = new List<int>();
+            var ducks = new List<int>();
+            var horses = new List<int>();
+            var sheeps = new List<int>();
+            var ostrichs = new List<int>();
+            var crocodiles = new List<int>();
+
+            for (DateTime date = startDateOfYear; date < currentDate; date = date.AddMonths(1))
+            {
+                var startOfMonth = date;
+                var endOfMonth = date.AddMonths(1);
+
+                var monthRangeApproved = AreaChartTimeSeriesRangeApproved(startOfMonth, endOfMonth);
+                var monthRangeCondemned = AreaChartTimeSeriesRangeCondemned(startOfMonth, endOfMonth);
+
+                var monthRangeOfHead = BarChartTimeSeriesRangeOfHead(startOfMonth, endOfMonth);
+                var monthRangeOfLiveWeight = BarChartTimeSeriesRangeOfLiveWeight(startOfMonth, endOfMonth);
+                
+                var cattle = StackBarsSpeciesSeries(Species.Cattle, startOfMonth, endOfMonth);
+                var carabao = StackBarsSpeciesSeries(Species.Carabao, startOfMonth, endOfMonth);
+                var swine = StackBarsSpeciesSeries(Species.Swine, startOfMonth, endOfMonth);
+                var goat = StackBarsSpeciesSeries(Species.Goat, startOfMonth, endOfMonth);
+                var chicken = StackBarsSpeciesSeries(Species.Chicken, startOfMonth, endOfMonth);
+                var duck = StackBarsSpeciesSeries(Species.Duck, startOfMonth, endOfMonth);
+                var horse = StackBarsSpeciesSeries(Species.Horse, startOfMonth, endOfMonth);
+                var sheep = StackBarsSpeciesSeries(Species.Sheep, startOfMonth, endOfMonth);
+                var ostrich = StackBarsSpeciesSeries(Species.Ostrich, startOfMonth, endOfMonth);
+                var crocodile = StackBarsSpeciesSeries(Species.Crocodile, startOfMonth, endOfMonth);
+
+                var suspect = BarChartTimeSeriesAntemortem(Issue.Suspect, startOfMonth, endOfMonth);
+                var condemned = BarChartTimeSeriesAntemortem(Issue.Condemned, startOfMonth, endOfMonth);
+                var pass = BarChartTimeSeriesAntemortem(Issue.Pass, startOfMonth, endOfMonth);
 
 
+                monthRangesApproved.Add(monthRangeApproved);
+                monthRangesCondemned.Add(monthRangeCondemned);
+
+                monthRangesOfHead.Add(monthRangeOfHead);
+                monthRangesOfLiveWeight.Add(monthRangeOfLiveWeight);
+
+                cattles.Add(cattle);
+                carabaos.Add(carabao);
+                swines.Add(swine);
+                goats.Add(goat);
+                chickens.Add(chicken);
+                ducks.Add(duck);
+                horses.Add(horse);
+                sheeps.Add(sheep);
+                ostrichs.Add(ostrich);
+                crocodiles.Add(crocodile);
+
+                suspects.Add(suspect);
+                condemneds.Add(condemned);
+                passes.Add(pass);    
+
+            }
+
+            foreach (AnimalPart animalPart in Enum.GetValues(typeof(AnimalPart)))
+            {
+                var typeAnimals = PieChartAnimalTypeSeries(animalPart);
+                animalType.Add(typeAnimals);
+            }
+
+
+            var monthAbbreviations = new string[]
+            {
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+            };
+
+            
+            var monthAbbreviationsArray = monthAbbreviations.Take(currentMonth).ToArray();
+
+
+
+            return new AnalyticsViewModel
+            {
+                monthlyRangeApproved = monthRangesApproved,
+                monthlyRangeCondemned = monthRangesCondemned,
+                monthlyRangeOfHead = monthRangesOfHead,
+                monthlyRangeOfLiveWeight = monthRangesOfLiveWeight,
+                animalTypeRange = animalType,
+                Cattle = cattles,
+                Carabao = carabaos,
+                Swine = swines,
+                Goat = goats,
+                Chicken = chickens,
+                Duck = ducks,
+                Horse = horses,
+                Sheep = sheeps,
+                Ostrich = ostrichs,
+                Crocodile = crocodiles,
+                Suspect = suspects,
+                Condemned = condemneds,
+                Pass = passes,
+                monthAbbreviationsArray = monthAbbreviationsArray
+            };
+            
+        }
+        public int BarChartTimeSeriesAntemortem(Issue issue, DateTime start, DateTime end)
+        {
+            var barchart = _context.ConductOfInspections
+                .Include(p => p.Antemortem.MeatInspectionReport)
+                .Where(p => p.Issue == issue
+                && p.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
+                && p.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date)
+                .Sum(p => p.NoOfHeads);
+
+            return barchart;
         }
 
-        public IList<string> GetDates(Species species, string dateTime)
+
+        public int StackBarsSpeciesSeries(Species species, DateTime start, DateTime end)
         {
-            var time = dateTime == "Weekly" ? DateTime.Now.AddDays(-7) :
-                        dateTime == "Monthly" ? DateTime.Now.AddDays(-31) :
-                        dateTime == "Yearly" ? DateTime.Now.AddDays(-365) :
-                        DateTime.Now.AddDays(-1);
+            var stackchart = _context.totalNoFitForHumanConsumptions
+                .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport)
+                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
+                && p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date
+                && p.Species == species)
+                .Sum(p => p.DressedWeight);
 
-            //if (dateTime == "Yearly")
-            //{
-            //    return _context.totalNoFitForHumanConsumptions
-            //    .Where(p => p.Species == species && p.Date.Date >= time.Date)
-            //    .OrderBy(p => p.Date)
-            //    .Select(p => p.Date.ToString("MMMM"))
-            //    .ToList();
-            //}
-            //else if(dateTime == "Monthly")
-            //{
-            //    return _context.totalNoFitForHumanConsumptions
-            //    .Where(p => p.Species == species && p.Date.Date >= time.Date)
-            //    .OrderBy(p => p.Date)
-            //    .Select(p => p.Date.Month.ToString())
-            //    .ToList();
-            //}
-            //else if(dateTime == "Weekly")
-            //{
-            //    return _context.totalNoFitForHumanConsumptions
-            //    .Where(p => p.Species == species && p.Date.Date >= time.Date)
-            //    .OrderBy(p => p.Date)
-            //    .Select(p => p.Date.DayOfWeek.ToString())
-            //    .ToList();
-            //}
-            //else if(dateTime == "Daily")
-            //{
-            //    return _context.totalNoFitForHumanConsumptions
-            //    .Where(p => p.Species == species && p.Date.Date >= time.Date)
-            //    .OrderBy(p => p.Date)
-            //    .Select(p => p.Date.Day.ToString())
-            //    .ToList();
-            //}
-            //else
-            //{
-            //    return _context.totalNoFitForHumanConsumptions
-            //    .Where(p => p.Species == species)
-            //    .OrderBy(p => p.Date)
-            //    .Select(p => p.Date.Year.ToString())
-            //    .ToList();
-            //}
+            return stackchart;
+        }
 
-            throw new NotImplementedException();
+        public int PieChartAnimalTypeSeries(AnimalPart animalPart)
+        {
+            var piechart = _context.Postmortems
+                .Where(p => p.AnimalPart == animalPart)
+                .Sum(p => p.Weight);
+
+            return piechart != null ? piechart : 0;
+        }
+
+        public int BarChartTimeSeriesRangeOfHead(DateTime start, DateTime end)
+        {
+            var hbarchart = _context.ReceivingReports
+                .Where(p => p.RecTime >= start.Date && p.RecTime <= end.Date)
+                .Sum(p => p.NoOfHeads);
+
+            return hbarchart;
+        }
+        public int BarChartTimeSeriesRangeOfLiveWeight(DateTime start, DateTime end)
+        {
+            var vbarchart = _context.ReceivingReports
+                .Where(p => p.RecTime >= start.Date && p.RecTime <= end.Date)
+                .Sum(p => p.LiveWeight);
+
+            return vbarchart;
+        }
+
+
+        public int AreaChartTimeSeriesRangeApproved(DateTime start, DateTime end)
+        {
+            var areaChart = _context.totalNoFitForHumanConsumptions
+                .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport)
+                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
+                && p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date)
+                .Sum(p => p.DressedWeight);
+
+            return areaChart;
+        }
+
+        public int AreaChartTimeSeriesRangeCondemned(DateTime start, DateTime end)
+        {
+            var areaChart = _context.totalNoFitForHumanConsumptions
+                .Include(p => p.Postmortem)
+                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
+                && p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date)
+                .Sum(p => p.Postmortem.Weight);
+
+            return areaChart;
         }
     }
 }

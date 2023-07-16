@@ -3,7 +3,7 @@
     public enum Issue
     {
         Suspect,
-        Rejected,
+        Pass,
         Condemned
     }
 }
