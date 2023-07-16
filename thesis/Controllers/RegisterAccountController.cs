@@ -29,29 +29,6 @@ namespace thesis.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Index(RegisterRoleViewModel registerViewModel)
-        //{
-        //    if(!ModelState.IsValid) return View(registerViewModel);
-
-        //    var user = await _userManager.FindByEmailAsync(registerViewModel.Email);
-        //    if(user != null)
-        //    {
-        //        TempData["Error"] = "This email address is already in use";
-        //        return View(registerViewModel);
-        //    }
-
-        //    var newUser = new AccountDetails()
-        //    {
-        //        Email = registerViewModel.Email,
-        //        UserName = registerViewModel.Email
-        //    };
-        //    var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
-
-            
-
-        //    return RedirectToAction("Index", "Dashboard");
-        //}
 
         
     }

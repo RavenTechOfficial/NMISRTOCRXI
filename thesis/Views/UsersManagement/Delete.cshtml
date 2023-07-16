@@ -1,1 +1,76 @@
-﻿<h1>Delete</h1>
+﻿@using thesis.Areas.Identity.Data;
+@model AccountDetails
+
+
+<div class="container">
+    <h1>Delete</h1>
+
+    <div>
+        <h4>Users Details</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.firstName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.firstName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.lastName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.lastName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.middleName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.middleName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.sex)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.sex)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.address)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.address)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.contactNo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.contactNo)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.birthdate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.birthdate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Roles)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Roles)
+            </dd>
+
+        </dl>
+    </div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+        
+   
+</div>
