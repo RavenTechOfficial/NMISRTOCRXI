@@ -16,8 +16,8 @@ namespace thesis.Models
         public int NoOfHeads { get; set; }
         public int LiveWeight { get; set; }
         [ForeignKey("MeatDealers")]
-        public int MeatDealersId { get; set; }
-        public MeatDealers MeatDealers { get; set; }
+        public int? MeatDealersId { get; set; }
+        public MeatDealers? MeatDealers { get; set; }
         public string Origin { get; set; }
         public ShippingDocuments ShippingDoc { get; set; }
         public int HoldingPenNo { get; set; }

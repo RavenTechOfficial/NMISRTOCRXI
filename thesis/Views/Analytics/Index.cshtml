@@ -1,8 +1,6 @@
 ﻿@using thesis.Core.ViewModel;
 @model AnalyticsViewModel
 
-
-
 <link rel="stylesheet" href="~/css/analytics.css" asp-append-version="true" />
 
 <section id="content">
@@ -10,66 +8,71 @@
 	<main>
 		<div class="head-title">
 			<div class="left">
-				<h1>Analytics</h1>
-				<h3>Filters:</h3>
-				<button id="toggleFiltersButton" onclick="toggleFilters()">
-					Show Filters <i class="bx bx-filter-alt"></i>
-				</button>
+                
+				    <h1>Analytics</h1>
+				    <h3>Filters:</h3>
+				    <button id="toggleFiltersButton" onclick="toggleFilters()">
+					    Show Filters <i class="bx bx-filter-alt"></i>
+				    </button>
+                <form method="post" action="/Analytics/actionResult">
+				    <div class="filter-box" id="filtersContainer">
+					    <div class="input-wrapper">
+						    <label for="startdate">Start Date</label>
+						    <input type="date" id="startdate" class="filter" asp-for="start">
+					    </div>
+					    <div class="input-wrapper">
+						    <label for="enddate">End Date</label>
+                            <input type="date" id="enddate" class="filter" asp-for="end">
+					    </div>
 
-				<div class="filter-box" id="filtersContainer">
-					<div class="input-wrapper">
-						<label for="startdate">Start Date</label>
-						<input onchange="filterDataDate()" type="date" id="startdate" class="filter">
-					</div>
-					<div class="input-wrapper">
-						<label for="enddate">End Date</label>
-						<input onchange="filterDataDate()" type="date" id="enddate" class="filter">
-					</div>
-
-					<div class="input-wrapper">
-						<label for="species">Species</label>
-						<select onchange="filterDataSpecies()" id="species" class="filter">
-							<option value="All">All</option>
-							<option value="Cattle">Cattle</option>
-							<option value="Carabao">Carabao</option>
-							<option value="Swine">Swine</option>
-							<option value="Goat">Goat</option>
-							<option value="Chicken">Chicken</option>
-							<option value="Duck">Duck</option>
-							<option value="Horse">Horse</option>
-							<option value="Sheep">Sheep</option>
-							<option value="Ostrich">Ostrich</option>
-							<option value="Crocodile">Crocodile</option>
-						</select>
-					</div>
-					<div class="input-wrapper">
-						<label for="timeFrame">Time Frame</label>
-						<select onchange="filterDatatimeFrame()" id="timeFrame" class="filter">
-
-							<option value="">Daily</option>
-							<option value="">Monthly</option>
-							<option value="">Yearly</option>
-						</select>
-					</div>
-					<div class="input-wrapper">
-						<label for="meatEstablishment">Meat Establishment</label>
-						<select onchange="filterDatameatEstablishment()" id="meatEstablishment" class="filter meatEstablishment">
-							<option value="">All</option>
-							<option value="">Contora Halal SLH</option>
-							<option value="">Davao City Slaughterhouse/ BLMC</option>
-							<option value="">Digos City Slaughterhouse</option>
-							<option value="">JK Mercado & Sons Agri. Ent., Inc.</option>
-							<option value="">Luchay SH</option>
-							<option value="">Malagos SLH</option>
-							<option value="">Malalag Municipal SLH</option>
-							<option value="">Mati City Slaughterhouse</option>
-							<option value="">Nabunturan Public Slaughterhouse</option>
-							<option value="">Sto. Tomas Municipal Slaughterhouse</option>
-						</select>
-					</div>
-				</div>
+					    <div class="input-wrapper">
+						    <label for="species">Species</label>
+						    <select id="species" class="filter" asp-for="species">
+							    <option value="Cattle">Cattle</option>
+							    <option value="Carabao">Carabao</option>
+							    <option value="Swine">Swine</option>
+							    <option value="Goat">Goat</option>
+							    <option value="Chicken">Chicken</option>
+							    <option value="Duck">Duck</option>
+                                <option value="Sheep">Sheep</option>
+                                <option value="Horse">Horse</option>
+							    <option value="Ostrich">Ostrich</option>
+							    <option value="Crocodile">Crocodile</option>
+						    </select>
+					    </div>
+					    <div class="input-wrapper">
+                            @Html.LabelFor(model => model.timeSeries, "Time Frame")
+                            @Html.DropDownListFor(model => model.timeSeries, new List<SelectListItem>
+                            {
+                            new SelectListItem { Text = "Daily", Value = "Daily" },
+                            new SelectListItem { Text = "Monthly", Value = "Monthly" },
+                            new SelectListItem { Text = "Yearly", Value = "Yearly" }
+                            }, new { @class = "filter", id = "timeFrame" })
+					    </div>
+					    @*<div class="input-wrapper">
+						    <label for="meatEstablishment">Meat Establishment</label>
+						    <select id="meatEstablishment" class="filter meatEstablishment">
+							    <option value="">All</option>
+							    <option value="">Contora Halal SLH</option>
+							    <option value="">Davao City Slaughterhouse/ BLMC</option>
+							    <option value="">Digos City Slaughterhouse</option>
+							    <option value="">JK Mercado & Sons Agri. Ent., Inc.</option>
+							    <option value="">Luchay SH</option>
+							    <option value="">Malagos SLH</option>
+							    <option value="">Malalag Municipal SLH</option>
+							    <option value="">Mati City Slaughterhouse</option>
+							    <option value="">Nabunturan Public Slaughterhouse</option>
+							    <option value="">Sto. Tomas Municipal Slaughterhouse</option>
+						    </select>
+					    </div>*@
+                        <div class="input-wrapper">
+                            <button class="btn btn-primary py-2 px-4" style="align-items: center; margin-top: 30px;" type="submit">Filter</button>
+                        </div>
+                    </div>
+                 </form>
 			</div>
 		</div>
+        
 
 
 
@@ -738,7 +741,7 @@
 
 
     var options = {
-        series: [@string.Join(",", Model.monthlyRangeOfHead)],
+        series: [@string.Join(",", Model.animalTypeRange)],
         chart: {
             width: '500',
             type: 'pie',

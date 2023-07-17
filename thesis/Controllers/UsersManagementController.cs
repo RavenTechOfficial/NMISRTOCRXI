@@ -54,7 +54,7 @@ namespace thesis.Controllers
 
 		public async Task<IActionResult> Edit(string id)
 		{
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
+			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id); // AccountDetails
 			if (users == null) return View("Error");
 			var accountVm = new AccountUserViewModel
 			{
@@ -67,36 +67,6 @@ namespace thesis.Controllers
 			};
 			return View(accountVm);
 		}
-
-
-        //public async Task<IActionResult> Edit(string id, AccountUserViewModel accountDetails)
-        //{
-        //	if (!ModelState.IsValid)
-        //	{
-        //		ModelState.AddModelError("", "Failed to edit account");
-        //		return View("Edit", accountDetails);
-        //	}
-
-        //	try
-        //	{
-        //		if (_unitOfWork.UsersManangement.Update(accountDetails))
-        //		{
-        //			_unitOfWork.UsersManangement.Save();
-        //			return RedirectToAction(nameof(Index));
-        //		}
-        //		else
-        //		{
-        //			// Handle the case when the account is not found
-        //			return View("Error");
-        //		}
-        //	}
-        //	catch (DbUpdateConcurrencyException ex)
-        //	{
-        //		_context.Entry(accountDetails).Reload();
-        //		ModelState.AddModelError("", "The entity has been modified or deleted by another user.");
-        //		return View("Edit", accountDetails);
-        //	}
-        //}
         [HttpPost]
         public async Task<IActionResult> Edit(string id, AccountUserViewModel accountDetails)
         {

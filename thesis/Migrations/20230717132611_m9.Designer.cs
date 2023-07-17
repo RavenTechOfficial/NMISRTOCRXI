@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thesis.Data;
 
@@ -11,9 +12,11 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    partial class thesisContextModelSnapshot : ModelSnapshot
+    [Migration("20230717132611_m9")]
+    partial class m9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -574,7 +577,7 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ReceivingReportId")
+                    b.Property<int>("ReceivingReportId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RepDate")
@@ -716,7 +719,7 @@ namespace thesis.Migrations
                     b.Property<int>("LiveWeight")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MeatDealersId")
+                    b.Property<int>("MeatDealersId")
                         .HasColumnType("int");
 
                     b.Property<int>("NoOfHeads")
@@ -953,7 +956,9 @@ namespace thesis.Migrations
                 {
                     b.HasOne("thesis.Models.ReceivingReport", "ReceivingReport")
                         .WithMany()
-                        .HasForeignKey("ReceivingReportId");
+                        .HasForeignKey("ReceivingReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ReceivingReport");
                 });
@@ -1010,7 +1015,9 @@ namespace thesis.Migrations
 
                     b.HasOne("thesis.Models.MeatDealers", "MeatDealers")
                         .WithMany()
-                        .HasForeignKey("MeatDealersId");
+                        .HasForeignKey("MeatDealersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AccountDetails");
 
