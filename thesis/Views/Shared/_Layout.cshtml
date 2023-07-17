@@ -33,6 +33,11 @@
 	<script src="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css"></script>
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+
+	<!-- JS CDN for QR code generation-->
+	<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+	<!-- JS CDN for QR Code Reader	 -->
+	<script src="https://unpkg.com/jsqr@1.2.0/dist/jsQR.js"></script>
     
 </head>
 <body>
@@ -85,6 +90,12 @@
 						<a asp-controller="UsersManagement" asp-action="Index">
 							<i class='bx bxs-user-account'></i>
 							<span class="text">Users Management</span>
+						</a>
+					</li>
+					<li>
+						<a asp-controller="QRCode" asp-action="Index">
+							<i class='bx bx-qr-scan'></i>
+							<span class="text">QR Demo</span>
 						</a>
 					</li>
 				</ul>

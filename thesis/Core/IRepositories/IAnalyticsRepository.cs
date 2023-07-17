@@ -7,6 +7,6 @@ namespace thesis.Core.IRepositories
 {
     public interface IAnalyticsRepository
     {
-        public AnalyticsViewModel GetTotalOfMeatPerTimeSeries();
+        public AnalyticsViewModel GetTotalOfMeatPerTimeSeries(string timeseries, Species species, DateTime startDate, DateTime endDate);
     }
 }

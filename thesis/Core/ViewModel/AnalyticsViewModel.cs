@@ -26,9 +26,11 @@ namespace thesis.Core.ViewModel
         public List<int> Suspect { get; set; }
         public List<int> Condemned { get; set; }
         public List<int> Pass { get; set; }
+        public DateTime start { get; set; } = new DateTime(DateTime.Now.Year, 1, 1);
+        public DateTime end { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        public Species species { get; set; }
+        public string timeSeries { get; set; } = "Monthly";
         
-
-        // for horizontal bar chart 
 
         public string[] monthAbbreviationsArray { get; set; }
     }

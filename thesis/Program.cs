@@ -30,7 +30,7 @@ var app = builder.Build();
 
 if (args.Length == 1 && args[0].ToLower() == "seeddatas")
 {
-    Seed2.SeedDatas(app);
+    Seed3.SeedDatas(app);
 }
 
 // Configure the HTTP request pipeline.

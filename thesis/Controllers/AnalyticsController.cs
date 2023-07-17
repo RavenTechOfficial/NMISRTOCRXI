@@ -20,11 +20,22 @@ namespace thesis.Controllers
         [Authorize(Policy = "RequireSuperAdmin")]
         public IActionResult Index()
         {
-            var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries();
+            var startDateOfYear = new DateTime(DateTime.Now.Year, 1, 1);
+            var currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+            var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries("Monthly", Species.Cattle, startDateOfYear, currentDate);
             return View(analyticsViewModel);
         }
-
-
+        [HttpPost]
+        public IActionResult actionResult(AnalyticsViewModel analytics)
+        {
+            var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries(
+                analytics.timeSeries, 
+                analytics.species, 
+                analytics.start, 
+                analytics.end);
+            return View("Index", analyticsViewModel);
+        }
 
     }
 }
