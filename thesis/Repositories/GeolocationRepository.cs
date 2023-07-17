@@ -30,70 +30,102 @@ namespace thesis.Repositories
 
 			var addressList = new List<string>();
 			var colors = new List<string>();
-			if (meatDealer)
-			{
-				addressList.AddRange(meatDealers.Where(address => !string.IsNullOrEmpty(address)));
-				if (meatDealers != null)
-				{
-					colors.AddRange(Enumerable.Repeat("red", meatDealers.Count));
-				}
-			}
-			if (meatDestination)
-			{
-				addressList.AddRange(summary.Where(address => !string.IsNullOrEmpty(address)));
-				if (summary != null)
-				{
-					colors.AddRange(Enumerable.Repeat("blue", summary.Count));
-				}
-			}
-			if (slaughterhouses)
-			{
-				var meatEst = MeatEstType(EstablishmentType.SLH);
-				if (meatEst != null)
-				{
-					addressList.AddRange(meatEst.Where(address => !string.IsNullOrEmpty(address)));
-					colors.AddRange(Enumerable.Repeat("green", meatEst.Count));
-				}
-			}
-			if (poultryDressingPlants)
-			{
-				var meatEst = MeatEstType(EstablishmentType.PDP);
-				if (meatEst != null)
-				{
-					addressList.AddRange(meatEst.Where(address => !string.IsNullOrEmpty(address)));
-					colors.AddRange(Enumerable.Repeat("blue", meatEst.Count));
-				}
-			}
-			if (meatcuttinplants)
-			{
-				var meatEst = MeatEstType(EstablishmentType.MCP);
-				if (meatEst != null)
-				{
-					addressList.AddRange(meatEst.Where(address => !string.IsNullOrEmpty(address)));
-					colors.AddRange(Enumerable.Repeat("white", meatEst.Count));
-				}
-			}
-			if (coldstoragewarehouse)
-			{
-				var meatEst = MeatEstType(EstablishmentType.CSW);
-				if (meatEst != null)
-				{
-					addressList.AddRange(meatEst.Where(address => !string.IsNullOrEmpty(address)));
-					colors.AddRange(Enumerable.Repeat("black", meatEst.Count));
-				}
-			}
+            if (meatDealer)
+            {
+                var distinctAddresses = meatDealers.Where(address => !string.IsNullOrEmpty(address)).Distinct();
 
-			return new GeolocationViewModel()
+                addressList.AddRange(distinctAddresses);
+
+                foreach (var address in distinctAddresses)
+                {
+                    colors.Add("red");
+                }
+            }
+            if (meatDestination)
+            {
+                if (summary != null)
+                {
+                    var distinctAddresses = summary.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+
+                    addressList.AddRange(distinctAddresses);
+
+                    foreach (var address in distinctAddresses)
+                    {
+                        colors.Add("blue");
+                    }
+                }
+            }
+            if (slaughterhouses)
+            {
+                var meatEst = MeatEstType(EstablishmentType.SLH);
+                if (meatEst != null)
+                {
+                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+
+                    addressList.AddRange(distinctAddresses);
+                    foreach (var address in distinctAddresses)
+                    {
+                        colors.Add("green");
+                    }
+                }
+            }
+
+            if (poultryDressingPlants)
+            {
+                var meatEst = MeatEstType(EstablishmentType.PDP);
+                if (meatEst != null)
+                {
+                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+
+                    addressList.AddRange(distinctAddresses);
+                    foreach (var address in distinctAddresses)
+                    {
+                        colors.Add("blue");
+                    }
+                }
+            }
+
+            if (meatcuttinplants)
+            {
+                var meatEst = MeatEstType(EstablishmentType.MCP);
+                if (meatEst != null)
+                {
+                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+
+                    addressList.AddRange(distinctAddresses);
+                    foreach (var address in distinctAddresses)
+                    {
+                        colors.Add("white");
+                    }
+                }
+            }
+
+            if (coldstoragewarehouse)
+            {
+                var meatEst = MeatEstType(EstablishmentType.CSW);
+                if (meatEst != null)
+                {
+                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+
+                    addressList.AddRange(distinctAddresses);
+                    foreach (var address in distinctAddresses)
+                    {
+                        colors.Add("black");
+                    }
+                }
+            }
+
+            return new GeolocationViewModel()
 			{
 				address = addressList.ToArray(),
 				colors = colors.ToArray(),
 			};
 		}
 
-		public List<string> MeatEstType(EstablishmentType establishmentType)
-		{
-			var meatEst = _context.MeatEstablishment.Where(p => p.Type == establishmentType).Select(p => p.Address).ToList();
-			return meatEst;
-		}
-	}
+        public List<string> MeatEstType(EstablishmentType establishmentType)
+        {
+            var meatEst = _context.MeatEstablishment.Where(p => p.Type == establishmentType).Select(p => p.Address).ToList();
+            return meatEst;
+        }
+    }
 }
