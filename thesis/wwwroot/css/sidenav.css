@@ -328,6 +328,13 @@ body {
 		font-size: 20px;
 		position: relative;
 	}
+.dropdown-menu {
+	background-color: var(--light);
+}
+
+.dropdown-item:hover {
+	background-color: var(--light-blue);
+}
 
 		#navbar nav .notification .num {
 			position: absolute;

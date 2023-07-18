@@ -1,60 +1,84 @@
 ﻿@using thesis.Core.ViewModel;
 @model AccountUserViewModel
 
+<link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
 
-<div class="container">
-    <h1>Edit</h1>
-    <h4>Users Details</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <div class="form-group">
-                    <label asp-for="firstName" class="control-label"></label>
-                    <input asp-for="firstName" class="form-control" />
-                    <span asp-validation-for="firstName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="lastName" class="control-label"></label>
-                    <input asp-for="lastName" class="form-control" />
-                    <span asp-validation-for="lastName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="middleName" class="control-label"></label>
-                    <input asp-for="middleName" class="form-control" />
-                    <span asp-validation-for="middleName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="contactNo" class="control-label"></label>
-                    <input type="number" asp-for="contactNo" class="form-control" />
-                    <span asp-validation-for="contactNo" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="birthdate" class="control-label"></label>
-                    <input type="date" asp-for="birthdate" class="form-control" />
-                    <span asp-validation-for="birthdate" class="text-danger"></span>
-                </div>
-                @*->>>>>>Imagee*@
-                <div class="form-group">
-                        <div class="sex">
-                            @Html.RadioButtonFor(Model => Model.sex, "Male", new { id = "check-male" })
-                            <label for="check-male">Male</label>
-                        </div>
-                        <div class="sex">
-                            @Html.RadioButtonFor(Model => Model.sex, "Female", new { id = "check-female" })
-                            <label for="check-female">Female</label>
-                        </div>
-                </div>
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </form>
-            <a asp-action="Index">Back to List</a>
-        </div>
-    </div>
+<section id="content">
 
 
-</div>
+	<!-- MAIN STARTS-->
+	<main class="registration">
+		<div class="container">
+			<header>Edit User Information</header>
+			<form asp-action="Edit" class="form">
+				<div class="column">
+					<div class="input-box">
+						<label asp-for="firstName"></label>
+						<input type="text" asp-for="firstName" required />
+						<span asp-validation-for="firstName"></span>
+					</div>
+					<div class="input-box">
+						<label asp-for="middleName"></label>
+						<input type="text" asp-for="middleName" required />
+						<span asp-validation-for="middleName"></span>
+					</div>
+				</div>
+				<div class="column">
+					<div class="input-box">
+						<label asp-for="lastName">Last Name</label>
+						<input type="text" asp-for="lastName" required />
+						<span asp-validation-for="lastName"></span>
+					</div>
+					<div class="input-box">
+						<label asp-for="contactNo"></label>
+						<input type="number" asp-for="contactNo" required />
+						<span asp-validation-for="contactNo"></span>
+					</div>
+
+				</div>
+
+				<div class="column">
+					<div class="row">
+						<div class="input-box">
+							<label asp-for="birthdate"></label>
+							<input type="date" asp-for="birthdate" required />
+							<span asp-validation-for="birthdate"></span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="sex-box">
+							<p>Sex</p>
+							<div class="sex-option" style="margin-top: 15px; margin-left: 30px; font-size: 20px;">
+								<div class="sex">
+									@Html.RadioButtonFor(Model => Model.sex, "Male", new { id = "check-male" })
+									<label for="check-male">Male</label>
+								</div>
+								<div class="sex">
+									@Html.RadioButtonFor(Model => Model.sex, "Female", new { id = "check-female" })
+									<label for="check-female">Female</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="column">
+					<button style="background-color: grey;" asp-action="Index">Go back to the previous page</button>
+					<button type="submit" value="Save">Save Changes</button>
+				</div>
+
+			</form>
+		</div>
+
+
+
+
+	</main>
+	<!-- MAIN ENDS -->
+
+</section>
 
 
 @section Scripts {
