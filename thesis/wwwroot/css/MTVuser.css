@@ -1,0 +1,149 @@
+﻿
+
+
+/* First Layer STARTS */
+#content main .FirstLayer {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 24px;
+    margin-top: 24px;
+    width: 100%;
+    color: var(--dark);
+}
+
+    #content main .FirstLayer > div {
+        border-radius: 20px;
+        background: var(--light);
+        padding: 24px;
+        overflow-x: auto;
+    }
+
+    #content main .FirstLayer .head {
+        display: flex;
+        align-items: center;
+        grid-gap: 16px;
+        margin-bottom: 24px;
+    }
+
+        #content main .FirstLayer .head h3 {
+            margin-right: auto;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        #content main .FirstLayer .head .bx {
+            cursor: pointer;
+        }
+
+    #content main .FirstLayer div.applications {
+        max-width: 700px;
+        width: 100%;
+    }
+
+    #content main .FirstLayer .applications table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        #content main .FirstLayer .applications table th {
+            padding-bottom: 12px;
+            font-size: 13px;
+            text-align: left;
+            border-bottom: 1px solid var(--grey);
+        }
+
+        #content main .FirstLayer .applications table td {
+            padding: 16px 0;
+        }
+
+        #content main .FirstLayer .applications table tr td:first-child {
+            display: flex;
+            align-items: center;
+            grid-gap: 12px;
+            padding-left: 6px;
+        }
+
+        #content main .FirstLayer .applications table td img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        #content main .FirstLayer .applications table tbody tr:hover {
+            background: var(--grey);
+        }
+
+        #content main .FirstLayer .applications table tr td .status {
+            font-size: 12px;
+            padding: 6px 16px;
+            color: var(--light);
+            border-radius: 20px;
+            font-weight: 700;
+        }
+    /* #content main .FirstLayer .applications table tr td .status.completed {
+	background: var(--blue);
+}
+#content main .FirstLayer .applications table tr td .status.process {
+	background: var(--yellow);
+}
+#content main .FirstLayer .applications table tr td .status.pending {
+	background: var(--orange);
+}
+
+#content main .FirstLayer .applications table tr td .status.duty {
+	background: var(--blue);
+  }
+  
+  #content main .FirstLayer .applications table tr td .status.offline {
+	background: var(--red);
+  }
+  
+  #content main .FirstLayer .applications table tr td .status.leave {
+	background: var(--yellow);
+  } */
+    #content main .FirstLayer .applications:first-child table tr td .status.duty {
+        background: var(--blue);
+    }
+
+    #content main .FirstLayer .applications:first-child table tr td .status.leave {
+        background: var(--yellow);
+    }
+
+    #content main .FirstLayer .applications:first-child table tr td .status.offline {
+        background: var(--orange);
+    }
+
+    #content main .FirstLayer .applications:last-child table tr td .status.completed {
+        background: var(--blue);
+    }
+
+    #content main .FirstLayer .applications:last-child table tr td .status.process {
+        background: var(--yellow);
+    }
+
+    #content main .FirstLayer .applications:last-child table tr td .status.pending {
+        background: var(--orange);
+    }
+
+
+/* First Layer ENDS */
+
+.fb-video {
+    margin: 20px 0;
+    margin-right: 100px;
+}
+
+.container1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+@media screen and (max-width: 576px) {
+
+
+    #content main .FirstLayer .applications table {
+        min-width: 420px;
+    }
+}

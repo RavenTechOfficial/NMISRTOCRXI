@@ -1,4 +1,4 @@
-﻿body {
+﻿﻿body {
     text-size-adjust: initial;
     font-weight: 50;
 }
@@ -147,7 +147,7 @@
         }
 
         .registration .img-area p {
-            text-align:center;
+            text-align: center;
             color: black;
         }
 
@@ -242,7 +242,7 @@
             background: rgb(131, 109, 243);
         }
 
-  
+
 
 /*Responsive*/
 

@@ -21,13 +21,25 @@ namespace thesis.Controllers
             }
             else if (User.Identity.IsAuthenticated && User.IsInRole("InspectorAdministrator"))
             {
-                return RedirectToAction("Index", "InspectorAdmin");
+                return RedirectToAction("Index", "MeatEstablishments");
+            }
+            else if (User.Identity.IsAuthenticated && User.IsInRole("MeatInspector"))
+            {
+                return RedirectToAction("Index", "ReceivingReports");
+            }
+            else if (User.Identity.IsAuthenticated && User.IsInRole("MeatEstablishmentRepresentative"))
+            {
+                return RedirectToAction("Index", "ReceivingReports");
             }
             else if (User.Identity.IsAuthenticated && User.IsInRole("MTVAdministrator"))
             {
-                return RedirectToAction("Index", "AdminMTV");
+                return RedirectToAction("Create", "MTVdashboard");
             }
-            return View();
+            else
+            {
+				return View();
+			}
+			
         }
 
         public IActionResult Privacy()

@@ -1,0 +1,217 @@
+﻿@model PostmortemViewModel
+@using Azure.Core;
+@using thesis.Core.ViewModel;
+@using thesis.Data.Enum;
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+@{
+    ViewData["Title"] = "Create";
+}
+<link href="~/css/register.css" rel="stylesheet" />
+
+<section id="content">
+
+
+    <!-- MAIN STARTS-->
+    <main class="registration">
+        <div class="FirstLayer">
+            <h1>Conduct of Postmortem Inspection</h1>
+            <hr />
+        </div>
+        <div class="FirstLayer">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Receiving-Acceptance</a></li>
+                    <li class="breadcrumb-item"><a href="#">Antemortem</a></li>
+                    <li class="breadcrumb-item"><a href="#">Passed</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Postmortem</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="registration">
+            <div class="container">
+
+                @*<h1>Create</h1>*@
+                <a class='bx bxs-chevron-left' asp-action="Index">
+                    <span>Back</span>
+                </a>
+
+
+
+                <form class="form" asp-action="Create">
+                    <div class="column">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="input-box">
+                            <label asp-for="PassedForSlaughterId" class="control-label"></label>
+                            <select asp-for="PassedForSlaughterId" class="form-control" asp-items="ViewBag.PassedForSlaughterId"></select>
+                        </div>
+
+                        <div class="input-box">
+                            <label asp-for="AnimalPart" class="control-label"></label>
+                            <select asp-for="AnimalPart" class="form-control" asp-items="@Html.GetEnumSelectList<AnimalPart>()">
+                                <option>--Select--</option>
+                            </select>
+                            <span asp-validation-for="AnimalPart" class="text-danger"></span>
+                        </div>
+                        <div class="input-box">
+                            <label asp-for="Cause" class="control-label"></label>
+                            <select asp-for="Cause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()">
+                                <option>--Select--</option>
+                            </select>
+                            <span asp-validation-for="Cause" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="input-box">
+                            <label asp-for="Weight" class="control-label"></label>
+                            <input asp-for="Weight" class="form-control" />
+                            <span asp-validation-for="Weight" class="text-danger"></span>
+                        </div>
+                        <div class="input-box">
+                            <label asp-for="NoOfHeads" class="control-label"></label>
+                            <input asp-for="NoOfHeads" class="form-control" />
+                            <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <br />
+
+
+                    <div class="row">
+                        <div class="upload-box">
+                            <label>Upload Image for Inspection</label>
+                            <div class="container">
+                                <input type="file" id="file" accept="image/*" asp-for="Images" hidden>
+                                <div class="img-area" data-img="">
+                                    <i class='bx bxs-cloud-upload icon'></i>
+                                    <h3>Upload Image</h3>
+                                    <p>Image size must be less than <span>5MB</span></p>
+                                </div>
+                                <button class="select-image" type="button">Select Image</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    @* <input type="submit" value="Create" class="btn btn-primary" />*@
+
+
+                    @*   <a class="btn btn-success" asp-controller="Postmortems" asp-action="Index"> <i class="bx bx-detail"> </i> <span>Show all</span></a>*@
+                    <button type="submit" value="Create">Create</button>
+
+
+                </form>
+            </div>
+
+
+            @section Scripts {
+                @{
+                    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                }
+            }
+        </div>
+        </br>
+        <div class="button">
+            <a class="btn btn-dark " asp-controller="totalNoFitForHumanConsumptions" asp-action="Index"> <span>Next</span> <i class="bx bx-chevron-right"> </i> </a>
+        </div>
+
+
+
+
+        <div class="FirstLayer">
+
+            <div class="applications">
+                <div class="search">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
+                </div>
+
+                <script>
+                    $(document).ready(function () {
+                        $('#searchInput').on('input', function () {
+                            var searchText = $(this).val().toLowerCase();
+                            $('.filter-item').each(function () {
+                                var rowText = $(this).text().toLowerCase();
+                                if (rowText.indexOf(searchText) === -1) {
+                                    $(this).hide();
+                                } else {
+                                    $(this).show();
+                                }
+                            });
+                        });
+                    });
+                </script>
+
+                <br />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Passed for Slaughters No. Of Heads
+                            </th>
+                            <th>
+                                Passed for Slaughters Weight
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AnimalPart)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Cause)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Weight)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NoOfHeads)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Images)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Postmortem)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PassedForSlaughter.NoOfHeads)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PassedForSlaughter.Weight)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AnimalPart)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cause)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Weight)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NoOfHeads)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Images)
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+</section>
+
+
+<script src="~/js/register.js"></script>

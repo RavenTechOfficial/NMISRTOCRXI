@@ -5,7 +5,7 @@ namespace thesis.Controllers
 {
     public class RegisteredMTVController : Controller
     {
-        [Authorize(Policy = "RequireSuperAdmin")]
+        [Authorize(Policy = "RequireMTVAdmin")]
         public IActionResult Index()
         {
             return View();

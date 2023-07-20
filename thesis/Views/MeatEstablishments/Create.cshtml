@@ -1,48 +1,355 @@
-﻿@model thesis.Models.MeatEstablishment
+﻿@using thesis.Core.ViewModel;
+@using thesis.Data.Enum;
+@model MeatEstablishmentViewModel;
+@using Azure.Core;
+
+<link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
 
 @{
     ViewData["Title"] = "Create";
 }
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+<section id="content">
 
-<h1>Create</h1>
+    <!-- MAIN STARTS-->
+    <main class="registration">
+        <div class="FirstLayer">
+            <h3>Meat Establishment Registration</h3>
+        </div>
+        <div class="FirstLayer">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Registration</li>
+                </ol>
+            </nav>
+        </div>
 
-<h4>MeatEstablishment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LicenseToOperateNumber" class="control-label"></label>
-                <input asp-for="LicenseToOperateNumber" class="form-control" />
-                <span asp-validation-for="LicenseToOperateNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+        <div class="container">
+
+            <form class="form" asp-action="Create">
+
+                <div class="column">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="input-box">
+                        <label asp-for="Type" class="control-label"></label>
+                        <select asp-for="Type" class="form-control" asp-items="@Html.GetEnumSelectList<EstablishmentType>()">
+                            <option>--Select--</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="input-box">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" id="addressInput" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="input-box address">
+
+                    <div class="column">
+                        <div class="select-box">
+                            <select id="regionSelect" onchange="populateProvinces()">
+                                <option hidden>Region</option>
+                                <!-- Add region options here -->
+                            </select>
+                        </div>
+                        <div class="select-box">
+                            <select id="provinceSelect" onchange="populateCities()">
+                                <option hidden>Province</option>
+                                <!-- Add province options here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="select-box">
+                            <select id="citySelect" onchange="populateBarangays()">
+                                <option hidden>City/Municipality</option>
+                                <!-- Add city options here -->
+                            </select>
+                        </div>
+                        <div class="select-box">
+                            <select id="barangaySelect" onchange="updateAddressInput()">
+                                <option hidden>Barangay</option>
+                                <!-- Add barangay options here -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function updateAddressInput() {
+                        // Get the selected values from the dropdowns
+                        var barangay = document.getElement("barangaySelect").value;
+                        var city = document.getElementById("citySelect").value;
+                        var province = document.getElementById("provinceSelect").value;
+                        var region = document.getElementById("regionSelect").value;
+
+
+
+                        // Construct the address using the selected values
+                        var address = barangay + ", " + city + ", " + province + ", " + region;
+
+                        // Update the value of the address input box
+                        document.getElementBy("addressInput").value = Address;
+                    }
+                </script>
+                <br />
+
+                <div class="column">
+
+                    <div class="input-box">
+                        <label class="control-label">Licensed Status</label>
+                        <select class="form-control">
+                            <option>--Select--</option>
+                            <option>Licensed</option>
+                            <option>Non-Licensed</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box">
+                        <label asp-for="LicenseToOperateNumber" class="control-label"></label>
+                        <input asp-for="LicenseToOperateNumber" class="form-control" />
+                        <span asp-validation-for="LicenseToOperateNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <br />
+
+                <button type="submit" value="Create">Create</button>
+
+
+            </form>
+        </div>
+
+
+
+        <div class="FirstLayer">
+
+            <div class="applications">
+
+                <div class="search">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
+                </div>
+
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Type)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Address)
+                            </th>
+                            @* <th>
+                            @Html.DisplayNameFor(model => model.LicenseStatus)
+                            </th>*@
+                            <th>
+                                @Html.DisplayNameFor(model => model.LicenseToOperateNumber)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.MeatEstablishments)
+                        {
+                            @if (item.Type != null && item.Name != null && item.Address != null && item.LicenseToOperateNumber != null)
+                            {
+                                <tr class="filter-item">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Type)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Address)
+                                    </td>
+                                    @* <td>
+                            @Html.DisplayFor(modelItem => item.LicenseStatus)
+                            </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LicenseToOperateNumber)
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+                <div /><div />
+    </main>
+
+
+</section>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+    $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+            var searchText = $(this).val().toLowerCase();
+            $('.filter-item').each(function () {
+                var rowText = $(this).text().toLowerCase();
+                if (rowText.indexOf(searchText) === -1) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            });
+        });
+    });
+</script>
+
+<script src="~/js/register.js"></script>
+<script>
+    //integration of Philippines Address JSON
+    fetch('@Url.Content("~/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
+        .then(response => response.json())
+        .then(data => {
+            const regionSelect = document.getElementById('regionSelect');
+            const provinceSelect = document.getElementById('provinceSelect');
+            const citySelect = document.getElementById('citySelect');
+            const barangaySelect = document.getElementById('barangaySelect');
+            var addressInput = document.getElementById('addressInput');
+
+            // Define the desired order of regions
+            const regionOrder = [
+                { regionCode: "NCR", regionName: "National Capital Region" },
+                { regionCode: "CAR", regionName: "Cordillera Administrative Region" },
+                { regionCode: "01", regionName: "Region I" },
+                { regionCode: "02", regionName: "Region II" },
+                { regionCode: "03", regionName: "Region III" },
+                { regionCode: "04A", regionName: "Region IV-A" },
+                { regionCode: "04B", regionName: "Region IV-B" },
+                { regionCode: "05", regionName: "Region V" },
+                { regionCode: "06", regionName: "Region VI" },
+                { regionCode: "07", regionName: "Region VII" },
+                { regionCode: "08", regionName: "Region VIII" },
+                { regionCode: "09", regionName: "Region IX" },
+                { regionCode: "10", regionName: "Region X" },
+                { regionCode: "11", regionName: "Region XI" },
+                { regionCode: "12", regionName: "Region XII" },
+                { regionCode: "13", regionName: "Region XIII" },
+                { regionCode: "BARMM", regionName: "Bangsamoro Autonomous Region in Muslim Mindanao" }
+            ];
+
+            // Populate regions dropdown
+            regionOrder.forEach(region => {
+                const option = document.createElement('option');
+                option.value = region.regionCode;
+                option.textContent = region.regionName;
+                regionSelect.appendChild(option);
+            });
+
+            // Function to populate provinces based on the selected region
+            function populateProvinces() {
+                const selectedRegion = regionSelect.value;
+                provinceSelect.innerHTML = "<option hidden>Select Province</option>";
+                citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
+                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+
+                if (selectedRegion !== "") {
+                    const regionData = data[selectedRegion];
+                    const provinceList = regionData.province_list;
+
+                    for (const [provinceCode, province] of Object.entries(provinceList)) {
+                        const option = document.createElement('option');
+                        option.value = provinceCode;
+                        option.textContent = provinceCode;
+                        provinceSelect.appendChild(option);
+                    }
+                }
+            }
+
+            // Function to populate cities/municipalities based on the selected province
+            function populateCities() {
+                const selectedRegion = regionSelect.value;
+                const selectedProvince = provinceSelect.value;
+                citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
+                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+
+                if (selectedRegion !== "" && selectedProvince !== "") {
+                    const regionData = data[selectedRegion];
+                    const provinceData = regionData.province_list[selectedProvince];
+                    const municipalityList = provinceData.municipality_list;
+
+                    for (const [municipalityCode, municipality] of Object.entries(municipalityList)) {
+                        const option = document.createElement('option');
+                        option.value = municipalityCode;
+                        option.textContent = municipalityCode;
+                        citySelect.appendChild(option);
+                    }
+                }
+            }
+
+            // Function to populate barangays based on the selected city/municipality
+            function populateBarangays() {
+                const selectedRegion = regionSelect.value;
+                const selectedProvince = provinceSelect.value;
+                const selectedCity = citySelect.value;
+                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+
+                if (selectedRegion !== "" && selectedProvince !== "" && selectedCity !== "") {
+                    const regionData = data[selectedRegion];
+                    const provinceData = regionData.province_list[selectedProvince];
+                    const municipalityData = provinceData.municipality_list[selectedCity];
+                    const barangayList = municipalityData.barangay_list;
+
+                    for (const barangay of barangayList) {
+                        const option = document.createElement('option');
+                        option.value = barangay;
+                        option.textContent = barangay;
+                        barangaySelect.appendChild(option);
+                    }
+                }
+            }
+            function updateAddress() {
+                var regionSelect = document.getElementById('regionSelect');
+                var provinceSelect = document.getElementById('provinceSelect');
+                var citySelect = document.getElementById('citySelect');
+                var barangaySelect = document.getElementById('barangaySelect');
+                var addressInput = document.getElementById('addressInput');
+
+                var region = regionSelect.value || '';
+                var province = provinceSelect.value || '';
+                var city = citySelect.value || '';
+                var barangay = barangaySelect.value || '';
+
+                //var address = region + ', ' + province + ', ' + city + ', ' + barangay;
+                var address = city + ', ' + barangay;
+                addressInput.value = address;
+            }
+
+
+            // Add event listeners to call the populate functions on change
+            regionSelect.addEventListener('change', populateProvinces);
+            provinceSelect.addEventListener('change', populateCities);
+            citySelect.addEventListener('change', populateBarangays);
+            document.getElementById('regionSelect').addEventListener('change', updateAddress);
+            document.getElementById('provinceSelect').addEventListener('change', updateAddress);
+            document.getElementById('citySelect').addEventListener('change', updateAddress);
+            document.getElementById('barangaySelect').addEventListener('change', updateAddress);
+        })
+        .catch(error => console.error('Error fetching JSON:', error));
+
+</script>
+
 }

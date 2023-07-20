@@ -3,82 +3,172 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
 
-<h1>Edit</h1>
+<section id="content">
 
-<h4>ReceivingReport</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="RecTime" class="control-label"></label>
-                <input asp-for="RecTime" class="form-control" />
-                <span asp-validation-for="RecTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BatchCode" class="control-label"></label>
-                <input asp-for="BatchCode" class="form-control" />
-                <span asp-validation-for="BatchCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Species" class="control-label"></label>
-                <input asp-for="Species" class="form-control" />
-                <span asp-validation-for="Species" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NoOfHeads" class="control-label"></label>
-                <input asp-for="NoOfHeads" class="form-control" />
-                <span asp-validation-for="NoOfHeads" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LiveWeight" class="control-label"></label>
-                <input asp-for="LiveWeight" class="form-control" />
-                <span asp-validation-for="LiveWeight" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MeatDealersId" class="control-label"></label>
-                <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId"></select>
-                <span asp-validation-for="MeatDealersId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Origin" class="control-label"></label>
-                <input asp-for="Origin" class="form-control" />
-                <span asp-validation-for="Origin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShippingDoc" class="control-label"></label>
-                <select asp-for="ShippingDoc" class="form-control"></select>
-                <span asp-validation-for="ShippingDoc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HoldingPenNo" class="control-label"></label>
-                <input asp-for="HoldingPenNo" class="form-control" />
-                <span asp-validation-for="HoldingPenNo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReceivingBy" class="control-label"></label>
-                <input asp-for="ReceivingBy" class="form-control" />
-                <span asp-validation-for="ReceivingBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <!-- MAIN STARTS-->
+    <main>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        <div class="FirstLayer">
+            <h3>Daily Receiving / Acceptance of Food Animals</h3>
+        </div>
+        <div class="FirstLayer">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Receiving/Acceptance</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit</li>
+
+                </ol>
+            </nav>
+        </div>
+
+        <div class="FirstLayer">
+
+            <div class="applications">
+                @if (User.IsInRole("MeatInspector"))
+                {
+                    <a class='bx bxs-chevron-left' asp-action="Index">
+                        <span>Back</span>
+                    </a>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form asp-action="Edit">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Id" />
+                                <div class="form-group">
+                                    <label asp-for="RecTime" class="control-label"></label>
+                                    <input asp-for="RecTime" class="form-control" disabled />
+                                    <span asp-validation-for="RecTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Species" class="control-label"></label>
+                                    <input asp-for="Species" class="form-control" disabled />
+                                    <span asp-validation-for="Species" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="NoOfHeads" class="control-label"></label>
+                                    <input asp-for="NoOfHeads" class="form-control" disabled />
+                                    <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="MeatDealersId" class="control-label"></label>
+                                    <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId" disabled></select>
+                                    <span asp-validation-for="MeatDealersId" class="text-danger"></span>
+                                </div>
+
+                                <br />
+                                <div class="form-group">
+
+                                    <a class="btn btn-primary" asp-controller="ConductOfInspections" asp-action="Create">Next</a>
+                                </div>
+                                @*<div class="form-group">
+                            <input type="submit" value="Next" class="btn btn-primary" />
+                            <br />
+                            <a class="btn btn-primary" asp-controller="ConductOfInspections" asp-action="Create">Next</a>
+                            </div>*@
+                            </form>
+                        </div>
+                    </div>
+
+                    <div>
+                    </div>
+                }
+                @if (User.IsInRole("MeatEstablishmentRepresentative"))
+                {
+
+                    <div>
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form asp-action="Edit">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Id" />
+                                <div class="form-group">
+                                    <label asp-for="RecTime" class="control-label"></label>
+                                    <input asp-for="RecTime" class="form-control" readonly />
+                                    <span asp-validation-for="RecTime" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BatchCode" class="control-label"></label>
+                                    <input asp-for="BatchCode" class="form-control" />
+                                    <span asp-validation-for="BatchCode" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Species" class="control-label"></label>
+                                    <input asp-for="Species" class="form-control" />
+                                    <span asp-validation-for="Species" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Category" class="control-label"></label>
+                                    <input asp-for="Category" class="form-control" />
+                                    <span asp-validation-for="Category" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="NoOfHeads" class="control-label"></label>
+                                    <input asp-for="NoOfHeads" class="form-control" />
+                                    <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="LiveWeight" class="control-label"></label>
+                                    <input asp-for="LiveWeight" class="form-control" />
+                                    <span asp-validation-for="LiveWeight" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="MeatDealersId" class="control-label"></label>
+                                    <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId"></select>
+                                    <span asp-validation-for="MeatDealersId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Origin" class="control-label"></label>
+                                    <input asp-for="Origin" class="form-control" />
+                                    <span asp-validation-for="Origin" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ShippingDoc" class="control-label"></label>
+                                    <select asp-for="ShippingDoc" class="form-control"></select>
+                                    <span asp-validation-for="ShippingDoc" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="HoldingPenNo" class="control-label"></label>
+                                    <input asp-for="HoldingPenNo" class="form-control" />
+                                    <span asp-validation-for="HoldingPenNo" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ReceivingBy" class="control-label"></label>
+                                    <input asp-for="ReceivingBy" class="form-control" />
+                                    <span asp-validation-for="ReceivingBy" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="AccountDetailsId" class="control-label"></label>
+                                    <select asp-for="AccountDetailsId" class="form-control" asp-items="ViewBag.AccountDetailsId"></select>
+                                    <span asp-validation-for="AccountDetailsId" class="text-danger"></span>
+                                </div>
+                                <br />
+                                <div class="button">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+
+                }
+
+
+
+                @section Scripts {
+                    @{
+                        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                    }
+                }
+            </div>
+        </div>
+
+    </main>
+</section>

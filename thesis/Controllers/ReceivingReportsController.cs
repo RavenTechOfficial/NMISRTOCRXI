@@ -2,19 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using thesis.Data;
 using thesis.Models;
 
+
+
 namespace thesis.Controllers
 {
-	[Authorize(Policy = "RequireInspectorAdmin")]
-	public class ReceivingReportsController : Controller
+    public class ReceivingReportsController : Controller
     {
+
+
         private readonly thesisContext _context;
+
+
 
         public ReceivingReportsController(thesisContext context)
         {
@@ -24,9 +29,12 @@ namespace thesis.Controllers
         // GET: ReceivingReports
         public async Task<IActionResult> Index()
         {
-            var thesisContext = _context.ReceivingReports.Include(r => r.MeatDealers);
+
+            var thesisContext = _context.ReceivingReports.Include(r => r.AccountDetails).Include(r => r.MeatDealers);
             return View(await thesisContext.ToListAsync());
         }
+
+
 
         // GET: ReceivingReports/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -37,6 +45,7 @@ namespace thesis.Controllers
             }
 
             var receivingReport = await _context.ReceivingReports
+                .Include(r => r.AccountDetails)
                 .Include(r => r.MeatDealers)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (receivingReport == null)
@@ -50,8 +59,36 @@ namespace thesis.Controllers
         // GET: ReceivingReports/Create
         public IActionResult Create()
         {
-            ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id");
-            ViewData["ReceivingId"] = new SelectList(_context.Receivings, "Id", "Id");
+            var meatDealersList = _context.MeatDealers.ToList();
+            var concatenatedList = new List<SelectListItem>();
+
+            foreach (var meatDealer in meatDealersList)
+            {
+                var concatenatedValue = $"{meatDealer.FirstName} {meatDealer.LastName}";
+                var selectListItem = new SelectListItem
+                {
+                    Value = meatDealer.Id.ToString(),
+                    Text = concatenatedValue
+                };
+                concatenatedList.Add(selectListItem);
+            }
+            ViewData["MeatDealersId"] = new SelectList(concatenatedList, "Value", "Text");
+            var userList = _context.Users.ToList();
+            var concatenatedList1 = new List<SelectListItem>();
+
+            foreach (var user in userList)
+            {
+                var concatenatedValue = $"{user.firstName} {user.lastName}";
+                var selectListItem = new SelectListItem
+                {
+                    Value = user.Id.ToString(),
+                    Text = concatenatedValue
+                };
+                concatenatedList1.Add(selectListItem);
+            }
+
+            ViewData["AccountDetailsId"] = new SelectList(concatenatedList1, "Value", "Text");
+            //    ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -60,14 +97,15 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,ReceivingId")] ReceivingReport receivingReport)
+        public async Task<IActionResult> Create([Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId")] ReceivingReport receivingReport)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) //not not
             {
                 _context.Add(receivingReport);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
             ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
             return View(receivingReport);
         }
@@ -85,7 +123,22 @@ namespace thesis.Controllers
             {
                 return NotFound();
             }
-            ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
+            ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
+            //  ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
+            var meatDealersList = _context.MeatDealers.ToList();
+            var concatenatedList = new List<SelectListItem>();
+
+            foreach (var meatDealer in meatDealersList)
+            {
+                var concatenatedValue = $"{meatDealer.FirstName} {meatDealer.LastName}";
+                var selectListItem = new SelectListItem
+                {
+                    Value = meatDealer.Id.ToString(),
+                    Text = concatenatedValue
+                };
+                concatenatedList.Add(selectListItem);
+            }
+            ViewData["MeatDealersId"] = new SelectList(concatenatedList, "Value", "Text");
             return View(receivingReport);
         }
 
@@ -94,7 +147,7 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,ReceivingId")] ReceivingReport receivingReport)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId")] ReceivingReport receivingReport)
         {
             if (id != receivingReport.Id)
             {
@@ -121,6 +174,7 @@ namespace thesis.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
             ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
             return View(receivingReport);
         }
@@ -134,6 +188,7 @@ namespace thesis.Controllers
             }
 
             var receivingReport = await _context.ReceivingReports
+                .Include(r => r.AccountDetails)
                 .Include(r => r.MeatDealers)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (receivingReport == null)
@@ -158,14 +213,14 @@ namespace thesis.Controllers
             {
                 _context.ReceivingReports.Remove(receivingReport);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ReceivingReportExists(int id)
         {
-          return (_context.ReceivingReports?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.ReceivingReports?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

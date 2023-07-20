@@ -1,0 +1,249 @@
+﻿.container1 {
+    align-self: flex-start;
+    width: auto; /* Adjust the width as desired */
+    height: auto;
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px; /* Add padding as desired */
+    border: 1px solid #000000; /* Add a border if needed */
+    border-color: #000;
+    border-radius: 20px;
+    background-color: white;
+    margin-top: 20px;
+}
+
+.margin1 {
+    margin-left: 90px;
+}
+
+.margin2 {
+    margin-left: 30px;
+}
+
+.persoinfo {
+    align-items: left;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.persoinfo1 {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    margin-left: 50px;
+    justify-content: space-between;
+}
+
+.persoinfo2 {
+    align-items: center;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.persoinfo3 {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.selecting1 {
+    width: 200px;
+    height: 25px;
+    text-align: center;
+    border-color: var(--dl-color-gray-black);
+    border-width: 1px;
+    margin-right: var(--dl-space-space-doubleunit);
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.operator-application-container19 {
+    flex: 0 0 auto;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.textinput1 {
+    width: 100%;
+    max-width: 200px;
+    height: 25px;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 8px;
+    padding-left: 10px;
+}
+
+.textinput2 {
+    margin-left: 50px;
+    width: 100%;
+    max-width: 200px;
+    height: 25px;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 8px;
+    padding-left: 10px;
+}
+
+.textinput3 {
+    width: auto;
+    height: 25px;
+    border: #000;
+    border-color: white;
+    border-width: 2px;
+    border-radius: 8px;
+    padding-left: 10px;
+}
+/* .fileinput1{
+    padding-top: var(--dl-space-space-halfunit);
+    padding-left: var(--dl-space-space-halfunit);
+    padding-right: var(--dl-space-space-halfunit);
+    padding-bottom: var(--dl-space-space-halfunit);
+    border-color: #000;
+    border-width: 2px;
+    border-radius: 8px;
+    background-color: aqua;
+    width: auto;
+    height: 30px;
+} */
+
+.center1 {
+    text-align: center;
+}
+
+.left1 {
+    text-align: left;
+}
+
+.left3 {
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 10000px;
+}
+
+.left2 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 800px;
+}
+
+.centercont2 {
+    text-align: center;
+    font-weight: bold;
+}
+
+.centercont1 {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.persoinfoicon {
+    fill: #0D4C92;
+    margin-top: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.addressicon {
+    fill: #EF6262;
+    width: 24px;
+    height: 24px;
+}
+
+.emailicon {
+    fill: #FF8551;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.teleicon {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-left: 140px;
+    margin-right: 10px;
+}
+
+.faxicon {
+    fill: #176B87;
+    width: 24px;
+    height: 24px;
+    margin-left: 90px;
+    margin-right: 10px;
+}
+
+.makeicon {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.pnumber {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-left: 80px;
+    margin-right: 10px;
+}
+
+.enumber {
+    fill: #176B87;
+    width: 24px;
+    height: 24px;
+    margin-left: 80px;
+    margin-right: 10px;
+}
+
+.fileicon {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+}
+
+.operator-application-button {
+    height: 50px;
+    width: 200px;
+    align-self: center;
+    transition: 0.3s;
+    padding-top: var(--dl-space-space-halfunit);
+    border-width: 2px;
+    padding-left: var(--dl-space-space-doubleunit);
+    border-radius: 24px;
+    padding-right: var(--dl-space-space-doubleunit);
+    padding-bottom: var(--dl-space-space-halfunit);
+    background-color: #CFF5E7;
+}
+
+    .operator-application-button:hover {
+        color: #0d4c92;
+        background-color: #CDFCF6;
+    }
+
+#date-input, #time-input {
+    padding-left: 10px;
+    text-align: center;
+    border-radius: 8px;
+}

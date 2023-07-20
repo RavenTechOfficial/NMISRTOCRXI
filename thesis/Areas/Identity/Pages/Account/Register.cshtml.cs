@@ -17,10 +17,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using thesis.Areas.Identity.Data;
+using thesis.Data;
 using thesis.Data.Enum;
 using thesis.Models;
 
@@ -36,15 +39,17 @@ namespace thesis.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _hostEnvironment;
+		private readonly thesisContext _context;
 
-        public RegisterModel(
+		public RegisterModel(
             UserManager<AccountDetails> userManager,
             IUserStore<AccountDetails> userStore,
             SignInManager<AccountDetails> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IWebHostEnvironment hostEnvironment)
-        {
+            IWebHostEnvironment hostEnvironment,
+			thesisContext context)
+		{
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -52,7 +57,8 @@ namespace thesis.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _hostEnvironment = hostEnvironment;
-        }
+			_context = context;
+		}
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -79,14 +85,14 @@ namespace thesis.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            /// 
-            public MeatEstablishment MeatEstablishment { get; set;}
-
-            public Roles Roles { get; set;}
+			/// <summary>
+			///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+			///     directly from your code. This API may change or be removed in future releases.
+			/// </summary>
+			/// 
+			public MeatEstablishment MeatEstablishment { get; set; }
+			public int MeatEsblishmentId { get; set; }
+			public Roles Roles { get; set;}
 
             [Required]
             [Display(Name = "FirstName")]
@@ -148,7 +154,11 @@ namespace thesis.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        }
+			var meatEstablishments = _context.MeatEstablishment
+				.Where(me => me.Address != null)
+				.ToList();
+			ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
+		}
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -178,12 +188,10 @@ namespace thesis.Areas.Identity.Pages.Account
                 user.birthdate = Input.Birthdate;
 
                 user.Roles = Input.Roles;
+                user.MeatEstablishmentId = Input.MeatEsblishmentId;
                 user.MeatEstablishment = new MeatEstablishment
                 {
-                    Type = Input.MeatEstablishment.Type ?? new EstablishmentType(),
-                    Name = Input.MeatEstablishment.Name,
-                    Address = Input.MeatEstablishment.Address,
-                    LicenseToOperateNumber = Input.MeatEstablishment.LicenseToOperateNumber
+                    Type = Input.MeatEstablishment.Type ?? new EstablishmentType()
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

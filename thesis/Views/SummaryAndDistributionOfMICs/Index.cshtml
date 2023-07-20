@@ -1,0 +1,95 @@
+﻿@model IEnumerable<thesis.Models.SummaryAndDistributionOfMIC>
+
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+@{
+    ViewData["Title"] = "Index";
+}
+<section id="content">
+
+
+    <!-- MAIN STARTS-->
+    <main>
+        <div class="FirstLayer">
+
+            <h3>Summary and Distribution of Meat Inspection Certificate (MIC)</h3>
+            <hr />
+        </div>
+
+        <div class="FirstLayer">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">IV</li>
+                </ol>
+            </nav>
+        </div>
+
+
+        <div class="FirstLayer">
+
+            <div class="applications">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Type of Meat
+                            </th>
+                            <th>
+                                No. of Heads
+                            </th>
+                            <th>
+                                Weight()
+                            </th>
+                            <th>
+                                Destination Name
+                            </th>
+                            <th>
+                                Destination Address
+                            </th>
+                            <th>
+                                Certificate Status
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalNoFitForHumanConsumption.Species)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalNoFitForHumanConsumption.NoOfHeads)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalNoFitForHumanConsumption.DressedWeight)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DestinationName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DestinationAddress)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CertificateStatus)
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <a asp-controller="MeatInspectionReports" asp-action="Index"> Back to List </a>
+            </div>
+        </div>
+
+    </main>
+    <!-- MAIN ENDS -->
+</section>

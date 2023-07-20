@@ -29,8 +29,12 @@ public class thesisContext : IdentityDbContext<AccountDetails>
     public DbSet<ReceivingReport> ReceivingReports { get; set; }
     public DbSet<SummaryAndDistributionOfMIC> SummaryAndDistributionOfMICs { get; set; }
     public DbSet<totalNoFitForHumanConsumptions> totalNoFitForHumanConsumptions { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+	public DbSet<Driver> Drivers { get; set; }
+	public DbSet<Helper> Helpers { get; set; }
+	public DbSet<MTVquiz> MTVquizzes { get; set; }
+	public DbSet<checklist> checklists { get; set; }
+	public DbSet<VehicleInfo> VehicleInfos { get; set; }
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
     }

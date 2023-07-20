@@ -1,6 +1,10 @@
 ﻿@using thesis.Areas.Identity.Data;
 @model AccountDetails
 
+@{
+	string filename = ViewBag.FileName;
+}
+
 <link rel="stylesheet" href="~/css/view.css" asp-append-version="true" />
 <section id="content">
 
@@ -61,7 +65,7 @@
 						<div class="upload-box">
 							<label>Profile Picture</label>
 							<div class="container">
-								<img src="~/img/adrianne.jpg" alt="Adrianne" class="img-area" style="height: 300px;">
+								<img src="~/img/uploaded/@filename" alt="Adrianne" class="img-area" style="height: 300px;">
 							</div>
 						</div>
 					</div>

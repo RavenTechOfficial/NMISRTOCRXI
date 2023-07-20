@@ -9,6 +9,7 @@ using thesis.Areas.Identity.Data;
 using thesis.Core.IRepositories;
 using thesis.Core.ViewModel;
 using thesis.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace thesis.Controllers
 {
@@ -30,12 +31,13 @@ namespace thesis.Controllers
             _userManager = userManager;
             _emailSender = emailSender;
         }
-        public async Task<IActionResult> Index()
+		[Authorize(Policy = "RequireSuperAdmin")]
+		public async Task<IActionResult> Index()
 		{
 			var users = await _unitOfWork.UsersManangement.GetAllUsersAsync();
 			return View(users);
 		}
-
+		[Authorize(Policy = "RequireSuperAdmin")]
 		public async Task<IActionResult> Details(string id)
 		{
 			if(id == null) {
@@ -48,10 +50,12 @@ namespace thesis.Controllers
 			{
 				return NotFound();
 			}
+			string filename = Path.GetFileName(users.image);
+			ViewBag.filename = filename;
 
 			return View(users);
 		}
-
+		[Authorize(Policy = "RequireSuperAdmin")]
 		public async Task<IActionResult> Edit(string id)
 		{
 			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id); // AccountDetails
@@ -110,14 +114,14 @@ namespace thesis.Controllers
                 return View("Edit", accountDetails);
             }
         }
-
-        public IActionResult EditConfirmation()
+		[Authorize(Policy = "RequireSuperAdmin")]
+		public IActionResult EditConfirmation()
         {
             return View();
         }
 
-
-        public async Task<IActionResult> Delete(string id)
+		[Authorize(Policy = "RequireSuperAdmin")]
+		public async Task<IActionResult> Delete(string id)
 		{
 			if (id == null)
 			{
@@ -130,6 +134,8 @@ namespace thesis.Controllers
 			{
 				return NotFound();
 			}
+			string filename = Path.GetFileName(users.image);
+			ViewBag.filename = filename;
 
 			return View(users);
 		}

@@ -12,7 +12,7 @@ using thesis.Models;
 namespace thesis.Controllers
 {
 	[Authorize(Policy = "RequireInspectorAdmin")]
-	public class MeatInspectionReportsController : Controller
+    public class MeatInspectionReportsController : Controller
     {
         private readonly thesisContext _context;
 
@@ -67,7 +67,11 @@ namespace thesis.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            // If there was a validation error, populate the ViewData with the actual ReceivingReportId values
             ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
+            ViewData["ReceivingReportLabelText"] = _context.ReceivingReports.FirstOrDefault(r => r.Id == meatInspectionReport.ReceivingReportId)?.Id.ToString();
+
             return View(meatInspectionReport);
         }
 
@@ -157,14 +161,15 @@ namespace thesis.Controllers
             {
                 _context.MeatInspectionReports.Remove(meatInspectionReport);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MeatInspectionReportExists(int id)
         {
-          return (_context.MeatInspectionReports?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.MeatInspectionReports?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
+
 }
