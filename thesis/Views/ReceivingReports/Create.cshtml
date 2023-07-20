@@ -1,82 +1,152 @@
-﻿@model thesis.Models.ReceivingReport
+﻿@using Microsoft.AspNetCore.Identity;
+@using thesis.Areas.Identity.Data;
+@using thesis.Data.Enum;
+@model thesis.Models.ReceivingReport
+
+
+@inject SignInManager<AccountDetails> SignInManager
+@inject UserManager<AccountDetails> UserManager
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
 
-<h4>ReceivingReport</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="RecTime" class="control-label"></label>
-                <input asp-for="RecTime" class="form-control" />
-                <span asp-validation-for="RecTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BatchCode" class="control-label"></label>
-                <input asp-for="BatchCode" class="form-control" />
-                <span asp-validation-for="BatchCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Species" class="control-label"></label>
-                <input asp-for="Species" class="form-control" />
-                <span asp-validation-for="Species" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NoOfHeads" class="control-label"></label>
-                <input asp-for="NoOfHeads" class="form-control" />
-                <span asp-validation-for="NoOfHeads" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LiveWeight" class="control-label"></label>
-                <input asp-for="LiveWeight" class="form-control" />
-                <span asp-validation-for="LiveWeight" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MeatDealersId" class="control-label"></label>
-                <select asp-for="MeatDealersId" class ="form-control" asp-items="ViewBag.MeatDealersId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Origin" class="control-label"></label>
-                <input asp-for="Origin" class="form-control" />
-                <span asp-validation-for="Origin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShippingDoc" class="control-label"></label>
-                <select asp-for="ShippingDoc" class="form-control"></select>
-                <span asp-validation-for="ShippingDoc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HoldingPenNo" class="control-label"></label>
-                <input asp-for="HoldingPenNo" class="form-control" />
-                <span asp-validation-for="HoldingPenNo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReceivingBy" class="control-label"></label>
-                <input asp-for="ReceivingBy" class="form-control" />
-                <span asp-validation-for="ReceivingBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<section id="content">
+
+
+    <!-- MAIN STARTS-->
+    <main class="registration">
+        <div class="FirstLayer">
+            <h3>Daily Receiving / Acceptance of Food Animals</h3>
+        </div>
+        <div class="FirstLayer">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Receiving-SAcceptance</li>
+                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+
+                </ol>
+            </nav>
+        </div>
+
+
+        <hr />
+        <div class="container">
+            <a asp-action="Index">Back to List</a>
+            <form asp-action="Create" class="form">
+                <div class="column">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="input-box">
+                        <label asp-for="RecTime" class="control-label"></label>
+                        <input asp-for="RecTime" class="form-control" id="recTimeInput" readonly />
+                        <span asp-validation-for="RecTime" class="text-danger"></span>
+                    </div>
+                    <div class="input-box">
+                        <label asp-for="BatchCode" class="control-label"></label>
+                        <input asp-for="BatchCode" class="form-control" />
+                        <span asp-validation-for="BatchCode" class="text-danger"></span>
+                    </div>
+                    <div class="input-box">
+                        <label asp-for="Species" class="control-label"></label>
+                        <select asp-for="Species" class="form-control" asp-items="@Html.GetEnumSelectList<Species>()">
+                            <option>--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="input-box">
+
+                        <label asp-for="Category" class="control-label"></label>
+                        <select asp-for="Category" class="form-control" asp-items="@Html.GetEnumSelectList<CategoryOfFoodAnimals>()">
+                            <option>--Select--</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <label asp-for="NoOfHeads" class="control-label"></label>
+                        <input asp-for="NoOfHeads" class="form-control" />
+                        <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+                    </div>
+                    <div class="input-box">
+                        <label asp-for="LiveWeight" class="control-label"></label>
+                        <input asp-for="LiveWeight" class="form-control" />
+                        <span asp-validation-for="LiveWeight" class="text-danger"></span>
+                    </div>
+                    <div class="input-box">
+                        <label asp-for="MeatDealersId" class="control-label"></label>
+                        <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId">
+                            <option> --- Select ---</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="input-box">
+                        <label asp-for="Origin" class="control-label"></label>
+                        <input asp-for="Origin" class="form-control" />
+                        <span asp-validation-for="Origin" class="text-danger"></span>
+                    </div>
+                    <div class="input-box">
+                        <label asp-for="ShippingDoc" class="control-label"></label>
+                        <select asp-for="ShippingDoc" class="form-control" asp-items="@Html.GetEnumSelectList<ShippingDocuments>()">
+                            <option>--Select--</option>
+                        </select>
+                        <span asp-validation-for="ShippingDoc" class="text-danger"></span>
+                    </div>
+                    <div class="input-box">
+                        <label asp-for="HoldingPenNo" class="control-label"></label>
+                        <input asp-for="HoldingPenNo" class="form-control" />
+                        <span asp-validation-for="HoldingPenNo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="input-box">
+                        <label asp-for="ReceivingBy" class="control-label"></label>
+                        <input asp-for="ReceivingBy" class="form-control" />
+                        <span asp-validation-for="ReceivingBy" class="text-danger"></span>
+                    </div>
+                    <div class="input-box" style="display: none;">
+                        <label asp-for="AccountDetailsId" class="control-label"></label>
+                        <input id="accountDetailsInput" asp-for="AccountDetailsId" class="form-control" />
+                    </div>
+                </div>
+                <br />
+                <button type="submit" value="Create">Create</button>
+
+
+            </form>
+        </div>
+
+
+    </main>
+</section>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script>
+    // Set the value of the input field to the current datetime
+    var defaultDateTime = moment().format('YYYY-MM-DDTHH:mm');
+    document.getElementById("recTimeInput").value = defaultDateTime;
+
+    // Retrieve the ID from UserManager.GetUsername
+    var selectedAccountId = "@UserManager.GetUserId(User)";
+
+    // Get the input element
+    var inputElement = document.getElementById("accountDetailsInput");
+
+    // Set the value of the input field to the obtained ID
+    inputElement.value = selectedAccountId;
+
+</script>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+

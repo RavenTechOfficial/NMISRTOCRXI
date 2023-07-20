@@ -1,95 +1,269 @@
-﻿@model IEnumerable<thesis.Models.ReceivingReport>
+﻿@using thesis.Data.Enum;
+@model IEnumerable<thesis.Models.ReceivingReport>
+@using Microsoft.AspNetCore.Identity;
+@using thesis.Areas.Identity.Data;
+
+@inject SignInManager<AccountDetails> SignInManager
+@inject UserManager<AccountDetails> UserManager
 
 @{
     ViewData["Title"] = "Index";
 }
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+<section id="content">
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RecTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BatchCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Species)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NoOfHeads)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LiveWeight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MeatDealers)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Origin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShippingDoc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HoldingPenNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReceivingBy)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BatchCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Species)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoOfHeads)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LiveWeight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MeatDealers.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Origin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShippingDoc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoldingPenNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReceivingBy)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <!-- MAIN STARTS-->
+
+    <main>
+        <div class="FirstLayer">
+            <h3>Daily Receiving / Acceptance of Food Animals</h3>
+        </div>
+        <div class="FirstLayer">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Receiving/Acceptance</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="form-group">
+            <label for="startdate">Start Date</label>
+            <input onchange="filterDataDate()" type="date" id="startdate" class="filter">
+
+            <label for="enddate">End Date</label>
+            <input onchange="filterDataDate()" type="date" id="enddate" class="filter">
+        </div>
+
+
+
+        <div class="FirstLayer">
+
+            <div class="applications">
+
+                @if (User.IsInRole("MeatEstablishmentRepresentative"))
+                {
+                    <p>
+                        <a asp-action="Create">Create New</a>
+                    </p>
+                    <br />
+                }
+
+                <div class="search">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
+                </div>
+
+                <table id="tables">
+                    <thead>
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Batch Code
+                            </th>
+                            <th>
+                                Species
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                No. Of Heads
+                            </th>
+                            <th>
+                                Live Weight
+                            </th>
+                            <th>
+                                Meat Dealer
+                            </th>
+                            <th>
+                                Origin
+                            </th>
+                            <th>
+                                Shipping Documents
+                            </th>
+                            <th>
+                                Holding Pen No.
+                            </th>
+                            <th>
+                                Received By: (Name)
+                            </th>
+                            <th>
+                                Representative
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="filter-item">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RecTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BatchCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Species)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Category)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NoOfHeads)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LiveWeight)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MeatDealers.FirstName )
+                                    @Html.DisplayFor(modelItem => item.MeatDealers.LastName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Origin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ShippingDoc)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HoldingPenNo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReceivingBy)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AccountDetails.firstName)
+                                    @Html.DisplayFor(modelItem => item.AccountDetails.lastName)
+                                </td>
+
+
+                                @if (User.IsInRole("MeatInspector"))
+                                {
+                                    <td>
+                                        @{
+                                            var idd = @item.Id;
+                                        }
+
+                                        @* <a asp-controller="ConductOfInspections" asp-action="Create">INSPECT</a>*@
+
+                                        @* <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" id="getId">INSPECT</a>*@
+                                        <a class="btn btn-warning inspect-button" data-id="@item.Id">INSPECT</a>
+                                    </td>
+                                }
+                                @if (User.IsInRole("MeatEstablishmentRepresentative"))
+                                {
+                                    <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        </div>
+                                    </td>
+                                }
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+
+        <script>
+            //filters
+            window.onload = function () {
+                var filtersContainer = document.getElementById("filtersContainer");
+                filtersContainer.style.display = "none"; // Start with filters hidden
+            };
+
+            function toggleFilters() {
+                var filtersContainer = document.getElementById("filtersContainer");
+                var toggleFiltersButton = document.getElementById("toggleFiltersButton");
+                var filterIcon = toggleFiltersButton.querySelector("i.bx-filter-alt");
+
+                if (filtersContainer.style.display === "none") {
+                    filtersContainer.style.display = "flex";
+                    filterIcon.style.display = "inline";
+                    toggleFiltersButton.innerHTML = "Hide Filters <i class='bx bx-filter-alt'></i>";
+                } else {
+                    filtersContainer.style.display = "none";
+                    filterIcon.style.display = "inline";
+                    toggleFiltersButton.innerHTML = "Show Filters <i class='bx bx-filter-alt'></i>";
+                }
+            }
+
+            $(document).ready(function () {
+                $('.inspect-button').click(function () {
+                    var id = $(this).data('id');
+                    $('#selectedId').val(id); // Set the ID in the hidden input field
+                    window.location.href = '/ConductOfInspections/Create'; // Navigate to the Create.cshtml file
+                });
+            });
+
+            function filterDataDate() {
+                // Implement filtering logic for date
+            }
+
+            function filterDataSpecies() {
+                // Implement filtering logic for species
+            }
+
+            function filterDatameatEstablishment() {
+                // Implement filtering logic for meat establishment
+            }
+        </script>
+
+        <script>
+            function filterDataDate() {
+                var startDate = document.getElementById("startdate").value;
+                var endDate = document.getElementById("enddate").value;
+                var rows = document.getElementsByClassName("filter-item");
+
+                for (var i = 0; i < rows.length; i++) {
+                    var row = rows[i];
+                    var dateCell = row.cells[0]; // Assuming the date is in the first cell
+
+                    if (startDate && endDate) {
+                        var rowDate = new Date(dateCell.innerText).toISOString().split('T')[0]; // Extract date part
+                        var start = new Date(startDate);
+                        var end = new Date(endDate);
+
+                        if (rowDate >= start.toISOString().split('T')[0] && rowDate <= end.toISOString().split('T')[0]) {
+                            row.style.display = "table-row";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    } else {
+                        row.style.display = "table-row";
+                    }
+                }
+            }
+        </script>
+
+        <script>
+            $(document).ready(function () {
+
+                $('#searchInput').on('input', function () {
+                    var searchText = $(this).val().toLowerCase();
+                    $('.filter-item').each(function () {
+                        var rowText = $(this).text().toLowerCase();
+                        if (rowText.indexOf(searchText) === -1) {
+                            $(this).hide();
+                        } else {
+                            $(this).show();
+                        }
+                    });
+                });
+            });
+        </script>
+    </main>
+</section>
+

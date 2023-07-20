@@ -22,6 +22,8 @@ namespace thesis.Models
         public ShippingDocuments ShippingDoc { get; set; }
         public int HoldingPenNo { get; set; }
         public string ReceivingBy { get; set; }
+        [ForeignKey("AccountDetails")]
+        public string? AccountDetailsId { get; set; }
         public AccountDetails? AccountDetails { get; set; }
 
     }

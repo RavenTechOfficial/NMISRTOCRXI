@@ -1,42 +1,74 @@
 ﻿@model thesis.Models.MeatInspectionReport
+@using Azure.Core;
+@using thesis.Data.Enum;
 
 @{
     ViewData["Title"] = "Create";
+    var itemId = Context.Request.Query["itemId"];
 }
+<section id="content">
+    <!-- MAIN STARTS-->
+    <main>
 
-<h1>Create</h1>
+        <div class="FirstLayer">
 
-<h4>MeatInspectionReport</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="RepDate" class="control-label"></label>
-                <input asp-for="RepDate" class="form-control" />
-                <span asp-validation-for="RepDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VerifiedByPOSMSHead" class="control-label"></label>
-                <input asp-for="VerifiedByPOSMSHead" class="form-control" />
-                <span asp-validation-for="VerifiedByPOSMSHead" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReceivingReportId" class="control-label"></label>
-                <select asp-for="ReceivingReportId" class ="form-control" asp-items="ViewBag.ReceivingReportId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+            <div class="antemortem-chart charts-card">
+
+                <h1>Create</h1>
+
+                <h4>Meat Inspection Report</h4>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="RepDate" class="control-label"></label>
+                                <input asp-for="RepDate" class="form-control" id="repDateInput" readonly />
+                                <span asp-validation-for="RepDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="VerifiedByPOSMSHead" class="control-label"></label>
+                                <input asp-for="VerifiedByPOSMSHead" class="form-control" />
+                                <span asp-validation-for="VerifiedByPOSMSHead" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ReceivingReportId" class="control-label">@ViewData["ReceivingReportLabelText"]</label>
+                                <input asp-for="ReceivingReportId" class="form-control" value="@itemId" />
+                                <span asp-validation-for="ReceivingReportId" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input asp-controller="Antemortems" asp-action="Create" type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+
+                @section Scripts {
+                    @{
+                        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                    }
+
+                }
+            </div>
+
+        </div>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+        <script>
+            // Set the value of the input field to the current datetime
+            var defaultDateTime = moment().format('YYYY-MM-DDTHH:mm');
+            document.getElementById("repDateInput").value = defaultDateTime;
+
+        </script>
+
+    </main>
+</section>

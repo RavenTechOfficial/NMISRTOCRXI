@@ -1,0 +1,280 @@
+﻿.hide {
+    opacity: 00%;
+}
+
+.url {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.facebook-container {
+    width: 100%;
+    max-width: 500px;
+    height: 220px;
+    background-color: #3b5998;
+    display: flex;
+    align-items: top;
+    justify-content: space-evenly;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 8px;
+    border: 5px solid;
+    border-color: #CFF5E7;
+    background-image: url("../img/mtvodha.jpg");
+    background-size: cover;
+}
+
+.facebook-container1 {
+    width: 100%;
+    max-width: 500px;
+    height: 220px;
+    background-color: #3b5998;
+    display: flex;
+    align-items: top;
+    justify-content: space-evenly;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 8px;
+    border: 5px solid;
+    border-color: #CFF5E7;
+    background-image: url("../img/seminar.png");
+    background-size: cover;
+}
+
+.facebook-container:hover {
+    background-color: #1d3557;
+    border-color: #1d3557;
+    cursor: pointer;
+}
+
+.facebook-container1:hover {
+    background-color: #1d3557;
+    border-color: #1d3557;
+    cursor: pointer;
+}
+
+.facebook-link {
+    text-decoration: none;
+}
+
+.persoinfo1 {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    margin-left: 50px;
+    justify-content: space-between;
+}
+
+.persoinfo2 {
+    align-items: center;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.selecting1 {
+    width: 200px;
+    height: 25px;
+    text-align: center;
+    border-color: var(--dl-color-gray-black);
+    border-width: 1px;
+    margin-right: var(--dl-space-space-doubleunit);
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.operator-application-container19 {
+    flex: 0 0 auto;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.textinput1 {
+    width: auto;
+    height: 25px;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 8px;
+    padding-left: 10px;
+}
+
+.textinput2 {
+    margin-left: 50px;
+    width: auto;
+    height: 25px;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 8px;
+    padding-left: 10px;
+}
+/* .fileinput1{
+      padding-top: var(--dl-space-space-halfunit);
+      padding-left: var(--dl-space-space-halfunit);
+      padding-right: var(--dl-space-space-halfunit);
+      padding-bottom: var(--dl-space-space-halfunit);
+      border-color: #000;
+      border-width: 2px;
+      border-radius: 8px;
+      background-color: aqua;
+      width: auto;
+      height: 30px;
+  } */
+
+.center1 {
+    text-align: center;
+}
+
+.left1 {
+    text-align: left;
+}
+
+.centercont2 {
+    text-align: center;
+    font-weight: bold;
+}
+
+.centercont1 {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.persoinfoicon {
+    fill: #0D4C92;
+    margin-top: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.addressicon {
+    fill: #EF6262;
+    width: 24px;
+    height: 24px;
+}
+
+.emailicon {
+    fill: #FF8551;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.teleicon {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-left: 140px;
+    margin-right: 10px;
+}
+
+.faxicon {
+    fill: #176B87;
+    width: 24px;
+    height: 24px;
+    margin-left: 90px;
+    margin-right: 10px;
+}
+
+.makeicon {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.pnumber {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-left: 80px;
+    margin-right: 10px;
+}
+
+.enumber {
+    fill: #176B87;
+    width: 24px;
+    height: 24px;
+    margin-left: 80px;
+    margin-right: 10px;
+}
+
+.fileicon {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+}
+
+.operator-application-button {
+    height: 50px;
+    width: 200px;
+    align-self: center;
+    transition: 0.3s;
+    padding-top: var(--dl-space-space-halfunit);
+    border-width: 2px;
+    padding-left: var(--dl-space-space-doubleunit);
+    border-radius: 24px;
+    padding-right: var(--dl-space-space-doubleunit);
+    padding-bottom: var(--dl-space-space-halfunit);
+    background-color: #CFF5E7;
+}
+
+    .operator-application-button:hover {
+        color: #0d4c92;
+        background-color: #CDFCF6;
+    }
+
+.quiz-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #000;
+    border-color: #000;
+    border-radius: 8px;
+    align-items: center;
+    background-color: white;
+}
+
+h1, h2 {
+    margin-bottom: 10px;
+}
+
+p {
+    margin-top: 0;
+}
+
+input[type="submit"] {
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.textinput1 {
+    width: auto;
+    height: 30px;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 8px;
+    padding-left: 10px;
+    border-bottom: #000;
+}

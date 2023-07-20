@@ -1,0 +1,229 @@
+﻿
+.container1 {
+    align-self: flex-start;
+    max-width: 1200px;
+    width: 100%; /* Adjust the width as desired */
+    height: auto;
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px; /* Add padding as desired */
+    border: 1px solid #000000; /* Add a border if needed */
+    border-color: #000;
+    border-radius: 20px;
+    background-color: white;
+    margin-top: 20px;
+}
+
+.persoinfo {
+    align-items: center;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.persoinfo1 {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    justify-content: space-around;
+    margin-right: 20px;
+}
+
+.persoinfo2 {
+    align-items: center;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    /* margin-right: 20px; */
+}
+
+.persoinfo3 {
+    align-items: center;
+    /* justify-content: space-evenly; */
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* margin-right: 20px; */
+}
+
+.selecting1 {
+    width: 100%;
+    height: 25px;
+    text-align: center;
+    border-color: #000;
+    border-width: 1px;
+    margin-right: 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.operator-application-container19 {
+    flex: 0 0 auto;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.textinput1 {
+    width: auto;
+    height: 25px;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 8px;
+    padding-left: 10px;
+}
+
+.textinput2 {
+    margin-left: 50px;
+    width: auto;
+    height: 25px;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 8px;
+    padding-left: 10px;
+}
+
+.textinput3 {
+    margin-left: 265px;
+    width: auto;
+    height: 25px;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 8px;
+    padding-left: 10px;
+}
+
+.textinput4 {
+    margin-left: 70px;
+    width: auto;
+    height: 25px;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 8px;
+    padding-left: 10px;
+}
+
+.center1 {
+    text-align: center;
+}
+
+.centercont1 {
+    width: 100%;
+    max-width: 500;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: lightgray;
+}
+
+.persoinfoicon {
+    fill: #0D4C92;
+    margin-top: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.addressicon {
+    fill: #EF6262;
+    width: 24px;
+    height: 24px;
+}
+
+.emailicon {
+    fill: #FF8551;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.teleicon {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-left: 140px;
+    margin-right: 10px;
+}
+
+.faxicon {
+    fill: #176B87;
+    width: 24px;
+    height: 24px;
+    margin-left: 90px;
+    margin-right: 10px;
+}
+
+.makeicon {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.pnumber {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-left: 80px;
+    margin-right: 10px;
+}
+
+.enumber {
+    fill: #176B87;
+    width: 24px;
+    height: 24px;
+    margin-left: 80px;
+    margin-right: 10px;
+}
+
+.fileicon {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-bottom: 8px;
+}
+
+.fileicon1 {
+    fill: #0D4C92;
+    width: 24px;
+    height: 24px;
+    margin-left: 80px;
+    margin-bottom: 8px;
+}
+
+.button1 {
+    height: 50px;
+    width: 200px;
+    align-self: center;
+    transition: 0.3s;
+    padding-top: var(--dl-space-space-halfunit);
+    border-width: 2px;
+    padding-left: var(--dl-space-space-doubleunit);
+    border-radius: 24px;
+    padding-right: var(--dl-space-space-doubleunit);
+    padding-bottom: var(--dl-space-space-halfunit);
+    background-color: #CFF5E7;
+    margin-left: 300px;
+    margin-top: 10px;
+}
+
+    .button1:hover {
+        color: #0d4c92;
+        background-color: #CDFCF6;
+    }
+
+.facebook-link {
+    text-decoration: none;
+}

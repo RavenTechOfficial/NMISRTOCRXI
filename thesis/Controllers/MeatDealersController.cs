@@ -12,10 +12,10 @@ using thesis.Models;
 namespace thesis.Controllers
 {
 	[Authorize(Policy = "RequireInspectorAdmin")]
-	public class MeatDealersController : Controller
+    public class MeatDealersController : Controller
     {
         private readonly thesisContext _context;
- 
+
         public MeatDealersController(thesisContext context)
         {
             _context = context;
@@ -50,7 +50,7 @@ namespace thesis.Controllers
         // GET: MeatDealers/Create
         public IActionResult Create()
         {
-            ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishment, "Id", "Id");
+            ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishment, "Id", "Name");
             return View();
         }
 
@@ -61,13 +61,13 @@ namespace thesis.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Address,ContactNo,MeatEstablishmentId")] MeatDealers meatDealers)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) // not not
             {
                 _context.Add(meatDealers);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishment, "Id", "Id", meatDealers.MeatEstablishmentId);
+            ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishment, "Id", "Name", meatDealers.MeatEstablishmentId);
             return View(meatDealers);
         }
 
@@ -157,14 +157,15 @@ namespace thesis.Controllers
             {
                 _context.MeatDealers.Remove(meatDealers);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MeatDealersExists(int id)
         {
-          return (_context.MeatDealers?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.MeatDealers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
+
 }

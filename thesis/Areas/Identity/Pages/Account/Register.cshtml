@@ -99,6 +99,16 @@
 										</select>
 									</div>
 								</div>
+								@if (User.IsInRole("InspectorAdministrator"))
+								{
+									<div class="input-box roles">
+										<label>Meat Establishment</label>
+										<div class="select-box">
+
+											<select asp-for="Input.MeatEsblishmentId" asp-items="ViewBag.MeatEstablishments"></select>
+										</div>
+									</div>
+								}
 								<div class="sex-box">
 									<h3>Sex</h3>
 									<div class="sex-option">

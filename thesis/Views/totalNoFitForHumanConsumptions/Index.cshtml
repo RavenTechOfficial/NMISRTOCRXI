@@ -1,0 +1,127 @@
+﻿@model IEnumerable<thesis.Models.totalNoFitForHumanConsumptions>
+
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+@{
+    ViewData["Title"] = "Index";
+}
+<section id="content">
+
+
+    <!-- MAIN STARTS-->
+    <main>
+        @if (User.IsInRole("MeatEstablishmentRepresentative"))
+        {
+            <div class="FirstLayer">
+                <h3>Total Number of Food Animal Fit for Human Consumption</h3>
+                <hr />
+            </div>
+
+            <div class="FirstLayer">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">III</li>
+                    </ol>
+                </nav>
+            </div>
+        }
+        @if (User.IsInRole("InspectorAdministrator"))
+        {
+            <div class="FirstLayer">
+                <h3>Total Number of Food Animal Fit for Human Consumption</h3>
+                <hr />
+            </div>
+
+            <div class="FirstLayer">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">III</li>
+                    </ol>
+                </nav>
+            </div>
+        }
+        @if (User.IsInRole("MeatInspector"))
+        {
+            <div class="FirstLayer">
+                <h3>Total Number of Food Animal Fit for Human Consumption</h3>
+                <hr />
+            </div>
+
+            <div class="FirstLayer">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Receiving-Acceptance</a></li>
+                        <li class="breadcrumb-item"><a href="#">Antemortem</a></li>
+                        <li class="breadcrumb-item"><a href="#">Passed</a></li>
+                        <li class="breadcrumb-item"><a href="#">Postmortem</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Total Number</li>
+                    </ol>
+                </nav>
+            </div>
+
+
+        }
+
+        <div class="FirstLayer">
+            <br />
+            <div class="applications">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Species of Food Animal
+                            </th>
+                            <th>
+                                Total Number of Animals
+                            </th>
+                            <th>
+                                Total Dressed Weight (kg.)
+                            </th>
+                            @* <th>
+                            @Html.DisplayNameFor(model => model.Postmortem)
+                            </th>*@
+                            @*  <th></th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Species)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NoOfHeads)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DressedWeight)
+                                </td>
+                                @* <td>
+                            @Html.DisplayFor(modelItem => item.Postmortem.Id)
+                            </td>*@\
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+                @if (User.IsInRole("MeatInspector"))
+                {
+                    <div class="button">
+                        <a class="btn btn-dark " asp-controller="SummaryAndDistributionOfMICs" asp-action="Create"> <span>Next</span> <i class="bx bx-chevron-right"> </i> </a>
+                    </div>
+                }
+
+                <a asp-controller="MeatInspectionReports" asp-action="Index"> Back to List </a>
+            </div>
+        </div>
+
+    </main>
+    <!-- MAIN ENDS -->
+</section>
+
+

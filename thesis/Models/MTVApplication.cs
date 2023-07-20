@@ -7,20 +7,24 @@ namespace thesis.Models
 {
     public class MTVApplication
     {
-        [Key]
-        public int Id { get; set; }
-        public string DriverName { get; set; }
-        public string DriverLicense { get; set; }   
-        public string HelperName { get; set; }
-        public string Seminar { get; set; }
-        public string Quiz { get; set; }
-        public EstablishmentType EstablishmentType { get; set; }
-        public string VehicleDestination { get; set; }
-        [ForeignKey("MTVDetails")]
-        public int MTVDetailsId { get; set; }
-        public MTVDetails MTVDetails { get; set; }
-        [ForeignKey("AccountDetails")]
-        public string AccountDetailsId { get; set; }
-        public AccountDetails AccountDetails { get; set; }
-    }
+		[Key]
+		public int Id { get; set; }
+		public string OwnerFname { get; set; }
+		public string OwnerMname { get; set; }
+		public string OwnerLname { get; set; }
+		public string? Address { get; set; }
+		public string Email { get; set; }
+		public string TelNo { get; set; }
+		public string FaxNo { get; set; }
+		[ForeignKey("VehicleInfo")]
+		public int? VehicleId { get; set; }
+		public VehicleInfo? Vehicle { get; set; }
+		[ForeignKey("Helper")]
+		public int? HelperId { get; set; }
+		public Helper? Helper { get; set; }
+
+		[ForeignKey("Driver")]
+		public int? DriverId { get; set; }
+		public Driver? Driver { get; set; }
+	}
 }
