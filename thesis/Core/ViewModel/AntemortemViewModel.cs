@@ -14,7 +14,5 @@ namespace thesis.Core.ViewModel
         public int Weight { get; set; }
         public Cause Cause { get; set; }
 
-        public int AntemortemId { get; set; }
-        public Antemortem? Antemortem { get; set; }
     }
 }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using thesis.Core.ViewModel;
 using thesis.Data;
@@ -12,7 +7,7 @@ using thesis.Models;
 
 namespace thesis.Controllers
 {
-	[Authorize(Policy = "RequireInspectorAdmin")]
+    [Authorize(Policy = "RequireInspectorAdmin")]
     public class MeatEstablishmentsController : Controller
     {
         private readonly thesisContext _context;
@@ -172,6 +167,4 @@ namespace thesis.Controllers
             return _context.MeatEstablishment.Any(e => e.Id == id);
         }
     }
-
-
 }

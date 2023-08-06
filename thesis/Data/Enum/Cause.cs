@@ -2,6 +2,13 @@
 {
     public enum Cause
     {
-        something
+        NA,
+        Actinobacillosis,
+        Actinomycosis,
+        Anaplasmosis,
+        Anthrax,
+        Aflatoxicosis,
+        Ascariasis,
+        AtrophicRhinitis
     }
 }

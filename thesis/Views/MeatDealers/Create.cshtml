@@ -32,31 +32,31 @@
                 <div class="column">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="input-box">
-                        <label asp-for="FirstName" class="control-label"></label>
+                        <label asp-for="FirstName" class="control-label">First Name</label>
                         <input asp-for="FirstName" class="form-control" />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="input-box">
-                        <label asp-for="MiddleName" class="control-label"></label>
+                        <label asp-for="MiddleName" class="control-label">Middle Name</label>
                         <input asp-for="MiddleName" class="form-control" />
                         <span asp-validation-for="MiddleName" class="text-danger"></span>
                     </div>
                     <div class="input-box">
-                        <label asp-for="LastName" class="control-label"></label>
+                        <label asp-for="LastName" class="control-label">Last Name</label>
                         <input asp-for="LastName" class="form-control" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="column">
+                <div class="column" style="display: none;">
                     <div class="input-box">
-                        <label asp-for="Address" class="control-label"></label>
+
                         <input asp-for="Address" class="form-control" id="addressInput" />
                         <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="input-box address">
-
+                    <label asp-for="Address" class="control-label"></label>
                     <div class="column">
                         <div class="select-box">
                             <select id="regionSelect" onchange="populateProvinces()">
@@ -107,13 +107,13 @@
 
                 <div class="column">
                     <div class="input-box">
-                        <label asp-for="ContactNo" class="control-label"></label>
+                        <label asp-for="ContactNo" class="control-label">Contact No.</label>
                         <input asp-for="ContactNo" class="form-control" />
                         <span asp-validation-for="ContactNo" class="text-danger"></span>
                     </div>
                     <div class="input-box">
-                        <label asp-for="MeatEstablishmentId" class="control-label"></label>
-                        <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentId"></select>
+                        <label class="control-label">Meat Establishment </label>
+                        <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentId" readonly></select>
                     </div>
                 </div>
                 <br />
@@ -136,6 +136,25 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+
+<script>
+    function updateAddressInput() {
+        // Get the selected values from the dropdowns
+        var barangay = document.getElement("barangaySelect").value;
+        var city = document.getElementById("citySelect").value;
+        var province = document.getElementById("provinceSelect").value;
+        var region = document.getElementById("regionSelect").value;
+
+
+
+        // Construct the address using the selected values
+        var address = barangay + ", " + city + ", " + province + ", " + region;
+
+        // Update the value of the address input box
+        document.getElementBy("addressInput").value = Address;
+    }
+</script>
 
 <script src="~/js/register.js"></script>
 <script>

@@ -2,6 +2,7 @@
 {
     public enum AnimalPart
     {
+        NA,
         Carcass,
         Lungs,
         Liver,

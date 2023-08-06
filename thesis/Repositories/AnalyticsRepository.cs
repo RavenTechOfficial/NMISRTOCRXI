@@ -168,13 +168,13 @@ namespace thesis.Repositories
         public int BarChartTimeSeriesAntemortem(Species species, Issue issue, DateTime start, DateTime end)
         {
             var barchart = _context.ConductOfInspections
-            .Include(p => p.Antemortem.MeatInspectionReport)
-            .Include(p => p.Antemortem.MeatInspectionReport.ReceivingReport)
+            .Include(p => p.MeatInspectionReport)
+            .Include(p => p.MeatInspectionReport.ReceivingReport)
             .Where(p => p.Issue == issue
-                        && p.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
-                        && p.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date
-                        && p.Antemortem.MeatInspectionReport.ReceivingReport != null
-                        && p.Antemortem.MeatInspectionReport.ReceivingReport.Species == species)
+                        && p.MeatInspectionReport.RepDate.Date >= start.Date
+                        && p.MeatInspectionReport.RepDate.Date <= end.Date
+                        && p.MeatInspectionReport.ReceivingReport != null
+                        && p.MeatInspectionReport.ReceivingReport.Species == species)
             .Sum(p => p.NoOfHeads);
 
 
@@ -185,9 +185,9 @@ namespace thesis.Repositories
         public int StackBarsSpeciesSeries(Species species, DateTime start, DateTime end)
         {
             var stackchart = _context.totalNoFitForHumanConsumptions
-                .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport)
-                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
-                && p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date
+                .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
+                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date >= start.Date
+                && p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date <= end.Date
                 && p.Species == species)
                 .Sum(p => p.DressedWeight);
 
@@ -197,10 +197,10 @@ namespace thesis.Repositories
         public int PieChartAnimalTypeSeries(AnimalPart animalPart, DateTime start, DateTime end)
         {
             var piechart = _context.Postmortems
-                .Include(p => p.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport)
+                .Include(p => p.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
                 .Where(p => p.AnimalPart == animalPart
-                    && p.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
-                    && p.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date)
+                    && p.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date >= start.Date
+                    && p.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date <= end.Date)
                 .Sum(p => p.Weight);
 
             return piechart;
@@ -230,9 +230,9 @@ namespace thesis.Repositories
         public int AreaChartTimeSeriesRangeApproved(Species species, DateTime start, DateTime end)
         {
             var areaChart = _context.totalNoFitForHumanConsumptions
-                .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport)
-                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
-                && p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date
+                .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
+                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date >= start.Date
+                && p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date <= end.Date
                 && p.Species == species)
                 .Sum(p => p.DressedWeight);
 
@@ -243,8 +243,8 @@ namespace thesis.Repositories
         {
             var areaChart = _context.totalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem)
-                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date >= start.Date
-                && p.Postmortem.PassedForSlaughter.ConductOfInspection.Antemortem.MeatInspectionReport.RepDate.Date <= end.Date
+                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date >= start.Date
+                && p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date <= end.Date
                 && p.Species == species)
                 .Sum(p => p.Postmortem.Weight);
 

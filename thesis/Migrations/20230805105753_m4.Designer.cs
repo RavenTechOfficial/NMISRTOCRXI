@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thesis.Data;
 
@@ -11,9 +12,11 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    partial class thesisContextModelSnapshot : ModelSnapshot
+    [Migration("20230805105753_m4")]
+    partial class m4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,6 +266,24 @@ namespace thesis.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("thesis.Models.Antemortem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MeatInspectionReportId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeatInspectionReportId");
+
+                    b.ToTable("Antemortems");
+                });
+
             modelBuilder.Entity("thesis.Models.ConductOfInspection", b =>
                 {
                     b.Property<int>("Id")
@@ -271,13 +292,13 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AntemortemId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Cause")
                         .HasColumnType("int");
 
                     b.Property<int>("Issue")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MeatInspectionReportId")
                         .HasColumnType("int");
 
                     b.Property<int>("NoOfHeads")
@@ -288,7 +309,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeatInspectionReportId");
+                    b.HasIndex("AntemortemId");
 
                     b.ToTable("ConductOfInspections");
                 });
@@ -748,13 +769,8 @@ namespace thesis.Migrations
                     b.Property<int>("Cause")
                         .HasColumnType("int");
 
-                    b.Property<string>("Image1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image3")
+                    b.Property<string>("Images")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NoOfHeads")
@@ -1071,7 +1087,7 @@ namespace thesis.Migrations
                     b.Navigation("MeatEstablishment");
                 });
 
-            modelBuilder.Entity("thesis.Models.ConductOfInspection", b =>
+            modelBuilder.Entity("thesis.Models.Antemortem", b =>
                 {
                     b.HasOne("thesis.Models.MeatInspectionReport", "MeatInspectionReport")
                         .WithMany()
@@ -1080,6 +1096,17 @@ namespace thesis.Migrations
                         .IsRequired();
 
                     b.Navigation("MeatInspectionReport");
+                });
+
+            modelBuilder.Entity("thesis.Models.ConductOfInspection", b =>
+                {
+                    b.HasOne("thesis.Models.Antemortem", "Antemortem")
+                        .WithMany()
+                        .HasForeignKey("AntemortemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Antemortem");
                 });
 
             modelBuilder.Entity("thesis.Models.DisapprovedApplication", b =>

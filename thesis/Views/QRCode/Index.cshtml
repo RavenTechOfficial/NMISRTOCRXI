@@ -1,4 +1,5 @@
-﻿
+﻿@model Result
+
 <script src="~/js/qrScript.js" asp-append-version="true"></script>
 <link rel="stylesheet" href="~/css/qr.css" asp-append-version="true" />
 
@@ -15,32 +16,33 @@
 				<div class="head">
 					<h3>Qr Dummy Inputs</h3>
 				</div>
-				<form action="#" class="form">
+				<form asp-action="Create" class="form">
 					<div class="input-box">
 						<label>Meat Dealer</label>
-						<input type="text" placeholder="Enter full name" required />
+						<input type="text" placeholder="Enter full name" asp-for="Name" required />
 					</div>
 
 					<div class="input-box">
 						<label>Farm Origin</label>
-						<input type="text" placeholder="Enter Address" required />
+						<input type="text" placeholder="Enter Address" asp-for="Address" required />
 					</div>
 
 					<div class="input-box address">
 						<label>Name of Meat Establishment</label>
-						<input type="text" placeholder="Enter Meat Establishment Name" required />
+						<input type="text" placeholder="Enter Meat Establishment Name" asp-for="MeatEstablishment" required />
 					</div>
 
 					<div class="input-box">
 						<label>Date Slaughtered</label>
-						<input type="date" placeholder="Enter birth date" required />
+						<input type="date" placeholder="Enter birth date" asp-for="Date" required />
 					</div>
 
-					<button type="button" id="submitBtn" class="submit">Submit</button>
+					<button type="submit">Submit</button>
+					@*id="submitBtn" class="submit"*@
 
 				</form>
 				<!-- Modal -->
-				<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				@*<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -58,7 +60,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>*@
 
 
 

@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using thesis.Core.ViewModel;
 using thesis.Data;
+using thesis.Data.Enum;
 using thesis.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace thesis.Controllers
 {
@@ -26,8 +30,8 @@ namespace thesis.Controllers
             ViewBag.MyVariable = myVariable;
 
             var viewModel = new ConductOfInspectionViewModel();
-            viewModel.ConductOfInspections = await _context.ConductOfInspections.Include(c => c.Antemortem).ToListAsync();
-            ViewData["AntemortemId"] = new SelectList(_context.Antemortems, "Id", "Id");
+            viewModel.ConductOfInspections = await _context.ConductOfInspections.Include(c => c.MeatInspectionReport).ToListAsync();
+            ViewData["MeatInspectionReportsId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id");
 
             return View("Index", viewModel.ConductOfInspections); ; // Pass the list of ConductOfInspection objects to the view
         }
@@ -41,7 +45,7 @@ namespace thesis.Controllers
             }
 
             var conductOfInspection = await _context.ConductOfInspections
-                .Include(c => c.Antemortem)
+                .Include(c => c.MeatInspectionReport)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (conductOfInspection == null)
             {
@@ -52,13 +56,15 @@ namespace thesis.Controllers
         }
 
         // GET: ConductOfInspections/Create
-        public IActionResult Create()
+        public IActionResult Create(int meatInspectionReportId)
         {
+            ViewData["meatInspectionReportId"] = meatInspectionReportId;
+
             var viewModel = new ConductOfInspectionViewModel();
             viewModel.ConductOfInspections = new List<ConductOfInspection>(); // Initialize the list
             viewModel.SingleConductOfInspection = new ConductOfInspection();
 
-            ViewData["AntemortemId"] = new SelectList(_context.Antemortems, "Id", "Id");
+            ViewData["MeatInspectionReportsId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id");
 
             return View(viewModel);
         }
@@ -68,8 +74,9 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Issue,NoOfHeads,Weight,Cause,AntemortemId")] ConductOfInspection conductOfInspection)
+        public async Task<IActionResult> Create([Bind("Id,Issue,NoOfHeads,Weight,Cause,MeatInspectionReportsId")] ConductOfInspection conductOfInspection)
         {
+
             if (!ModelState.IsValid)
             {
                 _context.Add(conductOfInspection);
@@ -77,14 +84,15 @@ namespace thesis.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // If there are validation errors, re-populate the ViewModel and return to the Create view.
             var viewModel = new ConductOfInspectionViewModel();
-            viewModel.ConductOfInspections = await _context.ConductOfInspections.Include(c => c.Antemortem).ToListAsync();
+            viewModel.ConductOfInspections = await _context.ConductOfInspections.Include(c => c.MeatInspectionReport).ToListAsync();
             viewModel.SingleConductOfInspection = new ConductOfInspection();
-            viewModel.Issue = conductOfInspection.Issue; // Initialize the Issue property
+            viewModel.Issue = (Issue)conductOfInspection.Issue; // Initialize the Issue property
 
-            ViewData["AntemortemId"] = new SelectList(_context.Antemortems, "Id", "Id");
+            ViewData["MeatInspectionReportsId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id");
 
-            return View("Index", viewModel);
+            return View();
         }
         // GET: ConductOfInspections/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -99,7 +107,7 @@ namespace thesis.Controllers
             {
                 return NotFound();
             }
-            ViewData["AntemortemId"] = new SelectList(_context.Antemortems, "Id", "Id", conductOfInspection.AntemortemId);
+            ViewData["MeatInspectionReportsId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id", conductOfInspection.MeatInspectionReportId);
             return View(conductOfInspection);
         }
 
@@ -108,7 +116,7 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Issue,NoOfHeads,Weight,Cause,AntemortemId")] ConductOfInspection conductOfInspection)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Issue,NoOfHeads,Weight,Cause,MeatInspectionReportsId")] ConductOfInspection conductOfInspection)
         {
             if (id != conductOfInspection.Id)
             {
@@ -135,7 +143,7 @@ namespace thesis.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AntemortemId"] = new SelectList(_context.Antemortems, "Id", "Id", conductOfInspection.AntemortemId);
+            ViewData["MeatInspectionReportsId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id", conductOfInspection.MeatInspectionReportId);
             return View(conductOfInspection);
         }
 
@@ -148,7 +156,7 @@ namespace thesis.Controllers
             }
 
             var conductOfInspection = await _context.ConductOfInspections
-                .Include(c => c.Antemortem)
+                .Include(c => c.MeatInspectionReport)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (conductOfInspection == null)
             {
@@ -181,6 +189,22 @@ namespace thesis.Controllers
         {
             return (_context.ConductOfInspections?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-    }
 
+        // [HttpPost]
+        //public IActionResult actionResult(int Id)
+        //{
+        //    // Use the Id value as needed
+        //    var result = new ConductOfInspection
+        //    {
+        //        MeatInspectionReportsId = Id,
+        //    };
+
+        //    //_context.Add(result);
+        //    //_context.SaveChanges();
+
+        //    // Rest of your code...
+
+        //    return View();
+        //}
+    }
 }

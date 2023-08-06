@@ -62,7 +62,7 @@
                                 Cause
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Antemortem)
+                                @Html.DisplayNameFor(model => model.MeatInspectionReport)
                             </th>@*
                             <th></th>*@
                         </tr>
@@ -84,21 +84,35 @@
                                     @Html.DisplayFor(modelItem => item.Cause)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Antemortem.Id)
+                                    @Html.DisplayFor(modelItem => item.MeatInspectionReport.Id)
                                 </td>
-                                <td>
-                                    @* <div class="btn-group">
-                                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                </div>*@
-                                </td>
+                                @if (User.IsInRole("MeatInspector"))
+                                {
+                                    <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                            <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        </div>
+                                    </td>
+                                }
                             </tr>
                         }
                     </tbody>
                 </table>
+                @if (User.IsInRole("MeatEstablishmentRepresentative"))
+                {
+                    <a asp-controller="MeatInspectionReports" asp-action="Index"> Back to List </a>
+                }
+                @if (User.IsInRole("MeatInspector"))
+                {
+                    <a asp-action="Create"> Back to List </a>
+                }
+                @if (User.IsInRole("InspectorAdmin"))
+                {
+                    <a asp-controller="MeatInspectionReports" asp-action="Index"> Back to List </a>
+                }
 
-                <a asp-controller="MeatInspectionReports" asp-action="Index"> Back to List </a>
             </div>
         </div>
     </main>
