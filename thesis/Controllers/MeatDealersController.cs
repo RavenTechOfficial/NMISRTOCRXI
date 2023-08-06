@@ -1,24 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using thesis.Areas.Identity.Data;
+using thesis.Core.ViewModel;
 using thesis.Data;
 using thesis.Models;
 
+
 namespace thesis.Controllers
 {
-	[Authorize(Policy = "RequireInspectorAdmin")]
+    //[Authorize(Policy = "RequireInspectorAdmin")]
     public class MeatDealersController : Controller
     {
         private readonly thesisContext _context;
-
-        public MeatDealersController(thesisContext context)
+        private readonly UserManager<AccountDetails> _userManager; // Add the type argument 'AccountDetails'
+        public MeatDealersController(thesisContext context, UserManager<AccountDetails> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: MeatDealers
@@ -46,13 +52,28 @@ namespace thesis.Controllers
 
             return View(meatDealers);
         }
-
         // GET: MeatDealers/Create
         public IActionResult Create()
         {
-            ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishment, "Id", "Name");
+            var currentUser = _userManager.GetUserAsync(User).Result;
+
+            if (currentUser == null || currentUser.MeatEstablishmentId == null)
+            {
+                return BadRequest("User is not associated with any MeatEstablishment.");
+            }
+
+            var meatEstablishmentsQuery = from meatEstablishment in _context.MeatEstablishment
+                                          where meatEstablishment.Id == currentUser.MeatEstablishmentId
+                                          select new
+                                          {
+                                              meatEstablishment.Id,
+                                              meatEstablishment.Name
+                                          };
+
+            ViewData["MeatEstablishmentId"] = new SelectList(meatEstablishmentsQuery, "Id", "Name");
             return View();
         }
+
 
         // POST: MeatDealers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -61,6 +82,7 @@ namespace thesis.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Address,ContactNo,MeatEstablishmentId")] MeatDealers meatDealers)
         {
+
             if (!ModelState.IsValid) // not not
             {
                 _context.Add(meatDealers);
@@ -100,7 +122,7 @@ namespace thesis.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
@@ -167,5 +189,4 @@ namespace thesis.Controllers
             return (_context.MeatDealers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
-
 }

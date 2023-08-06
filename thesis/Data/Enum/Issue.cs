@@ -2,6 +2,7 @@
 {
     public enum Issue
     {
+        NA,
         Suspect,
         Pass,
         Condemned

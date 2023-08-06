@@ -1,5 +1,5 @@
 ﻿@model thesis.Models.ConductOfInspection
-
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
 @{
     ViewData["Title"] = "Delete";
 }
@@ -36,10 +36,10 @@
             @Html.DisplayFor(model => model.Cause)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Antemortem)
+            @Html.DisplayNameFor(model => model.MeatInspectionReport)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Antemortem.Id)
+            @Html.DisplayFor(model => model.MeatInspectionReport.Id)
         </dd>
     </dl>
 

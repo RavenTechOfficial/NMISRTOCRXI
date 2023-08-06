@@ -2,6 +2,7 @@
 {
     public enum CategoryOfFoodAnimals
     {
+        NA,
         Large,
         Small
     }

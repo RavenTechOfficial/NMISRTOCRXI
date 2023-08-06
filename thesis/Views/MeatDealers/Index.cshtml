@@ -1,5 +1,9 @@
-﻿@model IEnumerable<thesis.Models.MeatDealers>
+﻿@using Microsoft.AspNetCore.Identity;
+@using thesis.Areas.Identity.Data;
+@model IEnumerable<thesis.Models.MeatDealers>
 
+@inject SignInManager<AccountDetails> SignInManager
+@inject UserManager<AccountDetails> UserManager
 @{
     ViewData["Title"] = "Index";
 }
@@ -57,28 +61,56 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.FirstName)
+                                First Name
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.MiddleName)
+                                Middle Name
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.LastName)
+                                Last Name
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Address)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.ContactNo)
+                                Contact No.
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.MeatEstablishment)
+                                Meat Establishment
                             </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @{
+                            var accountId = UserManager.GetUserId(User);
+                            var filteredModel = Model;
+                            if (User.IsInRole("MeatEstablishmentRepresentative"))
+                            {
+                                filteredModel = Model
+                                .Where(meatDealer => meatDealer.MeatEstablishment.Id == UserManager.Users
+                                .Where(user => user.Id == accountId)
+                                .Select(user => user.MeatEstablishment.Id)
+                                .FirstOrDefault()
+                                );
+                            }
+                            if (User.IsInRole("MeatInspector"))
+                            {
+                                filteredModel = Model
+                                .Where(meatDealer => meatDealer.MeatEstablishment.Id == UserManager.Users
+                                .Where(user => user.Id == accountId)
+                                .Select(user => user.MeatEstablishment.Id)
+                                .FirstOrDefault()
+                                );
+                            }
+                            if (User.IsInRole("InspectorAdmin"))
+                            {
+                                filteredModel = Model;
+                            }
+
+                        }
+
+                        @foreach (var item in filteredModel)
                         {
                             <tr class="filter-item">
                                 <td>

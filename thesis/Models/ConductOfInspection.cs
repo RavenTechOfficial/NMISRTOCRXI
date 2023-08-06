@@ -12,8 +12,8 @@ namespace thesis.Models
         public int NoOfHeads { get; set; }
         public int Weight { get; set; }
         public Cause Cause { get; set; }
-        [ForeignKey("Antemortem")]
-        public int AntemortemId { get; set; }
-        public Antemortem Antemortem { get; set; }
+        [ForeignKey("MeatInspectionReport")]
+        public int MeatInspectionReportId { get; set; }
+        public MeatInspectionReport MeatInspectionReport { get; set; }
     }
 }

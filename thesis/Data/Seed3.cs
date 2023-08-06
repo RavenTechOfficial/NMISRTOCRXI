@@ -31,8 +31,6 @@ namespace thesis.Data
                             NoOfHeads = random.Next(1, 50),
                             Weight = random.Next(1, 101),
                             Cause = (Cause)random.Next(1, System.Enum.GetValues(typeof(Cause)).Length),
-                            Antemortem = new Antemortem
-                            {
                                 MeatInspectionReport = new MeatInspectionReport
                                 {
                                     RepDate = randomDateTime,
@@ -51,7 +49,7 @@ namespace thesis.Data
                                         ReceivingBy = "jess"
                                     }
                                 }
-                            }
+                            
                         };
 
                         context.ConductOfInspections.Add(inspection);

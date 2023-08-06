@@ -12,7 +12,6 @@ public class thesisContext : IdentityDbContext<AccountDetails>
         : base(options)
     {
     }
-    public DbSet<Antemortem> Antemortems { get; set; }
     public DbSet<ConductOfInspection> ConductOfInspections { get; set; }
     public DbSet<DisapprovedApplication> DisapprovedApplications { get; set; }
     public DbSet<MeatDealers> MeatDealers { get; set; }
@@ -34,6 +33,8 @@ public class thesisContext : IdentityDbContext<AccountDetails>
 	public DbSet<MTVquiz> MTVquizzes { get; set; }
 	public DbSet<checklist> checklists { get; set; }
 	public DbSet<VehicleInfo> VehicleInfos { get; set; }
+	public DbSet<QrCode> QrCodes { get; set; }
+	public DbSet<Result> Results { get; set; }
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

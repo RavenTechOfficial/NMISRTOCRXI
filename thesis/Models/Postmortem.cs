@@ -15,6 +15,8 @@ namespace thesis.Models
         public Cause Cause { get; set; }
         public int Weight { get; set; }
         public int NoOfHeads { get; set; }
-        public string Images { get; set; }
+        public string? Image1 { get; set; } // Nullable string property
+        public string? Image2 { get; set; } // Nullable string property
+        public string? Image3 { get; set; } // Nullable string property
     }
 }

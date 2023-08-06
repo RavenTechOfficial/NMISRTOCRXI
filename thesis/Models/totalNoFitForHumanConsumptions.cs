@@ -13,7 +13,7 @@ namespace thesis.Models
         public int DressedWeight { get; set; }
         [ForeignKey("PostmortemId")]
         public int PostmortemId { get; set; }
-        public Postmortem Postmortem { get; set; }
+        public Postmortem? Postmortem { get; set; }
 
     }
 }
