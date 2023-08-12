@@ -8,7 +8,7 @@
 @{
     ViewData["Title"] = "Create";
 }
-<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 <section id="content">
 
     <!-- MAIN STARTS-->
@@ -33,21 +33,20 @@
                 <div class="column">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="input-box">
-                        <label asp-for="Type" class="control-label"></label>
+                        <label asp-for="Type" class="control-label">Establishment Type</label>
                         <select asp-for="Type" class="form-control" asp-items="@Html.GetEnumSelectList<EstablishmentType>()">
                             <option>--Select--</option>
                         </select>
                     </div>
                     <div class="input-box">
-                        <label asp-for="Name" class="control-label"></label>
+                        <label asp-for="Name" class="control-label">Establishment Name</label>
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="column">
+                <div class="column" style="display: none;">
                     <div class="input-box">
-                        <label asp-for="Address" class="control-label"></label>
                         <input asp-for="Address" class="form-control" id="addressInput" />
                         <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
@@ -55,6 +54,7 @@
 
                 <div class="input-box address">
 
+                    <label asp-for="Address" class="control-label"></label>
                     <div class="column">
                         <div class="select-box">
                             <select id="regionSelect" onchange="populateProvinces()">
@@ -107,16 +107,14 @@
                 <div class="column">
 
                     <div class="input-box">
-                        <label class="control-label">Licensed Status</label>
-                        <select class="form-control">
+                        <label class="control-label">License Status</label>
+                        <select asp-for="Type" class="form-control" asp-items="@Html.GetEnumSelectList<LicenseStatus>()">
                             <option>--Select--</option>
-                            <option>Licensed</option>
-                            <option>Non-Licensed</option>
                         </select>
                     </div>
 
                     <div class="input-box">
-                        <label asp-for="LicenseToOperateNumber" class="control-label"></label>
+                        <label asp-for="LicenseToOperateNumber" class="control-label">LTO No.</label>
                         <input asp-for="LicenseToOperateNumber" class="form-control" />
                         <span asp-validation-for="LicenseToOperateNumber" class="text-danger"></span>
                     </div>
@@ -191,7 +189,7 @@
                     </tbody>
                 </table>
 
-                <div /><div />
+                <div /><div /> <div />  <div />
     </main>
 
 
@@ -333,8 +331,7 @@
                 var city = citySelect.value || '';
                 var barangay = barangaySelect.value || '';
 
-                //var address = region + ', ' + province + ', ' + city + ', ' + barangay;
-                var address = city + ', ' + barangay;
+                var address = region + ', ' + province + ', ' + city + ', ' + barangay;
                 addressInput.value = address;
             }
 

@@ -25,6 +25,7 @@ namespace thesis.Models
         [ForeignKey("AccountDetails")]
         public string? AccountDetailsId { get; set; }
         public AccountDetails? AccountDetails { get; set; }
+        public InspectionStatus? InspectionStatus { get; set; }
 
     }
 }

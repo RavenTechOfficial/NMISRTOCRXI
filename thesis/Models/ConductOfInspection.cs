@@ -14,6 +14,6 @@ namespace thesis.Models
         public Cause Cause { get; set; }
         [ForeignKey("MeatInspectionReport")]
         public int MeatInspectionReportId { get; set; }
-        public MeatInspectionReport MeatInspectionReport { get; set; }
+        public MeatInspectionReport? MeatInspectionReport { get; set; }
     }
 }

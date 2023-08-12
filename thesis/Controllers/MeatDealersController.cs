@@ -62,15 +62,22 @@ namespace thesis.Controllers
                 return BadRequest("User is not associated with any MeatEstablishment.");
             }
 
-            var meatEstablishmentsQuery = from meatEstablishment in _context.MeatEstablishment
-                                          where meatEstablishment.Id == currentUser.MeatEstablishmentId
-                                          select new
-                                          {
-                                              meatEstablishment.Id,
-                                              meatEstablishment.Name
-                                          };
+            //var meatEstablishmentsQuery = from meatEstablishment in _context.MeatEstablishment
+            //                              where meatEstablishment.Id == currentUser.MeatEstablishmentId
+            //                              select new
+            //                              {
+            //                                  meatEstablishment.Id,
+            //                                  meatEstablishment.Name
+            //                              };
 
-            ViewData["MeatEstablishmentId"] = new SelectList(meatEstablishmentsQuery, "Id", "Name");
+            //ViewData["MeatEstablishmentId"] = new SelectList(meatEstablishmentsQuery, "Id", "Name");
+
+
+            var meatEstablishmentsQuery = _context.MeatEstablishment
+                .Where(me => me.Address != null)
+                //.Where(meatEstablishment => meatEstablishment.Id == currentUser.MeatEstablishmentId)
+                .ToList();
+            ViewData["MeatEstablishments"] = new SelectList(meatEstablishmentsQuery, "Id", "Name");
             return View();
         }
 

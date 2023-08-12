@@ -1,5 +1,5 @@
 ﻿@model thesis.Models.ReceivingReport
-<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 @{
     ViewData["Title"] = "Delete";
 }
@@ -21,77 +21,84 @@
                     <hr />
                     <dl class="row">
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.RecTime)
+                            Date & Time:
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.RecTime)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.BatchCode)
+                            Batch Code:
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.BatchCode)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Species)
+                            Specie:
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Species)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Category)
+                            Category:
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Category)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.NoOfHeads)
+                            No. Of Heads:
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.NoOfHeads)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.LiveWeight)
+                            Live Weight:
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.LiveWeight)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.MeatDealers)
+                            Meat Dealer:
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.MeatDealers.Id)
+                            @Html.DisplayFor(model => model.MeatDealers.FirstName)
+                            @Html.DisplayFor(model => model.MeatDealers.LastName)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Origin)
+                            Origin:
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Origin)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.ShippingDoc)
+                            Shipping Documents:
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.ShippingDoc)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.HoldingPenNo)
+                            Holding Pen No.:
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.HoldingPenNo)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.ReceivingBy)
+                            Received By:
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.ReceivingBy)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.AccountDetails)
+                            Status:
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.AccountDetails.Id)
+                            @Html.DisplayFor(model => model.InspectionStatus)
                         </dd>
+                        @* <dt class = "col-sm-2">
+                        @Html.DisplayNameFor(model => model.AccountDetails)
+                        </dt>
+                        <dd class = "col-sm-10">
+                        @Html.DisplayFor(model => model.AccountDetails.Id)
+                        </dd>*@
                     </dl>
 
                     <form asp-action="Delete">

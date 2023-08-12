@@ -88,18 +88,18 @@
                             if (User.IsInRole("MeatEstablishmentRepresentative"))
                             {
                                 filteredModel = Model
-                                .Where(meatDealer => meatDealer.MeatEstablishment.Id == UserManager.Users
+                                .Where(meatDealer => meatDealer.MeatEstablishmentId == UserManager.Users
                                 .Where(user => user.Id == accountId)
-                                .Select(user => user.MeatEstablishment.Id)
+                                .Select(user => user.MeatEstablishmentId)
                                 .FirstOrDefault()
                                 );
                             }
                             if (User.IsInRole("MeatInspector"))
                             {
                                 filteredModel = Model
-                                .Where(meatDealer => meatDealer.MeatEstablishment.Id == UserManager.Users
+                                .Where(meatDealer => meatDealer.MeatEstablishmentId == UserManager.Users
                                 .Where(user => user.Id == accountId)
-                                .Select(user => user.MeatEstablishment.Id)
+                                .Select(user => user.MeatEstablishmentId)
                                 .FirstOrDefault()
                                 );
                             }
@@ -110,7 +110,7 @@
 
                         }
 
-                        @foreach (var item in filteredModel)
+                        @foreach (var item in Model)
                         {
                             <tr class="filter-item">
                                 <td>

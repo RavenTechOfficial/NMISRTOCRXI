@@ -14,5 +14,6 @@ namespace thesis.Core.ViewModel
         public int Weight { get; set; }
         public Cause Cause { get; set; }
 
+        public int MeatInspectionReportsId { get; set; }
     }
 }

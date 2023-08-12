@@ -4,60 +4,72 @@
     ViewData["Title"] = "Index";
 }
 <section id="content">
-    <link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+    <link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 
     <!-- MAIN STARTS-->
     <main>
         <div class="FirstLayer">
+            <h3>List of Meat Establishment</h3>
+        </div>
+        <div class="FirstLayer">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">List of Meat Establishment</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="FirstLayer">
 
             <div class="applications">
-
-                <h1>Index</h1>
 
                 <p>
                     <a asp-action="Create">Create New</a>
                 </p>
+                <br />
                 <table class="table">
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Type)
+                                Establishment Type
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Name)
+                                Establishment Name
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Address)
+                                Address
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.LicenseToOperateNumber)
+                                LTO No.
                             </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Type)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Address)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LicenseToOperateNumber)
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
+                        {  @if (item.Type != null && item.Name != null && item.Address != null && item.LicenseToOperateNumber != null)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Type)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Address)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LicenseToOperateNumber)
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }}
                     </tbody>
                 </table>
             </div>

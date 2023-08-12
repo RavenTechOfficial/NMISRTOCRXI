@@ -9,8 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using thesis.Data;
 using thesis.Models;
 
-
-
 namespace thesis.Controllers
 {
     public class ReceivingReportsController : Controller
@@ -30,7 +28,9 @@ namespace thesis.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var thesisContext = _context.ReceivingReports.Include(r => r.AccountDetails).Include(r => r.MeatDealers);
+            var thesisContext = _context.ReceivingReports
+                .Include(r => r.AccountDetails)
+                .Include(r => r.MeatDealers);
             return View(await thesisContext.ToListAsync());
         }
 
@@ -97,9 +97,9 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId")] ReceivingReport receivingReport)
+        public async Task<IActionResult> Create([Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId,InspectionStatus")] ReceivingReport receivingReport)
         {
-            if (!ModelState.IsValid) //not not
+            if (ModelState.IsValid) //not not
             {
                 _context.Add(receivingReport);
                 await _context.SaveChangesAsync();
@@ -147,14 +147,14 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId")] ReceivingReport receivingReport)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId,InspectionStatus")] ReceivingReport receivingReport)
         {
             if (id != receivingReport.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
@@ -222,5 +222,29 @@ namespace thesis.Controllers
         {
             return (_context.ReceivingReports?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        [HttpPost]
+        public IActionResult actionResult(int Id)
+        {
+            // Use the Id value as needed
+            var result = new MeatInspectionReport
+            {
+                ReceivingReportId = Id,
+                RepDate = DateTime.Now,
+            };
+
+            _context.Add(result);
+            _context.SaveChanges();
+
+            // Retrieve the MeatInspectionReportId after it is saved
+            int meatInspectionReportId = result.Id;
+
+            // Redirect to the Create action of ConductOfInspections controller and pass the MeatInspectionReportId
+            return RedirectToAction("Create", "ConductOfInspections", new { meatInspectionReportId = meatInspectionReportId });
+
+        }
+
+
+
     }
 }
