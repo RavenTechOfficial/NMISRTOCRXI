@@ -9,7 +9,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 <section id="content">
 
 
@@ -57,17 +57,18 @@
                 <table id="tables">
                     <thead>
                         <tr>
+                            @*
                             <th>
-                                Id
-                            </th>
+                            Id
+                            </th>*@
                             <th>
-                                Date
+                                Date & Time
                             </th>
                             <th>
                                 Batch Code
                             </th>
                             <th>
-                                Species
+                                Specie
                             </th>
                             <th>
                                 Category
@@ -91,21 +92,46 @@
                                 Holding Pen No.
                             </th>
                             <th>
-                                Received By: (Name)
+                                Received By
                             </th>
                             <th>
                                 Representative
+                            </th>
+                            <th>
+                                Status
                             </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
+                        @{
+                            // Assuming accountId is the specific AccountDetails id you want to filter by
+                            string accountId = UserManager.GetUserId(User);
+                            var filteredModel = Model;
+
+                            if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
+                            {
+                                // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
+                                var loggedInUser = await UserManager.GetUserAsync(User);
+
+                                // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
+                                int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
+
+                                // Filter the Model based on the MeatEstablishmentId
+                                filteredModel = Model.Where(item => item.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
+                            }
+                            else if (User.IsInRole("InspectorAdmin"))
+                            {
+                                // No filtering required for InspectorAdmin, so keep the original Model.
+                                filteredModel = Model;
+                            }
+                        }
                         @foreach (var item in Model)
                         {
                             <tr class="filter-item">
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Id)
-                                </td>
+                                @*<td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                            </td>*@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.RecTime)
                                 </td>
@@ -144,6 +170,11 @@
                                     @Html.DisplayFor(modelItem => item.AccountDetails.firstName)
                                     @Html.DisplayFor(modelItem => item.AccountDetails.lastName)
                                 </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.InspectionStatus)
+                                </td>
+
+
 
 
                                 @if (User.IsInRole("MeatInspector"))
@@ -155,8 +186,19 @@
 
                                         @* <a asp-controller="ConductOfInspections" asp-action="Create">INSPECT</a>*@
 
-                                        @* <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" id="getId">INSPECT</a>*@
-                                        <a class="btn btn-warning inspect-button" data-id="@item.Id">INSPECT</a>
+                                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" id="getId">INSPECT</a>
+                                        @*<a class="btn btn-warning" onclick="inspectItem(@item.Id)">INSPECT</a>*@
+
+
+
+                                        @*<form method="post" action="/ReceivingReports/actionResult">
+                                <input type="hidden" name="Id" value="@idd" />
+                                <button type="submit" class="btn btn-primary">Inspect</button>
+                                </form>*@
+
+
+                                        @*  <a class="btn btn-warning inspect-button" data-id="@item.Id">INSPECT</a>*@
+
                                     </td>
                                 }
                                 @if (User.IsInRole("MeatEstablishmentRepresentative"))
@@ -176,6 +218,8 @@
             </div>
         </div>
         <br />
+
+
 
         <script>
             //filters
@@ -208,44 +252,40 @@
                 });
             });
 
-            function filterDataDate() {
-                // Implement filtering logic for date
-            }
 
-            function filterDataSpecies() {
-                // Implement filtering logic for species
-            }
-
-            function filterDatameatEstablishment() {
-                // Implement filtering logic for meat establishment
-            }
         </script>
 
         <script>
-            function filterDataDate() {
-                var startDate = document.getElementById("startdate").value;
-                var endDate = document.getElementById("enddate").value;
-                var rows = document.getElementsByClassName("filter-item");
+            //document.addEventListener("DOMContentLoaded", function () {
+            //    var currentDate = new Date().toISOString().split('T')[0];
+            //    document.getElementById("startdate").value = currentDate;
+            //    document.getElementById("enddate").value = currentDate;
+            //    filterDataDate();
+            //});
 
-                for (var i = 0; i < rows.length; i++) {
-                    var row = rows[i];
-                    var dateCell = row.cells[0]; // Assuming the date is in the first cell
+            //function filterDataDate() {
+            //    var startDate = new Date(document.getElementById("startdate").value);
+            //    var endDate = new Date(document.getElementById("enddate").value);
+            //    var rows = document.getElementsByClassName("filter-item");
 
-                    if (startDate && endDate) {
-                        var rowDate = new Date(dateCell.innerText).toISOString().split('T')[0]; // Extract date part
-                        var start = new Date(startDate);
-                        var end = new Date(endDate);
+            //    for (var i = 0; i < rows.length; i++) {
+            //        var row = rows[i];
+            //        var dateCell = new Date(row.cells[0].innerText); // Assuming the date is in the first cell
 
-                        if (rowDate >= start.toISOString().split('T')[0] && rowDate <= end.toISOString().split('T')[0]) {
-                            row.style.display = "table-row";
-                        } else {
-                            row.style.display = "none";
-                        }
-                    } else {
-                        row.style.display = "table-row";
-                    }
-                }
-            }
+            //        if (startDate && endDate) {
+            //            startDate.setHours(0, 0, 0, 0); // Set start time to 00:00:00
+            //            endDate.setHours(23, 59, 59, 999); // Set end time to 23:59:59.999
+
+            //            if (dateCell >= startDate && dateCell <= endDate) {
+            //                row.style.display = "table-row";
+            //            } else {
+            //                row.style.display = "none";
+            //            }
+            //        } else {
+            //            row.style.display = "table-row";
+            //        }
+            //    }
+            //}
         </script>
 
         <script>
@@ -266,4 +306,3 @@
         </script>
     </main>
 </section>
-
