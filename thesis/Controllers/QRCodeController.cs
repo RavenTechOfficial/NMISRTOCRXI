@@ -20,41 +20,41 @@ namespace thesis.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Result result)
+        public IActionResult Create()
         {
-            string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            Random random = new Random();
-            char[] idChars = new char[10];
+            //string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            //Random random = new Random();
+            //char[] idChars = new char[10];
 
-            for (int i = 0; i < 10; i++)
-            {
-                idChars[i] = characters[random.Next(characters.Length)];
-            }
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    idChars[i] = characters[random.Next(characters.Length)];
+            //}
 
-            string id = new string(idChars);
+            //string id = new string(idChars);
 
-            Result results = new Result
-            {
-                Id = id,
-                Name = result.Name,
-                Address = result.Address,
-                MeatEstablishment = result.MeatEstablishment,
-                Date = result.Date
-            };
+            //Result results = new Result
+            //{
+            //    Id = id,
+            //    Name = result.Name,
+            //    Address = result.Address,
+            //    MeatEstablishment = result.MeatEstablishment,
+            //    Date = result.Date
+            //};
 
-            QrCode qr = new QrCode
-            {
-                Link = "https://localhost:7116/Result/" + results.Id,
-                uid = results.Id
-            };
+            //QrCode qr = new QrCode
+            //{
+            //    Link = "https://localhost:7116/Result/" + results.Id,
+            //    uid = results.Id
+            //};
 
-            _context.Add(results);
-            _context.Add(qr);
-            _context.SaveChanges();
+            //_context.Add(results);
+            //_context.Add(qr);
+            //_context.SaveChanges();
 
             
 
-            _context.Results.FirstOrDefault(res => res.Id == results.Id);
+            //_context.Results.FirstOrDefault(res => res.Id == results.Id);
 
 
             //var res = new QrCode

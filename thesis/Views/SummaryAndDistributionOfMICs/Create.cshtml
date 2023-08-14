@@ -1,10 +1,9 @@
-﻿@using thesis.Core.ViewModel;
-@using thesis.Data.Enum;
-@model SummaryViewModel;
+﻿@using thesis.Data.Enum;
+@model thesis.Core.ViewModel.SummaryViewModel;
 @using Azure.Core;
 
 <script src="~/js/register.js"></script>
-<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 <link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
 @{
     ViewData["Title"] = "Create";
@@ -45,16 +44,25 @@
             <form class="form" asp-action="Create">
                 <div class="column">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="input-box">
+                    <div class="input-box" style="display: none">
                         <label asp-for="TotalNoFitForHumanConsumptionId" class="control-label"></label>
-                        <select asp-for="TotalNoFitForHumanConsumptionId" class="form-control" asp-items="ViewBag.TotalNoFitForHumanConsumptionId"></select>
+                        <select asp-for="TotalNoFitForHumanConsumptionId" class="form-control" asp-items="ViewBag.TotalNoFitForHumanConsumptionId">
+                            @{
+                                var totalNoFitForHumanConsumptionId = (IEnumerable<SelectListItem>)ViewBag.TotalNoFitForHumanConsumptionId;
+                                foreach (var item in totalNoFitForHumanConsumptionId)
+                                {
+                                    var isSelected = item.Value == totalNoFitForHumanConsumptionId.ToString() ? "selected" : "";
+                                    <option value="@item.Value" selected="@isSelected">@item.Text</option>
+                                }
+                            }
+                        </select>
                     </div>
                     <div class="input-box">
-                        <label asp-for="DestinationName" class="control-label"></label>
+                        <label asp-for="DestinationName" class="control-label">Destination Name: </label>
                         <input asp-for="DestinationName" class="form-control" />
                         <span asp-validation-for="DestinationName" class="text-danger"></span>
                     </div>
-                    <div class="input-box">
+                    <div class="input-box" style="display:none">
                         <label asp-for="DestinationAddress" class="control-label"></label>
                         <input asp-for="DestinationAddress" class="form-control" id="addressInput" />
                         <span asp-validation-for="DestinationAddress" class="text-danger"></span>
@@ -63,7 +71,7 @@
 
 
                 <div class="input-box address">
-
+                    <label asp-for="DestinationAddress" class="control-label">Destination Address:</label>
                     <div class="column">
                         <div class="select-box">
                             <select id="regionSelect" onchange="populateProvinces()">
@@ -115,7 +123,7 @@
                 </script>
                 <br />
                 <div class="form-group">
-                    <label asp-for="CertificateStatus" class="control-label"></label>
+                    <label asp-for="CertificateStatus" class="control-label">Certificate Status:</label>
                     <select asp-for="CertificateStatus" class="form-control" asp-items="@Html.GetEnumSelectList<CertificateStatus>()">
                         <option>--Select--</option>
                     </select>
@@ -138,91 +146,91 @@
 
         </div>
 
-        <div class="FirstLayer">
+        @* <div class="FirstLayer">
 
-            <div class="applications">
-                <div class="applications">
-                    <div class="search">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
-                    </div>
-
-                    <script>
-                        $(document).ready(function () {
-                            $('#searchInput').on('input', function () {
-                                var searchText = $(this).val().toLowerCase();
-                                $('.filter-item').each(function () {
-                                    var rowText = $(this).text().toLowerCase();
-                                    if (rowText.indexOf(searchText) === -1) {
-                                        $(this).hide();
-                                    } else {
-                                        $(this).show();
-                                    }
-                                });
-                            });
-                        });
-                    </script>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Type of Meat
-                                </th>
-                                <th>
-                                    No. of Heads
-                                </th>
-                                <th>
-                                    Weight()
-                                </th>
-                                <th>
-                                    Destination Name
-                                </th>
-                                <th>
-                                    Destination Address
-                                </th>
-                                <th>
-                                    Certificate Status
-                                </th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Summary)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TotalNoFitForHumanConsumption.Species)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TotalNoFitForHumanConsumption.NoOfHeads)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TotalNoFitForHumanConsumption.DressedWeight)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.DestinationName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.DestinationAddress)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CertificateStatus)
-                                    </td>
-
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-
-                </div>
-                <br />
-
-                <div class="button">
-                    <a class="btn btn-dark " asp-controller="ReceivingReports" asp-action="Index"> <span>Done</span> <i class="bx bx-check"> </i> </a>
-                </div>
-
-            </div>
+        <div class="applications">
+        <div class="applications">
+        <div class="search">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
         </div>
 
+        <script>
+        $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+        var searchText = $(this).val().toLowerCase();
+        $('.filter-item').each(function () {
+        var rowText = $(this).text().toLowerCase();
+        if (rowText.indexOf(searchText) === -1) {
+        $(this).hide();
+        } else {
+        $(this).show();
+        }
+        });
+        });
+        });
+        </script>
+        <table class="table">
+        <thead>
+        <tr>
+        <th>
+        Type of Meat
+        </th>
+        <th>
+        No. of Heads
+        </th>
+        <th>
+        Weight()
+        </th>
+        <th>
+        Destination Name
+        </th>
+        <th>
+        Destination Address
+        </th>
+        <th>
+        Certificate Status
+        </th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Summary)
+        {
+        <tr>
+        <td>
+        @Html.DisplayFor(modelItem => item.TotalNoFitForHumanConsumption.Species)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.TotalNoFitForHumanConsumption.NoOfHeads)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.TotalNoFitForHumanConsumption.DressedWeight)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.DestinationName)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.DestinationAddress)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.CertificateStatus)
+        </td>
+
+        </tr>
+        }
+        </tbody>
+        </table>
+
+        </div>
+        <br />
+
+        <div class="button">
+        <a class="btn btn-dark " asp-controller="ReceivingReports" asp-action="Index"> <span>Done</span> <i class="bx bx-check"> </i> </a>
+        </div>
+
+        </div>
+        </div>
+        *@
     </main>
     <!-- MAIN ENDS -->
 

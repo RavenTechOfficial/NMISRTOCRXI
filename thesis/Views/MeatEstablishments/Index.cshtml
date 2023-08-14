@@ -1,4 +1,5 @@
-﻿@model IEnumerable<thesis.Models.MeatEstablishment>
+﻿@using thesis.Data.Enum;
+@model IEnumerable<thesis.Models.MeatEstablishment>
 
 @{
     ViewData["Title"] = "Index";
@@ -38,27 +39,56 @@
                                 Establishment Name
                             </th>
                             <th>
-                                Address
+                                @Html.DisplayNameFor(model => model.Address)
+                            </th>
+                            <th>
+                                License Status
                             </th>
                             <th>
                                 LTO No.
                             </th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
-                        {  @if (item.Type != null && item.Name != null && item.Address != null && item.LicenseToOperateNumber != null)
+                        {
+                            @if (item.Type != null && item.Name != null && item.Address != null && item.LicenseToOperateNumber != null)
                             {
-                                <tr>
+                                <tr class="filter-item">
+                                    @* <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                            </td>*@
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Type)
+                                        @if (item.Type == EstablishmentType.SLH)
+                                        {
+                                            @Html.Raw("Slaughter House")
+                                        }
+                                        else if (item.Type == EstablishmentType.PDP)
+                                        {
+                                            @Html.Raw("Poultry Dressing Plant")
+                                        }
+                                        else if (item.Type == EstablishmentType.MCP)
+                                        {
+                                            @Html.Raw("Meat Cutting Plant")
+                                        }
+                                        else if (item.Type == EstablishmentType.CSW)
+                                        {
+                                            @Html.Raw("Cold Storage Warehouse")
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.Type)
+                                        }
                                     </td>
+
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Name)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Address)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LicenseStatus)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.LicenseToOperateNumber)
@@ -69,7 +99,8 @@
                                         </div>
                                     </td>
                                 </tr>
-                            }}
+                            }
+                        }
                     </tbody>
                 </table>
             </div>

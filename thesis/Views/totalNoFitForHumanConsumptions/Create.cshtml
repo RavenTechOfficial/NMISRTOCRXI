@@ -1,7 +1,7 @@
 ﻿@using thesis.Data.Enum;
 @model thesis.Models.totalNoFitForHumanConsumptions
 
-<link href="~/css/inspectorSideNav.css" rel="stylesheet" />
+<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 @{
     ViewData["Title"] = "Create";
 }
@@ -22,30 +22,34 @@
                     <div class="col-md-4">
                         <form asp-action="Create">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                             <div class="form-group">
-                                <label asp-for="Species" class="control-label"></label>
-                                <select asp-for="Species" class="form-control" asp-items="@Html.GetEnumSelectList<Species>()">
-                                    <option>--Select--</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="NoOfHeads" class="control-label"></label>
+                                <label asp-for="NoOfHeads" class="control-label">No. Of Heads:</label>
                                 <input asp-for="NoOfHeads" class="form-control" />
                                 <span asp-validation-for="NoOfHeads" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="DressedWeight" class="control-label"></label>
+                                <label asp-for="DressedWeight" class="control-label">Dressed Weight:</label>
                                 <input asp-for="DressedWeight" class="form-control" />
                                 <span asp-validation-for="DressedWeight" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="display: none">
                                 <label asp-for="PostmortemId" class="control-label"></label>
-                                <select asp-for="PostmortemId" class="form-control" asp-items="ViewBag.PostmortemId"></select>
+                                <select asp-for="PostmortemId" class="form-control" asp-items="ViewBag.PostmortemId">
+                                    @{
+                                        var postmortemId = (IEnumerable<SelectListItem>)ViewBag.PostmortemId;
+                                        foreach (var item in postmortemId)
+                                        {
+                                            var isSelected = item.Value == postmortemId.ToString() ? "selected" : "";
+                                            <option value="@item.Value" selected="@isSelected">@item.Text</option>
+                                        }
+                                    }
+                                </select>
                             </div>
+                            <br />
                             <div class="form-group">
-                                @* <input type="submit" value="Create" class="btn btn-primary" />*@
-                                <br />
-                                <a class="btn btn-primary" asp-controller="SummaryAndDistributionOfMICs" asp-action="Create">Next</a>
+                                <input type="submit" value="Create" class="btn btn-primary" />
+
                             </div>
                         </form>
                     </div>
@@ -59,8 +63,11 @@
                         await Html.RenderPartialAsync("_ValidationScriptsPartial");
                     }
                 }
+                <br />
+                @* <a class="btn btn-primary" asp-controller="SummaryAndDistributionOfMICs" asp-action="Create">Next</a>*@
 
             </div>
+
         </div>
 
     </main>

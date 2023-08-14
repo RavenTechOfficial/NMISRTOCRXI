@@ -50,15 +50,24 @@ namespace thesis.Controllers
         }
 
         // GET: ConductOfInspections/Create
-        public IActionResult Create(int meatInspectionReportId)
+        public IActionResult Create(/*int meatInspectionReportId*/)
         {
-            ViewData["meatInspectionReportId"] = meatInspectionReportId;
+            // ViewData["meatInspectionReportId"] = meatInspectionReportId;
 
             var viewModel = new ConductOfInspectionViewModel();
             viewModel.ConductOfInspections = new List<ConductOfInspection>(); // Initialize the list
             viewModel.SingleConductOfInspection = new ConductOfInspection();
 
-            ViewData["MeatInspectionReportsId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id");
+            //ViewData["MeatInspectionReportsId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id");
+            int latestMeatInspectionReportsId = _context.MeatInspectionReports
+                   .OrderByDescending(m => m.Id)
+                   .Select(m => m.Id)
+                   .FirstOrDefault();
+
+            ViewData["MeatInspectionReportsId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id", latestMeatInspectionReportsId);
+            ViewData["LatestMeatInspectionReportsId"] = latestMeatInspectionReportsId;
+
+            viewModel.MeatInspectionReportId = latestMeatInspectionReportsId;
 
             return View(viewModel);
         }
@@ -69,9 +78,8 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Issue,NoOfHeads,Weight,Cause,MeatInspectionReportsId")] ConductOfInspection conductOfInspection)
+        public async Task<IActionResult> Create([Bind("Id,Issue,NoOfHeads,Weight,Cause,MeatInspectionReportId")] ConductOfInspection conductOfInspection)
         {
-
             if (ModelState.IsValid)
             {
                 _context.Add(conductOfInspection);
@@ -86,7 +94,7 @@ namespace thesis.Controllers
             viewModel.SingleConductOfInspection = new ConductOfInspection();
             viewModel.Issue = (Issue)conductOfInspection.Issue; // Initialize the Issue property
 
-            ViewData["MeatInspectionReportsId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id");
+            ViewData["MeatInspectionReportId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id", conductOfInspection.MeatInspectionReportId);
 
             return View();
         }

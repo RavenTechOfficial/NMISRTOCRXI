@@ -9,7 +9,7 @@
     <!-- MAIN STARTS-->
     <main class="registration">
         <div class="FirstLayer">
-            <h3>Meat Dealer</h3>
+            <h3>Add Meat Dealer</h3>
         </div>
         <div class="FirstLayer">
             <nav aria-label="breadcrumb">
@@ -21,28 +21,25 @@
                 </ol>
             </nav>
         </div>
-
-
-
-
         <div class="container">
-
             <form class="form" asp-action="Create">
-
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
                 <div class="column">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="input-box">
-                        <label asp-for="FirstName" class="control-label">First Name</label>
+                        <label asp-for="FirstName" class="control-label">First Name:</label>
                         <input asp-for="FirstName" class="form-control" />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="input-box">
-                        <label asp-for="MiddleName" class="control-label">Middle Name</label>
+                        <label asp-for="MiddleName" class="control-label">Middle Name:</label>
                         <input asp-for="MiddleName" class="form-control" />
                         <span asp-validation-for="MiddleName" class="text-danger"></span>
                     </div>
                     <div class="input-box">
-                        <label asp-for="LastName" class="control-label">Last Name</label>
+                        <label asp-for="LastName" class="control-label">Last Name:</label>
                         <input asp-for="LastName" class="form-control" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
@@ -56,7 +53,7 @@
                 </div>
 
                 <div class="input-box address">
-                    <label asp-for="Address" class="control-label"></label>
+                    <label asp-for="Address" class="control-label">Address:</label>
                     <div class="column">
                         <div class="select-box">
                             <select id="regionSelect" onchange="populateProvinces()">
@@ -107,15 +104,14 @@
 
                 <div class="column">
                     <div class="input-box">
-                        <label asp-for="ContactNo" class="control-label">Contact No.</label>
+                        <label asp-for="ContactNo" class="control-label">Contact No.:</label>
                         <input asp-for="ContactNo" class="form-control" />
                         <span asp-validation-for="ContactNo" class="text-danger"></span>
                     </div>
-                    <div class="input-box">
-                        <label class="control-label">Meat Establishment </label>
-                        @*<select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentId" readonly></select>*@
-                        <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishments" readonly></select>
-                    </div>
+                </div>
+                <div class="input-box">
+                    <label class="control-label">Meat Establishment:</label>
+                    <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentId" readonly></select>
                 </div>
                 <br />
 
@@ -124,9 +120,7 @@
             </form>
         </div>
 
-        <div>
-            <a asp-action="Index">Back to List</a>
-        </div>
+
 
 
     </main>

@@ -20,7 +20,6 @@ namespace thesis.Migrations
         {
             SeedRolesSQL(migrationBuilder);
         }
-
         private void SeedRolesSQL(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@$"INSERT INTO [dbo].[AspNetRoles] ([Id],[Name],[NormalizedName],[ConcurrencyStamp])
@@ -40,6 +39,7 @@ namespace thesis.Migrations
             migrationBuilder.Sql(@$"INSERT INTO [dbo].[AspNetRoles] ([Id],[Name],[NormalizedName],[ConcurrencyStamp])
             VALUES ('{MTVUsersId}', 'MtvUsers', 'MTVUSERS', null);");
         }
+
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)

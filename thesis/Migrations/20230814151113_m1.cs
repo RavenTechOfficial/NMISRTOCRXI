@@ -105,6 +105,55 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "QrCodes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    uid = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QrCodes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Results",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RecTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Species = table.Column<int>(type: "int", nullable: true),
+                    LiveWeight = table.Column<int>(type: "int", nullable: true),
+                    MeatDealer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Issue = table.Column<int>(type: "int", nullable: false),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<int>(type: "int", nullable: false),
+                    Cause = table.Column<int>(type: "int", nullable: false),
+                    NoOfHeadsPassed = table.Column<int>(type: "int", nullable: false),
+                    WeightPassed = table.Column<double>(type: "float", nullable: false),
+                    AnimalPart = table.Column<int>(type: "int", nullable: false),
+                    PostmortemCause = table.Column<int>(type: "int", nullable: false),
+                    PostmortemWeight = table.Column<int>(type: "int", nullable: false),
+                    PostmortemNoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    Image1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image3 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FitforConSpecies = table.Column<int>(type: "int", nullable: false),
+                    FitforConNoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    DressedWeight = table.Column<int>(type: "int", nullable: false),
+                    DestinationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DestinationAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CertificateStatus = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Results", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VehicleInfos",
                 columns: table => new
                 {
@@ -191,7 +240,7 @@ namespace thesis.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -367,7 +416,8 @@ namespace thesis.Migrations
                     ShippingDoc = table.Column<int>(type: "int", nullable: false),
                     HoldingPenNo = table.Column<int>(type: "int", nullable: false),
                     ReceivingBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    InspectionStatus = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -458,7 +508,7 @@ namespace thesis.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RepDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VerifiedByPOSMSHead = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VerifiedByPOSMSHead = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceivingReportId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -532,25 +582,6 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Antemortems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MeatInspectionReportId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Antemortems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Antemortems_MeatInspectionReports_MeatInspectionReportId",
-                        column: x => x.MeatInspectionReportId,
-                        principalTable: "MeatInspectionReports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ConductOfInspections",
                 columns: table => new
                 {
@@ -560,15 +591,15 @@ namespace thesis.Migrations
                     NoOfHeads = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<int>(type: "int", nullable: false),
                     Cause = table.Column<int>(type: "int", nullable: false),
-                    AntemortemId = table.Column<int>(type: "int", nullable: false)
+                    MeatInspectionReportId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ConductOfInspections", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ConductOfInspections_Antemortems_AntemortemId",
-                        column: x => x.AntemortemId,
-                        principalTable: "Antemortems",
+                        name: "FK_ConductOfInspections_MeatInspectionReports_MeatInspectionReportId",
+                        column: x => x.MeatInspectionReportId,
+                        principalTable: "MeatInspectionReports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -605,7 +636,9 @@ namespace thesis.Migrations
                     Cause = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<int>(type: "int", nullable: false),
                     NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    Images = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Image1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image3 = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -663,11 +696,6 @@ namespace thesis.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Antemortems_MeatInspectionReportId",
-                table: "Antemortems",
-                column: "MeatInspectionReportId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -717,9 +745,9 @@ namespace thesis.Migrations
                 column: "MTVquizId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConductOfInspections_AntemortemId",
+                name: "IX_ConductOfInspections_MeatInspectionReportId",
                 table: "ConductOfInspections",
-                column: "AntemortemId");
+                column: "MeatInspectionReportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DisapprovedApplications_MTVInspectionId",
@@ -841,7 +869,13 @@ namespace thesis.Migrations
                 name: "Payments");
 
             migrationBuilder.DropTable(
+                name: "QrCodes");
+
+            migrationBuilder.DropTable(
                 name: "Receivings");
+
+            migrationBuilder.DropTable(
+                name: "Results");
 
             migrationBuilder.DropTable(
                 name: "SummaryAndDistributionOfMICs");
@@ -878,9 +912,6 @@ namespace thesis.Migrations
 
             migrationBuilder.DropTable(
                 name: "ConductOfInspections");
-
-            migrationBuilder.DropTable(
-                name: "Antemortems");
 
             migrationBuilder.DropTable(
                 name: "MeatInspectionReports");

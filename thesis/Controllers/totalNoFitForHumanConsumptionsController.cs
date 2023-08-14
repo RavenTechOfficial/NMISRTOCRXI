@@ -63,10 +63,11 @@ namespace thesis.Controllers
             {
                 _context.Add(totalNoFitForHumanConsumptions);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //   return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", "SummaryAndDistributionOfMICs");
             }
             ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", totalNoFitForHumanConsumptions.PostmortemId);
-            return View(totalNoFitForHumanConsumptions);
+            return View();
         }
 
         // GET: totalNoFitForHumanConsumptions/Edit/5
@@ -165,5 +166,4 @@ namespace thesis.Controllers
             return (_context.totalNoFitForHumanConsumptions?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
-
 }
