@@ -7,7 +7,7 @@
 
 @{
     ViewData["Title"] = "Create";
-    int meatInspectionReportId = (int)ViewData["meatInspectionReportId"];
+    //int meatInspectionReportId = (int)ViewData["meatInspectionReportId"];
 }
 
 <section id="content">
@@ -26,8 +26,6 @@
                     <li class="breadcrumb-item active" aria-current="page">Antemortem</li>
                 </ol>
             </nav>
-        </div>
-        <div class="registration">
 
             <div class="container">
 
@@ -37,61 +35,49 @@
                         <a class='bx bxs-chevron-left' asp-controller="ReceivingReports" asp-action="Index">
                             <span>Back</span>
                         </a>
-                        <a class='bx bxs-chevron-left' asp-action="Index">
-                            <span>Show All</span>
+                        @* <a class='bx bxs-chevron-left' asp-action="Index">
+                        <span>Show All</span>
 
-                        </a>
-
-
+                        </a>*@
                     </div>
-                    <br />
+
                     <form class="form" asp-action="Create">
                         <div class="column">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="input-box">
-
-                                <label asp-for="Issue" class="control-label"></label>
+                                <label asp-for="Issue" class="control-label">Issue:</label>
                                 <br />
                                 <select asp-for="Issue" class="form-control" asp-items="@Html.GetEnumSelectList<Issue>()">
-                                    <option>--Select--</option>
                                 </select>
                                 <span asp-validation-for="Issue" class="text-danger"></span>
                             </div>
                             <div class="input-box">
-                                <label asp-for="NoOfHeads" class="control-label"></label>
-                                <input asp-for="NoOfHeads" class="form-control" />
-                                <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+                                <label asp-for="Cause" class="control-label">Cause:</label>
+                                <select asp-for="Cause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()">
+                                </select>
+                                <span asp-validation-for="Cause" class="text-danger"></span>
                             </div>
-                            <div class="input-box">
-                                <label asp-for="Weight" class="control-label"></label>
-                                <input asp-for="Weight" class="form-control" />
-                                <span asp-validation-for="Weight" class="text-danger"></span>
-                            </div>
+
                         </div>
 
                         <div class="column">
                             <div class="input-box">
-                                <label asp-for="Cause" class="control-label"></label>
-                                <select asp-for="Cause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()">
-                                    <option>--Select--</option>
-                                </select>
-                                <span asp-validation-for="Cause" class="text-danger"></span>
+                                <label asp-for="NoOfHeads" class="control-label">No. Of Heads:</label>
+                                <input asp-for="NoOfHeads" class="form-control" />
+                                <span asp-validation-for="NoOfHeads" class="text-danger"></span>
                             </div>
-                            @*style="display:none"*@
-                            <div class="input-box" >
-                                <label asp-for="MeatInspectionReportsId" class="control-label"></label>
-                                <select asp-for="MeatInspectionReportsId" class="form-control" asp-items="ViewBag.MeatInspectionReportsId">
-                                    <option value="">-- Select Meat Inspection Report --</option>
-                                    @{
-                                        var meatInspectionReportsId = (IEnumerable<SelectListItem>)ViewBag.MeatInspectionReportsId;
-                                        foreach (var item in meatInspectionReportsId)
-                                        {
-                                            var isSelected = item.Value == meatInspectionReportId.ToString() ? "selected" : "";
-                                            <option value="@item.Value" selected="@isSelected">@item.Text</option>
-                                        }
-                                    }
+                            <div class="input-box">
+                                <label asp-for="Weight" class="control-label">Weight:</label>
+                                <input asp-for="Weight" class="form-control" />
+                                <span asp-validation-for="Weight" class="text-danger"></span>
+                            </div>
+                            <div class="input-box" style="display: none">
+                                <label asp-for="MeatInspectionReportId" class="control-label"></label>
+                                <select asp-for="MeatInspectionReportId" class="form-control" asp-items="ViewBag.MeatInspectionReportId">
+                                    <option value="@ViewBag.LatestMeatInspectionReportsId" selected="selected">@ViewBag.LatestMeatInspectionReportsId</option>
                                 </select>
                             </div>
+
 
                         </div>
                         <br />
@@ -108,22 +94,16 @@
                     </form>*@
                 </div>
             </div>
+        </div>
+        @*<div class="button">
+        <a class="btn btn-dark " asp-controller="PassedForSlaughters" asp-action="Create"> <span>Next</span> <i class="bx bx-chevron-right"> </i> </a>
+        </div>*@
 
-
-            @section Scripts {
-                @{
-                    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-                }
+        @section Scripts {
+            @{
+                await Html.RenderPartialAsync("_ValidationScriptsPartial");
             }
-
-
-
-
-
-        </div>
-        <div class="button">
-            <a class="btn btn-dark " asp-controller="PassedForSlaughters" asp-action="Create"> <span>Next</span> <i class="bx bx-chevron-right"> </i> </a>
-        </div>
+        }
 
 
 

@@ -10,7 +10,7 @@ namespace thesis.Models
         public int Id { get; set; }
         [ForeignKey("PassedForSlaughter")]
         public int PassedForSlaughterId { get; set; }
-        public PassedForSlaughter PassedForSlaughter { get; set; }
+        public PassedForSlaughter? PassedForSlaughter { get; set; }
         public AnimalPart AnimalPart { get; set; }
         public Cause Cause { get; set; }
         public int Weight { get; set; }

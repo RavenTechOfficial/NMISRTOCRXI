@@ -12,7 +12,7 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20230727034629_m2")]
+    [Migration("20230814151409_m2")]
     partial class m2
     {
         /// <inheritdoc />
@@ -266,24 +266,6 @@ namespace thesis.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("thesis.Models.Antemortem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MeatInspectionReportId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MeatInspectionReportId");
-
-                    b.ToTable("Antemortems");
-                });
-
             modelBuilder.Entity("thesis.Models.ConductOfInspection", b =>
                 {
                     b.Property<int>("Id")
@@ -292,13 +274,13 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AntemortemId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Cause")
                         .HasColumnType("int");
 
                     b.Property<int>("Issue")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MeatInspectionReportId")
                         .HasColumnType("int");
 
                     b.Property<int>("NoOfHeads")
@@ -309,7 +291,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AntemortemId");
+                    b.HasIndex("MeatInspectionReportId");
 
                     b.ToTable("ConductOfInspections");
                 });
@@ -646,7 +628,6 @@ namespace thesis.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -699,7 +680,6 @@ namespace thesis.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("VerifiedByPOSMSHead")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -769,8 +749,13 @@ namespace thesis.Migrations
                     b.Property<int>("Cause")
                         .HasColumnType("int");
 
-                    b.Property<string>("Images")
-                        .IsRequired()
+                    b.Property<string>("Image1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image3")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NoOfHeads")
@@ -787,6 +772,27 @@ namespace thesis.Migrations
                     b.HasIndex("PassedForSlaughterId");
 
                     b.ToTable("Postmortems");
+                });
+
+            modelBuilder.Entity("thesis.Models.QrCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("uid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QrCodes");
                 });
 
             modelBuilder.Entity("thesis.Models.Receiving", b =>
@@ -831,6 +837,9 @@ namespace thesis.Migrations
                     b.Property<int>("HoldingPenNo")
                         .HasColumnType("int");
 
+                    b.Property<int?>("InspectionStatus")
+                        .HasColumnType("int");
+
                     b.Property<int>("LiveWeight")
                         .HasColumnType("int");
 
@@ -864,6 +873,94 @@ namespace thesis.Migrations
                     b.HasIndex("MeatDealersId");
 
                     b.ToTable("ReceivingReports");
+                });
+
+            modelBuilder.Entity("thesis.Models.Result", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnimalPart")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Cause")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CertificateStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DestinationAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DestinationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DressedWeight")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FitforConNoOfHeads")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FitforConSpecies")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Image1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Issue")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LiveWeight")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MeatDealer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NoOfHeads")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NoOfHeadsPassed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostmortemCause")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostmortemNoOfHeads")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostmortemWeight")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RecTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Species")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
+
+                    b.Property<double>("WeightPassed")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Results");
                 });
 
             modelBuilder.Entity("thesis.Models.SummaryAndDistributionOfMIC", b =>
@@ -1041,7 +1138,7 @@ namespace thesis.Migrations
                     b.Navigation("MeatEstablishment");
                 });
 
-            modelBuilder.Entity("thesis.Models.Antemortem", b =>
+            modelBuilder.Entity("thesis.Models.ConductOfInspection", b =>
                 {
                     b.HasOne("thesis.Models.MeatInspectionReport", "MeatInspectionReport")
                         .WithMany()
@@ -1050,17 +1147,6 @@ namespace thesis.Migrations
                         .IsRequired();
 
                     b.Navigation("MeatInspectionReport");
-                });
-
-            modelBuilder.Entity("thesis.Models.ConductOfInspection", b =>
-                {
-                    b.HasOne("thesis.Models.Antemortem", "Antemortem")
-                        .WithMany()
-                        .HasForeignKey("AntemortemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Antemortem");
                 });
 
             modelBuilder.Entity("thesis.Models.DisapprovedApplication", b =>

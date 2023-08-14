@@ -11,6 +11,6 @@ namespace thesis.Models
         public int Weight { get; set; }
         [ForeignKey("ConductOfInspection")]
         public int ConductOfInspectionId { get; set; }
-        public ConductOfInspection ConductOfInspection { get; set; }
+        public ConductOfInspection? ConductOfInspection { get; set; }
     }
 }

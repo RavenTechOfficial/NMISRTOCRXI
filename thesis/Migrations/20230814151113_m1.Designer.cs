@@ -12,8 +12,8 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20230812102902_nulled")]
-    partial class nulled
+    [Migration("20230814151113_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -877,23 +877,86 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.Result", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Address")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnimalPart")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Cause")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CertificateStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DestinationAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<string>("DestinationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DressedWeight")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FitforConNoOfHeads")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FitforConSpecies")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Image1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Issue")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LiveWeight")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MeatDealer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NoOfHeads")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NoOfHeadsPassed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostmortemCause")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostmortemNoOfHeads")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostmortemWeight")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RecTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MeatEstablishment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Species")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
+
+                    b.Property<double>("WeightPassed")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

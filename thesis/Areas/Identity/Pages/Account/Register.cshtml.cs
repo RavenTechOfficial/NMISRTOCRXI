@@ -1,4 +1,5 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
@@ -29,7 +30,7 @@ using thesis.Models;
 
 namespace thesis.Areas.Identity.Pages.Account
 {
-    
+
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<AccountDetails> _signInManager;
@@ -39,17 +40,17 @@ namespace thesis.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _hostEnvironment;
-		private readonly thesisContext _context;
+        private readonly thesisContext _context;
 
-		public RegisterModel(
+        public RegisterModel(
             UserManager<AccountDetails> userManager,
             IUserStore<AccountDetails> userStore,
             SignInManager<AccountDetails> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             IWebHostEnvironment hostEnvironment,
-			thesisContext context)
-		{
+            thesisContext context)
+        {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -57,8 +58,8 @@ namespace thesis.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _hostEnvironment = hostEnvironment;
-			_context = context;
-		}
+            _context = context;
+        }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -85,14 +86,14 @@ namespace thesis.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-			/// <summary>
-			///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-			///     directly from your code. This API may change or be removed in future releases.
-			/// </summary>
-			/// 
-			public MeatEstablishment MeatEstablishment { get; set; }
-			public int MeatEsblishmentId { get; set; }
-			public Roles Roles { get; set;}
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
+            /// 
+            public MeatEstablishment MeatEstablishment { get; set; }
+            public int MeatEsblishmentId { get; set; }
+            public Roles Roles { get; set; }
 
             [Required]
             [Display(Name = "FirstName")]
@@ -109,31 +110,31 @@ namespace thesis.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Address")]
             public string address { get; set; }
-			[Required]
+            [Required]
             [Display(Name = "contactNo")]
             public string contactNo { get; set; }
 
-			[Required(ErrorMessage = "You must upload a picture")]
-			public IFormFile image { get; set; }
+            [Required(ErrorMessage = "You must upload a picture")]
+            public IFormFile image { get; set; }
 
-			[Required]
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Please enter type of sex")]
-			[Display(Name = "Sex")]
-			public string Sex { get; set; }
+            [Display(Name = "Sex")]
+            public string Sex { get; set; }
 
             [Required(ErrorMessage = "You need to input a birthdate")]
-			[Display(Name = "Birthdate")]
-			public DateTime Birthdate { get; set; }
+            [Display(Name = "Birthdate")]
+            public DateTime Birthdate { get; set; }
 
-			/// <summary>
-			///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-			///     directly from your code. This API may change or be removed in future releases.
-			/// </summary>
-			[Required]
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
+            [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -149,37 +150,37 @@ namespace thesis.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-        
+
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-			var meatEstablishments = _context.MeatEstablishment
-				.Where(me => me.Address != null)
-				.ToList();
-			ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
-		}
+            var meatEstablishments = _context.MeatEstablishment
+                .Where(me => me.Address != null)
+                .ToList();
+            ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
+        }
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-				var user = CreateUser();
+                var user = CreateUser();
 
-				if (Input.image != null && Input.image.Length > 0)
-				{
-					var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(Input.image.FileName)}";
-					var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/uploaded", uniqueFileName);
-					user.image = filePath;
+                if (Input.image != null && Input.image.Length > 0)
+                {
+                    var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(Input.image.FileName)}";
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/uploaded", uniqueFileName);
+                    user.image = filePath;
 
-					using (var fileStream = new FileStream(filePath, FileMode.Create))
-					{
-						await Input.image.CopyToAsync(fileStream);
-					}
-				}
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Input.image.CopyToAsync(fileStream);
+                    }
+                }
 
-				user.firstName = Input.firstName;
+                user.firstName = Input.firstName;
                 user.lastName = Input.lastName;
                 user.middleName = Input.middleName;
                 user.contactNo = Input.contactNo;
@@ -189,10 +190,14 @@ namespace thesis.Areas.Identity.Pages.Account
 
                 user.Roles = Input.Roles;
                 user.MeatEstablishmentId = Input.MeatEsblishmentId;
-                user.MeatEstablishment = new MeatEstablishment
+
+                if (user.Roles == Roles.SUPERADMIN || user.Roles == Roles.MTVADMIN || user.Roles == Roles.INSPECTORADMIN || user.Roles == Roles.MTVUSERS || user.Roles == Roles.MTVINSPECTOR)
                 {
-                    Type = Input.MeatEstablishment.Type ?? new EstablishmentType()
-                };
+                    user.MeatEstablishment = new MeatEstablishment
+                    {
+                        Type = Input.MeatEstablishment.Type ?? new EstablishmentType()
+                    };
+                }
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using thesis.Core.ViewModel;
 using thesis.Data;
 using thesis.Models;
-//using thesis.ViewModels;
 
 namespace thesis.Controllers
 {
@@ -67,11 +67,80 @@ namespace thesis.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TotalNoFitForHumanConsumptionId,DestinationName,DestinationAddress,CertificateStatus")] SummaryAndDistributionOfMIC summaryAndDistributionOfMIC)
         {
-            if (ModelState.IsValid)
+            string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random random = new Random();
+            char[] idChars = new char[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                idChars[i] = characters[random.Next(characters.Length)];
+            }
+
+            string id = new string(idChars);
+
+
+            var query = from mir in _context.MeatInspectionReports
+                        join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
+                        join coi in _context.ConductOfInspections on mir.Id equals coi.MeatInspectionReportId
+                        join pfs in _context.PassedForSlaughters on coi.Id equals pfs.ConductOfInspectionId
+                        join pm in _context.Postmortems on pfs.Id equals pm.PassedForSlaughterId
+                        join tnfhc in _context.totalNoFitForHumanConsumptions on pm.Id equals tnfhc.PostmortemId
+                        join sdmics in _context.SummaryAndDistributionOfMICs on tnfhc.Id equals sdmics.TotalNoFitForHumanConsumptionId
+                        select new Result
+                        {
+                            RecTime = rr.RecTime,
+                            Species = rr.Species,
+                            LiveWeight = rr.LiveWeight,
+                            MeatDealer = rr.MeatDealers.FirstName + ' ' + rr.MeatDealers.LastName,
+                            Issue = (Data.Enum.Issue)coi.Issue,
+                            NoOfHeads = coi.NoOfHeads,
+                            Weight = coi.Weight,
+                            Cause = (Data.Enum.Cause)coi.Cause,
+                            NoOfHeadsPassed = pfs.NoOfHeads,
+                            WeightPassed = pfs.Weight,
+                            AnimalPart = (Data.Enum.AnimalPart)pm.AnimalPart,
+                            PostmortemCause = (Data.Enum.Cause)pm.Cause,
+                            PostmortemWeight = (int)pm.Weight,
+                            PostmortemNoOfHeads = (int)pm.NoOfHeads,
+                            Image1 = pm.Image1,
+                            Image2 = pm.Image2,
+                            Image3 = pm.Image3,
+                            FitforConSpecies = tnfhc.Species,
+                            FitforConNoOfHeads = tnfhc.NoOfHeads,
+                            DressedWeight = tnfhc.DressedWeight,
+                            DestinationName = sdmics.DestinationName,
+                            DestinationAddress = sdmics.DestinationAddress,
+                            CertificateStatus = sdmics.CertificateStatus,
+                            uid = id
+                        };
+
+            List<Result> resultList = query.ToList();
+
+            // Order the list by Id and get the latest result
+            var latestResult = resultList.OrderByDescending(p => p.Id).LastOrDefault();
+
+
+            
+                QrCode qr = new QrCode
+                {
+                    Link = "https://localhost:7116/Result/" + id,
+                    uid = id
+                };
+
+                _context.Add(latestResult);
+                _context.Add(qr);
+                _context.SaveChanges();
+            
+
+            //_context.Results.FirstOrDefault(res => res.Id == results.Id);
+
+
+            if (!ModelState.IsValid)
             {
                 _context.Add(summaryAndDistributionOfMIC);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "MeatInspectionReports");
             }
             ViewData["TotalNoFitForHumanConsumptionId"] = new SelectList(_context.totalNoFitForHumanConsumptions, "Id", "Id", summaryAndDistributionOfMIC.TotalNoFitForHumanConsumptionId);
             return View(summaryAndDistributionOfMIC);

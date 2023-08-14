@@ -52,21 +52,28 @@
                         <input asp-for="BatchCode" class="form-control" />
                         <span asp-validation-for="BatchCode" class="text-danger"></span>
                     </div>
+                </div>
+                <div class="column">
                     <div class="input-box">
                         <label asp-for="Species" class="control-label">Specie:</label>
                         <select asp-for="Species" class="form-control" asp-items="@Html.GetEnumSelectList<Species>()">
                             <option>--Select--</option>
                         </select>
                     </div>
-                </div>
-                <div class="column">
                     <div class="input-box">
-
                         <label asp-for="Category" class="control-label">Category:</label>
                         <select asp-for="Category" class="form-control" asp-items="@Html.GetEnumSelectList<CategoryOfFoodAnimals>()">
                             <option>--Select--</option>
                         </select>
                     </div>
+                    <div class="input-box">
+                        <label asp-for="MeatDealersId" class="control-label">Meat Dealer:</label>
+                        <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId">
+                            <option> --- Select ---</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="column">
                     <div class="input-box">
                         <label asp-for="NoOfHeads" class="control-label">No. Of Heads:</label>
                         <input asp-for="NoOfHeads" class="form-control" />
@@ -76,12 +83,6 @@
                         <label asp-for="LiveWeight" class="control-label">Live Weight:</label>
                         <input asp-for="LiveWeight" class="form-control" />
                         <span asp-validation-for="LiveWeight" class="text-danger"></span>
-                    </div>
-                    <div class="input-box">
-                        <label asp-for="MeatDealersId" class="control-label">Meat Dealer:</label>
-                        <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId">
-                            <option> --- Select ---</option>
-                        </select>
                     </div>
                 </div>
                 <div class="column">
@@ -149,22 +150,40 @@
                 </div>
                 <div class="input-box">
                     <label asp-for="ShippingDoc" class="control-label">Shipping Documents:</label>
-                    <select asp-for="ShippingDoc" class="form-control" asp-items="@Html.GetEnumSelectList<ShippingDocuments>()">
+                    <select asp-for="ShippingDoc" class="form-control">
                         <option>--Select--</option>
+                        <option value="CertificateOfOwnerShip">Certificate Of Ownership</option>
+                        <option value="CertificateOfTransfer">Certificate Of Transfer</option>
+                        <option value="VeterinaryHealthCertificate">Veterinary Health Certificate</option>
+                        <option value="ShippingPermit">Shipping Permit</option>
                     </select>
                     <span asp-validation-for="ShippingDoc" class="text-danger"></span>
                 </div>
-                <div class="input-box">
-                    <label asp-for="HoldingPenNo" class="control-label">Holding Pen No.:</label>
-                    <input asp-for="HoldingPenNo" class="form-control" />
-                    <span asp-validation-for="HoldingPenNo" class="text-danger"></span>
-                </div>
+                @*    <div class="input-box">
+                <label class="control-label">Shipping Documents:</label><br>
+                <input type="checkbox" name="ShippingDoc" value="CertificateOfOwnerShip" id="CertificateOfOwnerShip">
+                <label for="CertificateOfOwnerShip">Certificate Of Ownership</label><br>
+                <input type="checkbox" name="ShippingDoc" value="CertificateOfTransfer" id="CertificateOfTransfer">
+                <label for="CertificateOfTransfer">Certificate Of Transfer</label><br>
+                <input type="checkbox" name="ShippingDoc" value="VeterinaryHealthCertificate" id="VeterinaryHealthCertificate">
+                <label for="VeterinaryHealthCertificate">Veterinary Health Certificate</label><br>
+                <input type="checkbox" name="ShippingDoc" value="ShippingPermit" id="ShippingPermit">
+                <label for="ShippingPermit">Shipping Permit</label><br>
+                </div>*@
+
                 <div class="column">
+                    <div class="input-box">
+                        <label asp-for="HoldingPenNo" class="control-label">Holding Pen No.:</label>
+                        <input asp-for="HoldingPenNo" class="form-control" />
+                        <span asp-validation-for="HoldingPenNo" class="text-danger"></span>
+                    </div>
                     <div class="input-box">
                         <label asp-for="ReceivingBy" class="control-label">Received By:</label>
                         <input asp-for="ReceivingBy" class="form-control" />
                         <span asp-validation-for="ReceivingBy" class="text-danger"></span>
                     </div>
+                </div>
+                <div class="column">
                     <div class="input-box" style="display: none;">
                         <label asp-for="AccountDetailsId" class="control-label"></label>
                         <input id="accountDetailsInput" asp-for="AccountDetailsId" class="form-control" />

@@ -65,16 +65,17 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PassedForSlaughterId,AnimalPart,Cause,Weight,NoOfHeads,Images")] Postmortem postmortem)
+        public async Task<IActionResult> Create([Bind("Id,PassedForSlaughterId,AnimalPart,Cause,Weight,NoOfHeads,Image1, Image2, Image3")] Postmortem postmortem)
         {
-            if (!
-                ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Add(postmortem);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", "totalNoFitForHumanConsumptions");
             }
             ViewData["PassedForSlaughterId"] = new SelectList(_context.PassedForSlaughters, "Id", "Id", postmortem.PassedForSlaughterId);
+
             return View(postmortem);
         }
 
@@ -100,7 +101,7 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PassedForSlaughterId,AnimalPart,Cause,Weight,NoOfHeads,Images")] Postmortem postmortem)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PassedForSlaughterId,AnimalPart,Cause,Weight,NoOfHeads,Image1, Image2, Image3")] Postmortem postmortem)
         {
             if (id != postmortem.Id)
             {

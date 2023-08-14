@@ -53,6 +53,11 @@
                                     <input asp-for="NoOfHeads" class="form-control" disabled />
                                     <span asp-validation-for="NoOfHeads" class="text-danger"></span>
                                 </div>
+                                <div class="input-box">
+                                    <label asp-for="LiveWeight" class="control-label">Live Weight:</label>
+                                    <input asp-for="LiveWeight" class="form-control" disabled />
+                                    <span asp-validation-for="LiveWeight" class="text-danger"></span>
+                                </div>
                                 <div class="form-group">
                                     <label asp-for="MeatDealersId" class="control-label">Meat Dealer:</label>
                                     <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId" disabled></select>
@@ -74,8 +79,6 @@
                                 <input type="hidden" name="Id" value="@Model.Id" />
                                 <button type="submit" class="btn btn-primary">Inspect</button>
                             </form>
-
-
                         </div>
                     </div>
 
@@ -84,20 +87,18 @@
                 }
                 @if (User.IsInRole("MeatEstablishmentRepresentative"))
                 {
-
-
                     <div>
                         <a asp-action="Index">Back to List</a>
                     </div>
                     <hr />
 
-                    <form asp-action="Edit" class="form">
+                    <form asp-action="Create" class="form">
                         <div class="column">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input type="hidden" asp-for="Id" />
+
                             <div class="input-box">
                                 <label asp-for="RecTime" class="control-label">Date & Time:</label>
-                                <input asp-for="RecTime" class="form-control" readonly />
+                                <input asp-for="RecTime" class="form-control" id="recTimeInput" readonly />
                                 <span asp-validation-for="RecTime" class="text-danger"></span>
                             </div>
                             <div class="input-box">
@@ -105,20 +106,28 @@
                                 <input asp-for="BatchCode" class="form-control" />
                                 <span asp-validation-for="BatchCode" class="text-danger"></span>
                             </div>
+                        </div>
+                        <div class="column">
                             <div class="input-box">
                                 <label asp-for="Species" class="control-label">Specie:</label>
                                 <select asp-for="Species" class="form-control" asp-items="@Html.GetEnumSelectList<Species>()">
                                     <option>--Select--</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="column">
                             <div class="input-box">
                                 <label asp-for="Category" class="control-label">Category:</label>
                                 <select asp-for="Category" class="form-control" asp-items="@Html.GetEnumSelectList<CategoryOfFoodAnimals>()">
                                     <option>--Select--</option>
                                 </select>
                             </div>
+                            <div class="input-box">
+                                <label asp-for="MeatDealersId" class="control-label">Meat Dealer:</label>
+                                <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId">
+                                    <option> --- Select ---</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="column">
                             <div class="input-box">
                                 <label asp-for="NoOfHeads" class="control-label">No. Of Heads:</label>
                                 <input asp-for="NoOfHeads" class="form-control" />
@@ -129,114 +138,119 @@
                                 <input asp-for="LiveWeight" class="form-control" />
                                 <span asp-validation-for="LiveWeight" class="text-danger"></span>
                             </div>
-                            <div class="input-box">
-                                <label asp-for="MeatDealersId" class="control-label">Meat Dealer:</label>
-                                <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId"></select>
-                                <span asp-validation-for="MeatDealersId" class="text-danger"></span>
-                            </div>
                         </div>
                         <div class="column">
-                            <div class="input-box">
-                                <div class="column" style="display: none;">
-                                    <div class="input-box">
-                                        <input asp-for="Origin" class="form-control" id="addressInput" />
-                                        <span asp-validation-for="Origin" class="text-danger"></span>
-                                    </div>
+                            <div class="column" style="display: none;">
+                                <div class="input-box">
+                                    <input asp-for="Origin" class="form-control" id="addressInput" />
+                                    <span asp-validation-for="Origin" class="text-danger"></span>
                                 </div>
-                                @* <label asp-for="Origin" class="control-label"></label>
-                            <input asp-for="Origin" class="form-control" />
-                            <span asp-validation-for="Origin" class="text-danger"></span>*@
-                                <div class="input-box address">
-
-                                    <label asp-for="Origin" class="control-label">Origin:</label>
-                                    <div class="column">
-                                        <div class="select-box">
-                                            <select id="regionSelect" onchange="populateProvinces()">
-                                                <option hidden>Region</option>
-                                                <!-- Add region options here -->
-                                            </select>
-                                        </div>
-                                        <div class="select-box">
-                                            <select id="provinceSelect" onchange="populateCities()">
-                                                <option hidden>Province</option>
-                                                <!-- Add province options here -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="column">
-                                        <div class="select-box">
-                                            <select id="citySelect" onchange="populateBarangays()">
-                                                <option hidden>City/Municipality</option>
-                                                <!-- Add city options here -->
-                                            </select>
-                                        </div>
-                                        <div class="select-box">
-                                            <select id="barangaySelect" onchange="updateAddressInput()">
-                                                <option hidden>Barangay</option>
-                                                <!-- Add barangay options here -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <script>
-                                    function updateAddressInput() {
-                                        // Get the selected values from the dropdowns
-                                        var barangay = document.getElement("barangaySelect").value;
-                                        var city = document.getElementById("citySelect").value;
-                                        var province = document.getElementById("provinceSelect").value;
-                                        var region = document.getElementById("regionSelect").value;
-
-
-
-                                        // Construct the address using the selected values
-                                        var address = barangay + ", " + city + ", " + province + ", " + region;
-
-                                        // Update the value of the address input box
-                                        document.getElementBy("addressInput").value = Address;
-                                    }
-                                </script>
                             </div>
+                            @* <div class="input-box">
+                        <label asp-for="Origin" class="control-label"></label>
+                        <input asp-for="Origin" class="form-control" />
+                        <span asp-validation-for="Origin" class="text-danger"></span>
+                        </div>*@
+                            <div class="input-box address">
+
+                                <label asp-for="Origin" class="control-label">Origin:</label>
+                                <div class="column">
+                                    <div class="select-box">
+                                        <select id="regionSelect" onchange="populateProvinces()">
+                                            <option hidden>Region</option>
+                                            <!-- Add region options here -->
+                                        </select>
+                                    </div>
+                                    <div class="select-box">
+                                        <select id="provinceSelect" onchange="populateCities()">
+                                            <option hidden>Province</option>
+                                            <!-- Add province options here -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <div class="select-box">
+                                        <select id="citySelect" onchange="populateBarangays()">
+                                            <option hidden>City/Municipality</option>
+                                            <!-- Add city options here -->
+                                        </select>
+                                    </div>
+                                    <div class="select-box">
+                                        <select id="barangaySelect" onchange="updateAddressInput()">
+                                            <option hidden>Barangay</option>
+                                            <!-- Add barangay options here -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                function updateAddressInput() {
+                                    // Get the selected values from the dropdowns
+                                    var barangay = document.getElement("barangaySelect").value;
+                                    var city = document.getElementById("citySelect").value;
+                                    var province = document.getElementById("provinceSelect").value;
+                                    var region = document.getElementById("regionSelect").value;
+
+
+
+                                    // Construct the address using the selected values
+                                    var address = barangay + ", " + city + ", " + province + ", " + region;
+
+                                    // Update the value of the address input box
+                                    document.getElementBy("addressInput").value = Address;
+                                }
+                            </script>
                         </div>
                         <div class="input-box">
                             <label asp-for="ShippingDoc" class="control-label">Shipping Documents:</label>
-                            <select asp-for="ShippingDoc" class="form-control" asp-items="@Html.GetEnumSelectList<ShippingDocuments>()">
+                            <select asp-for="ShippingDoc" class="form-control">
                                 <option>--Select--</option>
+                                <option value="CertificateOfOwnerShip">Certificate Of Ownership</option>
+                                <option value="CertificateOfTransfer">Certificate Of Transfer</option>
+                                <option value="VeterinaryHealthCertificate">Veterinary Health Certificate</option>
+                                <option value="ShippingPermit">Shipping Permit</option>
                             </select>
                             <span asp-validation-for="ShippingDoc" class="text-danger"></span>
                         </div>
-                        <div class="input-box">
-                            <label asp-for="HoldingPenNo" class="control-label">Holding Pen No.:</label>
-                            <input asp-for="HoldingPenNo" class="form-control" />
-                            <span asp-validation-for="HoldingPenNo" class="text-danger"></span>
-                        </div>
+                        @*    <div class="input-box">
+                    <label class="control-label">Shipping Documents:</label><br>
+                    <input type="checkbox" name="ShippingDoc" value="CertificateOfOwnerShip" id="CertificateOfOwnerShip">
+                    <label for="CertificateOfOwnerShip">Certificate Of Ownership</label><br>
+                    <input type="checkbox" name="ShippingDoc" value="CertificateOfTransfer" id="CertificateOfTransfer">
+                    <label for="CertificateOfTransfer">Certificate Of Transfer</label><br>
+                    <input type="checkbox" name="ShippingDoc" value="VeterinaryHealthCertificate" id="VeterinaryHealthCertificate">
+                    <label for="VeterinaryHealthCertificate">Veterinary Health Certificate</label><br>
+                    <input type="checkbox" name="ShippingDoc" value="ShippingPermit" id="ShippingPermit">
+                    <label for="ShippingPermit">Shipping Permit</label><br>
+                    </div>*@
+
                         <div class="column">
+                            <div class="input-box">
+                                <label asp-for="HoldingPenNo" class="control-label">Holding Pen No.:</label>
+                                <input asp-for="HoldingPenNo" class="form-control" />
+                                <span asp-validation-for="HoldingPenNo" class="text-danger"></span>
+                            </div>
                             <div class="input-box">
                                 <label asp-for="ReceivingBy" class="control-label">Received By:</label>
                                 <input asp-for="ReceivingBy" class="form-control" />
                                 <span asp-validation-for="ReceivingBy" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="form-group" style="display: none">
-                            <label asp-for="AccountDetailsId" class="control-label"></label>
-                            <select asp-for="AccountDetailsId" class="form-control" asp-items="ViewBag.AccountDetailsId"></select>
-                            <span asp-validation-for="AccountDetailsId" class="text-danger"></span>
+                        <div class="column">
+                            <div class="input-box" style="display: none;">
+                                <label asp-for="AccountDetailsId" class="control-label"></label>
+                                <input id="accountDetailsInput" asp-for="AccountDetailsId" class="form-control" />
+                            </div>
                         </div>
                         <div class="input-box">
                             <label asp-for="InspectionStatus" class="control-label">Inspection Status:</label>
-                            <select asp-for="InspectionStatus" class="form-control" asp-items="@Html.GetEnumSelectList<InspectionStatus>()">
-                                <option>--Select--</option>
+                            <select asp-for="InspectionStatus" class="form-control">
+                                <option>Pending</option>
                             </select>
                         </div>
-                        <br />
-                        <div class="button">
-                            <input type="submit" value="Save" class="btn btn-primary" />
-                        </div>
-
-
+                        <button type="submit" value="Create">Create</button>
                     </form>
-
-
                 }
 
 
