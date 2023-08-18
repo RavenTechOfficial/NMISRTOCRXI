@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using thesis.Core.ViewModel;
 using thesis.Data;
+using thesis.Migrations;
 using thesis.Models;
 
 namespace thesis.Controllers
@@ -30,44 +31,47 @@ namespace thesis.Controllers
         //}
         public async Task<IActionResult> Index()
         {
-            var query = from mir in _context.MeatInspectionReports
-                        join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
-                        join coi in _context.ConductOfInspections on mir.Id equals coi.MeatInspectionReportId
-                        join pfs in _context.PassedForSlaughters on coi.Id equals pfs.ConductOfInspectionId
-                        join pm in _context.Postmortems on pfs.Id equals pm.PassedForSlaughterId
-                        join tnfhc in _context.totalNoFitForHumanConsumptions on pm.Id equals tnfhc.PostmortemId
-                        join sdmics in _context.SummaryAndDistributionOfMICs on tnfhc.Id equals sdmics.TotalNoFitForHumanConsumptionId
-                        select new MeatInspectionReportViewModel
-                        {
-                            RecTime = rr.RecTime,
-                            Species = rr.Species,
-                            LiveWeight = rr.LiveWeight,
-                            MeatDealer = rr.MeatDealers.FirstName + ' ' + rr.MeatDealers.LastName, // Example assuming MeatDealer has a Name property
-                            Issue = (Data.Enum.Issue)coi.Issue,
-                            NoOfHeads = coi.NoOfHeads,
-                            Weight = coi.Weight,
-                            Cause = (Data.Enum.Cause)coi.Cause,
-                            NoOfHeadsPassed = pfs.NoOfHeads,
-                            WeightPassed = pfs.Weight,
-                            AnimalPart = (Data.Enum.AnimalPart)pm.AnimalPart,
-                            PostmortemCause = (Data.Enum.Cause)pm.Cause,
-                            PostmortemWeight = (int)pm.Weight,
-                            PostmortemNoOfHeads = (int)pm.NoOfHeads,
-                            Image1 = pm.Image1,
-                            Image2 = pm.Image2,
-                            Image3 = pm.Image3,
-                            // You can map Image1, Image2, and Image3 here if they are available in your models
-                            FitforConSpecies = tnfhc.Species,
-                            FitforConNoOfHeads = tnfhc.NoOfHeads,
-                            DressedWeight = tnfhc.DressedWeight,
-                            DestinationName = sdmics.DestinationName,
-                            DestinationAddress = sdmics.DestinationAddress,
-                            CertificateStatus = sdmics.CertificateStatus
-                        };
 
-            var inspectionReports = await query.ToListAsync();
+            //var query = from mir in _context.MeatInspectionReports
+            //            join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
+            //            join coi in _context.ConductOfInspections on mir.Id equals coi.MeatInspectionReportId
+            //            join pfs in _context.PassedForSlaughters on coi.Id equals pfs.ConductOfInspectionId
+            //            join pm in _context.Postmortems on pfs.Id equals pm.PassedForSlaughterId
+            //            join tnfhc in _context.totalNoFitForHumanConsumptions on pm.Id equals tnfhc.PostmortemId
+            //            join sdmics in _context.SummaryAndDistributionOfMICs on tnfhc.Id equals sdmics.TotalNoFitForHumanConsumptionId
+            //            select new MeatInspectionReportViewModel
+            //            {
+            //                RecTime = rr.RecTime,
+            //                Species = rr.Species,
+            //                LiveWeight = rr.LiveWeight,
+            //                MeatDealer = rr.MeatDealers.FirstName + ' ' + rr.MeatDealers.LastName, // Example assuming MeatDealer has a Name property
+            //                Issue = (Data.Enum.Issue)coi.Issue,
+            //                NoOfHeads = coi.NoOfHeads,
+            //                Weight = coi.Weight,
+            //                Cause = (Data.Enum.Cause)coi.Cause,
+            //                NoOfHeadsPassed = pfs.NoOfHeads,
+            //                WeightPassed = pfs.Weight,
+            //                AnimalPart = (Data.Enum.AnimalPart)pm.AnimalPart,
+            //                PostmortemCause = (Data.Enum.Cause)pm.Cause,
+            //                PostmortemWeight = (int)pm.Weight,
+            //                PostmortemNoOfHeads = (int)pm.NoOfHeads,
+            //                Image1 = pm.Image1,
+            //                Image2 = pm.Image2,
+            //                Image3 = pm.Image3,
+            //                // You can map Image1, Image2, and Image3 here if they are available in your models
+            //                FitforConSpecies = tnfhc.Species,
+            //                FitforConNoOfHeads = tnfhc.NoOfHeads,
+            //                DressedWeight = tnfhc.DressedWeight,
+            //                DestinationName = sdmics.DestinationName,
+            //                DestinationAddress = sdmics.DestinationAddress,
+            //                CertificateStatus = sdmics.CertificateStatus
+            //            };
 
-            return View(inspectionReports);
+            //var inspectionReports = await query.ToListAsync();
+
+
+            var res = _context.Results.ToList();
+            return View(res);
         }
 
 
@@ -104,6 +108,8 @@ namespace thesis.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,RepDate,VerifiedByPOSMSHead,ReceivingReportId")] MeatInspectionReport meatInspectionReport)
         {
+            
+
             if (ModelState.IsValid)
             {
                 _context.Add(meatInspectionReport);

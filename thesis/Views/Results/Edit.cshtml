@@ -1,0 +1,149 @@
+﻿@model thesis.Models.Result
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Result</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="RecTime" class="control-label"></label>
+                <input asp-for="RecTime" class="form-control" />
+                <span asp-validation-for="RecTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Species" class="control-label"></label>
+                <input asp-for="Species" class="form-control" />
+                <span asp-validation-for="Species" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LiveWeight" class="control-label"></label>
+                <input asp-for="LiveWeight" class="form-control" />
+                <span asp-validation-for="LiveWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MeatDealer" class="control-label"></label>
+                <input asp-for="MeatDealer" class="form-control" />
+                <span asp-validation-for="MeatDealer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Issue" class="control-label"></label>
+                <select asp-for="Issue" class="form-control"></select>
+                <span asp-validation-for="Issue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NoOfHeads" class="control-label"></label>
+                <input asp-for="NoOfHeads" class="form-control" />
+                <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Weight" class="control-label"></label>
+                <input asp-for="Weight" class="form-control" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cause" class="control-label"></label>
+                <select asp-for="Cause" class="form-control"></select>
+                <span asp-validation-for="Cause" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NoOfHeadsPassed" class="control-label"></label>
+                <input asp-for="NoOfHeadsPassed" class="form-control" />
+                <span asp-validation-for="NoOfHeadsPassed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WeightPassed" class="control-label"></label>
+                <input asp-for="WeightPassed" class="form-control" />
+                <span asp-validation-for="WeightPassed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnimalPart" class="control-label"></label>
+                <select asp-for="AnimalPart" class="form-control"></select>
+                <span asp-validation-for="AnimalPart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostmortemCause" class="control-label"></label>
+                <select asp-for="PostmortemCause" class="form-control"></select>
+                <span asp-validation-for="PostmortemCause" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostmortemWeight" class="control-label"></label>
+                <input asp-for="PostmortemWeight" class="form-control" />
+                <span asp-validation-for="PostmortemWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostmortemNoOfHeads" class="control-label"></label>
+                <input asp-for="PostmortemNoOfHeads" class="form-control" />
+                <span asp-validation-for="PostmortemNoOfHeads" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image1" class="control-label"></label>
+                <input asp-for="Image1" class="form-control" />
+                <span asp-validation-for="Image1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image2" class="control-label"></label>
+                <input asp-for="Image2" class="form-control" />
+                <span asp-validation-for="Image2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image3" class="control-label"></label>
+                <input asp-for="Image3" class="form-control" />
+                <span asp-validation-for="Image3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FitforConSpecies" class="control-label"></label>
+                <select asp-for="FitforConSpecies" class="form-control"></select>
+                <span asp-validation-for="FitforConSpecies" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FitforConNoOfHeads" class="control-label"></label>
+                <input asp-for="FitforConNoOfHeads" class="form-control" />
+                <span asp-validation-for="FitforConNoOfHeads" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DressedWeight" class="control-label"></label>
+                <input asp-for="DressedWeight" class="form-control" />
+                <span asp-validation-for="DressedWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestinationName" class="control-label"></label>
+                <input asp-for="DestinationName" class="form-control" />
+                <span asp-validation-for="DestinationName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestinationAddress" class="control-label"></label>
+                <input asp-for="DestinationAddress" class="form-control" />
+                <span asp-validation-for="DestinationAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CertificateStatus" class="control-label"></label>
+                <select asp-for="CertificateStatus" class="form-control"></select>
+                <span asp-validation-for="CertificateStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="uid" class="control-label"></label>
+                <input asp-for="uid" class="form-control" />
+                <span asp-validation-for="uid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -67,6 +67,15 @@ namespace thesis.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TotalNoFitForHumanConsumptionId,DestinationName,DestinationAddress,CertificateStatus")] SummaryAndDistributionOfMIC summaryAndDistributionOfMIC)
         {
+            if (!ModelState.IsValid)
+            {
+                _context.Add(summaryAndDistributionOfMIC);
+                await _context.SaveChangesAsync();
+                // return RedirectToAction(nameof(Index));
+                
+            }
+
+
             string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             Random random = new Random();
             char[] idChars = new char[10];
@@ -127,25 +136,19 @@ namespace thesis.Controllers
                     uid = id
                 };
 
-                _context.Add(latestResult);
-                _context.Add(qr);
-                _context.SaveChanges();
-            
+            _context.Add(latestResult);
+            _context.Add(qr);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "MeatInspectionReports");
+
 
             //_context.Results.FirstOrDefault(res => res.Id == results.Id);
 
 
-            if (!ModelState.IsValid)
-            {
-                _context.Add(summaryAndDistributionOfMIC);
-                await _context.SaveChangesAsync();
-                // return RedirectToAction(nameof(Index));
-                return RedirectToAction("Index", "MeatInspectionReports");
-            }
+
             ViewData["TotalNoFitForHumanConsumptionId"] = new SelectList(_context.totalNoFitForHumanConsumptions, "Id", "Id", summaryAndDistributionOfMIC.TotalNoFitForHumanConsumptionId);
             return View(summaryAndDistributionOfMIC);
         }
-
         // GET: SummaryAndDistributionOfMICs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

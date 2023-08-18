@@ -68,7 +68,10 @@
                 <span class="home-faqs">FAQS</span>
                 <span class="home-articles">ARTICLES</span>
                 <span class="home-aboutus">ABOUT US</span>
-                <button class="button-secondary button">TRACE</button>
+                
+                <a asp-controller="Trace" asp-action="Index">
+                    <button class="button-secondary button">TRACE</button>
+                </a>
                 <a asp-area="Identity" asp-page="/Account/Login">
                     <button class="button button-primary">LOG IN</button>
                 </a>

@@ -47,5 +47,7 @@ namespace thesis.Core.ViewModel
         public string DestinationName { get; set; }
         public string DestinationAddress { get; set; }
         public CertificateStatus CertificateStatus { get; set; }
+        //uid
+        public string uid { get; set; }
     }
 }
