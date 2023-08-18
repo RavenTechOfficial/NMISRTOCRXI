@@ -1,9 +1,10 @@
 ﻿@*@model IEnumerable<thesis.Models.MeatInspectionReport>
 *@
-@model IEnumerable<thesis.Core.ViewModel.MeatInspectionReportViewModel>
+@*@model IEnumerable<thesis.Core.ViewModel.MeatInspectionReportViewModel>*@
 @{
     ViewData["Title"] = "Index";
 }
+@model IEnumerable<Result>
 
 <link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 <section id="content">
@@ -87,6 +88,12 @@
                             <th>
                                 Certificate Status
                             </th>
+                            <th>
+                                UID
+                            </th>
+                            <th>
+                                QR options
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -161,10 +168,13 @@
                                     @Html.DisplayFor(modelItem => item.CertificateStatus)
                                 </td>
                                 <td>
+                                    @Html.DisplayFor(modelItem => item.uid)
+                                </td>
+                                <td class="d-flex flex-nowrap">
 
-                                    @*   <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                                    <a class="btn btn-primary py-1 font-weight-light view" value="@item.uid">Show</a>
+                                    @*<a id="download" class="btn btn-success  mx-1 py-1 font-weight-light">Download</a>*@
+                                    @*<a class="btn btn-warning ms-1 py-1 font-weight-light print" value="@item.uid">Print</a>*@
                                 </td>
                             </tr>
                         }
@@ -173,5 +183,111 @@
             </div>
 
         </div>
+
+
+
+        @*Modals*@
+        <div class="modal fade" id="viewQr" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">QR Code</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div id="qrcode"></div>
+                        <h3 id="uniqueId" style="margin-top: 10px;"></h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="downloadBtn" class="btn btn-primary">Download</button>
+                        <button type="button" id="printBtn" class="btn btn-warning" data-dismiss="modal">Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+
+            //show QR Code in the modal
+            const viewButtons = document.querySelectorAll('.view');
+
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    const qrdata = "https://localhost:7116/Trace/Result?id=" + button.getAttribute('value');;
+                    const qrcodeContainer = document.getElementById('qrcode');
+                    qrcodeContainer.innerHTML = "";  // Clear previous QR code
+                    const qrcode = new QRCode(qrcodeContainer, {
+                        text: qrdata,
+                        width: 200,
+                        height: 200,
+                    });
+
+                    document.getElementById('uniqueId').innerText = "UID: "+button.getAttribute('value');
+                    $('#viewQr').modal('show');
+                });
+            });
+
+            //Download the QR Code in the modal
+            document.getElementById('downloadBtn').addEventListener('click', function () {
+                var imgSrc = document.querySelector('#qrcode img').src;
+                var uniqueIdText = document.getElementById('uniqueId').textContent;
+
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                var borderSize = 20;
+
+                var qrCodeImage = new Image();
+                qrCodeImage.onload = function () {  // Ensure the image is loaded before drawing on canvas
+                    var paddingBelowQR = 30;  // Space for the Unique ID text below the QR code
+                    var textHeight = 24;  // Font size for Unique ID
+
+                    canvas.width = qrCodeImage.width + 2 * borderSize;
+                    canvas.height = qrCodeImage.height + 2 * borderSize + paddingBelowQR;
+
+                    context.fillStyle = 'white';
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+                    context.drawImage(qrCodeImage, borderSize, borderSize);
+
+                    // Drawing the Unique ID text
+                    context.font = textHeight + "px Arial";
+                    context.fillStyle = "black";
+                    context.textAlign = "center";
+                    context.fillText(uniqueIdText, canvas.width / 2, qrCodeImage.height + borderSize + textHeight);
+
+                    var modifiedImgSrc = canvas.toDataURL('image/png');
+
+                    var a = document.createElement('a');
+                    a.href = modifiedImgSrc;
+                    a.download = 'ModifiedQRCode.png';
+                    a.click();
+                };
+                qrCodeImage.src = imgSrc;
+            });
+
+
+            //print QR code
+            document.getElementById('printBtn').addEventListener('click', function () {
+                var printWindow = window.open('', '_blank');
+
+                var imgSrc = document.querySelector('#qrcode img').src;
+                var uniqueIdText = document.getElementById('uniqueId').textContent;
+
+                printWindow.document.write('<html><head><title>Print QR</title>');
+                printWindow.document.write('<style> body { width: 50mm; height: 100mm; margin: 0; font-family: Arial, sans-serif; text-align: center; } img { width: 100%; } </style>');
+                printWindow.document.write('</head><body onload="window.print();window.close()">');
+                printWindow.document.write('<img src="' + imgSrc + '" alt="QR Code"/>');
+                printWindow.document.write('<h3>' + uniqueIdText + '</h3>');
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+            });
+
+
+
+        </script>
+
+
     </main>
 </section>

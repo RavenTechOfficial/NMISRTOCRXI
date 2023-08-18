@@ -8,5 +8,6 @@
         IAnalyticsRepository Analytics { get; }
         IUsersManangementRepository UsersManangement { get; }
         IGeolocationRepository Geolocation { get; }
+        IResultsRepository ResultPage { get; }
     }
 }
