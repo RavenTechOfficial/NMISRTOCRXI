@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using thesis.Core.ViewModel;
 using thesis.Data;
-using thesis.Migrations;
 using thesis.Models;
 
 namespace thesis.Controllers

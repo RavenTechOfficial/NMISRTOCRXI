@@ -2,8 +2,7 @@
 {
 	public enum applicationtype
 	{
-		driver,
-		helper,
-		driverorhelper
+		NewApplication,
+		Renewal
 	}
 }

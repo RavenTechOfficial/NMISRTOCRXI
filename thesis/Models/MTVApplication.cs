@@ -9,6 +9,7 @@ namespace thesis.Models
     {
 		[Key]
 		public int Id { get; set; }
+		public applicationtype applicationtype { get; set; }
 		public string OwnerFname { get; set; }
 		public string OwnerMname { get; set; }
 		public string OwnerLname { get; set; }
@@ -16,15 +17,8 @@ namespace thesis.Models
 		public string Email { get; set; }
 		public string TelNo { get; set; }
 		public string FaxNo { get; set; }
-		[ForeignKey("VehicleInfo")]
-		public int? VehicleId { get; set; }
 		public VehicleInfo? Vehicle { get; set; }
-		[ForeignKey("Helper")]
-		public int? HelperId { get; set; }
 		public Helper? Helper { get; set; }
-
-		[ForeignKey("Driver")]
-		public int? DriverId { get; set; }
 		public Driver? Driver { get; set; }
 	}
 }

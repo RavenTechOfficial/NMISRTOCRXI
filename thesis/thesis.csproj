@@ -18,12 +18,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\question.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\view.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\question.js" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\img\MTV\" />
     <Folder Include="wwwroot\img\uploaded\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\question.js" />
   </ItemGroup>
 
   <ItemGroup>

@@ -281,32 +281,32 @@ else
 					}
 				}
 			}
-			function updateAddress() {
-				var regionSelect = document.getElementById('regionSelect');
-				var provinceSelect = document.getElementById('provinceSelect');
-				var citySelect = document.getElementById('citySelect');
-				var barangaySelect = document.getElementById('barangaySelect');
-				var addressInput = document.getElementById('addressInput');
+				function updateAddress() {
+					var regionSelect = document.getElementById('regionSelect');
+					var provinceSelect = document.getElementById('provinceSelect');
+					var citySelect = document.getElementById('citySelect');
+					var barangaySelect = document.getElementById('barangaySelect');
+					var addressInput = document.getElementById('addressInput');
 
-				var region = regionSelect.value || '';
-				var province = provinceSelect.value || '';
-				var city = citySelect.value || '';
-				var barangay = barangaySelect.value || '';
+					var region = regionSelect.value || '';
+					var province = provinceSelect.value || '';
+					var city = citySelect.value || '';
+					var barangay = barangaySelect.value || '';
 
-				@*var address = region + ', ' + province + ', ' + city + ', ' + barangay;*@
-				var address = city + ', ' + barangay;
-				addressInput.value = address;
-			}
+					@*var address = region + ', ' + province + ', ' + city + ', ' + barangay;*@
+					var address = city + ', ' + barangay;
+					addressInput.value = address;
+				}
 
 
-			// Add event listeners to call the populate functions on change
-			regionSelect.addEventListener('change', populateProvinces);
-			provinceSelect.addEventListener('change', populateCities);
-			citySelect.addEventListener('change', populateBarangays);
-			document.getElementById('regionSelect').addEventListener('change', updateAddress);
-			document.getElementById('provinceSelect').addEventListener('change', updateAddress);
-			document.getElementById('citySelect').addEventListener('change', updateAddress);
-			document.getElementById('barangaySelect').addEventListener('change', updateAddress);
+				// Add event listeners to call the populate functions on change
+				regionSelect.addEventListener('change', populateProvinces);
+				provinceSelect.addEventListener('change', populateCities);
+				citySelect.addEventListener('change', populateBarangays);
+				document.getElementById('regionSelect').addEventListener('change', updateAddress);
+				document.getElementById('provinceSelect').addEventListener('change', updateAddress);
+				document.getElementById('citySelect').addEventListener('change', updateAddress);
+				document.getElementById('barangaySelect').addEventListener('change', updateAddress);
 		})
 		.catch(error => console.error('Error fetching JSON:', error));
 
@@ -316,3 +316,4 @@ else
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+

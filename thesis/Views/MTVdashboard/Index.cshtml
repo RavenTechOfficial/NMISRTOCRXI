@@ -1,89 +1,83 @@
-﻿@model IEnumerable<thesis.Models.MTVApplication>
+﻿<link rel="stylesheet" href="~/css/dashy.css" asp-append-version="true" />
+<section id="content">
+	<!-- MAIN STARTS-->
+	<main>
+		<div class="head-title">
+			<div class="left">
+				<h1>Dashboard</h1>
+			</div>
+		</div>
 
-@{
-    ViewData["Title"] = "Index";
-}
+		<div class="container1">
 
-<h1>Index</h1>
+			<div class="FirstLayer">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OwnerFname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OwnerMname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OwnerLname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TelNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FaxNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vehicle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Helper)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Driver)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OwnerFname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OwnerMname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OwnerLname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TelNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FaxNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vehicle.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Helper.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Driver.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+				<div class="applications">
+					<div class="head">
+						<h3>MTV Inspectors</h3>
+						<i class='bx bx-search' id="search-icon"></i>
+						<i class='bx bx-filter' id="filter-icon"></i>
+						<i class='bx bx-refresh' id="refresh-icon"></i>
+					</div>
+					<table id="applications-table">
+						<thead>
+							<tr>
+								<th>Inspector</th>
+								<th>Date Applied</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<img src="img/adrianne.jpg">
+									<p>Adrianne John M. Basuel</p>
+								</td>
+								<td>06-10-2023</td>
+								<td><span class="status duty">On-Duty</span></td>
+							</tr>
+							<tr>
+								<td>
+									<img src="img/Jess.JPG">
+									<p>Jess Arreza</p>
+								</td>
+								<td>06-13-2023</td>
+								<td><span class="status offline">Offline</span></td>
+							</tr>
+							<tr>
+								<td>
+									<img src="img/gerico.jpg">
+									<p>Gerico Alagon</p>
+								</td>
+								<td>06-14-2023</td>
+								<td><span class="status duty">On-duty</span></td>
+							</tr>
+							<tr>
+								<td>
+									<img src="img/Karlo.jpg">
+									<p>Karlo Badilles</p>
+								</td>
+								<td>06-21-2023</td>
+								<td><span class="status leave">Leave</span></td>
+							</tr>
+							<tr>
+								<td>
+									<img src="img/Leanox.jpg">
+									<p>Leanox Colis</p>
+								</td>
+								<td>06-23-2023</td>
+								<td><span class="status offline">Offline</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			
+
+		</div>
+
+	</main>
+	<!-- MAIN ENDS -->
+
+</section>

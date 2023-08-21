@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using thesis.Data.Enum;
 
 namespace thesis.Models
 {
@@ -15,5 +15,7 @@ namespace thesis.Models
 		public string? Address { get; set; }
 		public string Email { get; set; }
 		public string TelNo { get; set; }
+		public gender gender { get; set; }
+		public DateTime birthdate { get; set; }
 	}
 }
