@@ -26,6 +26,3 @@ inputFile.addEventListener('change', function () {
         alert("Image size more than 2MB");
     }
 })
-
-
-

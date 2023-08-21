@@ -33,9 +33,13 @@ namespace thesis.Controllers
             }
             else if (User.Identity.IsAuthenticated && User.IsInRole("MTVAdministrator"))
             {
-                return RedirectToAction("Create", "MTVdashboard");
+                return RedirectToAction("Index", "MTVdashboard");
             }
-            else
+			else if (User.Identity.IsAuthenticated && User.IsInRole("MtvUsers"))
+			{
+				return RedirectToAction("Create", "MTVapplication");
+			}
+			else 
             {
 				return View();
 			}

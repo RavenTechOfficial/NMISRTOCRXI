@@ -350,6 +350,12 @@ namespace thesis.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("birthdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("gender")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Drivers");
@@ -385,6 +391,9 @@ namespace thesis.Migrations
                     b.Property<string>("TelNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("birthdate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -433,6 +442,9 @@ namespace thesis.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("applicationtype")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -575,9 +587,6 @@ namespace thesis.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("MTVApplicationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("applicationtype")
                         .HasColumnType("int");
 
                     b.Property<int>("gender")

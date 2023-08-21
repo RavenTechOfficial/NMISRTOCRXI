@@ -5,7 +5,7 @@ namespace thesis.Controllers
 {
 	public class MTVquizController : Controller
 	{
-		[Authorize(Policy = "RequireMTVAdmin")]
+		//[Authorize(Policy = "RequireMtvUser")]
 		public IActionResult Index()
 		{
 			return View();

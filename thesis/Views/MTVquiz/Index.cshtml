@@ -1,259 +1,65 @@
 ﻿<link rel="stylesheet" href="~/css/quizseminar.css" asp-append-version="true" />
-<section id="content">
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Quiz App</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="quiz10.css">
+</head>
+<body>
+    <div class="home-box custom-box ">
+        <h3>instruction:</h3>
+        <p>Total Number of questions:<span class="total-question"></span> </p>
+        <button type="button" class="btn" onclick="startQuiz()">Start Quiz</button>
 
+    </div>
+    <div class="quiz-box custom-box hide">
+        <div class="question-number">
+        </div>
+        <div class="question-text">
+        </div>
+        <div class="option-container">
+        </div>
+        <div class="next-question-btn">
+            <button type="button" class="btn" onclick="next()">Next</button>
+        </div>
+        <div class="answers-indicator">
+        </div>
+    </div>
 
-	<!-- MAIN STARTS-->
-	<main>
-		<div class="head-title">
-			<!-- Your existing content goes here -->
+    <div class="result-box custom-box hide ">
+        <h1>Quiz Result</h1>
+        <table>
+            <tr>
+                <td>Total Question</td>
+                <td><span class="total-question"></span></td>
+            </tr>
+            <tr>
+                <td>Attempt</td>
+                <td><span class="total-attempt"></span></td>
+            </tr>
+            <tr>
+                <td>Correct</td>
+                <td><span class="total-correct"></span></td>
+            </tr>
+            <tr>
+                <td>Wrong</td>
+                <td><span class="total-wrong"></span></td>
+            </tr>
+            <tr>
+                <td>Percentage</td>
+                <td><span class="percentage"></span></td>
+            </tr>
+            <tr>
+                <td>Your Total Score</td>
+                <td><span class="total-score"></span></td>
+            </tr>
+        </table>
+        <button type="button" class="btn" onclick="tryAgainQuiz()">Try Again </button>
+        <button type="button" class="btn" onclick="goToHome()">Home</button>
 
-			<div class="quiz-container">
-				<!-- Your quiz questions and form inputs go here -->
-				<div class="head-title">
-					<div class="left">
-						<h1>Please join our facebook page to take the seminar for the quiz</h1>
-						<div class="url">
-							<div class="facebook-container">
-								<a href="https://www.facebook.com/groups/370501063649021" target="_blank" class="facebook-link">
-									<h2 class="hide">Click here to visit the Facebook page</h2>
-								</a>
-							</div>
-							<div class="facebook-container1">
-								<a href="https://www.facebook.com/100001020124175/videos/3077873365589971/" target="_blank" class="facebook-link">
-									<h2 class="hide">Click here to visit the Seminar page</h2>
-								</a>
-							</div>
-						</div>
-						<h1>Short Quiz for MTV Drivers & Helpers</h1>
-						<div class="quiz-container">
-							<!-- <h1 style="color: black;">Quiz</h1> -->
-							<form id="quiz-form">
-								<h2></h2>
-								<h4>Ikaw usa ka? (Pili og isa)</h4>
-								<input type="radio" name="q1" value="a"> Driver<br>
-								<input type="radio" name="q1" value="b"> Helper<br>
-								<input type="radio" name="q1" value="c"> Driver ug Helper<br><br>
-
-								<h2></h2>
-								<h4>Gender</h4>
-								<input type="radio" name="q2" value="a"> Male<br>
-								<input type="radio" name="q2" value="b"> Female<br><br>
-
-								<h2></h2>
-								<h4>Plate Number. (Kani nga impormasyon itandi sa inyung application)</h4>
-								<input id="pn" type="text" placeholder="Answer" class="textinput1" /><br><br>
-
-								<h2>Question 1:</h2>
-								<h4>Unsa nga klase sa kagaw ang pwede makita sa karne sa manok? Mao kini ang rason ngano kinahanglan nga dili moubos sa 4 ˚C ang kabugnaw sa karne ug mao pud kini ang rason ngano ginabanlawan og chilled chlorinated water ang manok sulod sa balay ihawanan.</h4>
-								<input id="q1" type="text" placeholder="Answer" class="textinput1" /><br><br>
-
-								<h2>Question 2:</h2>
-								<p>Kung ang imong "meat van registration" mo-expire karong December 28, 2022, kanus-a ka dapat mag-renew?</p>
-								<input type="radio" name="q3" value="a"> Dili na kinahanglan mag renew<br>
-								<input type="radio" name="q3" value="b"> February 30, 2022<br>
-								<input type="radio" name="q3" value="c"> November 28, 2022<br>
-								<input type="radio" name="q3" value="d"> December 27, 2022<br><br>
-
-								<h2>Question 3:</h2>
-								<p>Unsa ang pwedeng buhaton sa NMIS Enforcement sa mga karne nga gikarga sa usa ka meat van nga gikargahan uban sa ligid, kaang, ug pesticides bisag adunay gipresenta nga NMIS Meat Inspection Certificate o MIC?</p>
-								<input type="radio" name="q4" value="a"> Presohon ang driver ug helper<br>
-								<input type="radio" name="q4" value="b"> Kumpiskahon ang produkto ug ang sakyanan<br>
-								<input type="radio" name="q4" value="c"> Pasayawon og Budots<br>
-								<input type="radio" name="q4" value="d"> Kumpiskahon ang produkto ug isyuhan og Post-Abbatoir Control Receipt<br><br>
-
-								<h2>Question 4:</h2>
-								<p>Tinuud o Dili Tinuod. Ok ra nga expired ang imong rehistro sa LTO kung mag rehistro ka sa imong meat van?</p>
-								<input type="radio" name="q5" value="a"> Tinuod<br>
-								<input type="radio" name="q5" value="b"> Dili Tinuod<br><br>
-
-								<h2>Question 5:</h2>
-								<p>Pwede ba ikarga ang frozen fish uban sa frozen meat  sa usa ka meat van?</p>
-								<input type="radio" name="q6" value="a"> Oo<br>
-								<input type="radio" name="q6" value="b"> Dili<br><br>
-
-								<h2>Question 6:</h2>
-								<p>Unsa ang saktong temperatura sa usa ka "Frozen" meat sama sa "imported meat"?</p>
-								<input type="radio" name="q7" value="a"> 100 ˚C (100 Degree Celsius)<br>
-								<input type="radio" name="q7" value="b"> 0-4 ˚C (0-4 Degree Celsius)<br>
-								<input type="radio" name="q7" value="c"> -18 ˚C (Negative 18 Degree Celsius)<br>
-								<input type="radio" name="q7" value="d"> None of the above<br><br>
-
-								<h2>Question 7:</h2>
-								<p>Unsa ang tulo (3) klase sa "hazard" mga maong hinungdan sa "cross-contamination"?</p>
-								<input type="radio" name="q8" value="a"> Mental, Spiritual, Financial<br>
-								<input type="radio" name="q8" value="b"> Physical, Psychological, Catastrophic<br>
-								<input type="radio" name="q8" value="c"> Chemical, Physical, Sexual<br>
-								<input type="radio" name="q8" value="d"> Physical, Chemical, Emotional<br>
-								<input type="radio" name="q8" value="e"> Chemical, Physical, Biological<br><br>
-
-								<h2>Question 8:</h2>
-								<p>Mga pamaagi kini aron malikayan ang "cross-contamination".</p>
-
-								<input type="checkbox" name="q9" value="a"> Maligo kada adlaw, mubo nga kuko, ahit sa balbas ug bigote<br>
-								<input type="checkbox" name="q9" value="b"> Hinluan og i-disinfect ang Meat Van kada human sa byahe<br>
-								<input type="checkbox" name="q9" value="c"> Kanunay nga maghugas sa kamot<br>
-								<input type="checkbox" name="q9" value="d"> Dili pagsul-ob og mga alahas sama sa relo, sing-sing, ug mga ariyos kung naga-karga ug diskarga sa karne<br>
-								<input type="checkbox" name="q9" value="e"> Mag report bisan pa og gikalibanga<br>
-								<input type="checkbox" name="q9" value="f"> Kanunay i-check ang refrigeration unit<br>
-								<input type="checkbox" name="q9" value="g"> Likayan ang temperature danger zone (4-60 ˚C)<br>
-								<input type="checkbox" name="q9" value="h"> I-check kung naa bay sinyales ang meat van ginapuy-an og mga ok-ok, ilaga, ug uban pa<br>
-								<input type="checkbox" name="q9" value="i"> Pagsul-ob og Personal Protective Equipments (PPE) sama sa botas, facemask, ug hairnet<br>
-								<input type="checkbox" name="q9" value="j"> I-check ang kalidad sa karne usa ikarga sa meat van<br><br>
-
-								<h2>Question 9:</h2>
-								<p>Ang pag karga sa Accredited Meat Van og mga produkto gawas sa karne mamahimong muresulta sa?.</p>
-
-								<input type="radio" name="q10" value="a"> Dakong halin<br>
-								<input type="radio" name="q10" value="b"> Dugang Negosyo<br>
-								<input type="radio" name="q10" value="c"> Kumpikasyon sa produkto ug revocation sa Certificate of Registration<br>
-								<input type="radio" name="q10" value="d"> Pagkapreso<br><br>
-
-								<h2>Question 10:</h2>
-								<p>Si Mr. Kanor nagsuot og kumpleto nge PPE kon Personal Protective Equipment (hairnet, mask, boots) aron maka saka-kanaog ra sya sa yuta ug sa meat van. Nakatabang ba si Mr. Kanor makalikay sa "Cross-Contamination"?</p>
-								<input type="radio" name="q11" value="a"> Oo<br>
-								<input type="radio" name="q11" value="b"> Wala<br><br>
-
-								<h2>Question 11:</h2>
-								<p>Unsa ning ginatawag nga "hot meat"?</p>
-								<input type="checkbox" name="q12" value="a"> Bagong luto nga karne<br>
-								<input type="checkbox" name="q12" value="b"> Karne nga walay dokumento<br>
-								<input type="checkbox" name="q12" value="c"> Karne nga init<br>
-								<input type="checkbox" name="q12" value="d"> Karne nga wala na-inspect sa meat inspector<br>
-								<input type="checkbox" name="q12" value="e"> Karne nga wala giihaw sa accredited nga balay-ihawan<br>
-								<input type="checkbox" name="q12" value="f"> Bagong ihaw nga karne<br>
-								<input type="checkbox" name="q12" value="g"> Karne nga smuggled<br><br>
-
-								<h2>Question 12:</h2>
-								<p>Adunay mga grano sa chlorine nga namatikdan sulod sa Meat Van. Unsa kini na klase sa "Food Hazard"?</p>
-								<input id="q12" type="text" placeholder="Answer" class="textinput1" /><br><br>
-
-								<h2>Question 13:</h2>
-								<p>Mao kini ang possible nga mahitabo kung kita makaviolate sa Food Safety</p>
-								<input type="radio" name="q13" value="a"> Mahatagan og License<br>
-								<input type="radio" name="q13" value="b"> Makapadayon sa negosyo<br>
-								<input type="radio" name="q13" value="c"> Makamulta/Makasuhan<br>
-								<input type="radio" name="q13" value="d"> Maka tiktok<br><br>
-
-								<h2>Question 14:</h2>
-								<p>Unsa ang importansya nga kasabot ang mga drivers ug helpers mahinungod sa "food safety"?</p>
-								<input type="checkbox" name="q14" value="a"> Aron lang magka certificate<br>
-								<input type="checkbox" name="q14" value="b"> Aron makalikay sa sakit<br>
-								<input type="checkbox" name="q14" value="c"> Aron makalikay sa food poisoning<br>
-								<input type="checkbox" name="q14" value="d"> Aron di mahimong zombie<br>
-								<input type="checkbox" name="q14" value="e"> Aron sakto ang pag handle sa karne<br>
-								<input type="checkbox" name="q14" value="f"> Aron di ta makakatag og kagaw<br>
-								<input type="checkbox" name="q14" value="g"> Aron di dali madaot ang karne<br>
-								<input type="checkbox" name="q14" value="h"> Aron makapangilad<br><br>
-
-								<h2>Question 15:</h2>
-								<p>Pwede magkarga'g karne gikan sa dili accredited nga balay-ihawan nga ibaligya sa ubang lungsod?</p>
-								<input type="radio" name="q15" value="a"> Oo<br>
-								<input type="radio" name="q15" value="b"> Dili<br><br>
-
-								<h2>Question 16:</h2>
-								<p>Pwede magkarga'g karne gikan sa dili accredited nga balay-ihawan nga ibaligya sa ubang lungsod?</p>
-								<input type="radio" name="q16" value="a"> Staphylococcus aureus<br>
-								<input type="radio" name="q16" value="b"> Norovirus<br>
-								<input type="radio" name="q16" value="c"> Salmonella<br>
-								<input type="radio" name="q16" value="d"> Yakult<br><br>
-								<!-- Add a submit button to trigger the quiz check -->
-								<input type="submit" value="Submit" id="submit-button">
-							</form>
-						</div>
-					</div>
-
-	</main>
-
-	<!-- Add a script tag to include the JavaScript code -->
-	<script>
-		document.getElementById('submit-button').addEventListener('click', function (e) {
-			e.preventDefault(); // Prevent form submission
-
-			// Define the correct answers
-			const correctAnswers = {
-				q1: 'salmonella',
-				q3: 'b',
-				q4: 'c',
-				q5: 'd',
-				q6: 'a',
-				q7: 'b',
-				q8: 'c',
-				q9: 'd',
-				q10: 'a',
-				q11: 'b',
-				q12: 'c',
-				q13: 'd',
-				q14: 'a',
-				q15: 'b',
-				q16: 'c'
-			};
-
-			// Get the form elements
-			const form = document.getElementById('quiz-form');
-			const elements = form.elements;
-
-			// Initialize the score
-			let score = 0;
-
-			// Loop through the form elements and check the selected answers
-			for (let i = 0; i < elements.length; i++) {
-				const element = elements[i];
-				if (element.type === 'radio' && element.checked) {
-					const questionNumber = element.name;
-					const selectedAnswer = element.value;
-
-					// Check if the selected answer is correct
-					if (correctAnswers[questionNumber] === selectedAnswer) {
-						score++;
-					}
-				}
-			}
-
-			// Display the score or do whatever you want with it
-			alert(`Your score is: ${score}`);
-
-			// Save the answers to local storage
-			const answers = {};
-			for (let i = 0; i < elements.length; i++) {
-				const element = elements[i];
-				if (element.type === 'radio' && element.checked) {
-					const questionNumber = element.name;
-					const selectedAnswer = element.value;
-					answers[questionNumber] = selectedAnswer;
-				} else if (element.type === 'text') {
-					const questionNumber = element.id;
-					const answer = element.value;
-					answers[questionNumber] = answer;
-				}
-			}
-			localStorage.setItem('quizAnswers', JSON.stringify(answers));
-		});
-
-		// Optionally, you can retrieve the stored answers when the page loads
-		window.addEventListener('load', function () {
-			const storedAnswers = localStorage.getItem('quizAnswers');
-			if (storedAnswers) {
-				const answers = JSON.parse(storedAnswers);
-				// Here, you can populate the form with the stored answers
-				document.getElementById('pn').value = answers['pn'];
-				// For radio buttons, you can use the answers object to check the correct options.
-				// For example, if answers['q1'] is 'a', then you can check the radio button with value 'a'.
-			}
-		});
-
-
-	</script>
-
-
-	<!-- apex charts and other charts -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.40.0/apexcharts.min.js"></script>
-	<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<!-- Own CSS File -->
-	<script src="shared/scripts.js"></script>
-	<script src="analytics.js"></script>
-
-
-
-
-</section>
+    </div>
+    <script src="~/js/question.js" asp-append-version="true"></script>
+    <script src="~/js/appquiz.js" asp-append-version="true"></script>
+</body>
+</html>

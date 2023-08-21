@@ -3,7 +3,7 @@ const viewButtons = document.querySelectorAll('.view');
 
 viewButtons.forEach(button => {
     button.addEventListener('click', function (e) {
-        const qrdata = "https://localhost:7116/Trace/Result?id=" + button.getAttribute('value');;
+        const qrdata = "https://nmis-smfa.online/Trace/Result?id=" + button.getAttribute('value');;
         const qrcodeContainer = document.getElementById('qrcode');
         qrcodeContainer.innerHTML = "";  // Clear previous QR code
         const qrcode = new QRCode(qrcodeContainer, {

@@ -1,0 +1,50 @@
+﻿<link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+
+<section id="content">
+<main class="registration">
+
+	<div class="container">
+		<header>Payment Form</header>
+		<form action="#" class="form">
+
+			<div class="column">
+				<div class="row">
+					<div class="input-box">
+						<label><i class='bx bxs-credit-card'></i>Statement of Account</label>
+						<input type="text" placeholder="Enter SoA" />
+					</div>
+					<div class="input-box">
+						<label><i class='bx bxs-calendar'></i>Date of Payment</label>
+						<input type="date" placeholder="Enter birth date" />
+					</div>
+
+					<div class="column">
+						<div class="input-box">
+							<label><i class='bx bxs-envelope'></i>Email</label>
+							<input type="email" placeholder="Put an Email" class="text" />
+						</div>
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="upload-box">
+						<label>Upload Image of Payment Receipt</label>
+						<div class="container">
+							<input type="file" id="file" accept="image/*" hidden>
+							<div class="img-area" data-img="">
+								<i class='bx bxs-cloud-upload icon'></i>
+								<h3>Upload Image</h3>
+								<p>Image size must be less than <span>5MB</span></p>
+							</div>
+							<button class="select-image" type="button">Select Image</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<button>Submit</button>
+		</form>
+	</div>
+		<script src="~/js/payment.js" asp-append-version="true"></script>
+</main>
+</section>
