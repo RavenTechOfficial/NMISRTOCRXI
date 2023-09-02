@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +15,14 @@ namespace thesis.Controllers
     public class MTVapplicationController : Controller
     {
         private readonly thesisContext _context;
+		private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public MTVapplicationController(thesisContext context)
-        {
+		public MTVapplicationController(thesisContext context, IWebHostEnvironment webHostEnvironment)
+		{
             _context = context;
-        }
+			_webHostEnvironment = webHostEnvironment;
+
+		}
 
         // GET: MTVapplication
         public async Task<IActionResult> Index()
@@ -67,7 +71,7 @@ namespace thesis.Controllers
 			if (mTVApplicationVM.LTOCR != null && mTVApplicationVM.LTOCR.Length > 0)
 			{
 				var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(mTVApplicationVM.LTOCR.FileName)}";
-				var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/MTV", uniqueFileName);
+				var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/MTV", uniqueFileName);
 				imageLTOCR = filePath;
 
 				using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -79,7 +83,7 @@ namespace thesis.Controllers
 			if (mTVApplicationVM.LTOOR != null && mTVApplicationVM.LTOOR.Length > 0)
 			{
 				var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(mTVApplicationVM.LTOOR.FileName)}";
-				var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/MTV", uniqueFileName);
+				var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/MTV", uniqueFileName);
 				imageLTOOR = filePath;
 
 				using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -91,7 +95,7 @@ namespace thesis.Controllers
 			if (mTVApplicationVM.LicenseFront != null && mTVApplicationVM.LicenseFront.Length > 0)
 			{
 				var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(mTVApplicationVM.LicenseFront.FileName)}";
-				var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/MTV", uniqueFileName);
+				var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/MTV", uniqueFileName);
 				imageLicenseFront = filePath;
 
 				using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -103,7 +107,7 @@ namespace thesis.Controllers
 			if (mTVApplicationVM.LicenseBack != null && mTVApplicationVM.LicenseBack.Length > 0)
 			{
 				var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(mTVApplicationVM.LicenseBack.FileName)}";
-				var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/MTV", uniqueFileName);
+				var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/MTV", uniqueFileName);
 				imageLicenseBack = filePath;
 
 				using (var fileStream = new FileStream(filePath, FileMode.Create))
