@@ -3,6 +3,53 @@
 
 @{
     ViewData["Title"] = "Index";
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessage))
+    {
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: '@ViewBag.AlertMessage'
+            });
+        </script>
+
+
+    }
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessagee))
+    {
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: '@ViewBag.AlertMessagee'
+            });
+        </script>
+    }
+
+
+
 }
 <section id="content">
     <link href="~/css/inspectorsidenav.css" rel="stylesheet" />
@@ -16,7 +63,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">List of Meat Establishment</li>
+                    <li class="breadcrumb-item active">List of Meat Establishment</li>
                 </ol>
             </nav>
         </div>
@@ -24,9 +71,8 @@
         <div class="FirstLayer">
 
             <div class="applications">
-
                 <p>
-                    <a asp-action="Create">Create New</a>
+                    <a asp-action="Create" class="create">Create New</a>
                 </p>
                 <br />
                 <table class="table">

@@ -8,6 +8,50 @@
 
 @{
     ViewData["Title"] = "Index";
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessage))
+    {
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: '@ViewBag.AlertMessage'
+            });
+        </script>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessagee))
+    {
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }-
+                        });
+
+            Toast.fire({
+                icon: 'success',
+                title: '@ViewBag.AlertMessagee'
+            });
+        </script>
+    }
+
+
 }
 <link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 <section id="content">
@@ -52,7 +96,7 @@
                 <div class="search">
                     <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
                 </div>
-                <table id="tables">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>
@@ -247,39 +291,6 @@
             });
 
 
-        </script>
-
-        <script>
-            //document.addEventListener("DOMContentLoaded", function () {
-            //    var currentDate = new Date().toISOString().split('T')[0];
-            //    document.getElementById("startdate").value = currentDate;
-            //    document.getElementById("enddate").value = currentDate;
-            //    filterDataDate();
-            //});
-
-            //function filterDataDate() {
-            //    var startDate = new Date(document.getElementById("startdate").value);
-            //    var endDate = new Date(document.getElementById("enddate").value);
-            //    var rows = document.getElementsByClassName("filter-item");
-
-            //    for (var i = 0; i < rows.length; i++) {
-            //        var row = rows[i];
-            //        var dateCell = new Date(row.cells[0].innerText); // Assuming the date is in the first cell
-
-            //        if (startDate && endDate) {
-            //            startDate.setHours(0, 0, 0, 0); // Set start time to 00:00:00
-            //            endDate.setHours(23, 59, 59, 999); // Set end time to 23:59:59.999
-
-            //            if (dateCell >= startDate && dateCell <= endDate) {
-            //                row.style.display = "table-row";
-            //            } else {
-            //                row.style.display = "none";
-            //            }
-            //        } else {
-            //            row.style.display = "table-row";
-            //        }
-            //    }
-            //}
         </script>
 
         <script>

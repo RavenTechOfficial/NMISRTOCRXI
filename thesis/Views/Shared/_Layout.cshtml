@@ -213,18 +213,69 @@
 			<!-- NAVBAR -->
 		}
 		if (User.IsInRole("InspectorAdministrator"))
+
 		{
-			<section id="sidebar">
-				<div class="head">
-					<div class="logo">
-						<img src="~/img/trial_icon.png" alt="" href="dashboard.html">
-					</div>
-					<div class="details">
-						<p class="office">MEATCHECK+</p>
-						<p class="region">Version 1</p>
-						<a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
-					</div>
+			<link href="~/css/sidenavmeatcheck.css" rel="stylesheet" asp-append-version="true" />
+
+			<div id="meatcheck">
+				<div id="navbar">
+					<!-- NAVBAR -->
+					<nav>
+						<i class='bx bx-menu'></i>
+
+						<div class="head">
+							<div class="logo">
+								<img src="~/img/meatcheck.png">
+							</div>
+
+						</div>
+
+
+						<a href="#" class="nav-link" hidden>Categories</a>
+						<form action="#">
+							<div class="form-input" hidden>
+								<input type="search" placeholder="Search..." hidden>
+								<button type="submit" class="search-btn" hidden><i class='bx bx-search'></i></button>
+							</div>
+						</form>
+						<input type="checkbox" id="switch-mode" hidden>
+						<label for="switch-mode" class="switch-mode"></label>
+						<a href="#" class="notification">
+							<i class='bx bxs-bell'></i>
+							<span class="num">8</span>
+						</a>
+						<div class="dropdown">
+							<a href="#" class="profile dropdown-toggle" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="~/img/people.png">
+							</a>
+							<div class="container dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown" style="background-color:#f7f7f7">
+								<label>@UserManager.GetUserName(User)</label>
+								<hr />
+
+								<a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+									<i class='bx bxs-user'></i>
+									<span class="text">Account</span>
+								</a>
+
+								<form title="Log Out" class="form-inline logout-form" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+									<button type="submit" class="nav-link btn btn-link text-red">
+										<i class='bx bxs-log-out-circle'></i>
+										<span class="text">Logout</span>
+									</button>
+								</form>
+
+
+
+
+							</div>
+						</div>
+					</nav>
+					<!-- NAVBAR -->
 				</div>
+			</div>
+
+			<section id="sidebar">
+
 
 				<ul class="side-menu top">
 					<p class="title"> Main</p>
@@ -236,6 +287,12 @@
 					</li>
 					<li>
 						<a asp-area="Identity" asp-page="/Account/Register">
+							<i class='bx bxs-user'></i>
+							<span class="text">Register Account</span>
+						</a>
+					</li>
+					<li>
+						<a asp-controller="UsersManagement" asp-action="Index">
 							<i class='bx bxs-user'></i>
 							<span class="text">User Management</span>
 						</a>
@@ -267,58 +324,73 @@
 						</a>
 					</li>
 				</ul>
-				<ul class="side-menu bot">
-					<p class="title">Others</p>
-					<li>
-						<a href="#">
-							<i class='bx bxs-cog'></i>
-							<span class="text">Settings</span>
-						</a>
-					</li>
-					<li>
-						<a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="logout">
-							<i class='bx bxs-log-out-circle'></i>
-							<span class="text">Logout</span>
-						</a>
-					</li>
-				</ul>
+
 			</section>
-			<div id="navbar">
-				<!-- NAVBAR -->
-				<nav>
-					<i class='bx bx-menu'></i>
-					<a href="#" class="nav-link">Categories</a>
-					<form action="#">
-						<div class="form-input">
-							<input type="search" placeholder="Search...">
-							<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-						</div>
-					</form>
-					<input type="checkbox" id="switch-mode" hidden>
-					<label for="switch-mode" class="switch-mode"></label>
-					<a href="#" class="notification">
-						<i class='bx bxs-bell'></i>
-						<span class="num">8</span>
-					</a>
-					<a href="#" class="profile">
-						<img src="~/img/people.png">
-					</a>
-				</nav>
-				<!-- NAVBAR -->
-			</div>
+
 		}
 		if (User.IsInRole("MeatInspector"))
 		{
+			<link href="~/css/sidenavmeatcheck.css" rel="stylesheet" asp-append-version="true" />
+
+			<div id="meatcheck">
+				<div id="navbar">
+					<!-- NAVBAR -->
+					<nav>
+						<i class='bx bx-menu'></i>
+
+						<div class="head">
+							<div class="logo">
+								<img src="~/img/meatcheck.png">
+							</div>
+
+						</div>
+
+
+						<a href="#" class="nav-link" hidden>Categories</a>
+						<form action="#">
+							<div class="form-input" hidden>
+								<input type="search" placeholder="Search..." hidden>
+								<button type="submit" class="search-btn" hidden><i class='bx bx-search'></i></button>
+							</div>
+						</form>
+						<input type="checkbox" id="switch-mode" hidden>
+						<label for="switch-mode" class="switch-mode"></label>
+						<a href="#" class="notification">
+							<i class='bx bxs-bell'></i>
+							<span class="num">8</span>
+						</a>
+						<div class="dropdown">
+							<a href="#" class="profile dropdown-toggle" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="~/img/people.png">
+							</a>
+							<div class="container dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown" style="background-color:#f7f7f7">
+								<label>@UserManager.GetUserName(User)</label>
+								<hr />
+
+								<a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+									<i class='bx bxs-user'></i>
+									<span class="text">Account</span>
+								</a>
+
+								<form title="Log Out" class="form-inline logout-form" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+									<button type="submit" class="nav-link btn btn-link text-red">
+										<i class='bx bxs-log-out-circle'></i>
+										<span class="text">Logout</span>
+									</button>
+								</form>
+
+
+
+
+							</div>
+						</div>
+					</nav>
+					<!-- NAVBAR -->
+				</div>
+			</div>
+
 			<section id="sidebar">
 				<div class="head">
-					<div class="logo">
-						<img src="~/img/trial_icon.png" alt="" href="dashboard.html">
-					</div>
-					<div class="details">
-						<p class="office">MEATCHECK+</p>
-						<p class="region">Version 1</p>
-						<a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
-					</div>
 				</div>
 
 				<ul class="side-menu top">
@@ -344,60 +416,75 @@
 
 						</a>
 					</li>
+
 				</ul>
-				<ul class="side-menu bot">
-					<p class="title">Others</p>
-					<li>
-						<a href="#">
-							<i class='bx bxs-cog'></i>
-							<span class="text">Settings</span>
-						</a>
-					</li>
-					<li>
-						<a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="logout">
-							<i class='bx bxs-log-out-circle'></i>
-							<span class="text">Logout</span>
-						</a>
-					</li>
-				</ul>
+
 			</section>
-			<div id="navbar">
-				<!-- NAVBAR -->
-				<nav>
-					<i class='bx bx-menu'></i>
-					<a href="#" class="nav-link">Categories</a>
-					<form action="#">
-						<div class="form-input">
-							<input type="search" placeholder="Search...">
-							<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-						</div>
-					</form>
-					<input type="checkbox" id="switch-mode" hidden>
-					<label for="switch-mode" class="switch-mode"></label>
-					<a href="#" class="notification">
-						<i class='bx bxs-bell'></i>
-						<span class="num">8</span>
-					</a>
-					<a href="#" class="profile">
-						<img src="~/img/people.png">
-					</a>
-				</nav>
-				<!-- NAVBAR -->
-			</div>
+
 		}
 
 		if (User.IsInRole("MeatEstablishmentRepresentative"))
 		{
+			<link href="~/css/sidenavmeatcheck.css" rel="stylesheet" asp-append-version="true" />
+
+			<div id="meatcheck">
+				<div id="navbar">
+					<!-- NAVBAR -->
+					<nav>
+						<i class='bx bx-menu'></i>
+
+						<div class="head">
+							<div class="logo">
+								<img src="~/img/meatcheck.png">
+							</div>
+
+						</div>
+
+
+						<a href="#" class="nav-link" hidden>Categories</a>
+						<form action="#">
+							<div class="form-input" hidden>
+								<input type="search" placeholder="Search..." hidden>
+								<button type="submit" class="search-btn" hidden><i class='bx bx-search'></i></button>
+							</div>
+						</form>
+						<input type="checkbox" id="switch-mode" hidden>
+						<label for="switch-mode" class="switch-mode"></label>
+						<a href="#" class="notification">
+							<i class='bx bxs-bell'></i>
+							<span class="num">8</span>
+						</a>
+						<div class="dropdown">
+							<a href="#" class="profile dropdown-toggle" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="~/img/people.png">
+							</a>
+							<div class="container dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown" style="background-color:#f7f7f7">
+								<label>@UserManager.GetUserName(User)</label>
+								<hr />
+
+								<a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+									<i class='bx bxs-user'></i>
+									<span class="text">Account</span>
+								</a>
+
+								<form title="Log Out" class="form-inline logout-form" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+									<button type="submit" class="nav-link btn btn-link text-red">
+										<i class='bx bxs-log-out-circle'></i>
+										<span class="text">Logout</span>
+									</button>
+								</form>
+
+
+
+
+							</div>
+						</div>
+					</nav>
+					<!-- NAVBAR -->
+				</div>
+			</div>
 			<section id="sidebar">
 				<div class="head">
-					<div class="logo">
-						<img src="~/img/trial_icon.png" alt="" href="dashboard.html">
-					</div>
-					<div class="details">
-						<p class="office">MEATCHECK+</p>
-						<p class="region">Version 1</p>
-						<a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
-					</div>
 				</div>
 
 				<ul class="side-menu top">
@@ -429,46 +516,12 @@
 
 						</a>
 					</li>
+
+
 				</ul>
-				<ul class="side-menu bot">
-					<p class="title">Others</p>
-					<li>
-						<a href="#">
-							<i class='bx bxs-cog'></i>
-							<span class="text">Settings</span>
-						</a>
-					</li>
-					<li>
-						<a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="logout">
-							<i class='bx bxs-log-out-circle'></i>
-							<span class="text">Logout</span>
-						</a>
-					</li>
-				</ul>
+
 			</section>
-			<div id="navbar">
-				<!-- NAVBAR -->
-				<nav>
-					<i class='bx bx-menu'></i>
-					<a href="#" class="nav-link">Categories</a>
-					<form action="#">
-						<div class="form-input">
-							<input type="search" placeholder="Search...">
-							<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-						</div>
-					</form>
-					<input type="checkbox" id="switch-mode" hidden>
-					<label for="switch-mode" class="switch-mode"></label>
-					<a href="#" class="notification">
-						<i class='bx bxs-bell'></i>
-						<span class="num">8</span>
-					</a>
-					<a href="#" class="profile">
-						<img src="img/people.png">
-					</a>
-				</nav>
-				<!-- NAVBAR -->
-			</div>
+
 		}
 		if (User.IsInRole("MTVAdministrator"))
 		{

@@ -2,6 +2,48 @@
 <link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 @{
     ViewData["Title"] = "Index";
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessage))
+    {
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: '@ViewBag.AlertMessage'
+            });
+        </script>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessagee))
+    {
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }-
+                                                });
+
+            Toast.fire({
+                icon: 'success',
+                title: '@ViewBag.AlertMessagee'
+            });
+        </script>
+    }
 }
 <section id="content">
 
@@ -23,9 +65,7 @@
         <div class="FirstLayer">
 
             <div class="applications">
-                <h1>Postmortem Inspection</h1>
-
-
+                <a asp-controller="Postmortems" asp-action="Create"> Create Report </a>
                 <br />
                 <table class="table">
                     <thead>
@@ -95,7 +135,7 @@
                                     @if (User.IsInRole("MeatInspector"))
                                     {
                                         <div class="btn-group">
-                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                            @* <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>*@
                                             <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                                         </div>
                                     }
@@ -104,8 +144,12 @@
                         }
                     </tbody>
                 </table>
+                <br />
 
-                <a asp-controller="MeatInspectionReports" asp-action="Index"> Back to List </a>
+                <div class="button">
+                    <a class="btn btn-dark " asp-controller="totalNoFitForHumanConsumptions" asp-action="Create"> <span>Next</span> <i class="bx bx-chevron-right"> </i> </a>
+                </div>
+
             </div>
 
         </div>

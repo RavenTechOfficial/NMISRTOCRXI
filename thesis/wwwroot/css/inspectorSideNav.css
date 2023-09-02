@@ -1,4 +1,5 @@
-﻿/* Filters Starts */
+﻿
+
 
 #filtersContainer {
 	display: none;
@@ -69,79 +70,82 @@
 }
 
 
+.form-group label {
+	color: var(--blue);
+}
 /* Filters Ends */
 
 /* first Layer Starts */
-#content main .FirstLayer {
-	display: flex;
-	flex-wrap: wrap;
-	grid-gap: 24px;
-	margin-top: 24px;
-	width: 100%;
-	color: var(--dark);
+#content main {
+	margin-top: 20px;
 }
 
-
-	#content main .FirstLayer > div {
-		border-radius: 20px;
-		background: var(--light);
-		padding: 24px;
-		overflow-x: auto;
-	}
-
-	#content main .FirstLayer .head {
+	#content main .FirstLayer {
 		display: flex;
-		align-items: center;
-		grid-gap: 16px;
-		margin-bottom: 24px;
+		flex-wrap: wrap;
+		grid-gap: 24px;
+		margin-top: 24px;
+		width: 100%;
+		color: var(--blue);
 	}
 
-		#content main .FirstLayer .head h3 {
-			margin-right: auto;
-			font-size: 24px;
-			font-weight: 600;
+
+		#content main .FirstLayer > div {
+			border-radius: 20px;
+			background: var(--light);
+			padding: 24px;
+			overflow-x: auto;
 		}
 
-		#content main .FirstLayer .head .bx {
-			cursor: pointer;
+		#content main .FirstLayer .head {
+			display: flex;
+			align-items: center;
+			grid-gap: 16px;
+			margin-bottom: 24px;
 		}
 
-	#content main .FirstLayer .applications {
-		flex-grow: 1;
-		flex-basis: 200px;
-	}
+			#content main .FirstLayer .head h3 {
+				margin-right: auto;
+				font-size: 24px;
+				font-weight: 600;
+			}
 
-		#content main .FirstLayer .applications table {
-			width: 100%;
-			border-collapse: collapse;
+			#content main .FirstLayer .head .bx {
+				cursor: pointer;
+			}
+
+		#content main .FirstLayer .applications {
+			flex-grow: 1;
+			flex-basis: 200px;
 		}
 
-			#content main .FirstLayer .applications table th {
-				padding: 15px;
-				font-size: 13px;
-				text-align: center;
-				border-bottom: 1px solid var(--grey);
+			#content main .FirstLayer .applications table {
+				width: 100%;
 			}
 
-			#content main .FirstLayer .applications table td {
-				padding: 16px;
-				font-size: 13px;
-				text-align: center;
-				border-bottom: 1px solid var(--grey);
-			}
+				#content main .FirstLayer .applications table th {
+					padding: 15px;
+					font-size: 13px;
+					text-align: center;
+					border-bottom: 1px solid var(--grey);
+				}
 
-			#content main .FirstLayer .applications table tr td:first-child {
-				display: flex;
-				align-items: center;
-				grid-gap: 12px;
-				padding-left: 6px;
-			}
+				#content main .FirstLayer .applications table td {
+					padding: 16px;
+					font-size: 13px;
+					text-align: center;
+					border-bottom: 1px solid var(--grey);
+				}
 
-#tables {
-	padding-bottom: 12px;
-	font-size: 13px;
-	text-align: center;
-	border-bottom: 1px solid var(--grey);
+				#content main .FirstLayer .applications table tr td:first-child {
+					display: flex;
+					align-items: center;
+					grid-gap: 12px;
+					padding-left: 6px;
+				}
+
+.table {
+	color: white;
 }
 
 #content main .FirstLayer .applications table td img {
@@ -149,6 +153,10 @@
 	height: 36px;
 	border-radius: 50%;
 	object-fit: cover;
+}
+
+.FirstLayer .applications a.create {
+	color: var(--blue); /* Change this to your desired color */
 }
 
 #content main .FirstLayer .applications table tbody tr:hover {
@@ -180,6 +188,17 @@
 	flex-basis: 800px;
 }
 
+#content main .FirstLayer .breadcrumb-item a {
+	color: var(--blue);
+}
+
+#content main .FirstLayer .breadcrumb-item.active {
+	color: white;
+}
+
+#content main .FirstLayer .breadcrumb-item::after {
+	color: white;
+}
 
 .button {
 	text-align: right;
@@ -214,4 +233,474 @@
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+}
+
+.hidden-table {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	border: 0;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	clip-path: inset(100%);
+	white-space: nowrap;
+}
+
+.registration .column .upload-box .container {
+	max-width: 400px;
+	width: 100%;
+	background: #fff;
+	padding: 30px;
+	border-radius: 30px;
+	margin-top: -5px;
+	margin-left: 3%;
+}
+
+.registration .img-areaa {
+	position: relative;
+	width: 100%;
+	height: 160px;
+	background: #f2f2f2;
+	margin-bottom: 5px;
+	border-radius: 15px;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+	.registration .img-areaa .icon {
+		font-size: 100px;
+	}
+
+	.registration .img-areaa h3 {
+		font-size: 20px;
+		font-weight: 500;
+		margin-bottom: 3px;
+	}
+
+	.registration .img-areaa p {
+		text-align: center;
+		color: black;
+	}
+
+		.registration .img-areaa p span {
+			font-weight: 600;
+		}
+
+	.registration .img-areaa img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		z-index: 100;
+	}
+
+	.registration .img-areaa::before {
+		content: attr(data-img);
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, .5);
+		color: #fff;
+		font-weight: 500;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		pointer-events: none;
+		opacity: 0;
+		transition: all .3s ease;
+		z-index: 200;
+	}
+
+	.registration .img-areaa.active:hover::before {
+		opacity: 1;
+	}
+
+.registration .select-imagee {
+	display: block;
+	width: 100%;
+	padding: 16px 0;
+	border-radius: 15px;
+	background: var(--blue);
+	color: #fff;
+	font-weight: 500;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
+	transition: all .3s ease;
+	margin-top: -10px;
+}
+
+	.registration .select-imagee:hover {
+		background: var(--dark-blue);
+	}
+
+
+.registration .img-area3 {
+	position: relative;
+	width: 100%;
+	height: 160px;
+	background: #f2f2f2;
+	margin-bottom: 5px;
+	border-radius: 15px;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+	.registration .img-area3 .icon {
+		font-size: 100px;
+	}
+
+	.registration .img-area3 h3 {
+		font-size: 20px;
+		font-weight: 500;
+		margin-bottom: 3px;
+	}
+
+	.registration .img-area3 p {
+		text-align: center;
+		color: black;
+	}
+
+		.registration .img-area3 p span {
+			font-weight: 600;
+		}
+
+	.registration .img-area3 img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		z-index: 100;
+	}
+
+	.registration .img-area3::before {
+		content: attr(data-img);
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, .5);
+		color: #fff;
+		font-weight: 500;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		pointer-events: none;
+		opacity: 0;
+		transition: all .3s ease;
+		z-index: 200;
+	}
+
+	.registration .img-area3.active:hover::before {
+		opacity: 1;
+	}
+
+.registration .select-image3 {
+	display: block;
+	width: 100%;
+	padding: 16px 0;
+	border-radius: 15px;
+	background: var(--blue);
+	color: #fff;
+	font-weight: 500;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
+	transition: all .3s ease;
+	margin-top: -10px;
+}
+
+	.registration .select-image3:hover {
+		background: var(--dark-blue);
+	}
+
+﻿body {
+	text-size-adjust: initial;
+	font-weight: 50;
+}
+
+#content main {
+	max-height: 100%;
+}
+
+.registration {
+	margin-top: -40px;
+}
+
+	.registration .row {
+		width: 100%;
+	}
+
+	.registration .container {
+		position: relative;
+		max-width: 1350px;
+		width: 100%;
+		background: var(--light);
+		padding: 10px;
+		border-radius: 15px;
+		box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+		margin-left: 0px;
+		margin-right: 0px;
+		margin-top: 30px;
+	}
+
+		.registration .container header {
+			font-size: 2.5rem;
+			color: var(--dark);
+			font-weight: 500;
+			text-align: center;
+		}
+
+		.registration .container .form {
+			margin-top: 30px;
+		}
+
+	.registration .form .input-box {
+		width: 100%;
+		margin-top: 20px;
+	}
+
+	.registration .input-box label {
+		color: var(--dark);
+	}
+
+	.registration .form .input-box input {
+		padding-left: 20px;
+		border-radius: 6px;
+	}
+
+	.registration .form :where(.input-box input, .select-box, .rol) {
+		position: relative;
+		height: 50px;
+		width: 100%;
+		outline: none;
+		font-size: 1rem;
+		color: #707070;
+		margin-top: 8px;
+		border: 1px solid #ddd;
+		border-radius: 0px;
+	}
+
+
+
+	.registration .input-box input:focus {
+		box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+	}
+
+	.registration .form .column {
+		display: flex;
+		column-gap: 15px;
+	}
+
+	.registration .form .roles {
+		width: 100%;
+	}
+
+	.registration .form .sex-box, .registration .form .upload-box {
+		margin-top: 20px;
+	}
+
+		.registration .sex-box h3, .registration .form .upload-box label {
+			color: var(--dark);
+			font-size: 1rem;
+			font-weight: 400;
+			margin-bottom: 21px;
+		}
+
+	.registration .form :where(.sex-option, .sex) {
+		display: flex;
+		align-items: center;
+		column-gap: 10px;
+		flex-wrap: wrap;
+	}
+
+	.registration .form .sex {
+		column-gap: 5px;
+	}
+
+	.registration .sex input {
+		accent-color: var(--blue);
+	}
+
+	.registration .form :where(.sex input, .sex label) {
+		cursor: pointer;
+	}
+
+	.registration .sex label {
+		color: var(--dark);
+	}
+	/* Upload File Starts */
+
+	.registration .upload-box .container {
+		max-width: 400px;
+		width: 100%;
+		background: #fff;
+		padding: 30px;
+		border-radius: 30px;
+		margin-top: -5px;
+		margin-left: 20%;
+	}
+
+	.registration .img-area {
+		position: relative;
+		width: 100%;
+		height: 160px;
+		background: #f2f2f2;
+		margin-bottom: 5px;
+		border-radius: 15px;
+		overflow: hidden;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
+
+		.registration .img-area .icon {
+			font-size: 100px;
+		}
+
+		.registration .img-area h3 {
+			font-size: 20px;
+			font-weight: 500;
+			margin-bottom: 3px;
+		}
+
+		.registration .img-area p {
+			color: #999;
+		}
+
+			.registration .img-area p span {
+				font-weight: 600;
+			}
+
+		.registration .img-area img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center;
+			z-index: 100;
+		}
+
+		.registration .img-area::before {
+			content: attr(data-img);
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, .5);
+			color: #fff;
+			font-weight: 500;
+			text-align: center;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			pointer-events: none;
+			opacity: 0;
+			transition: all .3s ease;
+			z-index: 200;
+		}
+
+		.registration .img-area.active:hover::before {
+			opacity: 1;
+		}
+
+	.registration .select-image {
+		display: block;
+		width: 100%;
+		padding: 16px 0;
+		border-radius: 15px;
+		background: var(--blue);
+		color: #fff;
+		font-weight: 500;
+		font-size: 16px;
+		border: none;
+		cursor: pointer;
+		transition: all .3s ease;
+		margin-top: -10px;
+	}
+
+		.registration .select-image:hover {
+			background: var(--dark-blue);
+		}
+
+	/* Upload File Ends */
+
+	.registration .address :where(input, .select-box) {
+		margin-top: 15px;
+	}
+
+	.registration .select-box select {
+		height: 100%;
+		width: 100%;
+		outline: none;
+		border: none;
+		color: #707070;
+		font-size: 1rem;
+		padding-left: 20px;
+	}
+
+	.registration .form button {
+		height: 55px;
+		width: 100%;
+		color: #fff;
+		font-size: 1rem;
+		font-weight: 400;
+		margin-top: 30px;
+		border: none;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		background: var(--blue);
+	}
+
+		.registration .form button:hover {
+			background: rgb(131, 109, 243);
+		}
+
+
+
+/*Responsive*/
+
+
+@media screen and (max-width: 768px) {
+	.registration .form .column {
+		flex-wrap: wrap;
+	}
+
+	.registration .form :where(.sex-option, .sex) {
+		row-gap: 15px;
+	}
+
+	.registration label {
+		display: block;
+		margin-bottom: 7px;
+	}
+}
+
+label[for="file"] {
+	color: white; /* Set the desired color here */
 }

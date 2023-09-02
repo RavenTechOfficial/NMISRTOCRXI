@@ -1,7 +1,7 @@
 ﻿@model thesis.Models.ReceivingReport
 @using thesis.Data.Enum;
 @{
-    ViewData["Title"] = "Edit";
+
 }
 <link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 <link href="~/css/register.css" rel="stylesheet" />
@@ -30,9 +30,10 @@
             <div class="applications">
                 @if (User.IsInRole("MeatInspector"))
                 {
-                    <a class='bx bxs-chevron-left' asp-action="Index">
-                        <span>Back</span>
+                    <a asp-action="Index">
+                        <button class="btn btn-primary">Back</button>
                     </a>
+                    <br />
                     <div class="row">
                         <div class="col-md-4">
                             <form asp-action="Edit">
@@ -77,7 +78,7 @@
                             </form>
                             <form method="post" action="/ReceivingReports/actionResult">
                                 <input type="hidden" name="Id" value="@Model.Id" />
-                                <button type="submit" class="btn btn-primary">Inspect</button>
+                                <button type="submit" class="btn btn-warning">Inspect</button>
                             </form>
                         </div>
                     </div>

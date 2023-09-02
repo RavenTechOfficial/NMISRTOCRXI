@@ -24,107 +24,111 @@
 				</ol>
 			</nav>
 		</div>
-		<div class="container">
 
-			<form class="form" asp-action="Edit">
-				<div class="column">
-					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<div class="FirstLayer">
+
+			<div class="applications">
+
+				<form class="form" asp-action="Edit">
+					<div class="column">
+						<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+						<div class="input-box">
+							<label asp-for="Type" class="control-label">Establishment Type:</label>
+							<select asp-for="Type" class="form-control">
+								<option>--Select--</option>
+								<option value="SLH">Slaughter House</option>
+								<option value="PDP">Poultry Dressing Plant</option>
+								<option value="MCP">Meat Cutting Plant</option>
+								<option value="CSW">Cold Storage Warehouse</option>
+							</select>
+						</div>
+					</div>
 					<div class="input-box">
-						<label asp-for="Type" class="control-label">Establishment Type:</label>
-						<select asp-for="Type" class="form-control">
+						<label asp-for="Name" class="control-label">Establishment Name:</label>
+						<input asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+
+					<div class="column">
+						<div class="input-box">
+							<input asp-for="Address" class="form-control" id="addressInput" />
+							<span asp-validation-for="Address" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="input-box address">
+
+						<label asp-for="Address" class="control-label"></label>
+						<div class="column">
+							<div class="select-box">
+								<select id="regionSelect" onchange="populateProvinces()">
+									<option hidden>Region</option>
+									<!-- Add region options here -->
+								</select>
+							</div>
+							<div class="select-box">
+								<select id="provinceSelect" onchange="populateCities()">
+									<option hidden>Province</option>
+									<!-- Add province options here -->
+								</select>
+							</div>
+						</div>
+						<div class="column">
+							<div class="select-box">
+								<select id="citySelect" onchange="populateBarangays()">
+									<option hidden>City/Municipality</option>
+									<!-- Add city options here -->
+								</select>
+							</div>
+							<div class="select-box">
+								<select id="barangaySelect" onchange="updateAddressInput()">
+									<option hidden>Barangay</option>
+									<!-- Add barangay options here -->
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<script>
+						function updateAddressInput() {
+							// Get the selected values from the dropdowns
+							var barangay = document.getElement("barangaySelect").value;
+							var city = document.getElementById("citySelect").value;
+							var province = document.getElementById("provinceSelect").value;
+							var region = document.getElementById("regionSelect").value;
+
+
+
+							// Construct the address using the selected values
+							var address = barangay + ", " + city + ", " + province + ", " + region;
+
+							// Update the value of the address input box
+							document.getElementBy("addressInput").value = Address;
+						}
+					</script>
+
+					<div class="input-box">
+						<label class="control-label">License Status:</label>
+						<select asp-for="LicenseStatus" class="form-control">
 							<option>--Select--</option>
-							<option value="SLH">Slaughter House</option>
-							<option value="PDP">Poultry Dressing Plant</option>
-							<option value="MCP">Meat Cutting Plant</option>
-							<option value="CSW">Cold Storage Warehouse</option>
+							<option value="Licensed">Licensed</option>
+							<option value="NonLicensed">Non-Licensed</option>
 						</select>
 					</div>
-				</div>
-				<div class="input-box">
-					<label asp-for="Name" class="control-label">Establishment Name:</label>
-					<input asp-for="Name" class="form-control" />
-					<span asp-validation-for="Name" class="text-danger"></span>
-				</div>
-
-				<div class="column">
 					<div class="input-box">
-						<input asp-for="Address" class="form-control" id="addressInput" />
-						<span asp-validation-for="Address" class="text-danger"></span>
+						<label asp-for="LicenseToOperateNumber" class="control-label"></label>
+						<input asp-for="LicenseToOperateNumber" class="form-control" />
+						<span asp-validation-for="LicenseToOperateNumber" class="text-danger"></span>
 					</div>
-				</div>
 
-				<div class="input-box address">
+					<br />
 
-					<label asp-for="Address" class="control-label"></label>
-					<div class="column">
-						<div class="select-box">
-							<select id="regionSelect" onchange="populateProvinces()">
-								<option hidden>Region</option>
-								<!-- Add region options here -->
-							</select>
-						</div>
-						<div class="select-box">
-							<select id="provinceSelect" onchange="populateCities()">
-								<option hidden>Province</option>
-								<!-- Add province options here -->
-							</select>
-						</div>
-					</div>
-					<div class="column">
-						<div class="select-box">
-							<select id="citySelect" onchange="populateBarangays()">
-								<option hidden>City/Municipality</option>
-								<!-- Add city options here -->
-							</select>
-						</div>
-						<div class="select-box">
-							<select id="barangaySelect" onchange="updateAddressInput()">
-								<option hidden>Barangay</option>
-								<!-- Add barangay options here -->
-							</select>
-						</div>
-					</div>
-				</div>
-
-				<script>
-					function updateAddressInput() {
-						// Get the selected values from the dropdowns
-						var barangay = document.getElement("barangaySelect").value;
-						var city = document.getElementById("citySelect").value;
-						var province = document.getElementById("provinceSelect").value;
-						var region = document.getElementById("regionSelect").value;
+					<button type="submit" value="Create">Create</button>
 
 
+				</form>
 
-						// Construct the address using the selected values
-						var address = barangay + ", " + city + ", " + province + ", " + region;
-
-						// Update the value of the address input box
-						document.getElementBy("addressInput").value = Address;
-					}
-				</script>
-
-				<div class="input-box">
-					<label class="control-label">License Status:</label>
-					<select asp-for="LicenseStatus" class="form-control">
-						<option>--Select--</option>
-						<option value="Licensed">Licensed</option>
-						<option value="NonLicensed">Non-Licensed</option>
-					</select>
-				</div>
-				<div class="input-box">
-					<label asp-for="LicenseToOperateNumber" class="control-label"></label>
-					<input asp-for="LicenseToOperateNumber" class="form-control" />
-					<span asp-validation-for="LicenseToOperateNumber" class="text-danger"></span>
-				</div>
-
-				<br />
-
-				<button type="submit" value="Create">Create</button>
-
-
-			</form>
-
+			</div>
 		</div>
 
 
