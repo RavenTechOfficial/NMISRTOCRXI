@@ -3,6 +3,48 @@
 <link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 @{
     ViewData["Title"] = "Index";
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessage))
+    {
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: '@ViewBag.AlertMessage'
+            });
+        </script>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessagee))
+    {
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }-
+                                    });
+
+            Toast.fire({
+                icon: 'success',
+                title: '@ViewBag.AlertMessagee'
+            });
+        </script>
+    }
 }
 <section id="content">
 
@@ -26,26 +68,27 @@
 
             <div class="applications">
 
-                <br />
-
+                @if (User.IsInRole("MeatInspector"))
+                {
+                    <a asp-action="Create"> Create Report </a>
+                }
+                @*    <br />
                 <div class="head">
-                    Time: <text type="text" name="Time" id="time" disable /> @ViewBag.MyVariable
+                Time: <text type="text" name="Time" id="time" disable /> @ViewBag.MyVariable
                 </div>
                 <div class="head">
-                    Name of Meat Dealer: <text type="text" name="Meat Dealer" disable />
+                Name of Meat Dealer: <text type="text" name="Meat Dealer" disable />
                 </div>
 
                 <div class="head">
-                    Species of Food Animals: <text type="text" name="Species" disable />
+                Species of Food Animals: <text type="text" name="Species" disable />
                 </div>
 
                 <div class="head">
-                    Total Number of Food Animals: <text type="text" name="No. of Food Animals" disable />
+                Total Number of Food Animals: <text type="text" name="No. of Food Animals" disable />
                 </div>
+                <br />*@
 
-
-
-                <br />
                 <table class="table">
                     <thead>
                         <tr>
@@ -61,10 +104,9 @@
                             <th>
                                 Cause
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.MeatInspectionReport)
-                            </th>@*
-                            <th></th>*@
+                            @* <th>
+                            @Html.DisplayNameFor(model => model.MeatInspectionReport)
+                            </th>*@
                         </tr>
                     </thead>
                     <tbody>
@@ -83,15 +125,15 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Cause)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.MeatInspectionReport.Id)
-                                </td>
+                                @* <td>
+                            @Html.DisplayFor(modelItem => item.MeatInspectionReport.Id)
+                            </td>*@
                                 @if (User.IsInRole("MeatInspector"))
                                 {
                                     <td>
                                         <div class="btn-group">
-                                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                            <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                            @* <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                    <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Id">Details</a>*@
                                             <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                                         </div>
                                     </td>
@@ -106,7 +148,9 @@
                 }
                 @if (User.IsInRole("MeatInspector"))
                 {
-                    <a asp-action="Create"> Back to List </a>
+                    <div class="button">
+                        <a class="btn btn-dark " asp-controller="PassedForSlaughters" asp-action="Create"> <span>Next</span> <i class="bx bx-chevron-right"> </i> </a>
+                    </div>
                 }
                 @if (User.IsInRole("InspectorAdmin"))
                 {

@@ -6,6 +6,48 @@
 @inject UserManager<AccountDetails> UserManager
 @{
     ViewData["Title"] = "Index";
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessage))
+    {
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: '@ViewBag.AlertMessage'
+            });
+        </script>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessagee))
+    {
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: '@ViewBag.AlertMessagee'
+            });
+        </script>
+    }
 }
 <link href="~/css/inspectorSideNav.css" rel="stylesheet" />
 <section id="content">

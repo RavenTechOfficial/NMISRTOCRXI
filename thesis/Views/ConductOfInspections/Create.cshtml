@@ -8,6 +8,11 @@
 @{
     ViewData["Title"] = "Create";
     //int meatInspectionReportId = (int)ViewData["meatInspectionReportId"];
+    <style>
+        #content h1 {
+            color: var(--blue);
+        }
+    </style>
 }
 
 <section id="content">
@@ -73,7 +78,7 @@
                             </div>
                             <div class="input-box" style="display: none">
                                 <label asp-for="MeatInspectionReportId" class="control-label"></label>
-                                <select asp-for="MeatInspectionReportId" class="form-control" asp-items="ViewBag.MeatInspectionReportId">
+                                <select asp-for="MeatInspectionReportId" class="form-control">
                                     <option value="@ViewBag.LatestMeatInspectionReportsId" selected="selected">@ViewBag.LatestMeatInspectionReportsId</option>
                                 </select>
                             </div>
@@ -86,6 +91,7 @@
 
 
                         <button type="submit" value="Create">Create</button>
+                        <br />
 
                     </form>
                     @*<form method="post" action="/ConductOfInspections/actionResult">
@@ -95,9 +101,7 @@
                 </div>
             </div>
         </div>
-        @*<div class="button">
-        <a class="btn btn-dark " asp-controller="PassedForSlaughters" asp-action="Create"> <span>Next</span> <i class="bx bx-chevron-right"> </i> </a>
-        </div>*@
+
 
         @section Scripts {
             @{
@@ -107,7 +111,7 @@
 
 
 
-        @* <div class="FirstLayer">
+        @*    <div class="FirstLayer">
 
         <div class="applications">
         <div class="search">

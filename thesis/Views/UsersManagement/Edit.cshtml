@@ -24,11 +24,13 @@
 					</div>
 				</div>
 				<div class="column">
+
 					<div class="input-box">
 						<label asp-for="lastName">Last Name</label>
 						<input type="text" asp-for="lastName" required />
 						<span asp-validation-for="lastName"></span>
 					</div>
+
 					<div class="input-box">
 						<label asp-for="contactNo"></label>
 						<input type="number" asp-for="contactNo" required />
@@ -82,6 +84,6 @@
 
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial" />
 }
 

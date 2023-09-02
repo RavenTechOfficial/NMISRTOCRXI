@@ -1,4 +1,6 @@
-﻿namespace thesis.Core.ViewModel
+﻿using thesis.Models;
+
+namespace thesis.Core.ViewModel
 {
 	public class AccountUserViewModel
 	{
@@ -8,6 +10,8 @@
 		public string middleName { get; set; }
 		public string contactNo { get; set; }
 		public DateTime birthdate { get; set; }
+		public int? MeatEstablishmentId { get; set; }
+		public MeatEstablishment? MeatEstablishment { get; set; }
 		public string sex { get; set; }
 	}
 }

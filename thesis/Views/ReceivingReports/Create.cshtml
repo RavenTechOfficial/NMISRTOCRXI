@@ -9,10 +9,41 @@
 
 @{
     ViewData["Title"] = "Create";
+
 }
 
 <link href="~/css/inspectorsidenav.css" rel="stylesheet" />
 <link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
+
+
+<style>
+    /* Adjust the size of the checkboxes */
+    .checkbox-list input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+    }
+
+    /* Style the label text for the checkboxes */
+    .checkbox-list label {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .checkbox-list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .checkbox-row {
+        display: flex;
+        justify-content: space-between;
+        width: 70%; /* Two columns */
+        margin-bottom: 5px; /* Add some spacing between rows */
+    }
+</style>
 
 
 <section id="content">
@@ -148,17 +179,52 @@
                         }
                     </script>
                 </div>
+
+
                 <div class="input-box">
                     <label asp-for="ShippingDoc" class="control-label">Shipping Documents:</label>
-                    <select asp-for="ShippingDoc" class="form-control">
-                        <option>--Select--</option>
-                        <option value="CertificateOfOwnerShip">Certificate Of Ownership</option>
-                        <option value="CertificateOfTransfer">Certificate Of Transfer</option>
-                        <option value="VeterinaryHealthCertificate">Veterinary Health Certificate</option>
-                        <option value="ShippingPermit">Shipping Permit</option>
-                    </select>
+                    <div class="checkbox-list">
+                        <div class="checkbox-row">
+                            <label>
+                                <input type="checkbox" name="ShippingDoc" value="CertificateOfOwnerShip">
+                                Certificate Of Ownership
+                            </label>
+                            <label>
+                                <input type="checkbox" name="ShippingDoc" value="CertificateOfTransfer">
+                                Certificate Of Transfer
+                            </label>
+                        </div>
+                        <div class="checkbox-row">
+                            <label>
+                                <input type="checkbox" name="ShippingDoc" value="VeterinaryHealthCertificate">
+                                Veterinary Health Certificate
+                            </label>
+                            <label>
+                                <input type="checkbox" name="ShippingDoc" value="ShippingPermit">
+                                Shipping Permit
+                            </label>
+                        </div>
+                    </div>
+                    <input asp-for="ShippingDoc" id="selectedShippingDocs">
                     <span asp-validation-for="ShippingDoc" class="text-danger"></span>
                 </div>
+
+
+                <script>
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"][name="ShippingDoc"]');
+                    const hiddenInput = document.getElementById('selectedShippingDocs');
+
+                    checkboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', () => {
+                            const selectedDocs = Array.from(checkboxes)
+                                .filter(cb => cb.checked)
+                                .map(cb => cb.value)
+                                .join(',');
+
+                            hiddenInput.value = selectedDocs;
+                        });
+                    });
+                </script>
                 @*    <div class="input-box">
                 <label class="control-label">Shipping Documents:</label><br>
                 <input type="checkbox" name="ShippingDoc" value="CertificateOfOwnerShip" id="CertificateOfOwnerShip">

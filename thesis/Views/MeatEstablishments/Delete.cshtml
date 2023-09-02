@@ -46,11 +46,34 @@
                         </dd>
                     </dl>
 
-                    <form asp-action="Delete">
+                    <form asp-action="Delete" id="deleteForm">
                         <input type="hidden" asp-for="Id" />
                         <input type="submit" value="Delete" class="btn btn-danger" /> |
-                        <a asp-action="Index">Back to List</a>
+                        <a asp-action="Index" class="btn btn-primary">Back to List</a>
                     </form>
+
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script>
+                        document.getElementById('deleteForm').addEventListener('submit', function (e) {
+                            e.preventDefault();
+
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                cancelButtonColor: '#3085d6',
+                                confirmButtonText: 'Yes, delete it!',
+                                cancelButtonText: 'Cancel'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Proceed with form submission
+                                    document.getElementById('deleteForm').submit();
+                                }
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>
