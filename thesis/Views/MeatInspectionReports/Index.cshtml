@@ -23,6 +23,12 @@
                     <thead>
                         <tr>
                             <th>
+                                QR options
+                            </th>
+                            <th>
+                                UID
+                            </th>
+                            <th>
                                 Receiving Time
                             </th>
                             <th>
@@ -88,19 +94,21 @@
                             <th>
                                 Certificate Status
                             </th>
-                            <th>
-                                UID
-                            </th>
-                            <th>
-                                QR options
-                            </th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
                             <tr>
+                                <td class="d-flex flex-nowrap">
+
+                                    <a class="btn btn-primary py-1 font-weight-light view" value="@item.uid">Show</a>
+                                    @*<a id="download" class="btn btn-success  mx-1 py-1 font-weight-light">Download</a>*@
+                                    @*<a class="btn btn-warning ms-1 py-1 font-weight-light print" value="@item.uid">Print</a>*@
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.uid)
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.RecTime)
                                 </td>
@@ -166,15 +174,6 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CertificateStatus)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.uid)
-                                </td>
-                                <td class="d-flex flex-nowrap">
-
-                                    <a class="btn btn-primary py-1 font-weight-light view" value="@item.uid">Show</a>
-                                    @*<a id="download" class="btn btn-success  mx-1 py-1 font-weight-light">Download</a>*@
-                                    @*<a class="btn btn-warning ms-1 py-1 font-weight-light print" value="@item.uid">Print</a>*@
                                 </td>
                             </tr>
                         }

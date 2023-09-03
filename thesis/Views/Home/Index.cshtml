@@ -64,10 +64,10 @@
                 </span>
             </div>
             <div class="home-links">
-                <span class="home-home">HOME</span>
-                <span class="home-faqs">FAQS</span>
-                <span class="home-articles">ARTICLES</span>
-                <span class="home-aboutus">ABOUT US</span>
+                <a class="home-home" asp-controller="Home" asp-action="Index">HOME</a>
+                <a class="home-articles" href="#articles">ARTICLES</a>
+                <a class="home-faqs" href="#FAQs">FAQS</a>
+                <a class="home-aboutus" href="#footer">ABOUT US</a>
                 
                 <a asp-controller="Trace" asp-action="Index">
                     <button class="button-secondary button">TRACE</button>
@@ -103,9 +103,9 @@
                             Exercitation veniam consequat sunt nostrud amet.
                         </span>
                         <div class="home-container02">
-                            <button class="button button-gradient home-getstartedbtn">
+                            <a class="button button-gradient home-getstartedbtn" href="#features">
                                 Get Started
-                            </button>
+                            </a>
                             <a asp-area="Identity" asp-page="/Account/Login" class="button button-transparent home-loginbtn">Log in</a>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                 </div>
             </div>
         </div>
-        <div class="home-section section-container">
+        <div class="home-section section-container" id="features">
             <div class="home-features">
                 <div class="home-features1">
                     <h1 class="home-text009">
@@ -492,7 +492,7 @@
                 </div>
             </div>
         </div>
-        <footer class="home-footer">
+        <footer class="home-footer" id="footer">
             <div class="home-links-container">
                 <div class="home-container12">
                     <div class="footer-column">

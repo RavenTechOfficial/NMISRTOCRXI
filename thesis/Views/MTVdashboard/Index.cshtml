@@ -1,4 +1,7 @@
-﻿<link rel="stylesheet" href="~/css/dashy.css" asp-append-version="true" />
+﻿@using thesis.Areas.Identity.Data;
+@model IEnumerable<AccountDetails>
+
+<link rel="stylesheet" href="~/css/dashy.css" asp-append-version="true" />
 <section id="content">
 	<!-- MAIN STARTS-->
 	<main>
@@ -23,22 +26,26 @@
 						<thead>
 							<tr>
 								<th>Inspector</th>
-								<th>Date Applied</th>
-								<th>Status</th>
+								<th>Contact Number</th>
+								<th>Roles</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>
+										<p>@item.firstName @item.lastName</p>
+									</td>
+									<td>@item.contactNo</td>
+									<td>@item.Roles</td>
+
+								</tr>
+							}
+							
+							@*<tr>
 								<td>
-									<img src="img/adrianne.jpg">
-									<p>Adrianne John M. Basuel</p>
-								</td>
-								<td>06-10-2023</td>
-								<td><span class="status duty">On-Duty</span></td>
-							</tr>
-							<tr>
-								<td>
-									<img src="img/Jess.JPG">
 									<p>Jess Arreza</p>
 								</td>
 								<td>06-13-2023</td>
@@ -46,7 +53,7 @@
 							</tr>
 							<tr>
 								<td>
-									<img src="img/gerico.jpg">
+									
 									<p>Gerico Alagon</p>
 								</td>
 								<td>06-14-2023</td>
@@ -54,7 +61,7 @@
 							</tr>
 							<tr>
 								<td>
-									<img src="img/Karlo.jpg">
+									
 									<p>Karlo Badilles</p>
 								</td>
 								<td>06-21-2023</td>
@@ -62,12 +69,12 @@
 							</tr>
 							<tr>
 								<td>
-									<img src="img/Leanox.jpg">
+									
 									<p>Leanox Colis</p>
 								</td>
 								<td>06-23-2023</td>
 								<td><span class="status offline">Offline</span></td>
-							</tr>
+							</tr>*@
 						</tbody>
 					</table>
 				</div>

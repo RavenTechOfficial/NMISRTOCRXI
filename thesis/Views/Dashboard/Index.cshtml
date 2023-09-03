@@ -1,6 +1,6 @@
 ﻿@using thesis.Core.ViewModel;
 @using thesis.Data.Enum;
-@model TotalWeightViewModel
+@model DashboardViewModel
 
 <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
 
@@ -17,28 +17,28 @@
             <li>
                 <i class='bx bxs-report'></i>
                 <span class="text">
-                    <h3>@Model.DailyWeight Kg.</h3>
+                    <h3>@Model.TotalWeightModel.DailyWeight Kg.</h3>
                     <p>Total Meat Qty Today</p>
                 </span>
             </li>
             <li>
                 <i class='bx bxs-report'></i>
                 <span class="text">
-                    <h3>@Model.WeeklyWeight Kg.</h3>
+                    <h3>@Model.TotalWeightModel.WeeklyWeight Kg.</h3>
                     <p>Total Meat Qty Past 7 days</p>
                 </span>
             </li>
             <li>
                 <i class='bx bxs-report'></i>
                 <span class="text">
-                    <h3>@Model.MonthlyWeight Kg.</h3>
+                    <h3>@Model.TotalWeightModel.MonthlyWeight Kg.</h3>
                     <p>Total Meat Qty This Month</p>
                 </span>
             </li>
             <li>
                 <i class='bx bxs-report'></i>
                 <span class="text">
-                    <h3>@Model.YearlyWeight Kg.</h3>
+                    <h3>@Model.TotalWeightModel.YearlyWeight Kg.</h3>
                     <p>Total Meat Qty This Year</p>
                 </span>
             </li>
@@ -60,57 +60,29 @@
                     <i class='bx bx-search'></i>
                     <i class='bx bx-filter'></i>
                 </div>
+                <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Applicant</th>
-                            <th>Date Applied</th>
+                            <th>Applicant Name</th>
+                            <th>Application Type</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <img src="img/adrianne.jpg">
-                                <p>Adrianne John M. Basuel</p>
-                            </td>
-                            <td>06-10-2023</td>
-                            <td><span class="status completed">Completed</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src="img/Jess.JPG">
-                                <p>Jess Arreza</p>
-                            </td>
-                            <td>06-13-2023</td>
-                            <td><span class="status pending">Pending</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src="img/gerico.jpg">
-                                <p>Gerico Alagon</p>
-                            </td>
-                            <td>06-14-2023</td>
-                            <td><span class="status process">Process</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src="img/Karlo.jpg">
-                                <p>Karlo Badilles</p>
-                            </td>
-                            <td>06-21-2023</td>
-                            <td><span class="status pending">Pending</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src="img/Leanox.jpg">
-                                <p>Leanox Colis</p>
-                            </td>
-                            <td>06-23-2023</td>
-                            <td><span class="status completed">Completed</span></td>
-                        </tr>
+                        @foreach(var item in Model.AccountDetails)
+                        {
+                            <tr>
+                                <td>
+                                    <p>@item.OwnerFname @item.OwnerLname</p>
+                                </td>
+                                <td>@item.applicationtype</td>
+                                <td><span class="status process">Process</span></td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
 
@@ -186,15 +158,15 @@
             series: [
                 {
                     name: 'Suspect/Hold',
-                    data: [@string.Join(",", Model.Suspect)]
+                    data: [@string.Join(",", Model.TotalWeightModel.Suspect)]
                 },
                 {
                     name: 'Condemned',
-                    data: [@string.Join(",", Model.Condemned)]
+                    data: [@string.Join(",", Model.TotalWeightModel.Condemned)]
                 },
                 {
                     name: 'Passed for Slaughter',
-                    data: [@string.Join(",", Model.Pass)]
+                    data: [@string.Join(",", Model.TotalWeightModel.Pass)]
                 }
             ],
             chart: {
@@ -225,7 +197,7 @@
                 colors: ['transparent']
             },
             xaxis: {
-                categories: @Html.Raw(Json.Serialize(Model.monthAbbreviationsArray)),
+                categories: @Html.Raw(Json.Serialize(Model.TotalWeightModel.monthAbbreviationsArray)),
                 labels: {
                     style: {
                         colors: labelColor,
@@ -314,10 +286,10 @@
         let areaChartOptions = {
             series: [{
                 name: "Approved Meat",
-                data: [@string.Join(",", Model.monthlyRangeApproved)],
+                data: [@string.Join(",", Model.TotalWeightModel.monthlyRangeApproved)],
             }, {
                 name: "Condemned Meat",
-                data: [@string.Join(",", Model.monthlyRangeCondemned)],
+                data: [@string.Join(",", Model.TotalWeightModel.monthlyRangeCondemned)],
             }],
             chart: {
                 type: "area",
@@ -330,7 +302,7 @@
             },
             colors: ["#00ab57", "#d50000"],
             xaxis: {
-                categories: @Html.Raw(Json.Serialize(Model.monthAbbreviationsArray)),
+                categories: @Html.Raw(Json.Serialize(Model.TotalWeightModel.monthAbbreviationsArray)),
                 labels: {
                     style: {
                         colors: labelColor,
