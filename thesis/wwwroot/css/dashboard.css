@@ -97,6 +97,13 @@
         flex-basis: 300px;
     }
 
+    /* Set a fixed height for the table container */
+    .table-container {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    }
+
+
         #content main .FirstLayer .applications table {
             width: 100%;
             border-collapse: collapse;

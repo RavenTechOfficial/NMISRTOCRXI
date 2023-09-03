@@ -68,11 +68,11 @@
                 </span>
             </div>
             <div class="log-in-page-links">
-                <span class="log-in-page-home">HOME</span>
-                <span class="log-in-page-faqs">FAQS</span>
-                <span class="log-in-page-articles">ARTICLES</span>
-                <span class="log-in-page-aboutus">ABOUT US</span>
-                <button class="button-secondary button">TRACE</button>
+                <a class="log-in-page-home" asp-controller="Home" asp-action="Index">HOME</a>
+                <a class="log-in-page-articles" href="/Home/Index#articles">ARTICLES</a>
+                <a class="log-in-page-faqs" href="/Home/Index#FAQs">FAQS</a>
+                <a class="log-in-page-aboutus" href="/Home/Index#footer">ABOUT US</a>
+                <a class="button-secondary button" asp-controller="Trace" asp-action="Index">TRACE</a>
                 <a asp-area="Identity" asp-page="/Account/Login">
                     <button class="button button-primary">LOG IN</button>
                 </a>
