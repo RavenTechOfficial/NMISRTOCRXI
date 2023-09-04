@@ -5,7 +5,7 @@
 namespace thesis.Migrations
 {
     /// <inheritdoc />
-    public partial class mdaijd : Migration
+    public partial class PostArticle : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -102,12 +102,15 @@
       data-tag="font" />
 
 <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+
+
+
 <div>
     <link rel="stylesheet" href="~/css/trace-page.css" asp-append-version="true" />
 
     <div class="trace-page-container">
         <div class="navbar-container">
-            <div class="trace-page-logo">
+            <a class="trace-page-logo" asp-controller="Home" asp-action="Index">
                 <img alt="image"
                      src="~/img/logo-200h.png"
                      class="trace-page-image" />
@@ -115,7 +118,7 @@
                     <span class="trace-page-text01">NMIS-</span>
                     <span>&nbsp;SMFA</span>
                 </span>
-            </div>
+            </a>
             <div class="trace-page-links">
 
 

@@ -12,8 +12,8 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20230818170724_m2")]
-    partial class m2
+    [Migration("20230903163832_postArticle4")]
+    partial class postArticle4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -353,6 +353,12 @@ namespace thesis.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("birthdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("gender")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Drivers");
@@ -388,6 +394,9 @@ namespace thesis.Migrations
                     b.Property<string>("TelNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("birthdate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -436,6 +445,9 @@ namespace thesis.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("applicationtype")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -580,9 +592,6 @@ namespace thesis.Migrations
                     b.Property<int>("MTVApplicationId")
                         .HasColumnType("int");
 
-                    b.Property<int>("applicationtype")
-                        .HasColumnType("int");
-
                     b.Property<int>("gender")
                         .HasColumnType("int");
 
@@ -721,18 +730,76 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MTVApplicationId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentReceipt")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SOA")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("MTVApplicationId");
-
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("thesis.Models.PostArticle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Conclusion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Introduction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("References")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("References2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PostArticle");
                 });
 
             modelBuilder.Entity("thesis.Models.Postmortem", b =>
@@ -1247,17 +1314,6 @@ namespace thesis.Migrations
                         .IsRequired();
 
                     b.Navigation("ConductOfInspection");
-                });
-
-            modelBuilder.Entity("thesis.Models.Payment", b =>
-                {
-                    b.HasOne("thesis.Models.MTVApplication", "MTVApplication")
-                        .WithMany()
-                        .HasForeignKey("MTVApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MTVApplication");
                 });
 
             modelBuilder.Entity("thesis.Models.Postmortem", b =>

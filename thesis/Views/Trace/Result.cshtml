@@ -97,14 +97,22 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&amp;display=swap"
           data-tag="font" />
+
+
+   
+
+
+
+
     <!--This is the head section-->
     <!-- <script type="text/javascript"> ... </script> -->
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
 
     <div>
         <link rel="stylesheet" href="~/css/result-page.css" asp-append-version="true" />
-
+   
         <div class="result-page-container">
+            
             <div class="navbar-container">
                 <div class="result-page-logo">
                     <img alt="image"
@@ -306,46 +314,68 @@
             </div>
         </div>
     </div>
+
+<link rel="stylesheet" href="~/css/feedback.css" asp-append-version="true" />
+<script src="~/js/feedback.js" asp-append-version="true" defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+<div class="feedback-container">
+    <div class="rating-box" id="rating-box-modal">
+        <h1 id="header-text" style="color: var(--second-color);">How was your experience?</h1>
+        <div class="stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+        </div>
+        <div class="btn-done">
+            <a href="#" id="submit-button" class="btn">Submit Rating</a>
+        </div>
+    </div>
+</div>
+
+
     <script>
-        window.onload = () => {
-          const runAllScripts = () => {
-            initializeAllAccordions()
-          }
+    document.addEventListener('DOMContentLoaded', () => {
+        const runAllScripts = () => {
+            initializeAllAccordions();
+        };
 
-          const listenForUrlChanges = () => {
-            let url = location.href
+        const listenForUrlChanges = () => {
+            let url = location.href;
             document.body.addEventListener(
-              'click',
-              () => {
-                requestAnimationFrame(() => {
-                  if (url !== location.href) {
-                    runAllScripts()
-                    url = location.href
-                  }
-                })
-              },
-              true
-            )
-          }
+                'click',
+                () => {
+                    requestAnimationFrame(() => {
+                        if (url !== location.href) {
+                            runAllScripts();
+                            url = location.href;
+                        }
+                    });
+                },
+                true
+            );
+        };
 
-          const initializeAllAccordions = () => {
+        const initializeAllAccordions = () => {
             const allAccordions = document.querySelectorAll('[data-role="Accordion"]');
 
             allAccordions.forEach((accordion) => {
-              const accordionHeader = accordion.querySelector('[data-type="accordion-header"]')
-              const accordionContent = accordion.querySelector('[data-type="accordion-content"]')
+                const accordionHeader = accordion.querySelector('[data-type="accordion-header"]');
+                const accordionContent = accordion.querySelector('[data-type="accordion-content"]');
 
-              accordionHeader.addEventListener('click', () => {
-                if (accordionContent.style.maxHeight) {
-                  accordionContent.style.maxHeight = ''
-                } else {
-                  accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`
-                }
-              })
-            })
-          }
+                accordionHeader.addEventListener('click', () => {
+                    if (accordionContent.style.maxHeight) {
+                        accordionContent.style.maxHeight = '';
+                    } else {
+                        accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`;
+                    }
+                });
+            });
+        };
 
-          listenForUrlChanges()
-          runAllScripts()
-        }
+        listenForUrlChanges();
+        runAllScripts();
+    });
+
     </script>
