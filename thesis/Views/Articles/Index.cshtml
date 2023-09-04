@@ -1,4 +1,6 @@
-﻿<style data-tag="reset-style-sheet">
+﻿@model IEnumerable<thesis.Models.PostArticle>
+
+<style data-tag="reset-style-sheet">
     html {
         line-height: 1.15;
     }
@@ -106,22 +108,22 @@
 
     <div class="article-section-container">
         <div class="navbar-container">
-            <div class="article-section-logo">
+            <a class="article-section-logo" asp-controller="Home" asp-action="Index">
                 <img alt="image"
-                     src="public/logo-200h.png"
+                     src="~/img/logo-200h.png"
                      class="article-section-image" />
                 <span class="brandName">
                     <span class="article-section-text1">NMIS-</span>
                     <span>&nbsp;SMFA</span>
                 </span>
-            </div>
+            </a>
             <div class="article-section-links">
-                <span class="article-section-home">HOME</span>
-                <span class="article-section-faqs">FAQS</span>
-                <span class="article-section-articles">ARTICLES</span>
-                <span class="article-section-aboutus">ABOUT US</span>
-                <button class="button-secondary button">TRACE</button>
-                <button class="button button-primary">LOG IN</button>
+                <a class="article-section-home" asp-controller="Home" asp-action="Index">HOME</a>
+                <a class="article-section-articles" href="/Home/Index#articles">ARTICLES</a>
+                <a class="article-section-faqs" href="/Home/Index#FAQs">FAQS</a>
+                <a class="article-section-aboutus" href="/Home/Index#footer">ABOUT US</a>
+                <button class="button-secondary button" asp-controller="Home" asp-action="Index">TRACE</button>
+                <button class="button button-primary" asp-area="Identity" asp-page="/Account/Login">LOG IN</button>
             </div>
             <div class="article-section-burger-menu navbar-burger-menu">
                 <svg viewBox="0 0 1024 1024" class="article-section-icon">
@@ -137,339 +139,46 @@
                 <span>transparency for mindful decisions.</span>
             </h1>
             <div class="article-section-blog">
-                <div class="article-section-container01">
-                    <div class="blog-post-blog-post-card blog-post-root-class-name20">
-                        <img alt="image"
-                             src="public/Articles/106523525-15887864452020-05-06t013709z_1226095599_rc2pig98teie_rtrmadp_0_health-coronavirus-usa-1500w.jpeg"
-                             class="blog-post-image" />
-                        <div class="blog-post-container">
-                            <span class="blog-post-text">
-                                <span>Sizzling Scarcity</span>
-                            </span>
-                            <span class="blog-post-text1">
-                                <span>Meat Crisis Unveiled</span>
-                            </span>
-                            <span class="blog-post-text2">
-                                <span>
-                                    Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                                    Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                                    rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                                    sit amet, consectetur adipiscing elit.
+
+                @foreach(var item in Model)
+                {
+                    <a class="article-section-container01" asp-action="Details" asp-route-id="@item.Id">
+                        <div class="blog-post-blog-post-card blog-post-root-class-name20">
+                            <img alt="image"
+                                 src="~/img/Articles/@item.Image"
+                                 class="blog-post-image" />
+                            <div class="blog-post-container">
+                                <span class="blog-post-text">
+                                    <span>@item.Label</span>
                                 </span>
-                            </span>
-                            <div class="blog-post-container1">
-                                <div class="blog-post-profile">
-                                    <img alt="profile"
-                                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         class="blog-post-image1" />
-                                    <span class="blog-post-text3">
-                                        <span>Gerico Alagon</span>
+                                <span class="blog-post-text1">
+                                    <span>@item.Title</span>
+                                </span>
+                                <span class="blog-post-text2">
+                                    <span>
+                                        @item.Description
+                                    </span>
+                                </span>
+                                <div class="blog-post-container1">
+                                    <div class="blog-post-profile">
+                                        <img alt="profile"
+                                             src="https://naris.nmis.gov.ph/img/company_logo.png"
+                                             image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                             class="blog-post-image1" />
+                                        <span class="blog-post-text3">
+                                            <span>@item.Author</span>
+                                        </span>
+                                    </div>
+                                    <span class="blog-post-text4">
+                                        <span>recent news</span>
                                     </span>
                                 </div>
-                                <span class="blog-post-text4">
-                                    <span>recent news</span>
-                                </span>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="article-section-container02">
-                    <div class="blog-post-blog-post-card blog-post-root-class-name25">
-                        <img alt="image"
-                             src="public/Articles/106523525-15887864452020-05-06t013709z_1226095599_rc2pig98teie_rtrmadp_0_health-coronavirus-usa-1500w.jpeg"
-                             class="blog-post-image" />
-                        <div class="blog-post-container">
-                            <span class="blog-post-text">
-                                <span>Sizzling Scarcity</span>
-                            </span>
-                            <span class="blog-post-text1">
-                                <span>Meat Crisis Unveiled</span>
-                            </span>
-                            <span class="blog-post-text2">
-                                <span>
-                                    Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                                    Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                                    rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                                    sit amet, consectetur adipiscing elit.
-                                </span>
-                            </span>
-                            <div class="blog-post-container1">
-                                <div class="blog-post-profile">
-                                    <img alt="profile"
-                                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         class="blog-post-image1" />
-                                    <span class="blog-post-text3">
-                                        <span>Gerico Alagon</span>
-                                    </span>
-                                </div>
-                                <span class="blog-post-text4">
-                                    <span>recent news</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="article-section-container03">
-                    <div class="blog-post-blog-post-card blog-post-root-class-name24">
-                        <img alt="image"
-                             src="public/Articles/106523525-15887864452020-05-06t013709z_1226095599_rc2pig98teie_rtrmadp_0_health-coronavirus-usa-1500w.jpeg"
-                             class="blog-post-image" />
-                        <div class="blog-post-container">
-                            <span class="blog-post-text">
-                                <span>Sizzling Scarcity</span>
-                            </span>
-                            <span class="blog-post-text1">
-                                <span>Meat Crisis Unveiled</span>
-                            </span>
-                            <span class="blog-post-text2">
-                                <span>
-                                    Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                                    Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                                    rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                                    sit amet, consectetur adipiscing elit.
-                                </span>
-                            </span>
-                            <div class="blog-post-container1">
-                                <div class="blog-post-profile">
-                                    <img alt="profile"
-                                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         class="blog-post-image1" />
-                                    <span class="blog-post-text3">
-                                        <span>Gerico Alagon</span>
-                                    </span>
-                                </div>
-                                <span class="blog-post-text4">
-                                    <span>recent news</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="article-section-container04">
-                    <div class="blog-post-blog-post-card blog-post-root-class-name23">
-                        <img alt="image"
-                             src="public/Articles/106523525-15887864452020-05-06t013709z_1226095599_rc2pig98teie_rtrmadp_0_health-coronavirus-usa-1500w.jpeg"
-                             class="blog-post-image" />
-                        <div class="blog-post-container">
-                            <span class="blog-post-text">
-                                <span>Sizzling Scarcity</span>
-                            </span>
-                            <span class="blog-post-text1">
-                                <span>Meat Crisis Unveiled</span>
-                            </span>
-                            <span class="blog-post-text2">
-                                <span>
-                                    Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                                    Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                                    rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                                    sit amet, consectetur adipiscing elit.
-                                </span>
-                            </span>
-                            <div class="blog-post-container1">
-                                <div class="blog-post-profile">
-                                    <img alt="profile"
-                                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         class="blog-post-image1" />
-                                    <span class="blog-post-text3">
-                                        <span>Gerico Alagon</span>
-                                    </span>
-                                </div>
-                                <span class="blog-post-text4">
-                                    <span>recent news</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="article-section-container05">
-                    <div class="blog-post-blog-post-card blog-post-root-class-name22">
-                        <img alt="image"
-                             src="public/Articles/106523525-15887864452020-05-06t013709z_1226095599_rc2pig98teie_rtrmadp_0_health-coronavirus-usa-1500w.jpeg"
-                             class="blog-post-image" />
-                        <div class="blog-post-container">
-                            <span class="blog-post-text">
-                                <span>Sizzling Scarcity</span>
-                            </span>
-                            <span class="blog-post-text1">
-                                <span>Meat Crisis Unveiled</span>
-                            </span>
-                            <span class="blog-post-text2">
-                                <span>
-                                    Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                                    Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                                    rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                                    sit amet, consectetur adipiscing elit.
-                                </span>
-                            </span>
-                            <div class="blog-post-container1">
-                                <div class="blog-post-profile">
-                                    <img alt="profile"
-                                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         class="blog-post-image1" />
-                                    <span class="blog-post-text3">
-                                        <span>Gerico Alagon</span>
-                                    </span>
-                                </div>
-                                <span class="blog-post-text4">
-                                    <span>recent news</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="article-section-container06">
-                    <div class="blog-post-blog-post-card blog-post-root-class-name21">
-                        <img alt="image"
-                             src="public/Articles/106523525-15887864452020-05-06t013709z_1226095599_rc2pig98teie_rtrmadp_0_health-coronavirus-usa-1500w.jpeg"
-                             class="blog-post-image" />
-                        <div class="blog-post-container">
-                            <span class="blog-post-text">
-                                <span>Sizzling Scarcity</span>
-                            </span>
-                            <span class="blog-post-text1">
-                                <span>Meat Crisis Unveiled</span>
-                            </span>
-                            <span class="blog-post-text2">
-                                <span>
-                                    Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                                    Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                                    rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                                    sit amet, consectetur adipiscing elit.
-                                </span>
-                            </span>
-                            <div class="blog-post-container1">
-                                <div class="blog-post-profile">
-                                    <img alt="profile"
-                                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         class="blog-post-image1" />
-                                    <span class="blog-post-text3">
-                                        <span>Gerico Alagon</span>
-                                    </span>
-                                </div>
-                                <span class="blog-post-text4">
-                                    <span>recent news</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="article-section-container07">
-                    <div class="blog-post-blog-post-card blog-post-root-class-name26">
-                        <img alt="image"
-                             src="public/Articles/106523525-15887864452020-05-06t013709z_1226095599_rc2pig98teie_rtrmadp_0_health-coronavirus-usa-1500w.jpeg"
-                             class="blog-post-image" />
-                        <div class="blog-post-container">
-                            <span class="blog-post-text">
-                                <span>Sizzling Scarcity</span>
-                            </span>
-                            <span class="blog-post-text1">
-                                <span>Meat Crisis Unveiled</span>
-                            </span>
-                            <span class="blog-post-text2">
-                                <span>
-                                    Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                                    Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                                    rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                                    sit amet, consectetur adipiscing elit.
-                                </span>
-                            </span>
-                            <div class="blog-post-container1">
-                                <div class="blog-post-profile">
-                                    <img alt="profile"
-                                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         class="blog-post-image1" />
-                                    <span class="blog-post-text3">
-                                        <span>Gerico Alagon</span>
-                                    </span>
-                                </div>
-                                <span class="blog-post-text4">
-                                    <span>recent news</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="article-section-container08">
-                    <div class="blog-post-blog-post-card blog-post-root-class-name27">
-                        <img alt="image"
-                             src="public/Articles/106523525-15887864452020-05-06t013709z_1226095599_rc2pig98teie_rtrmadp_0_health-coronavirus-usa-1500w.jpeg"
-                             class="blog-post-image" />
-                        <div class="blog-post-container">
-                            <span class="blog-post-text">
-                                <span>Sizzling Scarcity</span>
-                            </span>
-                            <span class="blog-post-text1">
-                                <span>Meat Crisis Unveiled</span>
-                            </span>
-                            <span class="blog-post-text2">
-                                <span>
-                                    Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                                    Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                                    rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                                    sit amet, consectetur adipiscing elit.
-                                </span>
-                            </span>
-                            <div class="blog-post-container1">
-                                <div class="blog-post-profile">
-                                    <img alt="profile"
-                                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         class="blog-post-image1" />
-                                    <span class="blog-post-text3">
-                                        <span>Gerico Alagon</span>
-                                    </span>
-                                </div>
-                                <span class="blog-post-text4">
-                                    <span>recent news</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="article-section-container09">
-                    <div class="blog-post-blog-post-card blog-post-root-class-name28">
-                        <img alt="image"
-                             src="public/Articles/106523525-15887864452020-05-06t013709z_1226095599_rc2pig98teie_rtrmadp_0_health-coronavirus-usa-1500w.jpeg"
-                             class="blog-post-image" />
-                        <div class="blog-post-container">
-                            <span class="blog-post-text">
-                                <span>Sizzling Scarcity</span>
-                            </span>
-                            <span class="blog-post-text1">
-                                <span>Meat Crisis Unveiled</span>
-                            </span>
-                            <span class="blog-post-text2">
-                                <span>
-                                    Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                                    Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                                    rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                                    sit amet, consectetur adipiscing elit.
-                                </span>
-                            </span>
-                            <div class="blog-post-container1">
-                                <div class="blog-post-profile">
-                                    <img alt="profile"
-                                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         class="blog-post-image1" />
-                                    <span class="blog-post-text3">
-                                        <span>Gerico Alagon</span>
-                                    </span>
-                                </div>
-                                <span class="blog-post-text4">
-                                    <span>recent news</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    </a>
+                }
+                
+
             </div>
         </div>
     </div>
