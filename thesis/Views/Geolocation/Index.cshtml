@@ -116,9 +116,20 @@
 
 	@for (var i = 0; i < addressCount; i++)
 	{
-		var address = Model.address[i];
-		var color = Model.colors[i];
-		@:fetchGeolocation('@address', '@color');
+		var addressParts = Model.address[i].Split(','); // Assuming comma-separated parts
+
+		// Check if there are at least 4 parts (region, province, municipality, barangay)
+		if (addressParts.Length >= 4)
+		{
+			var municipality = addressParts[2].Trim(); // third part
+			var barangay = addressParts[3].Trim();     // fourth part
+
+			var geolocation = municipality + ", " + barangay;
+
+			var color = Model.colors[i];
+			@:fetchGeolocation('@geolocation', '@color');
+		}
+		// else: handle or ignore addresses that don't fit the expected format
 	}
 
 	function fetchGeolocation(address, color) {

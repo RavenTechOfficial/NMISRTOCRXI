@@ -16,8 +16,8 @@ namespace thesis.Core.ViewModel
 		public Cause Cause { get; set; }
 		public int Weight { get; set; }
 		public int NoOfHeads { get; set; }
-		public string? Image1 { get; set; }
-		public string? Image2 { get; set; }
-		public string? Image3 { get; set; }
+		public IFormFile Image1 { get; set; }
+		public IFormFile Image2 { get; set; }
+		public IFormFile Image3 { get; set; }
 	}
 }

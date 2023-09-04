@@ -231,7 +231,8 @@
             </h1>
             <div class="home-blog">
 
-                @foreach(var article in Model.TakeLast(3))
+                @foreach (var article in Model.OrderByDescending(a => a.Id).Take(3))
+
                 {
 
                 
@@ -270,6 +271,9 @@
 
                 }
             </div>
+            <a style="color: white; margin-top: -10px; padding: 10px 20px;" asp-controller="Articles" asp-action="Index" class="button button-transparent home-loginbt">
+                See All
+                </a>
         </div>
 
         <div id="getstarted" class="home-section2 section-container">
