@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +15,13 @@ namespace thesis.Controllers
 	public class PostmortemsController : Controller
 	{
 		private readonly thesisContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public PostmortemsController(thesisContext context)
+        public PostmortemsController(thesisContext context, IWebHostEnvironment webHostEnvironment)
 		{
 			_context = context;
-		}
+            _webHostEnvironment = webHostEnvironment;
+        }
 
 		// GET: Postmortems
 		public async Task<IActionResult> Index(int myVariable)
@@ -94,8 +97,61 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,PassedForSlaughterId,AnimalPart,Cause,Weight,NoOfHeads,Image1, Image2, Image3")] Postmortem postmortem)
+		public async Task<IActionResult> Create(Postmortem postmortem)
 		{
+   //         var image1 = "";
+   //         if (postmortemVM.Image1 != null && postmortemVM.Image1.Length > 0)
+   //         {
+   //             var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(postmortemVM.Image1.FileName)}";
+   //             var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/condemnedMeat", uniqueFileName);
+   //             image1 = uniqueFileName;
+
+   //             using (var fileStream = new FileStream(filePath, FileMode.Create))
+   //             {
+   //                 await postmortemVM.Image1.CopyToAsync(fileStream);
+   //             }
+   //         }
+
+   //         var image2 = "";
+   //         if (postmortemVM.Image2 != null && postmortemVM.Image2.Length > 0)
+   //         {
+   //             var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(postmortemVM.Image2.FileName)}";
+   //             var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/condemnedMeat", uniqueFileName);
+   //             image2 = uniqueFileName;
+
+   //             using (var fileStream = new FileStream(filePath, FileMode.Create))
+   //             {
+   //                 await postmortemVM.Image2.CopyToAsync(fileStream);
+   //             }
+   //         }
+
+   //         var image3 = "";
+   //         if (postmortemVM.Image3 != null && postmortemVM.Image3.Length > 0)
+   //         {
+   //             var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(postmortemVM.Image3.FileName)}";
+   //             var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/condemnedMeat", uniqueFileName);
+   //             image3 = uniqueFileName;
+
+   //             using (var fileStream = new FileStream(filePath, FileMode.Create))
+   //             {
+   //                 await postmortemVM.Image3.CopyToAsync(fileStream);
+   //             }
+   //         }
+
+   //         var postmortem = new Postmortem
+			//{
+			//	PassedForSlaughterId = postmortemVM.PassedForSlaughterId,
+			//	PassedForSlaughter = postmortemVM.PassedForSlaughter,
+			//	AnimalPart = postmortemVM.AnimalPart,
+			//	Cause = postmortemVM.Cause,
+			//	Weight = postmortemVM.Weight,
+			//	NoOfHeads = postmortemVM.NoOfHeads,
+			//	Image1 = image1,
+			//	Image2 = image2,
+			//	Image3 = image3,
+			//};
+
+
 			if (ModelState.IsValid)
 			{
 				_context.Add(postmortem);

@@ -23,54 +23,48 @@ namespace thesis.Controllers
         }
 
         // GET: MeatInspectionReports
-        //public async Task<IActionResult> Index()
-        //{
-        //    var thesisContext = _context.MeatInspectionReports.Include(m => m.ReceivingReport);
-        //    return View(await thesisContext.ToListAsync());
-        //}
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Generate()
         {
-
-            //var query = from mir in _context.MeatInspectionReports
-            //            join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
-            //            join coi in _context.ConductOfInspections on mir.Id equals coi.MeatInspectionReportId
-            //            join pfs in _context.PassedForSlaughters on coi.Id equals pfs.ConductOfInspectionId
-            //            join pm in _context.Postmortems on pfs.Id equals pm.PassedForSlaughterId
-            //            join tnfhc in _context.totalNoFitForHumanConsumptions on pm.Id equals tnfhc.PostmortemId
-            //            join sdmics in _context.SummaryAndDistributionOfMICs on tnfhc.Id equals sdmics.TotalNoFitForHumanConsumptionId
-            //            select new MeatInspectionReportViewModel
-            //            {
-            //                RecTime = rr.RecTime,
-            //                Species = rr.Species,
-            //                LiveWeight = rr.LiveWeight,
-            //                MeatDealer = rr.MeatDealers.FirstName + ' ' + rr.MeatDealers.LastName, // Example assuming MeatDealer has a Name property
-            //                Issue = (Data.Enum.Issue)coi.Issue,
-            //                NoOfHeads = coi.NoOfHeads,
-            //                Weight = coi.Weight,
-            //                Cause = (Data.Enum.Cause)coi.Cause,
-            //                NoOfHeadsPassed = pfs.NoOfHeads,
-            //                WeightPassed = pfs.Weight,
-            //                AnimalPart = (Data.Enum.AnimalPart)pm.AnimalPart,
-            //                PostmortemCause = (Data.Enum.Cause)pm.Cause,
-            //                PostmortemWeight = (int)pm.Weight,
-            //                PostmortemNoOfHeads = (int)pm.NoOfHeads,
-            //                Image1 = pm.Image1,
-            //                Image2 = pm.Image2,
-            //                Image3 = pm.Image3,
-            //                // You can map Image1, Image2, and Image3 here if they are available in your models
-            //                FitforConSpecies = tnfhc.Species,
-            //                FitforConNoOfHeads = tnfhc.NoOfHeads,
-            //                DressedWeight = tnfhc.DressedWeight,
-            //                DestinationName = sdmics.DestinationName,
-            //                DestinationAddress = sdmics.DestinationAddress,
-            //                CertificateStatus = sdmics.CertificateStatus
-            //            };
-
-            //var inspectionReports = await query.ToListAsync();
-
-
-            var res = _context.Results.ToList();
+            var res = _context.Results.OrderByDescending(p => p.Id).ToList();
             return View(res);
+        }
+        public async Task<IActionResult> Index(int? meatEstablishmentId)
+        {
+            var receivingReports = _context.ReceivingReports.ToList();
+            var conductOfInspections = _context.ConductOfInspections.ToList();
+            var passedForSlaughters = _context.PassedForSlaughters.ToList();
+            var meatDealers = _context.MeatDealers.ToList();
+            var meatInspectionReports = _context.MeatInspectionReports.ToList();
+            var postmortem = _context.Postmortems.ToList();
+            var totalNoFitForHumanConsumption = _context.totalNoFitForHumanConsumptions.ToList();
+            var SummaryAndDistributionOfMICs = _context.SummaryAndDistributionOfMICs.ToList();
+
+            ViewData["ReceivingReports"] = receivingReports;
+            ViewData["ConductOfInspections"] = conductOfInspections;
+            ViewData["PassedForSlaughters"] = passedForSlaughters;
+            ViewData["MeatDealers"] = meatDealers;
+            ViewData["meatInspectionReports"] = meatInspectionReports;
+            ViewData["postmortem"] = postmortem;
+            ViewData["totalNoFitForHumanConsumption"] = totalNoFitForHumanConsumption;
+            ViewData["SummaryAndDistributionOfMICs"] = SummaryAndDistributionOfMICs;
+
+            if (meatEstablishmentId.HasValue)
+            {
+                meatDealers = meatDealers.Where(dealer => dealer.MeatEstablishmentId == meatEstablishmentId.Value).ToList();
+            }
+
+            var meatEstablishments = _context.MeatEstablishment
+            .Where(me => me.Name != null)
+            .ToList();
+            ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
+
+
+            var thesisContext = _context.ReceivingReports
+               .Include(r => r.AccountDetails)
+               .Include(r => r.MeatDealers);
+
+            return View(await thesisContext.ToListAsync());
+
         }
 
 
@@ -93,6 +87,8 @@ namespace thesis.Controllers
             return View(meatInspectionReport);
         }
 
+
+
         // GET: MeatInspectionReports/Create
         public IActionResult Create()
         {
@@ -107,8 +103,6 @@ namespace thesis.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,RepDate,VerifiedByPOSMSHead,ReceivingReportId")] MeatInspectionReport meatInspectionReport)
         {
-            
-
             if (ModelState.IsValid)
             {
                 _context.Add(meatInspectionReport);

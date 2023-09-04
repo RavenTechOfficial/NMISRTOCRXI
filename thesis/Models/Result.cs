@@ -22,9 +22,9 @@ namespace thesis.Models
         public Cause PostmortemCause { get; set; }
         public int PostmortemWeight { get; set; }
         public int PostmortemNoOfHeads { get; set; }
-        public string Image1 { get; set; }
-        public string Image2 { get; set; }
-        public string Image3 { get; set; }
+        //public string Image1 { get; set; }
+        //public string Image2 { get; set; }
+        //public string Image3 { get; set; }
         //Fit for Human Consumption
         public Species FitforConSpecies { get; set; }
         public int FitforConNoOfHeads { get; set; }
