@@ -35,8 +35,10 @@ public class thesisContext : IdentityDbContext<AccountDetails>
 	public DbSet<VehicleInfo> VehicleInfos { get; set; }
 	public DbSet<QrCode> QrCodes { get; set; }
 	public DbSet<Result> Results { get; set; }
+	public DbSet<PostArticle> PostArticles { get; set; }
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
     }
+	public DbSet<thesis.Models.PostArticle>? PostArticle { get; set; }
 }

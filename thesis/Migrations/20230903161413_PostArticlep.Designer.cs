@@ -12,8 +12,8 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20230821130652_ralphsht")]
-    partial class ralphsht
+    [Migration("20230903161413_PostArticlep")]
+    partial class PostArticlep
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -730,16 +730,26 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MTVApplicationId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentReceipt")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("SOA")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("MTVApplicationId");
+                    b.Property<string>("SOA2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Payments");
                 });
@@ -1256,17 +1266,6 @@ namespace thesis.Migrations
                         .IsRequired();
 
                     b.Navigation("ConductOfInspection");
-                });
-
-            modelBuilder.Entity("thesis.Models.Payment", b =>
-                {
-                    b.HasOne("thesis.Models.MTVApplication", "MTVApplication")
-                        .WithMany()
-                        .HasForeignKey("MTVApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MTVApplication");
                 });
 
             modelBuilder.Entity("thesis.Models.Postmortem", b =>

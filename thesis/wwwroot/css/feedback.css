@@ -1,0 +1,84 @@
+﻿/* Import Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+
+
+:root {
+    --main-color: #008148;
+    --second-color: #1e3932;
+}
+
+.feedback-container {
+    position: fixed; /* This will keep it in place even when scrolling */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+
+.rating-box {
+    position: relative;
+    background: #fff;
+    padding: 25px 50px 38px;
+    border-radius: 25px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+}
+
+#rating-box-modal {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+    #rating-box-modal.show {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+
+
+.rating-box h1 {
+    font-size: 22px;
+    color: #dadada;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.rating-box .stars {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.stars i {
+    color: #e6e6e6;
+    font-size: 35px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+    .stars i.active {
+        color: #ff9c1a;
+    }
+
+#rating-box-modal .btn {
+    padding: 7px 16px;
+    margin: 40px auto auto 75px;
+    border: 2px solid var(--second-color);
+    border-radius: 40px;
+    color: var(--second-color);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+#rating-box-modal .btn:hover {
+    color: #fff;
+    background: var(--second-color);
+}

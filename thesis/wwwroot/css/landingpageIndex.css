@@ -535,7 +535,7 @@
   margin-bottom: var(--dl-space-space-threeunits);
 }
 .home-blog {
-  width: 100%;
+   width: 100%;
   display: flex;
   padding: var(--dl-space-space-threeunits);
   max-width: 80%;
@@ -549,6 +549,8 @@
   justify-content: space-between;
 }
 .home-container07 {
+  width:100%;
+  max-width: 500px;
   display: flex;
   align-items: center;
   margin-right: var(--dl-space-space-twounits);

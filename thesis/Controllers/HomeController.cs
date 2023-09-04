@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using thesis.Data;
 using thesis.Models;
 
 namespace thesis.Controllers
@@ -7,11 +8,13 @@ namespace thesis.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+		private readonly thesisContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+		public HomeController(ILogger<HomeController> logger, thesisContext context)
         {
             _logger = logger;
-        }
+			_context = context;
+		}
 
         public IActionResult Index()
         {
@@ -41,7 +44,8 @@ namespace thesis.Controllers
 			}
 			else 
             {
-				return View();
+                var res = _context.PostArticles.ToList();
+				return View(res);
 			}
 			
         }
