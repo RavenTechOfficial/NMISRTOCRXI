@@ -1,51 +1,48 @@
-//const modal = document.getElementById("myModal");
-//const approveBtn = document.getElementById("approveBtn");
-//const disapproveBtn = document.getElementById("disapproveBtn");
 
-//// Show the modal
-//function showModal() {
-//    modal.classList.add("show");
-//}
-
-//// Close the modal
-//function closeModal() {
-//    modal.classList.remove("show");
-//}
-
-//// Attach click event listeners to trigger the modal
-//document.querySelectorAll("tr").forEach((row) => {
-//    row.addEventListener("click", showModal);
-//});
-
-//// Attach click event listeners to buttons in the modal
-//approveBtn.addEventListener("click", () => {
-//    alert("Payment Approved");
-//    closeModal();
-//});
-
-//disapproveBtn.addEventListener("click", () => {
-//    alert("Payment Disapproved");
-//    closeModal();
-//});
 const tableRows = document.querySelectorAll("#applications-table1 tbody tr");
 const modal = document.getElementById("myModal");
 const approveBtn = document.getElementById("approveBtn");
 const disapproveBtn = document.getElementById("disapproveBtn");
+const operatorNameInput = document.getElementById("operatorName");
+const meatEstablishmentInput = document.getElementById("meatEstablishment");
+const plateNumberInput = document.getElementById("plateNumber");
+const accreditationNumberInput = document.getElementById("accreditationNumber");
 let selectedRow = null;
 
 tableRows.forEach((row, index) => {
     row.addEventListener("click", () => {
         selectedRow = row;
+
+        // Get data from the clicked row
+        const tds = Array.from(row.getElementsByTagName("td"));
+        const operatorName = tds[0].innerText;
+        const applicationType = tds[1].innerText;
+        const establishmentServed = tds[2].innerText;
+        const plateNumber = tds[3].innerText;
+        const status = tds[4].innerText;
+
+        // Populate modal inputs (example)
+        operatorNameInput.value = operatorName;
+        meatEstablishmentInput.value = establishmentServed;
+        plateNumberInput.value = plateNumber;
+        // If you have more data for other fields, populate those here.
+
+        //accreditationNumberInput.value = ???;
+
+        // Show the modal
         modal.style.display = "block";
     });
 });
+
+
+
 
 approveBtn.addEventListener("click", () => {
     if (selectedRow) {
         const statusCell = selectedRow.querySelector(".status");
         const newStatus = document.createElement("span");
-        newStatus.className = "status completed";
-        newStatus.textContent = "Completed";
+        newStatus.className = "status process";
+        newStatus.textContent = "Payment";
         statusCell.innerHTML = ''; // Clear the old content
         statusCell.appendChild(newStatus);
     }
@@ -63,3 +60,154 @@ disapproveBtn.addEventListener("click", () => {
     }
     modal.style.display = "none";
 });
+approveBtn1.addEventListener("click", () => {
+    if (selectedRow) {
+        const statusCell = selectedRow.querySelector(".status");
+        const newStatus = document.createElement("span");
+        newStatus.className = "status completed";
+        newStatus.textContent = "Completed";
+        statusCell.innerHTML = ''; // Clear the old content
+        statusCell.appendChild(newStatus);
+    }
+    paymentModal.style.display = "none";
+});
+
+disapproveBtn1.addEventListener("click", () => {
+    if (selectedRow) {
+        const statusCell = selectedRow.querySelector(".status");
+        const newStatus = document.createElement("span");
+        newStatus.className = "status process";
+        newStatus.textContent = "Process";
+        statusCell.innerHTML = ''; // Clear the old content
+        statusCell.appendChild(newStatus);
+    }
+    paymentModal.style.display = "none";
+});
+
+
+function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+}
+
+$(document).ready(function () {
+    $('#search-icon').click(function () {
+        console.log('Search icon clicked');
+        var searchValue = prompt('Enter a search term:');
+        if (searchValue) {
+            $('#applications-table tbody tr').hide();
+            $('#applications-table tbody tr').each(function () {
+                var rowData = $(this).find('td').text();
+                if (rowData.toLowerCase().includes(searchValue.toLowerCase())) {
+                    $(this).show();
+                }
+            });
+        }
+    });
+
+    $('#filter-icon').click(function () {
+        console.log('Filter icon clicked');
+        var filterValue = prompt('Enter a filter term:');
+        if (filterValue) {
+            $('#applications-table tbody tr').hide();
+            $('#applications-table tbody tr').each(function () {
+                var statusValue = $(this).find('.status').text();
+                if (statusValue.toLowerCase() === filterValue.toLowerCase()) {
+                    $(this).show();
+                }
+            });
+        }
+    });
+
+    $('#refresh-icon').click(function () {
+        $('#applications-table tbody tr').show();
+    });
+
+    $('#search-icon1').click(function () {
+        var searchValue = prompt('Enter a search term:');
+        if (searchValue) {
+            $('#applications-table1 tbody tr').hide();
+            $('#applications-table1 tbody tr').each(function () {
+                var rowData = $(this).find('td').text();
+                if (rowData.toLowerCase().includes(searchValue.toLowerCase())) {
+                    $(this).show();
+                }
+            });
+        }
+    });
+
+    $('#filter-icon1').click(function () {
+        var filterValue = prompt('Enter a filter term:');
+        if (filterValue) {
+            $('#applications-table1 tbody tr').hide();
+            $('#applications-table1 tbody tr').each(function () {
+                var statusValue = $(this).find('.status').text();
+                if (statusValue.toLowerCase() === filterValue.toLowerCase()) {
+                    $(this).show();
+                }
+            });
+        }
+    });
+
+    $('#refresh-icon1').click(function () {
+        console.log('Refresh icon clicked');
+        $('#applications-table1 tbody tr').show();
+    });
+});
+
+
+// Function to open the payment modal
+function openPaymentModal() {
+    var paymentModal = document.getElementById('paymentModal');
+    paymentModal.style.display = 'block';
+}
+
+// Function to close the payment modal
+function closePaymentModal() {
+    var paymentModal = document.getElementById('paymentModal');
+    paymentModal.style.display = 'none';
+}
+
+// Add an event listener to the "Check Payment Details" button to open the payment modal
+document.getElementById('paymentBtn').addEventListener('click', openPaymentModal);
+
+
+paymentBtn.addEventListener("click", () => {
+    if (selectedRow) {
+
+    }
+    modal.style.display = "none";
+});
+
+
+
+//Upload Image sa Payment ni haa
+const selectImage = document.querySelector('.select-image');
+const inputFile = document.querySelector('#file');
+const imgArea = document.querySelector('.img-area');
+
+selectImage.addEventListener('click', function () {
+    inputFile.click();
+})
+
+inputFile.addEventListener('change', function () {
+    const image = this.files[0]
+    if (image.size < 5000000) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const allImg = imgArea.querySelectorAll('img');
+            allImg.forEach(item => item.remove());
+            const imgUrl = reader.result;
+            const img = document.createElement('img');
+            img.src = imgUrl;
+            imgArea.appendChild(img);
+            imgArea.classList.add('active');
+            imgArea.dataset.img = image.name;
+        }
+        reader.readAsDataURL(image);
+    } else {
+        alert("Image size more than 2MB");
+    }
+})
+
+

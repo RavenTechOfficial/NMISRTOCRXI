@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using thesis.Core.ViewModel;
 using thesis.Data;
@@ -16,7 +17,7 @@ namespace thesis.Controllers
 			_context = context;
 			_webHostEnvironment = webHostEnvironment;
 		}
-
+		[Authorize(Policy = "RequireMtvUsers")]
 		public IActionResult Index()
 		{
 			return View();

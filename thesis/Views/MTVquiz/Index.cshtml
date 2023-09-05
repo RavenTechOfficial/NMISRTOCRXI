@@ -1,12 +1,20 @@
 ﻿<link rel="stylesheet" href="~/css/quizseminar.css" asp-append-version="true" />
-<!DOCTYPE html>
-<html>
-<head>
-    <title> Quiz App</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="quiz10.css">
-</head>
-<body>
+
+<section id="content">
+    <main>
+
+    <div class="url">
+        <div class="facebook-container">
+            <a href="https://www.facebook.com/groups/370501063649021" target="_blank" class="facebook-link">
+                <h2 class="hide">Click here to visit the Facebook page</h2>
+            </a>
+        </div>
+        <div class="facebook-container1">
+            <a href="https://www.facebook.com/100001020124175/videos/3077873365589971/" target="_blank" class="facebook-link">
+                <h2 class="hide">Click here to visit the Seminar page</h2>
+            </a>
+        </div>
+    </div>
     <div class="home-box custom-box ">
         <h3>instruction:</h3>
         <p>Total Number of questions:<span class="total-question"></span> </p>
@@ -59,7 +67,9 @@
         <button type="button" class="btn" onclick="goToHome()">Home</button>
 
     </div>
+
+    </main>
+
+</section>
     <script src="~/js/question.js" asp-append-version="true"></script>
     <script src="~/js/appquiz.js" asp-append-version="true"></script>
-</body>
-</html>

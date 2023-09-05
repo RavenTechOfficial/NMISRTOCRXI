@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Show the rating-box modal with animation after 3 seconds
     setTimeout(function () {
         ratingBoxModal.classList.add('show'); // Add the 'show' class to trigger the animation
-    }, 1000);
+    }, 5000);
 
     submitButton.addEventListener('click', function (event) {
         event.preventDefault();

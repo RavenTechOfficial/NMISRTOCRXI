@@ -7,17 +7,17 @@ namespace thesis.Controllers
 {
     public class MTVRegistrationstatus : Controller
     {
-		private readonly thesisContext _context;
+        private readonly thesisContext _context;
 
-		public MTVRegistrationstatus(thesisContext context)
-		{
-			_context = context;
-		}
-		[Authorize(Policy = "RequireMTVAdmin")]
-		public async Task<IActionResult> IndexAsync()
-		{
-			var res = await _context.MTVApplications.ToListAsync();
-			return View(res);
-		}
-	}
+        public MTVRegistrationstatus(thesisContext context)
+        {
+            _context = context;
+        }
+        [Authorize(Policy = "RequireMTVAdmin")]
+        public async Task<IActionResult> IndexAsync()
+        {
+            var res = await _context.MTVApplications.Include(ve => ve.Vehicle).ToListAsync();
+            return View(res);
+        }
+    }
 }
