@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,16 +24,18 @@ namespace thesis.Controllers
 			_webHostEnvironment = webHostEnvironment;
 		}
 
-        // GET: PostArticles
-        public async Task<IActionResult> Index()
+		// GET: PostArticles
+		[Authorize(Policy = "RequireSuperAdmin")]
+		public async Task<IActionResult> Index()
         {
               return _context.PostArticles != null ? 
                           View(await _context.PostArticles.ToListAsync()) :
                           Problem("Entity set 'thesisContext.PostArticles'  is null.");
         }
 
-        // GET: PostArticles/Details/5
-        public async Task<IActionResult> Details(int? id)
+		// GET: PostArticles/Details/5
+		[Authorize(Policy = "RequireSuperAdmin")]
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.PostArticles == null)
             {
@@ -49,8 +52,9 @@ namespace thesis.Controllers
             return View(postArticle);
         }
 
-        // GET: PostArticles/Create
-        public IActionResult Create()
+		// GET: PostArticles/Create
+		[Authorize(Policy = "RequireSuperAdmin")]
+		public IActionResult Create()
         {
             return View();
         }
@@ -98,8 +102,9 @@ namespace thesis.Controllers
             return View(postArticle);
         }
 
-        // GET: PostArticles/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+		// GET: PostArticles/Edit/5
+		[Authorize(Policy = "RequireSuperAdmin")]
+		public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.PostArticles == null)
             {
@@ -149,8 +154,9 @@ namespace thesis.Controllers
             return View(postArticle);
         }
 
-        // GET: PostArticles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+		// GET: PostArticles/Delete/5
+		[Authorize(Policy = "RequireSuperAdmin")]
+		public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.PostArticles == null)
             {

@@ -1,0 +1,299 @@
+﻿	<!-- leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+	  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+	  crossorigin="" />
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+		integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+		crossorigin=""></script>
+
+<link rel="stylesheet" href="~/css/ChoroplethMap.css" asp-append-version="true" />
+
+<!-- Leaflet Search Bar -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+<!-- CONTENT STARTS-->
+<section id="content">
+
+
+	<!-- MAIN STARTS-->
+	<main class="geolocation">
+		<div class="geo-filter">
+
+			<form class="search-form">
+				<div class="search">
+					<i class='bx bx-search'></i>
+					<input type="text" class="form-control Search-Input" placeholder="Search Location..." autocomplete="off">
+					<div class="suggestions" style="display: none;">
+						<!-- Suggestions will be populated here -->
+					</div>
+					<button class="btn btn-primary Search">Search</button>
+				</div>
+			</form>
+
+			<div class="container heatmap">
+				<div class="select-btn">
+					<span class="btn-text">Show Heatmap of...</span>
+					<span class="arrow-dwn">
+						<i class='bx bx-caret-down'></i>
+					</span>
+				</div>
+
+				<ul class="list-items">
+					<li class="item" data-type="heatmap">
+						<span class="checkbox">
+							<i class='bx bx-check check-icon'></i>
+						</span>
+						<span class="item-text">Meat Sources (# of Heads)</span>
+					</li>
+					<li class="item" data-type="heatmap">
+						<span class="checkbox">
+							<i class='bx bx-check check-icon'></i>
+						</span>
+						<span class="item-text">Meat Distribution (Weight)</span>
+					</li>
+					<button type="button" class="btn btn-primary">Apply</button>
+				</ul>
+			</div>
+
+			<div class="container species">
+				<div class="select-btn">
+					<span class="btn-text">Select Species</span>
+					<span class="arrow-dwn">
+						<i class='bx bx-caret-down'></i>
+					</span>
+				</div>
+
+				<ul class="list-items">
+					<li class="item" data-type="species">
+						<span class="checkbox">
+							<i class='bx bx-check check-icon'></i>
+						</span>
+						<span class="item-text">Swine</span>
+					</li>
+					<li class="item" data-type="species">
+						<span class="checkbox">
+							<i class='bx bx-check check-icon'></i>
+						</span>
+						<span class="item-text">Chicken</span>
+					</li>
+					<li class="item" data-type="species">
+						<span class="checkbox">
+							<i class='bx bx-check check-icon'></i>
+						</span>
+						<span class="item-text">Cattle</span>
+					</li>
+					<li class="item" data-type="species">
+						<span class="checkbox">
+							<i class='bx bx-check check-icon'></i>
+						</span>
+						<span class="item-text">And So on...</span>
+					</li>
+					<button type="button" class="btn btn-primary">Apply</button>
+				</ul>
+			</div>
+
+
+		</div>
+
+
+		<div id="map"></div>
+	</main>
+	<!-- MAIN ENDS -->
+
+</section>
+<!-- CONTENT ENDS-->
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" asp-append-version="true"></script>
+<!-- Own JS File -->
+<script src="~/js/ChoroplethMap.js" asp-append-version="true"></script>
+
+<script>
+	// Initial map setup
+
+	const map = L.map('map', {
+		zoomControl: false
+	}).setView([7.3042, 125.6853], 8);
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+	//Diri Isulod ang mga DATA!!!!!
+	const municipalityData = [
+		{ name: "Davao Del Norte, Samal City", value: 1000 },
+		{ name: "Davao Del Norte, Tagum City", value: 2000 },
+		{ name: "Davao Del Norte, Panabo City", value: 1500 },
+		{ name: "Davao Del Norte, Carmen", value: 500 },
+		{ name: "Davao Del Norte, Kapalong", value: 300 },
+		{ name: "Davao Del Norte, New Corella", value: 250 },
+		{ name: "Davao Del Norte, Asuncion", value: 100 },
+		{ name: "Davao Del Norte, Santo Tomas", value: 350 },
+		{ name: "Davao Del Norte, Talaingod", value: 50 },
+		{ name: "Davao Del Norte, Braulio E. Dujali", value: 75 },
+		{ name: "Davao Del Norte, San Isidro", value: 90 },
+
+		{ name: "Davao Del Sur, Davao City", value: 300 },
+		{ name: "Davao Del Sur, Digos City", value: 400 },
+		{ name: "Davao Del Sur, Santa Cruz", value: 250 },
+		{ name: "Davao Del Sur, Hagonoy", value: 150 },
+		{ name: "Davao Del Sur, Bansalan", value: 110 },
+		{ name: "Davao Del Sur, Magsaysay", value: 90 },
+		{ name: "Davao Del Sur, Matanao", value: 80 },
+		{ name: "Davao Del Sur, Sulop", value: 60 },
+		{ name: "Davao Del Sur, Padada", value: 55 },
+		{ name: "Davao Del Sur, Malalag", value: 50 },
+		{ name: "Davao Del Sur, Kiblawan", value: 40 },
+
+		{ name: "Davao Oriental, Mati City", value: 800 },
+		{ name: "Davao Oriental, Lupon", value: 39 },
+		{ name: "Davao Oriental, Banaybanay", value: 1357 },
+		{ name: "Davao Oriental, Cateel", value: 2854 },
+		{ name: "Davao Oriental, San Isidro", value: 546 },
+		{ name: "Davao Oriental, Boston", value: 1875 },
+		{ name: "Davao Oriental, Baganga", value: 600 },
+		{ name: "Davao Oriental, Caraga", value: 250 },
+		{ name: "Davao Oriental, Governor Generoso", value: 200 },
+		{ name: "Davao Oriental, Manay", value: 150 },
+		{ name: "Davao Oriental, Tarragona", value: 100 },
+
+		{ name: "Davao De Oro, Nabunturan", value: 1500 },
+		{ name: "Davao De Oro, Compostela", value: 1400 },
+		{ name: "Davao De Oro, Monkayo", value: 1300 },
+		{ name: "Davao De Oro, Montevista", value: 1250 },
+		{ name: "Davao De Oro, Pantukan", value: 2357 },
+		{ name: "Davao De Oro, Mawab", value: 5200 },
+		{ name: "Davao De Oro, Maragusan", value: 1150 },
+		{ name: "Davao De Oro, Maco", value: 1100 },
+		{ name: "Davao De Oro, Mabini", value: 1050 },
+		{ name: "Davao De Oro, New Bataan", value: 1000 },
+		{ name: "Davao De Oro, Laak", value: 950 },
+
+
+		{ name: "Davao Occidental, Santa Maria", value: 1800 },
+		{ name: "Davao Occidental, Malita", value: 2500 },
+		{ name: "Davao Occidental, Don Marcelino", value: 1600 },
+		{ name: "Davao Occidental, Jose Abad Santos", value: 1450 },
+		{ name: "Davao Occidental, Sarangani", value: 1350 }
+	];
+
+
+	// Calculate the maximum value from the data
+	const maxValue = Math.max(...municipalityData.map(item => item.value));
+
+	//Truncation of the maximum Value
+	function truncateMaxValue(num) {
+		const length = num.toString().length;
+		const divisor = Math.pow(10, length - 1);
+		return Math.floor(num / divisor) * divisor;
+	}
+
+	// Functions related to map styling
+	function getColor(value, maxValue) {
+		const truncatedMax = truncateMaxValue(maxValue);
+		const getThreshold = (percentage) => {
+			return Math.floor(truncatedMax * (percentage / 100));
+		};
+
+		if (value > getThreshold(100)) return '#800026';
+		if (value > getThreshold(85)) return '#BD0026';
+		if (value > getThreshold(70)) return '#E31A1C';
+		if (value > getThreshold(50)) return '#FC4E2A';
+		if (value > getThreshold(30)) return '#FD8D3C';
+		if (value > getThreshold(15)) return '#FEB24C';
+		if (value > getThreshold(5)) return '#FED976';
+		if (value === 0) return 'transparent'; // No color for zero
+		if (value === undefined) return 'transparent'; // No color for undefined
+		return '#FFEDA0';
+	}
+
+
+	function styleFeature(feature) {
+		return {
+			fillColor: getColor(feature.properties.value, maxValue),
+			weight: 2,
+			opacity: 1,
+			color: 'white',
+			dashArray: '3',
+			fillOpacity: 0.7
+		};
+	}
+
+	// Event handlers for features (e.g., municipalities)
+	function highlightFeature(e) {
+		const layer = e.target;
+		layer.setStyle({
+			weight: 5,
+			color: '#666',
+			dashArray: '',
+			fillOpacity: 0.7
+		});
+		layer.openTooltip();  // Open tooltip on mouseover
+
+		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+			layer.bringToFront();
+		}
+	}
+
+	function resetHighlight(e) {
+		const layer = e.target;
+		geojsonLayer.resetStyle(layer);
+		layer.closeTooltip();  // Close tooltip on mouseout
+	}
+
+	function onEachFeature(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight
+		});
+		layer.bindTooltip(`<strong>${feature.properties.NAME_1}, ${feature.properties.NAME_2}</strong><br/>Meat Qty: ${feature.properties.value !== undefined ? feature.properties.value : 0} Kilograms`, {
+			permanent: false,
+			interactive: false
+		});
+	}
+
+
+	// Merge municipality data with GeoJSON
+	function mergeDataWithGeoJSON(geoJSON, data) {
+		geoJSON.features.forEach(feature => {
+			const datum = data.find(item => item.name.toUpperCase() === feature.properties.NAME_1.toUpperCase() + ", " + feature.properties.NAME_2.toUpperCase());
+			if (datum) {
+				feature.properties.value = datum.value;
+			}
+		});
+	}
+
+	// Fetch data and render on map
+	fetch('https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippines_municipalities.geojson')
+		.then(response => response.json())
+		.then(topojsonData => {
+			const geoJSON = topojson.feature(topojsonData, topojsonData.objects.PHL_adm2);
+			mergeDataWithGeoJSON(geoJSON, municipalityData);
+
+			let maxValue = Math.max(...municipalityData.map(d => d.value));
+			maxValue = truncateMaxValue(maxValue);
+
+			geojsonLayer = L.geoJson(geoJSON, {
+				style: feature => styleFeature(feature, maxValue),
+				onEachFeature: onEachFeature
+			}).addTo(map);
+
+			const legend = L.control({ position: 'bottomleft' });
+			legend.onAdd = function (map) {
+				var div = L.DomUtil.create('div', 'info legend');
+				const percentages = [0, 5, 15, 30, 50, 70, 85, 100];
+				const grades = percentages.map(p => Math.floor(maxValue * (p / 100)));
+
+				for (let i = 0; i < grades.length; i++) {
+					div.innerHTML +=
+						`<i style="background:${getColor(grades[i] + 1, maxValue)}"></i> ` +
+						`${Math.max(1, grades[i])}${grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : '+'}`;
+				}
+
+				return div;
+			};
+			legend.addTo(map);
+
+		});
+</script>
+

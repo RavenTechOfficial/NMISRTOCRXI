@@ -142,7 +142,7 @@
 <script src="~/js/register.js"></script>
 <script>
 	//integration of Philippines Address JSON
-	fetch('@Url.Content("~/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
+	fetch('@Url.Content("https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
 		.then(response => response.json())
 		.then(data => {
 			const regionSelect = document.getElementById('regionSelect');
@@ -158,8 +158,8 @@
 				{ regionCode: "01", regionName: "Region I" },
 				{ regionCode: "02", regionName: "Region II" },
 				{ regionCode: "03", regionName: "Region III" },
-				{ regionCode: "04A", regionName: "Region IV-A" },
-				{ regionCode: "04B", regionName: "Region IV-B" },
+				{ regionCode: "4A", regionName: "Region IV-A" },
+				{ regionCode: "4B", regionName: "Region IV-B" },
 				{ regionCode: "05", regionName: "Region V" },
 				{ regionCode: "06", regionName: "Region VI" },
 				{ regionCode: "07", regionName: "Region VII" },

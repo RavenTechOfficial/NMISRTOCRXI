@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,16 +25,18 @@ namespace thesis.Controllers
 
 		}
 
-        // GET: MTVapplication
-        public async Task<IActionResult> Index()
+		// GET: MTVapplication
+		[Authorize(Policy = "RequireMtvUsers")]
+		public async Task<IActionResult> Index()
         {
               return _context.MTVApplications != null ? 
                           View(await _context.MTVApplications.ToListAsync()) :
                           Problem("Entity set 'thesisContext.MTVApplications'  is null.");
         }
 
-        // GET: MTVapplication/Details/5
-        public async Task<IActionResult> Details(int? id)
+		// GET: MTVapplication/Details/5
+		[Authorize(Policy = "RequireMtvUsers")]
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.MTVApplications == null)
             {
@@ -50,8 +53,9 @@ namespace thesis.Controllers
             return View(mTVApplication);
         }
 
-        // GET: MTVapplication/Create
-        public IActionResult Create()
+		// GET: MTVapplication/Create
+		[Authorize(Policy = "RequireMtvUsers")]
+		public IActionResult Create()
         {
             return View();
         }
@@ -169,8 +173,9 @@ namespace thesis.Controllers
             
         }
 
-        // GET: MTVapplication/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+		// GET: MTVapplication/Edit/5
+		[Authorize(Policy = "RequireMtvUsers")]
+		public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.MTVApplications == null)
             {
@@ -220,8 +225,9 @@ namespace thesis.Controllers
             return View(mTVApplication);
         }
 
-        // GET: MTVapplication/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+		// GET: MTVapplication/Delete/5
+		[Authorize(Policy = "RequireMtvUsers")]
+		public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.MTVApplications == null)
             {

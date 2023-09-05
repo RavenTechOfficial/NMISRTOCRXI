@@ -1,6 +1,6 @@
 ﻿@model PostArticle
 
-
+    
 <style data-tag="reset-style-sheet">
     html {
         line-height: 1.15;
@@ -105,11 +105,10 @@
 
 <div>
     <link rel="stylesheet" href="~/css/article-details.css" asp-append-version="true" />
-    
 
     <div class="inside-article-container">
         <div class="navbar-container">
-            <div class="inside-article-logo">
+            <a class="inside-article-logo" asp-controller="Home" asp-action="Index">
                 <img alt="image"
                      src="~/img/logo-200h.png"
                      class="inside-article-image" />
@@ -117,14 +116,14 @@
                     <span class="inside-article-text1">NMIS-</span>
                     <span>&nbsp;SMFA</span>
                 </span>
-            </div>
+            </a>
             <div class="inside-article-links">
-                <span class="inside-article-home">HOME</span>
-                <span class="inside-article-faqs">FAQS</span>
-                <span class="inside-article-articles">ARTICLES</span>
-                <span class="inside-article-aboutus">ABOUT US</span>
-                <button class="button-secondary button">TRACE</button>
-                <button class="button button-primary">LOG IN</button>
+                <a class="inside-article-home" asp-controller="Home" asp-action="Index">HOME</a>
+                <a class="inside-article-articles" href="/Home/Index#articles">ARTICLES</a>
+                <a class="inside-article-faqs" href="/Home/Index#FAQs">FAQS</a>
+                <a class="inside-article-aboutus" href="/Home/Index#footer">ABOUT US</a>
+                <a class="button-secondary button" asp-controller="Trace" asp-action="Index">TRACE</a>
+                <a class="button button-primary" asp-area="Identity" asp-page="/Account/Login">LOG IN</a>
             </div>
             <div class="inside-article-burger-menu navbar-burger-menu">
                 <svg viewBox="0 0 1024 1024" class="inside-article-icon">
@@ -133,70 +132,52 @@
             </div>
         </div>
         <div class="inside-article-blog">
-            <div class="inside-article-container1">
-                <div class="blog-post-card3-blog-post-card blog-post-card3-root-class-name1">
+            <div class="inside-article-container1"></div>
+            <div class="blog-post-card3-blog-post-card blog-post-card3-root-class-name">
+                <div class="blog-post-card3-container">
+                    <span class="blog-post-card3-text">
+                        <span>@Model.Label</span>
+                    </span>
                     <img alt="image"
                          src="~/img/Articles/@Model.Image"
                          class="blog-post-card3-image" />
-                    <div class="blog-post-card3-container">
-                        <span class="blog-post-card3-text">
-                            <span>@Model.Label</span>
+                    <h1 class="blog-post-card3-text1">
+                        <span>
+                            @Model.Title
                         </span>
-                        <h1 class="blog-post-card3-text1">
+                    </h1>
+                    <div class="blog-post-card3-container1">
+                        <span class="blog-post-card3-text2">
                             <span>
-                                The Meat Issue in the Philippines: A Complex Web of
-                                Economic, Social, and Environmental Factors
+                                @Model.Introduction
                             </span>
-                        </h1>
-                        <div class="blog-post-card3-container1">
-                            <span class="blog-post-card3-text2">
-                                <span>
-                                    One of the most pressing concerns is the dramatic
-                                    fluctuation in meat prices. Prices have been on a
-                                    roller-coaster ride for various reasons, including supply
-                                    chain inefficiencies, outbreaks of diseases like African
-                                    Swine Fever, and external market pressures. These
-                                    fluctuations make it challenging for both consumers to
-                                    afford meat and for producers to sustain their operations.
-                                </span>
+                        </span>
+                        <span class="blog-post-card3-text3">
+                            <span>
+                                @Model.Body
                             </span>
-                            <span class="blog-post-card3-text3">
-                                <span>
-                                    The meat industry in the Philippines is facing a myriad of
-                                    challenges that are causing concern among stakeholders,
-                                    from farmers and producers to consumers and policymakers.
-                                    These issues span across economic, social, and
-                                    environmental dimensions, putting the long-term
-                                    sustainability of the industry in question. This article
-                                    delves into these multifaceted issues to provide an
-                                    overview of the complex landscape of the Philippine meat
-                                    sector. One of the most pressing concerns is the dramatic
-                                    fluctuation in meat prices. Prices have been on a
-                                    roller-coaster ride for various reasons, including supply
-                                    chain inefficiencies, outbreaks of diseases like African
-                                    Swine Fever, and external market pressures. These
-                                    fluctuations make it challenging for both consumers to
-                                    afford meat and for producers to sustain their operations.
-                                </span>
+                        </span>
+                        <span class="blog-post-card3-text4">
+                            <span>
+                                @Model.Conclusion
                             </span>
-                            <span class="blog-post-card3-text4">
-                                <span>
-                                    The increasing reliance on meat importation exacerbates
-                                    the economic vulnerability of the local meat industry.
-                                    While imports can help stabilize prices temporarily, they
-                                    can also undercut local producers who struggle to compete
-                                    with cheaper, imported products.
-                                </span>
-                            </span>
-                        </div>
-                        <div class="blog-post-card3-container2">
-                            <span class="blog-post-card3-text5">
-                                <span>by Jon Doe</span>
-                            </span>
-                            <span class="blog-post-card3-text6">
-                                <span>(5 hours ago)</span>
-                            </span>
-                        </div>
+                        </span>
+                    </div>
+                    <span class="blog-post-card3-text5">
+                        <span>References:</span>
+                    </span>
+                    <span class="blog-post-card3-text6">
+                        <span>
+                            @Model.References
+                        </span>
+                    </span>
+                    <div class="blog-post-card3-container2">
+                        <span class="blog-post-card3-text7">
+                            <span>@Model.Author</span>
+                        </span>
+                        <span class="blog-post-card3-text8">
+                            <span>@Model.Date.ToString("MM/dd/yyyy")</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -246,4 +227,3 @@
         runAllScripts()
     }
 </script>
-

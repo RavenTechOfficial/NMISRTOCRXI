@@ -114,22 +114,22 @@
         <div class="result-page-container">
             
             <div class="navbar-container">
-                <div class="result-page-logo">
+            <a class="result-page-logo" asp-controller="Home" asp-action="Index">
                     <img alt="image"
-                         src="~/img/logo-200h.png"
+                     src="~/img/logo-200h.png"
                          class="result-page-image" />
                     <span class="brandName">
                         <span class="result-page-text01">NMIS-</span>
                         <span>&nbsp;SMFA</span>
                     </span>
-                </div>
+                </a>
                 <div class="result-page-links">
-                    <span class="result-page-home">HOME</span>
-                    <span class="result-page-faqs">FAQS</span>
-                    <span class="result-page-articles">ARTICLES</span>
-                    <span class="result-page-aboutus">ABOUT US</span>
-                    <button class="button-secondary button">TRACE</button>
-                    <button class="button button-primary">LOG IN</button>
+                <a class="result-page-home" asp-controller="Home" asp-action="Index">HOME</a>
+                <a class="result-page-articles" href="/Home/Index#articles">ARTICLES</a>
+                <a class="result-page-faqs" href="/Home/Index#FAQs">FAQS</a>
+                <a class="result-page-aboutus" href="/Home/Index#footer">ABOUT US</a>
+                <a class="button-secondary button" asp-controller="Trace" asp-action="Index">TRACE</a>
+                <a class="button button-primary" asp-area="Identity" asp-page="/Account/Login">LOG IN</a>
                 </div>
                 <div class="result-page-burger-menu navbar-burger-menu">
                     <svg viewBox="0 0 1024 1024" class="result-page-icon">

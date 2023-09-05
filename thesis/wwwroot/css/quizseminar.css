@@ -257,3 +257,65 @@
         padding: 15px;
     }
 }
+
+.url .hide {
+    opacity: 00%;
+}
+
+.url {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.facebook-container {
+    width: 100%;
+    max-width: 500px;
+    height: 220px;
+    background-color: #3b5998;
+    display: flex;
+    align-items: top;
+    justify-content: space-evenly;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 8px;
+    border: 5px solid;
+    border-color: #CFF5E7;
+    background-image: url("../img/mtvodha.jpg");
+    background-size: cover;
+}
+
+.facebook-container1 {
+    width: 100%;
+    max-width: 500px;
+    height: 220px;
+    background-color: #3b5998;
+    display: flex;
+    align-items: top;
+    justify-content: space-evenly;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 20px;
+    border-radius: 8px;
+    border: 5px solid;
+    border-color: #CFF5E7;
+    background-image: url("../img/seminar.png");
+    background-size: cover;
+}
+
+.facebook-container:hover {
+    background-color: #1d3557;
+    border-color: #1d3557;
+    cursor: pointer;
+}
+
+.facebook-container1:hover {
+    background-color: #1d3557;
+    border-color: #1d3557;
+    cursor: pointer;
+}
+
+.facebook-link {
+    text-decoration: none;
+}
