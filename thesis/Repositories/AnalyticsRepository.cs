@@ -84,7 +84,7 @@ namespace thesis.Repositories
 
                 var suspect = BarChartTimeSeriesAntemortem(species, Issue.Suspect, startOfMonth, endOfMonth);
                 var condemned = BarChartTimeSeriesAntemortem(species, Issue.Condemned, startOfMonth, endOfMonth);
-                var pass = BarChartTimeSeriesAntemortem(species, Issue.Pass, startOfMonth, endOfMonth);
+                var pass = BarChartTimeSeriesAntemortemPass(species, startOfMonth, endOfMonth);
 
 
                 monthRangesApproved.Add(monthRangeApproved);
@@ -175,14 +175,27 @@ namespace thesis.Repositories
                         && p.MeatInspectionReport.RepDate.Date <= end.Date
                         && p.MeatInspectionReport.ReceivingReport != null
                         && p.MeatInspectionReport.ReceivingReport.Species == species)
-            .Sum(p => p.NoOfHeads);
+            .Sum(p => p.Weight);
 
 
             return barchart;
         }
 
+		public int BarChartTimeSeriesAntemortemPass(Species species, DateTime start, DateTime end)
+		{
+			var barchart = _context.PassedForSlaughters
+				.Include(p => p.ConductOfInspection.MeatInspectionReport.ReceivingReport)
+				.Where(p => p.ConductOfInspection.MeatInspectionReport.RepDate.Date >= start.Date
+				&& p.ConductOfInspection.MeatInspectionReport.RepDate.Date <= end.Date
+                && p.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species == species)
+				.Sum(p => p.Weight);
 
-        public int StackBarsSpeciesSeries(Species species, DateTime start, DateTime end)
+			return barchart;
+		}
+
+
+
+		public int StackBarsSpeciesSeries(Species species, DateTime start, DateTime end)
         {
             var stackchart = _context.totalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
