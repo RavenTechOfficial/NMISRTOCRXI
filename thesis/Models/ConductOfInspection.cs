@@ -10,7 +10,7 @@ namespace thesis.Models
         public int Id { get; set; }
         public Issue Issue { get; set; }
         public int NoOfHeads { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
         public Cause Cause { get; set; }
         [ForeignKey("MeatInspectionReport")]
         public int MeatInspectionReportId { get; set; }

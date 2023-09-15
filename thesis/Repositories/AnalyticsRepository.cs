@@ -27,28 +27,28 @@ namespace thesis.Repositories
             var currentMonth = DateTime.Now.Month;
 
             //area chart 
-            var monthRangesApproved = new List<int>();
-            var monthRangesCondemned = new List<int>();
+            var monthRangesApproved = new List<double>();
+            var monthRangesCondemned = new List<double>();
             //horizontal bar chart
             var monthRangesOfHead = new List<int>();
-            var monthRangesOfLiveWeight = new List<int>();
+            var monthRangesOfLiveWeight = new List<double>();
             //vertical bar chart
-            var suspects = new List<int>();
-            var condemneds = new List<int>();
-            var passes = new List<int>();
+            var suspects = new List<double>();
+            var condemneds = new List<double>();
+            var passes = new List<double>();
             //piechart
-            var animalType = new List<int>();
+            var animalType = new List<double>();
             //stack bars 100 chart
-            var cattles = new List<int>();
-            var carabaos = new List<int>();
-            var swines = new List<int>();
-            var goats = new List<int>();
-            var chickens = new List<int>();
-            var ducks = new List<int>();
-            var horses = new List<int>();
-            var sheeps = new List<int>();
-            var ostrichs = new List<int>();
-            var crocodiles = new List<int>();
+            var cattles = new List<double>();
+            var carabaos = new List<double>();
+            var swines = new List<double>();
+            var goats = new List<double>();
+            var chickens = new List<double>();
+            var ducks = new List<double>();
+            var horses = new List<double>();
+            var sheeps = new List<double>();
+            var ostrichs = new List<double>();
+            var crocodiles = new List<double>();
 
 
 
@@ -165,7 +165,7 @@ namespace thesis.Repositories
             };
             
         }
-        public int BarChartTimeSeriesAntemortem(Species species, Issue issue, DateTime start, DateTime end)
+        public double BarChartTimeSeriesAntemortem(Species species, Issue issue, DateTime start, DateTime end)
         {
             var barchart = _context.ConductOfInspections
             .Include(p => p.MeatInspectionReport)
@@ -181,7 +181,7 @@ namespace thesis.Repositories
             return barchart;
         }
 
-		public int BarChartTimeSeriesAntemortemPass(Species species, DateTime start, DateTime end)
+		public double BarChartTimeSeriesAntemortemPass(Species species, DateTime start, DateTime end)
 		{
 			var barchart = _context.PassedForSlaughters
 				.Include(p => p.ConductOfInspection.MeatInspectionReport.ReceivingReport)
@@ -195,7 +195,7 @@ namespace thesis.Repositories
 
 
 
-		public int StackBarsSpeciesSeries(Species species, DateTime start, DateTime end)
+		public double StackBarsSpeciesSeries(Species species, DateTime start, DateTime end)
         {
             var stackchart = _context.totalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
@@ -207,7 +207,7 @@ namespace thesis.Repositories
             return stackchart;
         }
 
-        public int PieChartAnimalTypeSeries(AnimalPart animalPart, DateTime start, DateTime end)
+        public double PieChartAnimalTypeSeries(AnimalPart animalPart, DateTime start, DateTime end)
         {
             var piechart = _context.Postmortems
                 .Include(p => p.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
@@ -229,7 +229,7 @@ namespace thesis.Repositories
 
             return hbarchart;
         }
-        public int BarChartTimeSeriesRangeOfLiveWeight(Species species ,DateTime start, DateTime end)
+        public double BarChartTimeSeriesRangeOfLiveWeight(Species species ,DateTime start, DateTime end)
         {
             var vbarchart = _context.ReceivingReports
                 .Where(p => p.RecTime >= start.Date && p.RecTime <= end.Date
@@ -240,7 +240,7 @@ namespace thesis.Repositories
         }
 
 
-        public int AreaChartTimeSeriesRangeApproved(Species species, DateTime start, DateTime end)
+        public double AreaChartTimeSeriesRangeApproved(Species species, DateTime start, DateTime end)
         {
             var areaChart = _context.totalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
@@ -252,7 +252,7 @@ namespace thesis.Repositories
             return areaChart;
         }
 
-        public int AreaChartTimeSeriesRangeCondemned(Species species, DateTime start, DateTime end)
+        public double AreaChartTimeSeriesRangeCondemned(Species species, DateTime start, DateTime end)
         {
             var areaChart = _context.totalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem)

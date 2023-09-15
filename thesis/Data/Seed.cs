@@ -50,7 +50,7 @@ namespace thesis.Data
                                     Address = "DAVAO CITY, MINTAL",
                                     Type = (EstablishmentType)random.Next(1, System.Enum.GetValues(typeof(EstablishmentType)).Length),
                                     Name = "jeff",
-                                    LicenseToOperateNumber = random.Next(1, 1000)
+                                    LicenseToOperateNumber = "jess"
                                 }
                             }
                         };
