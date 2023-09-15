@@ -8,7 +8,7 @@ namespace thesis.Models
         [Key]
         public int Id { get; set; }
         public int NoOfHeads { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
         [ForeignKey("ConductOfInspection")]
         public int ConductOfInspectionId { get; set; }
         public ConductOfInspection? ConductOfInspection { get; set; }

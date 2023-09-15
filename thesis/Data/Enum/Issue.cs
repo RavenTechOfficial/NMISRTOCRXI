@@ -4,7 +4,6 @@
     {
         NA,
         Suspect,
-        Pass,
         Condemned
     }
 }

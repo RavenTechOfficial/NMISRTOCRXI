@@ -65,7 +65,7 @@ namespace thesis.Controllers
 			}
 			else
 			{
-				int totalPostWeight = multipleInputs.TotalPostWeight; //double or float
+				double totalPostWeight = multipleInputs.TotalPostWeight; //double or float
 				int totalPostNoOfHeads = multipleInputs.TotalPostNoOfHeads;
 
 				// Execute the provided SQL queries using LINQ to calculate the differences

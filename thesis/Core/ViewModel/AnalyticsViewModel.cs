@@ -8,24 +8,24 @@ namespace thesis.Core.ViewModel
     {
         
         // for area chart
-        public List<int> monthlyRangeApproved { get; set; }
-        public List<int> monthlyRangeCondemned { get; set; }
+        public List<double> monthlyRangeApproved { get; set; }
+        public List<double> monthlyRangeCondemned { get; set; }
         public List<int> monthlyRangeOfHead { get; set; }
-        public List<int> monthlyRangeOfLiveWeight { get; set; }
-        public List<int> animalTypeRange { get; set; }
-        public List<int> Cattle { get; set; }
-        public List<int> Carabao { get; set; }
-        public List<int> Swine { get; set; }
-        public List<int> Goat { get; set; }
-        public List<int> Chicken { get; set; }
-        public List<int> Duck { get; set; }
-        public List<int> Horse { get; set; }
-        public List<int> Sheep { get; set; }
-        public List<int> Ostrich { get; set; }
-        public List<int> Crocodile { get; set; }
-        public List<int> Suspect { get; set; }
-        public List<int> Condemned { get; set; }
-        public List<int> Pass { get; set; }
+        public List<double> monthlyRangeOfLiveWeight { get; set; }
+        public List<double> animalTypeRange { get; set; }
+        public List<double> Cattle { get; set; }
+        public List<double> Carabao { get; set; }
+        public List<double> Swine { get; set; }
+        public List<double> Goat { get; set; }
+        public List<double> Chicken { get; set; }
+        public List<double> Duck { get; set; }
+        public List<double> Horse { get; set; }
+        public List<double> Sheep { get; set; }
+        public List<double> Ostrich { get; set; }
+        public List<double> Crocodile { get; set; }
+        public List<double> Suspect { get; set; }
+        public List<double> Condemned { get; set; }
+        public List<double> Pass { get; set; }
         public DateTime start { get; set; } = new DateTime(DateTime.Now.Year, 1, 1);
         public DateTime end { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         public Species species { get; set; }

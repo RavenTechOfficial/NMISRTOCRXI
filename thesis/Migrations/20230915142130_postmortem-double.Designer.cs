@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thesis.Data;
 
@@ -11,9 +12,11 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    partial class thesisContextModelSnapshot : ModelSnapshot
+    [Migration("20230915142130_postmortem-double")]
+    partial class postmortemdouble
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1120,8 +1123,8 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("DressedWeight")
-                        .HasColumnType("float");
+                    b.Property<int>("DressedWeight")
+                        .HasColumnType("int");
 
                     b.Property<int>("NoOfHeads")
                         .HasColumnType("int");

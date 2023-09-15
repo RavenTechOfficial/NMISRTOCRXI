@@ -14,7 +14,7 @@ namespace thesis.Models
         public Species Species { get; set; }
         public CategoryOfFoodAnimals Category { get; set; }
         public int NoOfHeads { get; set; }
-        public int LiveWeight { get; set; }
+        public double LiveWeight { get; set; }
         [ForeignKey("MeatDealers")]
         public int? MeatDealersId { get; set; }
         public MeatDealers? MeatDealers { get; set; }

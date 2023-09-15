@@ -38,12 +38,12 @@ namespace thesis.Repositories
 
 
             //area cahrt
-            var monthRangesApproved = new List<int>();
-            var monthRangesCondemned = new List<int>();
+            var monthRangesApproved = new List<double>();
+            var monthRangesCondemned = new List<double>();
             //bar chart
-            var suspects = new List<int>();
-            var condemneds = new List<int>();
-            var passes = new List<int>();
+            var suspects = new List<double>();
+            var condemneds = new List<double>();
+            var passes = new List<double>();
 
             for (DateTime date = startDateOfYear; date < currentDate; date = date.AddMonths(1))
             {
@@ -92,7 +92,7 @@ namespace thesis.Repositories
 			};
         }
 
-        public int BarChartTimeSeriesAntemortem(Issue issue, DateTime start, DateTime end)
+        public double BarChartTimeSeriesAntemortem(Issue issue, DateTime start, DateTime end)
         {
             var barchart = _context.ConductOfInspections
                 .Include(p => p.MeatInspectionReport)
@@ -104,7 +104,7 @@ namespace thesis.Repositories
             return barchart;
         }
 
-		public int BarChartTimeSeriesAntemortemPass(DateTime start, DateTime end)
+		public double BarChartTimeSeriesAntemortemPass(DateTime start, DateTime end)
 		{
 			var barchart = _context.PassedForSlaughters
 				.Include(p => p.ConductOfInspection.MeatInspectionReport)
@@ -116,7 +116,7 @@ namespace thesis.Repositories
 		}
 
 
-		public int AreaChartTimeSeriesRangeApproved(DateTime start, DateTime end)
+		public double AreaChartTimeSeriesRangeApproved(DateTime start, DateTime end)
         {
 			var areaChart = _context.totalNoFitForHumanConsumptions
 				.Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
@@ -127,7 +127,7 @@ namespace thesis.Repositories
             return areaChart;
 		}
 
-		public int AreaChartTimeSeriesRangeCondemned(DateTime start, DateTime end)
+		public double AreaChartTimeSeriesRangeCondemned(DateTime start, DateTime end)
 		{
 			var areaChart = _context.totalNoFitForHumanConsumptions
 				.Include(p => p.Postmortem)
@@ -139,7 +139,7 @@ namespace thesis.Repositories
 		}
 
 
-		public int InspectionWithinDataRange(DateTime dates)
+		public double InspectionWithinDataRange(DateTime dates)
         {
             var inspectionWithinDataRange = _context.totalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
