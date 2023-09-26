@@ -146,7 +146,7 @@
                              class="app-component-image" />
                     </div>
                     <div class="app-component-container02">
-                        <span class="app-component-uid brandName">
+                        <span class="app-component-uid brandName" style="text-transform:none;">
                             <span>@Model.uid</span>
                             <br />
                         </span>
@@ -317,10 +317,63 @@
 
 <link rel="stylesheet" href="~/css/feedback.css" asp-append-version="true" />
 <script src="~/js/feedback.js" asp-append-version="true" defer></script>
+<script>
+
+   document.addeventlistener('domcontentloaded', function () {
+    var headertext = document.getelementbyid('header-text');
+    var submitbutton = document.getelementbyid('submit-button');
+    var ratingboxmodal = document.getelementbyid('rating-box-modal');
+
+    // show the rating-box modal with animation after 3 seconds
+    settimeout(function () {
+        ratingboxmodal.classlist.add('show'); // add the 'show' class to trigger the animation
+    }, 5000);
+
+    submitbutton.addeventlistener('click', function (event) {
+        event.preventdefault();
+        if (hasstarbeenclicked) {
+            headertext.textcontent = "thank you for submitting";
+
+            // log the final rating
+            console.log(`submitted with ${numberofstarsclicked} ${numberofstarsclicked > 1 ? 'stars' : 'star'}`);
+
+            // send the data to the server
+            fetch('/trace/submitrating', {
+                method: 'post',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: json.stringify({ numberofstarsclicked: numberofstarsclicked })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // handle the response from the server, e.g., show a success message
+                    console.log(data.message);
+                })
+                .catch(error => {
+                    // handle any errors that occurred during the fetch
+                    console.error('error:', error);
+                });
+
+            // close the modal after 1 second
+            settimeout(function () {
+                ratingboxmodal.classlist.remove('show');  // remove the 'show' class to hide the modal
+            }, 1000);
+
+        } else {
+            // you could add additional logic here to remind the user to click a star
+            headertext.textcontent = "please leave us a feedback";
+        }
+    });
+});
+
+
+</script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 <div class="feedback-container">
     <div class="rating-box" id="rating-box-modal">
-        <h1 id="header-text" style="color: var(--second-color);">How was your experience?</h1>
+        <h1 id="header-text" style="color: var(--second-color);">how was your experience?</h1>
         <div class="stars">
             <i class="fa-solid fa-star"></i>
             <i class="fa-solid fa-star"></i>
@@ -329,26 +382,26 @@
             <i class="fa-solid fa-star"></i>
         </div>
         <div class="btn-done">
-            <a href="#" id="submit-button" class="btn">Submit Rating</a>
+            <a href="#" id="submit-button" class="btn">submit rating</a>
         </div>
     </div>
 </div>
 
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const runAllScripts = () => {
-            initializeAllAccordions();
+    document.addeventlistener('domcontentloaded', () => {
+        const runallscripts = () => {
+            initializeallaccordions();
         };
 
-        const listenForUrlChanges = () => {
+        const listenforurlchanges = () => {
             let url = location.href;
-            document.body.addEventListener(
+            document.body.addeventlistener(
                 'click',
                 () => {
-                    requestAnimationFrame(() => {
+                    requestanimationframe(() => {
                         if (url !== location.href) {
-                            runAllScripts();
+                            runallscripts();
                             url = location.href;
                         }
                     });
@@ -357,25 +410,25 @@
             );
         };
 
-        const initializeAllAccordions = () => {
-            const allAccordions = document.querySelectorAll('[data-role="Accordion"]');
+        const initializeallaccordions = () => {
+            const allaccordions = document.queryselectorall('[data-role="accordion"]');
 
-            allAccordions.forEach((accordion) => {
-                const accordionHeader = accordion.querySelector('[data-type="accordion-header"]');
-                const accordionContent = accordion.querySelector('[data-type="accordion-content"]');
+            allaccordions.foreach((accordion) => {
+                const accordionheader = accordion.queryselector('[data-type="accordion-header"]');
+                const accordioncontent = accordion.queryselector('[data-type="accordion-content"]');
 
-                accordionHeader.addEventListener('click', () => {
-                    if (accordionContent.style.maxHeight) {
-                        accordionContent.style.maxHeight = '';
+                accordionheader.addeventlistener('click', () => {
+                    if (accordioncontent.style.maxheight) {
+                        accordioncontent.style.maxheight = '';
                     } else {
-                        accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`;
+                        accordioncontent.style.maxheight = `${accordioncontent.scrollheight}px`;
                     }
                 });
             });
         };
 
-        listenForUrlChanges();
-        runAllScripts();
+        listenforurlchanges();
+        runallscripts();
     });
 
     </script>

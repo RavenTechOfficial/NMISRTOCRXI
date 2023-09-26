@@ -813,4 +813,27 @@
         padding-right: var(--dl-space-space-unit);
         padding-bottom: var(--dl-space-space-twounits);
     }
+
+    .rating-box:not(.show) {
+        display: none;
+        pointer-events: none;
+    }
+
+    .feedback-container {
+        z-index: 1000;
+        position: relative; /* or 'absolute', 'fixed', depending on your requirement */
+    }
+
+    .rating-box {
+        transition: opacity 0.3s ease, visibility 0.3s ease; /* smooth transition for visibility and opacity */
+        visibility: hidden;
+        opacity: 0;
+    }
+
+        .rating-box.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
 }

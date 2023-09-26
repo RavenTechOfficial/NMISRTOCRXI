@@ -394,10 +394,16 @@
 
 
     //doughnut Chart JS
-
+    
     const chartData = {
         labels: ["Highly Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Highly Dissatisfied"],
-        data: [139, 34, 13, 6, 3],
+        data: [
+            @Model.Feedbacks.HighlySatisfied,
+            @Model.Feedbacks.Satisfied,
+            @Model.Feedbacks.Neutral,
+            @Model.Feedbacks.Dissatisfied,
+            @Model.Feedbacks.HighlyDissatisfied
+        ],
     };
 
     const myChart = document.querySelector(".my-chart");

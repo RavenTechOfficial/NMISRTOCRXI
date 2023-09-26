@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using thesis.Core.IRepositories;
+using thesis.Core.ViewModel;
 using thesis.Data;
+using thesis.Models;
 
 namespace thesis.Controllers
 {
@@ -51,6 +53,37 @@ namespace thesis.Controllers
             }
 
             return View(result);
+        }
+        [HttpPost]
+        public IActionResult SubmitRating([FromBody] FeedbackResultViewModel feedVM)
+
+        {
+
+            var result = new Feedback();
+
+            switch (feedVM.NumberOfStarsClicked)
+            {
+                case 1:
+                    result.HighlyDissatisfied += 1;
+                    break;
+                case 2:
+                    result.Dissatisfied += 1;
+                    break;
+                case 3:
+                    result.Neutral += 1;
+                    break;
+                case 4:
+                    result.Satisfied += 1;
+                    break;
+                case 5:
+                    result.HighlySatisfied += 1;
+                    break;
+            }
+
+            _context.Add(result);
+            _context.SaveChanges();
+
+            return RedirectToAction("Result", "Trace");
         }
     }
 }
