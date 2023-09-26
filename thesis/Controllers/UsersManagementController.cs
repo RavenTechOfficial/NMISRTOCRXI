@@ -31,13 +31,13 @@ namespace thesis.Controllers
 			_userManager = userManager;
 			_emailSender = emailSender;
 		}
-		//[Authorize(Policy = "RequireSuperAdmin")]
+		[Authorize(Policy = "RequireSuperAdmin")]
 		public async Task<IActionResult> Index()
 		{
 			var users = await _unitOfWork.UsersManangement.GetAllUsersAsync();
 			return View(users);
 		}
-		//[Authorize(Policy = "RequireSuperAdmin")]
+		[Authorize(Policy = "RequireSuperAdmin")]
 		public async Task<IActionResult> Details(string id)
 		{
 			if (id == null)
@@ -56,7 +56,7 @@ namespace thesis.Controllers
 
 			return View(users);
 		}
-		//[Authorize(Policy = "RequireSuperAdmin")]
+		[Authorize(Policy = "RequireSuperAdmin")]
 		public async Task<IActionResult> Edit(string id)
 		{
 			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id); // AccountDetails
@@ -115,12 +115,12 @@ namespace thesis.Controllers
 				return View("Edit", accountDetails);
 			}
 		}
-		//[Authorize(Policy = "RequireSuperAdmin")]
+		[Authorize(Policy = "RequireSuperAdmin")]
 		public IActionResult EditConfirmation()
 		{
 			return View();
 		}
-		//[Authorize(Policy = "RequireSuperAdmin")]
+		[Authorize(Policy = "RequireSuperAdmin")]
 		public async Task<IActionResult> Delete(string id)
 		{
 			if (id == null)

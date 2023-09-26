@@ -36,6 +36,7 @@ public class thesisContext : IdentityDbContext<AccountDetails>
 	public DbSet<QrCode> QrCodes { get; set; }
 	public DbSet<Result> Results { get; set; }
 	public DbSet<PostArticle> PostArticles { get; set; }
+	public DbSet<Feedback> Feedbacks { get; set; }
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
