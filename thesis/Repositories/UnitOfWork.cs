@@ -17,14 +17,17 @@ namespace thesis.Repositories
 
         public IResultsRepository ResultPage { get; }
 
-        public UnitOfWork(
+		public IFeedbackRepository Feedback { get; }
+
+		public UnitOfWork(
             IReceivingReportRepository receivingReport,
             IMeatInspectionReportRepository meatInspectionReport,
             IDashboardRepository dashboard,
             IAnalyticsRepository analytics,
             IUsersManangementRepository usersManangement,
             IGeolocationRepository geolocation,
-            IResultsRepository resultpage
+            IResultsRepository resultpage,
+            IFeedbackRepository feedback
         ) 
         {
             ReceivingReport = receivingReport;
@@ -34,6 +37,8 @@ namespace thesis.Repositories
             UsersManangement = usersManangement;
             Geolocation = geolocation;
             ResultPage = resultpage;
+            Feedback = feedback;
+            
         }
     }
 }

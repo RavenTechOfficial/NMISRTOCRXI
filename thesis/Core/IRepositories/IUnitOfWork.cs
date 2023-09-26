@@ -9,5 +9,6 @@
         IUsersManangementRepository UsersManangement { get; }
         IGeolocationRepository Geolocation { get; }
         IResultsRepository ResultPage { get; }
+        IFeedbackRepository Feedback { get; }
     }
 }

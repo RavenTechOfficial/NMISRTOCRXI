@@ -7,5 +7,6 @@ namespace thesis.Core.ViewModel
 	{
 		public TotalWeightViewModel TotalWeightModel { get; set; }
 		public IEnumerable<MTVApplication> AccountDetails { get; set; }
+		public FeedbackViewModel Feedbacks { get; set; }
 	}
 }

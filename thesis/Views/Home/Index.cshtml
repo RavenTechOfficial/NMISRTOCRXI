@@ -80,11 +80,22 @@
                     <button class="button button-primary">LOG IN</button>
                 </a>
             </div>
-            <div class="home-burger-menu navbar-burger-menu">
+            <button class="home-burger-menu navbar-burger-menu">
+                <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <svg viewBox="0 0 1024 1024" class="home-icon">
                     <path d="M128 256h768v86h-768v-86zM128 554v-84h768v84h-768zM128 768v-86h768v86h-768z"></path>
                 </svg>
-            </div>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" asp-controller="Home" asp-action="Index">HOME</a>
+                    <a class="dropdown-item" href="#articles">ARTICLES</a>
+                    <a class="dropdown-item" href="#FAQs">FAQS</a>
+                    <a class="dropdown-item" href="#footer">About Us</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-controller="Trace" asp-action="Index">TRACE</a>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">LOG IN</a>
+                </div>
+             </a>
+             </button>
         </div>
         <div class="home-hero hero-container section-container">
             <div class="home-max-width hero-container max-width">

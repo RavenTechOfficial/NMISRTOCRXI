@@ -67,6 +67,7 @@ void AddScoped()
     builder.Services.AddScoped<IUsersManangementRepository, UsersManagementRepository>();
     builder.Services.AddScoped<IGeolocationRepository, GeolocationRepository>();
     builder.Services.AddScoped<IResultsRepository, ResultsRepository>();
+    builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 }
 
 void AddAuthorizationPolicies()
