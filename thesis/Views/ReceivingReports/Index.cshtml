@@ -156,7 +156,7 @@
                                 int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
 
                                 // Filter the Model based on the MeatEstablishmentId
-                                filteredModel = Model.Where(item => item.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
+                                //filteredModel = Model.Where(item => item.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
                             }
                             else if (User.IsInRole("InspectorAdmin"))
                             {

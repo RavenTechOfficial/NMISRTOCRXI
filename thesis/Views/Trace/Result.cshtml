@@ -141,9 +141,46 @@
             <div class="result-page-container1">
                 <div class="app-component-container app-component-root-class-name">
                     <div class="app-component-container01">
+
+
+                    @if(Model.Species == thesis.Data.Enum.Species.Carabao)
+                    {
                         <img alt="image"
-                             src="~/img/cattle-200h.png"
+                             src="~/img/Heads/carabao.png"
+                        class="app-component-image" />
+                    }
+                    else if (Model.Species == thesis.Data.Enum.Species.Cattle)
+                    {
+                        <img alt="image"
+                             src="~/img/Heads/cattle.png"
                              class="app-component-image" />
+                    }
+                    else if (Model.Species == thesis.Data.Enum.Species.Duck)
+                    {
+                        <img alt="image"
+                             src="~/img/Heads/duck.png"
+                             class="app-component-image" />
+                    }
+                    else if (Model.Species == thesis.Data.Enum.Species.Goat)
+                    {
+                        <img alt="image"
+                             src="~/img/Heads/goat.png"
+                             class="app-component-image" />
+                    }
+                    else if (Model.Species == thesis.Data.Enum.Species.Sheep)
+                    {
+                        <img alt="image"
+                             src="~/img/Heads/sheep.png"
+                        class="app-component-image" />
+                    }
+                    else
+                    {
+                        <img alt="image"
+                             src="~/img/Heads/hog.png"
+                        class="app-component-image" />
+                        
+                    }
+
                     </div>
                     <div class="app-component-container02">
                         <span class="app-component-uid brandName" style="text-transform:none;">
