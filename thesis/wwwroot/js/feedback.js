@@ -17,32 +17,32 @@ stars.forEach((star, index1) => {
     });
 });
 
-//document.addEventListener('DOMContentLoaded', function () {
-//    var headerText = document.getElementById('header-text');
-//    var submitButton = document.getElementById('submit-button');
-//    var ratingBoxModal = document.getElementById('rating-box-modal');
+document.addEventListener('DOMContentLoaded', function () {
+    var headerText = document.getElementById('header-text');
+    var submitButton = document.getElementById('submit-button');
+    var ratingBoxModal = document.getElementById('rating-box-modal');
 
-//    // Show the rating-box modal with animation after 3 seconds
-//    setTimeout(function () {
-//        ratingBoxModal.classList.add('show'); // Add the 'show' class to trigger the animation
-//    }, 5000);
+    // Show the rating-box modal with animation after 3 seconds
+    setTimeout(function () {
+        ratingBoxModal.classList.add('show'); // Add the 'show' class to trigger the animation
+    }, 5000);
 
-//    submitButton.addEventListener('click', function (event) {
-//        event.preventDefault();
-//        if (hasStarBeenClicked) {
-//            headerText.textContent = "Thank you for submitting";
+    submitButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        if (hasStarBeenClicked) {
+            headerText.textContent = "Thank you for submitting";
 
-//            // Log the final rating
-//            console.log(`Submitted with ${numberOfStarsClicked} ${numberOfStarsClicked > 1 ? 'stars' : 'star'}`);
+            // Log the final rating
+            console.log(`Submitted with ${numberOfStarsClicked} ${numberOfStarsClicked > 1 ? 'stars' : 'star'}`);
 
-//            // Close the modal after 1 second
-//            setTimeout(function () {
-//                ratingBoxModal.classList.remove('show');
-//            }, 1000);
+            // Close the modal after 1 second
+            setTimeout(function () {
+                ratingBoxModal.classList.remove('show');
+            }, 1000);
 
-//        } else {
-//            // You could add additional logic here to remind the user to click a star
-//            headerText.textContent = "Please Leave us a Feedback";
-//        }
-//    });
-//});
+        } else {
+            // You could add additional logic here to remind the user to click a star
+            headerText.textContent = "Please Leave us a Feedback";
+        }
+    });
+});

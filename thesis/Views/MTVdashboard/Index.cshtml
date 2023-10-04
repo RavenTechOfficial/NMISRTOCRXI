@@ -34,14 +34,16 @@
 
 							@foreach (var item in Model)
 							{
-								<tr>
-									<td>
-										<p>@item.firstName @item.lastName</p>
-									</td>
-									<td>@item.contactNo</td>
-									<td>@item.Roles</td>
-
-								</tr>
+								if (item.Roles == thesis.Data.Enum.Roles.MTVADMIN || item.Roles == thesis.Data.Enum.Roles.MTVINSPECTOR || item.Roles == thesis.Data.Enum.Roles.MTVUSERS)
+								{
+									<tr>
+										<td>
+											<p>@item.firstName @item.lastName</p>
+										</td>
+										<td>@item.contactNo</td>
+										<td>@item.Roles</td>
+									</tr>
+								}
 							}
 							
 							@*<tr>
