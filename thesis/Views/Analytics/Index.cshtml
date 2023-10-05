@@ -228,7 +228,9 @@
     });
 
 
-
+    let computedStyle = getComputedStyle(document.documentElement);
+    let labelColorDark = computedStyle.getPropertyValue('--dark').trim();
+    let labelColorLight = computedStyle.getPropertyValue('--light').trim();
 
     //Meat Qty Area chart JS with darkmode
     let areaChart;
@@ -397,9 +399,7 @@
     // Receiving BAR CHART with darkmode
     let ReceivingbarChart;
 
-    let computedStyle = getComputedStyle(document.documentElement);
-    let labelColorDark = computedStyle.getPropertyValue('--dark').trim();
-    let labelColorLight = computedStyle.getPropertyValue('--light').trim();
+   
 
     let receivingTimestamp = @Html.Raw(Json.Serialize(Model.monthAbbreviationsArray));
     let dataHeads = [@string.Join(",", Model.monthlyRangeOfHead)];

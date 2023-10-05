@@ -1,153 +1,151 @@
 ﻿@model Result
-    <style data-tag="reset-style-sheet">
-        html {
-            line-height: 1.15;
-        }
+<style data-tag="reset-style-sheet">
+    html {
+        line-height: 1.15;
+    }
 
-        body {
-            margin: 0;
-        }
+    body {
+        margin: 0;
+    }
 
-        * {
-            box-sizing: border-box;
-            border-width: 0;
-            border-style: solid;
-        }
+    * {
+        box-sizing: border-box;
+        border-width: 0;
+        border-style: solid;
+    }
 
-        p, li, ul, pre, div, h1, h2, h3, h4, h5, h6, figure, blockquote, figcaption {
-            margin: 0;
+    p, li, ul, pre, div, h1, h2, h3, h4, h5, h6, figure, blockquote, figcaption {
+        margin: 0;
+        padding: 0;
+    }
+
+    button {
+        background-color: transparent;
+    }
+
+    button, input, optgroup, select, textarea {
+        font-family: inherit;
+        font-size: 100%;
+        line-height: 1.15;
+        margin: 0;
+    }
+
+    button, select {
+        text-transform: none;
+    }
+
+    button, [type="button"], [type="reset"], [type="submit"] {
+        -webkit-appearance: button;
+    }
+
+        button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
+            border-style: none;
             padding: 0;
         }
 
-        button {
-            background-color: transparent;
+        button:-moz-focus, [type="button"]:-moz-focus, [type="reset"]:-moz-focus, [type="submit"]:-moz-focus {
+            outline: 1px dotted ButtonText;
         }
 
-        button, input, optgroup, select, textarea {
-            font-family: inherit;
-            font-size: 100%;
-            line-height: 1.15;
-            margin: 0;
-        }
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
 
-        button, select {
-            text-transform: none;
-        }
+    input {
+        padding: 2px 4px;
+    }
 
-        button, [type="button"], [type="reset"], [type="submit"] {
-            -webkit-appearance: button;
-        }
+    img {
+        display: block;
+    }
 
-            button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
-                border-style: none;
-                padding: 0;
-            }
+    html {
+        scroll-behavior: smooth
+    }
+</style>
+<style data-tag="default-style-sheet">
+    html {
+        font-family: Poppins;
+        font-size: 16px;
+    }
 
-            button:-moz-focus, [type="button"]:-moz-focus, [type="reset"]:-moz-focus, [type="submit"]:-moz-focus {
-                outline: 1px dotted ButtonText;
-            }
-
-        a {
-            color: inherit;
-            text-decoration: inherit;
-        }
-
-        input {
-            padding: 2px 4px;
-        }
-
-        img {
-            display: block;
-        }
-
-        html {
-            scroll-behavior: smooth
-        }
-    </style>
-    <style data-tag="default-style-sheet">
-        html {
-            font-family: Poppins;
-            font-size: 16px;
-        }
-
-        body {
-            font-weight: 400;
-            font-style: normal;
-            text-decoration: none;
-            text-transform: none;
-            letter-spacing: normal;
-            line-height: 1.15;
-            color: var(--dl-color-scheme-green100);
-            background-color: var(--dl-color-scheme-yellow20);
-        }
-    </style>
-    <link rel="shortcut icon"
-          href="public/logo1.png"
-          type="icon/png"
-          sizes="32x32" />
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-          data-tag="font" />
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-          data-tag="font" />
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-          data-tag="font" />
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&amp;display=swap"
-          data-tag="font" />
-
-
-   
+    body {
+        font-weight: 400;
+        font-style: normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-scheme-green100);
+        background-color: var(--dl-color-scheme-yellow20);
+    }
+</style>
+<link rel="shortcut icon"
+      href="public/logo1.png"
+      type="icon/png"
+      sizes="32x32" />
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font" />
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font" />
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font" />
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&amp;display=swap"
+      data-tag="font" />
 
 
 
 
-    <!--This is the head section-->
-    <!-- <script type="text/javascript"> ... </script> -->
-    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
 
-    <div>
-        <link rel="stylesheet" href="~/css/result-page.css" asp-append-version="true" />
-   
-        <div class="result-page-container">
-            
-            <div class="navbar-container">
+
+
+<!--This is the head section-->
+<!-- <script type="text/javascript"> ... </script> -->
+<link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+
+<div>
+    <link rel="stylesheet" href="~/css/result-page.css" asp-append-version="true" />
+
+    <div class="result-page-container">
+
+        <div class="navbar-container">
             <a class="result-page-logo" asp-controller="Home" asp-action="Index">
-                    <img alt="image"
+                <img alt="image"
                      src="~/img/logo-200h.png"
-                         class="result-page-image" />
-                    <span class="brandName">
-                        <span class="result-page-text01">NMIS-</span>
-                        <span>&nbsp;SMFA</span>
-                    </span>
-                </a>
-                <div class="result-page-links">
+                     class="result-page-image" />
+                <span class="brandName">
+                    <span class="result-page-text01">NMIS-</span>
+                    <span>&nbsp;SMFA</span>
+                </span>
+            </a>
+            <div class="result-page-links">
                 <a class="result-page-home" asp-controller="Home" asp-action="Index">HOME</a>
                 <a class="result-page-articles" href="/Home/Index#articles">ARTICLES</a>
                 <a class="result-page-faqs" href="/Home/Index#FAQs">FAQS</a>
                 <a class="result-page-aboutus" href="/Home/Index#footer">ABOUT US</a>
                 <a class="button-secondary button" asp-controller="Trace" asp-action="Index">TRACE</a>
                 <a class="button button-primary" asp-area="Identity" asp-page="/Account/Login">LOG IN</a>
-                </div>
-                <div class="result-page-burger-menu navbar-burger-menu">
-                    <svg viewBox="0 0 1024 1024" class="result-page-icon">
-                        <path d="M128 256h768v86h-768v-86zM128 554v-84h768v84h-768zM128 768v-86h768v86h-768z"></path>
-                    </svg>
-                </div>
-               
             </div>
-            <div class="result-page-container1">
-                <div class="app-component-container app-component-root-class-name">
-                    <div class="app-component-container01">
+            <div class="result-page-burger-menu navbar-burger-menu">
+                <svg viewBox="0 0 1024 1024" class="result-page-icon">
+                    <path d="M128 256h768v86h-768v-86zM128 554v-84h768v84h-768zM128 768v-86h768v86h-768z"></path>
+                </svg>
+            </div>
 
-
-                    @if(Model.Species == thesis.Data.Enum.Species.Carabao)
+        </div>
+        <div class="result-page-container1">
+            <div class="app-component-container app-component-root-class-name">
+                <div class="app-component-container01">
+                    @if (Model.Species == thesis.Data.Enum.Species.Carabao)
                     {
                         <img alt="image"
                              src="~/img/Heads/carabao.png"
-                        class="app-component-image" />
+                             class="app-component-image" />
                     }
                     else if (Model.Species == thesis.Data.Enum.Species.Cattle)
                     {
@@ -171,179 +169,177 @@
                     {
                         <img alt="image"
                              src="~/img/Heads/sheep.png"
-                        class="app-component-image" />
+                             class="app-component-image" />
                     }
                     else
                     {
                         <img alt="image"
                              src="~/img/Heads/hog.png"
-                        class="app-component-image" />
-                        
-                    }
+                             class="app-component-image" />
 
+                    }
+                </div>
+                <div class="app-component-container02">
+                    <span class="app-component-uid brandName" style="text-transform:none;">
+                        <span>@Model.uid</span>
+                        <br />
+                    </span>
+                    <h3 class="app-component-productinfo">
+                        <span>PRODUCT INFO</span>
+                    </h3>
+                    <div class="app-component-container03">
+                        <p class="app-component-text02"><span>Specie:</span></p>
+                        <span class="app-component-specie"><span>@Model.Species</span></span>
                     </div>
-                    <div class="app-component-container02">
-                        <span class="app-component-uid brandName" style="text-transform:none;">
-                            <span>@Model.uid</span>
+                    <div class="app-component-container04">
+                        <p class="app-component-text03">
+                            <span>Category of Food Animal:&nbsp;</span>
+                        </p>
+                        <span class="app-component-catoffoodanimals">
+                            <span>Big</span> @*skip*@
                             <br />
                         </span>
-                        <h3 class="app-component-productinfo">
-                            <span>PRODUCT INFO</span>
-                        </h3>
-                        <div class="app-component-container03">
-                            <p class="app-component-text02"><span>Specie:</span></p>
-                            <span class="app-component-specie"><span>@Model.Species</span></span>
-                        </div>
-                        <div class="app-component-container04">
-                            <p class="app-component-text03">
-                                <span>Category of Food Animal:&nbsp;</span>
-                            </p>
-                            <span class="app-component-catoffoodanimals">
-                                <span>Big</span> @*skip*@
-                                <br />
-                            </span>
-                        </div>
-                        <h3 class="app-component-recinfo"><span>RECEIVING INFO</span></h3>
-                        <div class="app-component-container05">
-                            <p class="app-component-text06"><span>Received By:</span></p>
-                            <span class="app-component-receivedby">
-                                <span>Juan Dela Cruz</span> @*skip*@
-                                <br />
-                            </span>
-                        </div>
-                        <div class="app-component-container06">
-                            <p class="app-component-text09"><span>Received Time:</span></p>
-                            <span class="app-component-recdate">
-                                <span>@Model.RecTime.Date</span>
-                            </span>
-                        </div>
-                        <div class="app-component-container07">
-                            <p class="app-component-text10"><span>Live Weight:</span></p>
-                            <span class="app-component-liveweight">
-                                <span>@Model.LiveWeight</span>
-                            </span>
-                        </div>
-                        <div class="app-component-container08">
-                            <p class="app-component-text11"><span>No. of Heads:</span></p>
-                            <span class="app-component-recnoheads"><span>@Model.NoOfHeads</span></span>
-                        </div>
-                        <h3 class="app-component-insrepinfo">
-                            <span>INSPECTION REPORT</span>
-                        </h3>
-                        <div class="app-component-container09">
-                            <p class="app-component-text12"><span>Report Date:</span></p>
-                            <span class="app-component-repdate">
-                                <span>02 / 23 / 2023</span> @*skip*@
-                            </span>
-                        </div>
-                        <div class="app-component-container10">
-                            <p class="app-component-text13"><span>No. of Heads:</span></p>
-                            <span class="app-component-insnoofheads"><span>2</span></span>
-                        </div>
-                        <div class="app-component-container11">
-                            <p class="app-component-text14"><span>Dressed Weight</span></p>
-                            <span class="app-component-dressedweight">
-                                <span>@Model.DressedWeight</span>
-                            </span>
-                        </div>
-                        <div class="app-component-container12">
-                            <p class="app-component-text15">
-                                <span>Certificate Status:</span>
-                            </p>
-                            <span class="app-component-cerstatus"><span>@Model.CertificateStatus</span></span>
-                        </div>
-                        <h3 class="app-component-farminfo"><span>FARM INFO</span></h3>
-                        <div class="app-component-container13">
-                            <p class="app-component-text16">
-                                <span>Origin of Food Animals:</span>
-                            </p>
-                            <span class="app-component-originoffoodanimals">
-                                <span>Region XI, Davao Del Sur, Davao City, Bankerohan</span> @*skip*@
-                            </span>
-                        </div>
+                    </div>
+                    <h3 class="app-component-recinfo"><span>RECEIVING INFO</span></h3>
+                    <div class="app-component-container05">
+                        <p class="app-component-text06"><span>Received By:</span></p>
+                        <span class="app-component-receivedby">
+                            <span>Juan Dela Cruz</span> @*skip*@
+                            <br />
+                        </span>
+                    </div>
+                    <div class="app-component-container06">
+                        <p class="app-component-text09"><span>Received Time:</span></p>
+                        <span class="app-component-recdate">
+                            <span>@Model.RecTime.Date</span>
+                        </span>
+                    </div>
+                    <div class="app-component-container07">
+                        <p class="app-component-text10"><span>Live Weight:</span></p>
+                        <span class="app-component-liveweight">
+                            <span>@Model.LiveWeight</span>
+                        </span>
+                    </div>
+                    <div class="app-component-container08">
+                        <p class="app-component-text11"><span>No. of Heads:</span></p>
+                        <span class="app-component-recnoheads"><span>@Model.NoOfHeads</span></span>
+                    </div>
+                    <h3 class="app-component-insrepinfo">
+                        <span>INSPECTION REPORT</span>
+                    </h3>
+                    <div class="app-component-container09">
+                        <p class="app-component-text12"><span>Report Date:</span></p>
+                        <span class="app-component-repdate">
+                            <span>02 / 23 / 2023</span> @*skip*@
+                        </span>
+                    </div>
+                    <div class="app-component-container10">
+                        <p class="app-component-text13"><span>No. of Heads:</span></p>
+                        <span class="app-component-insnoofheads"><span>2</span></span>
+                    </div>
+                    <div class="app-component-container11">
+                        <p class="app-component-text14"><span>Dressed Weight</span></p>
+                        <span class="app-component-dressedweight">
+                            <span>@Model.DressedWeight</span>
+                        </span>
+                    </div>
+                    <div class="app-component-container12">
+                        <p class="app-component-text15">
+                            <span>Certificate Status:</span>
+                        </p>
+                        <span class="app-component-cerstatus"><span>@Model.CertificateStatus</span></span>
+                    </div>
+                    <h3 class="app-component-farminfo"><span>FARM INFO</span></h3>
+                    <div class="app-component-container13">
+                        <p class="app-component-text16">
+                            <span>Origin of Food Animals:</span>
+                        </p>
+                        <span class="app-component-originoffoodanimals">
+                            <span>Region XI, Davao Del Sur, Davao City, Bankerohan</span> @*skip*@
+                        </span>
                     </div>
                 </div>
-                <div class="result-page-hero">
-                    <div class="result-page-container2">
-                        <div class="result-page-questions">
-                            <span class="result-page-text03 beforeHeading">
-                                OTHER MEAT INFO
-                            </span>
-                            <h1 class="result-page-text04">
-                                <span class="result-page-text05">NMIS SCANNED RESULT</span>
-                                <br />
-                                <span class="result-page-text07">Database</span>
-                            </h1>
-                            <div data-role="Accordion"
-                                 class="result-page-meatuidq question">
-                                <div data-type="accordion-header" class="result-page-trigger">
-                                    <span class="result-page-text08">
-                                        Meat Unique Identifier (UID)
-                                    </span>
-                                    <svg viewBox="0 0 1024 1024" class="result-page-icon02">
-                                        <path d="M810 554h-256v256h-84v-256h-256v-84h256v-256h84v256h256v84z"></path>
-                                    </svg>
-                                </div>
-                                <div data-type="accordion-content" class="question-content">
-                                    <span class="result-page-text09">
-                                        @Model.uid
-                                    </span>
-                                </div>
+            </div>
+            <div class="result-page-hero">
+                <div class="result-page-container2">
+                    <div class="result-page-questions">
+                        <span class="result-page-text03 beforeHeading">
+                            OTHER MEAT INFO
+                        </span>
+                        <h1 class="result-page-text04">
+                            <span class="result-page-text05">NMIS SCANNED RESULT</span>
+                            <br />
+                            <span class="result-page-text07">Database</span>
+                        </h1>
+                        <div data-role="Accordion"
+                             class="result-page-meatuidq question">
+                            <div data-type="accordion-header" class="result-page-trigger">
+                                <span class="result-page-text08">
+                                    Meat Unique Identifier (UID)
+                                </span>
+                                <svg viewBox="0 0 1024 1024" class="result-page-icon02">
+                                    <path d="M810 554h-256v256h-84v-256h-256v-84h256v-256h84v256h256v84z"></path>
+                                </svg>
                             </div>
-                            <div data-role="Accordion"
-                                 class="result-page-meatdealerq question">
-                                <div data-type="accordion-header"
-                                     class="result-page-trigger1">
-                                    <span class="result-page-text10">
-                                        Meat Dealer (Meat Dealer Name, Address, Contact)
-                                    </span>
-                                    <svg viewBox="0 0 1024 1024" class="result-page-icon04">
-                                        <path d="M810 554h-256v256h-84v-256h-256v-84h256v-256h84v256h256v84z"></path>
-                                    </svg>
-                                </div>
-                                <div data-type="accordion-content" class="question-content">
-                                    <span class="result-page-text11">
-                                        @Model.MeatDealer @*skip*@
-                                    </span>
-                                </div>
+                            <div data-type="accordion-content" class="question-content">
+                                <span class="result-page-text09">
+                                    @Model.uid
+                                </span>
                             </div>
-                            <div data-role="Accordion"
-                                 class="result-page-meatestabq question">
-                                <div data-type="accordion-header"
-                                     class="result-page-trigger2">
-                                    <span class="result-page-text12">
-                                        Meat Establishment Address (Establishment Name, Address,
-                                        LTO #)
-                                    </span>
-                                    <svg viewBox="0 0 1024 1024" class="result-page-icon06">
-                                        <path d="M810 554h-256v256h-84v-256h-256v-84h256v-256h84v256h256v84z"></path>
-                                    </svg>
-                                </div>
-                                <div data-type="accordion-content" class="question-content">
-                                    <span class="result-page-text13">
-                                        Amet minim mollit non deserunt ullamco est sit aliqua
-                                        dolor do amet sint. Velit officia consequat duis enim
-                                        velit mollit. @*skip*@
-                                    </span>
-                                </div>
+                        </div>
+                        <div data-role="Accordion"
+                             class="result-page-meatdealerq question">
+                            <div data-type="accordion-header"
+                                 class="result-page-trigger1">
+                                <span class="result-page-text10">
+                                    Meat Dealer (Meat Dealer Name, Address, Contact)
+                                </span>
+                                <svg viewBox="0 0 1024 1024" class="result-page-icon04">
+                                    <path d="M810 554h-256v256h-84v-256h-256v-84h256v-256h84v256h256v84z"></path>
+                                </svg>
                             </div>
-                            <div data-role="Accordion" class="result-page-mtvq question">
-                                <div data-type="accordion-header"
-                                     class="result-page-trigger3">
-                                    <span class="result-page-text14">
-                                        MTV (Shipping Documents)
-                                    </span>
-                                    <svg viewBox="0 0 1024 1024" class="result-page-icon08">
-                                        <path d="M810 554h-256v256h-84v-256h-256v-84h256v-256h84v256h256v84z"></path>
-                                    </svg>
-                                </div>
-                                <div data-type="accordion-content" class="question-content">
-                                    <span class="result-page-text15">
-                                        Amet minim mollit non deserunt ullamco est sit aliqua
-                                        dolor do amet sint. Velit officia consequat duis enim
-                                        velit mollit. @*skip*@
-                                    </span>
-                                </div>
+                            <div data-type="accordion-content" class="question-content">
+                                <span class="result-page-text11">
+                                    @Model.MeatDealer @*skip*@
+                                </span>
+                            </div>
+                        </div>
+                        <div data-role="Accordion"
+                             class="result-page-meatestabq question">
+                            <div data-type="accordion-header"
+                                 class="result-page-trigger2">
+                                <span class="result-page-text12">
+                                    Meat Establishment Address (Establishment Name, Address,
+                                    LTO #)
+                                </span>
+                                <svg viewBox="0 0 1024 1024" class="result-page-icon06">
+                                    <path d="M810 554h-256v256h-84v-256h-256v-84h256v-256h84v256h256v84z"></path>
+                                </svg>
+                            </div>
+                            <div data-type="accordion-content" class="question-content">
+                                <span class="result-page-text13">
+                                    Amet minim mollit non deserunt ullamco est sit aliqua
+                                    dolor do amet sint. Velit officia consequat duis enim
+                                    velit mollit. @*skip*@
+                                </span>
+                            </div>
+                        </div>
+                        <div data-role="Accordion" class="result-page-mtvq question">
+                            <div data-type="accordion-header"
+                                 class="result-page-trigger3">
+                                <span class="result-page-text14">
+                                    MTV (Shipping Documents)
+                                </span>
+                                <svg viewBox="0 0 1024 1024" class="result-page-icon08">
+                                    <path d="M810 554h-256v256h-84v-256h-256v-84h256v-256h84v256h256v84z"></path>
+                                </svg>
+                            </div>
+                            <div data-type="accordion-content" class="question-content">
+                                <span class="result-page-text15">
+                                    Amet minim mollit non deserunt ullamco est sit aliqua
+                                    dolor do amet sint. Velit officia consequat duis enim
+                                    velit mollit. @*skip*@
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -351,81 +347,79 @@
             </div>
         </div>
     </div>
+</div>
 
 <link rel="stylesheet" href="~/css/feedback.css" asp-append-version="true" />
-<script src="~/js/feedback.js" asp-append-version="true" defer></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let hasStarBeenClicked = false;
+        let numberOfStarsClicked = 0;
 
-   document.addeventlistener('domcontentloaded', function () {
-    var headertext = document.getelementbyid('header-text');
-    var submitbutton = document.getelementbyid('submit-button');
-    var ratingboxmodal = document.getelementbyid('rating-box-modal');
-
-    // show the rating-box modal with animation after 3 seconds
-    settimeout(function () {
-        ratingboxmodal.classlist.add('show'); // add the 'show' class to trigger the animation
-    }, 5000);
-
-    submitbutton.addeventlistener('click', function (event) {
-        event.preventdefault();
-        if (hasstarbeenclicked) {
-            headertext.textcontent = "thank you for submitting";
-
-            // log the final rating
-            console.log(`submitted with ${numberofstarsclicked} ${numberofstarsclicked > 1 ? 'stars' : 'star'}`);
-
-            // send the data to the server
-            fetch('/trace/submitrating', {
-                method: 'post',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: json.stringify({ numberofstarsclicked: numberofstarsclicked })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // handle the response from the server, e.g., show a success message
-                    console.log(data.message);
-                })
-                .catch(error => {
-                    // handle any errors that occurred during the fetch
-                    console.error('error:', error);
+        const stars = document.querySelectorAll(".stars i");
+        stars.forEach((star, index) => {
+            star.addEventListener('click', function () {
+                hasStarBeenClicked = true;
+                numberOfStarsClicked = index + 1;
+                stars.forEach((s, idx) => {
+                    if (idx <= index) s.classList.add('active');
+                    else s.classList.remove('active');
                 });
+            });
+        });
 
-            // close the modal after 1 second
-            settimeout(function () {
-                ratingboxmodal.classlist.remove('show');  // remove the 'show' class to hide the modal
-            }, 1000);
+        var headerText = document.getElementById('header-text');
+        var submitButton = document.getElementById('submit-button');
+        var ratingBoxModal = document.getElementById('rating-box-modal');
 
-        } else {
-            // you could add additional logic here to remind the user to click a star
-            headertext.textcontent = "please leave us a feedback";
-        }
+        setTimeout(function () {
+            ratingBoxModal.classList.add('show');
+        }, 5000);
+
+        submitButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            if (hasStarBeenClicked) {
+                headerText.textContent = "Thank you for submitting";
+
+                fetch('/Trace/SubmitRating', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ NumberOfStarsClicked: numberOfStarsClicked })
+                })
+                    .then(response => response.json())
+                    .then(data => console.log(data.message))
+                    .catch(error => console.error('Error:', error));
+
+                setTimeout(function () {
+                    ratingBoxModal.classList.remove('show');
+                }, 1000);
+            } else {
+                headerText.textContent = "Please Leave us a Feedback";
+            }
+        });
     });
-});
-
-
 </script>
+
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 <div class="feedback-container">
     <div class="rating-box" id="rating-box-modal">
-        <h1 id="header-text" style="color: var(--second-color);">how was your experience?</h1>
+        <h1 id="header-text" style="color: var(--second-color);">How was your experience?</h1>
         <div class="stars">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
         </div>
         <div class="btn-done">
-            <a href="#" id="submit-button" class="btn">submit rating</a>
+            <a href="#" id="submit-button" class="btn">Submit Rating</a>
         </div>
     </div>
 </div>
 
 
-    <script>
+
+<script>
     document.addeventlistener('domcontentloaded', () => {
         const runallscripts = () => {
             initializeallaccordions();
@@ -468,4 +462,4 @@
         runallscripts();
     });
 
-    </script>
+</script>
