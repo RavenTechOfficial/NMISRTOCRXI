@@ -665,6 +665,116 @@
 				</nav>
 			</div>
 		}
+		if (User.IsInRole("MtvInspector"))
+		{
+			<section id="sidebar">
+
+				<div class="head">
+					<div class="logo">
+						<a asp-area="" asp-controller="Dashboard" asp-action="Index">
+							<img src="~/img/logo.png" />
+						</a>
+					</div>
+					<div class="details">
+						<p class="office">NMIS</p>
+						<p class="region">RTOC XI</p>
+					</div>
+				</div>
+
+				<ul class="side-menu top">
+					<p class="title">Main</p>
+					<li>
+						<a asp-area="" asp-controller="MTVInspectorDashboard" asp-action="Index">
+							<i class='bx bxs-dashboard'></i>
+							<span class="text">MTV Dashboard</span>
+						</a>
+					</li>
+					<li>
+						<a asp-area="" asp-controller="MTVInspectorRegistrationstatus" asp-action="Index">
+							<i class='bx bxs-dashboard'></i>
+							<span class="text">MTV Registration Status</span>
+						</a>
+					</li>
+
+
+
+				</ul>
+
+
+				<ul class="side-menu bot">
+					<p class="title">Others</p>
+					<li>
+						<a asp-area="Identity" asp-page="/Account/Manage/Index">
+							<i class='bx bxs-cog'></i>
+							<span class="text">Settings</span>
+						</a>
+					</li>
+					<li>
+						<a class="logout" data-toggle="modal" data-target="#logoutModal">
+							<i class='bx bxs-log-out-circle'></i>
+							<span class="text">Logout</span>
+						</a>
+					</li>
+				</ul>
+
+				<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								Do you really want to log out?
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+								<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+									<button type="submit" class="btn btn-danger">Logout</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- SIDEBAR -->
+			<!-- NAVBAR -->
+			<div id="navbar">
+				<nav>
+					<i class='bx bx-menu'></i>
+					<form action="#">
+					</form>
+					<input type="checkbox" id="switch-mode" hidden>
+					<label for="switch-mode" class="switch-mode"></label>
+					<div class="dropdown">
+
+						<a href="#" class="notification dropdown-toggle" id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="num" style="position: absolute; margin-right: 20px;">5</span>
+							<i class='bx bxs-bell'></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right" style="background-color: var(--light);" aria-labelledby="notificationDropdown">
+							<a class="dropdown-item" href="#">Something</a>
+							<a class="dropdown-item" href="#">Something</a>
+							<a class="dropdown-item" href="#">Something</a>
+							<a class="dropdown-item" href="#">Something</a>
+							<a class="dropdown-item" href="#">Something</a>
+						</div>
+					</div>
+					<div class="dropdown">
+						<a href="#" class="profile dropdown-toggle" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<img src="~/img/people.png">
+						</a>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+							<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Account Settings</a>
+
+							<a class="dropdown-item logout" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+		}
 		if (User.IsInRole("MtvUsers"))
 		{
 			<section id="sidebar">

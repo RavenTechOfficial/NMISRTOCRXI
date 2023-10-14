@@ -38,6 +38,10 @@ namespace thesis.Controllers
             {
                 return RedirectToAction("Index", "MTVdashboard");
             }
+			else if (User.Identity.IsAuthenticated && User.IsInRole("MtvInspector"))
+			{
+				return RedirectToAction("Index", "MtvInspectorDashboard");
+			}
 			else if (User.Identity.IsAuthenticated && User.IsInRole("MtvUsers"))
 			{
 				return RedirectToAction("Create", "MTVapplication");

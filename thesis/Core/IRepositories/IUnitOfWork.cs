@@ -10,5 +10,6 @@
         IGeolocationRepository Geolocation { get; }
         IResultsRepository ResultPage { get; }
         IFeedbackRepository Feedback { get; }
+        IChroplethMapRepository ChroplethMap { get; }
     }
 }

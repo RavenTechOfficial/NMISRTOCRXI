@@ -132,6 +132,7 @@ namespace thesis.Controllers
 				Email = mTVApplicationVM.Email,
 				TelNo = mTVApplicationVM.TelNo,
 				FaxNo = mTVApplicationVM.FaxNo,
+                Status = mTVApplicationVM.Status,
 				Vehicle = new VehicleInfo
 				{
 					VehicleMaker = mTVApplicationVM.VehicleMaker,
@@ -267,5 +268,17 @@ namespace thesis.Controllers
         {
           return (_context.MTVApplications?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-    }
+
+
+		[HttpPost]
+		public ActionResult GenerateRandomNumber()
+		{
+			Random random = new Random();
+			int randomNumber = random.Next(100000, 999999);
+			return Content(randomNumber.ToString());
+		}
+
+
+
+	}
 }

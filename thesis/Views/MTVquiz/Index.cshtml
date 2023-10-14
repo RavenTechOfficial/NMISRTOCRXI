@@ -10,10 +10,30 @@
             </a>
         </div>
         <div class="facebook-container1">
-            <a href="https://www.facebook.com/100001020124175/videos/3077873365589971/" target="_blank" class="facebook-link">
+            
                 <h2 class="hide">Click here to visit the Seminar page</h2>
             </a>
         </div>
+            <div class="modal" id="myModal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="exit-button" id="btnExit">×</span>
+                    <p>Do you want to continue?</p>
+                    <button id="fblink">Click here to watch at our FB Page</button>
+                    <button id="drivelink">Click here for pop-up video</button>
+                </div>
+            </div>
+            <!-- Second modal for the video -->
+            <div class="modal" id="videoModal">
+                <!-- Modal content for the video -->
+                <div class="modal-content" id="videoContent">
+                    <span class="exit-button" id="btnExitVideo">×</span>
+                    <p>Video</p>
+                    <div id="videoContainer" class="hidden">
+                        <iframe width="100%" height="400" src="https://youtu.be/SxDm6grZaEk?si=AyQkCgeZacYY-dL7" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
     </div>
     <div class="home-box custom-box ">
         <h3>instruction:</h3>
@@ -71,5 +91,34 @@
     </main>
 
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="~/js/question.js" asp-append-version="true"></script>
-    <script src="~/js/appquiz.js" asp-append-version="true"></script>
+    <script src="~/js/appquiz.js" asp-append-version="true"></script>4
+
+<script>
+    function quizResult() {
+        resultBox.querySelector(".total-question").innerHTML = quiz.length;
+        resultBox.querySelector(".total-attempt").innerHTML = attempt;
+        resultBox.querySelector(".total-correct").innerHTML = correctAnswers;
+        resultBox.querySelector(".total-wrong").innerHTML = attempt - correctAnswers;
+
+        
+        const percentage = (correctAnswers / quiz.length) * 100;
+        resultBox.querySelector(".percentage").innerHTML = percentage.toFixed(2) + "%"; // Fixed the usage of toFixed()
+
+        resultBox.querySelector(".total-score").innerHTML = correctAnswers + " / " + quiz.length;
+
+        $.ajax({
+            url: "/MTVquiz/SavePercentage",
+            type: "POST",
+            data: { percentage: percentage.toFixed(2) },
+            success: function (response) {
+                console.log("Percentage sent successfully:", response);
+            },
+            error: function (error) {
+                console.log("Error sending percentage:", error);
+            }
+        });
+    }
+</script>

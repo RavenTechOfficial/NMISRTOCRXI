@@ -1,3 +1,30 @@
+//date and time realtime
+document.addEventListener('DOMContentLoaded', function () {
+    // Your JavaScript code here
+
+    function updateTimeAndDate() {
+        var currentTime = new Date();
+
+        // Format the date as YYYY-MM-DD
+        var formattedDate = currentTime.toISOString().split('T')[0];
+
+        // Format the time as HH:MM:SS
+        var formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        // Set the values of the date and time input fields
+        document.getElementById('dateInput').value = formattedDate;
+        document.getElementById('timeInput').value = formattedTime;
+    }
+
+    // Update the date and time input fields initially
+    updateTimeAndDate();
+
+    // Update the date and time input fields every second to display real-time
+    setInterval(updateTimeAndDate, 1000);
+});
+
+
+
 
 const tableRows = document.querySelectorAll("#applications-table1 tbody tr");
 const modal = document.getElementById("myModal");
