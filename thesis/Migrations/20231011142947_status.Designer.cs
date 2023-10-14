@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thesis.Data;
 
@@ -11,9 +12,11 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    partial class thesisContextModelSnapshot : ModelSnapshot
+    [Migration("20231011142947_status")]
+    partial class status
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -621,8 +624,15 @@ namespace thesis.Migrations
                     b.Property<int>("MTVApplicationId")
                         .HasColumnType("int");
 
+                    b.Property<int>("gender")
+                        .HasColumnType("int");
+
                     b.Property<int>("passorfail")
                         .HasColumnType("int");
+
+                    b.Property<string>("plateNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

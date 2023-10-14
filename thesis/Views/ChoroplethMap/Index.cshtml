@@ -1,4 +1,8 @@
-﻿	<!-- leaflet -->
+﻿@using thesis.Core.ViewModel;
+@model ChroplethMapViewModel
+
+
+<!-- leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 	  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
 	  crossorigin="" />
@@ -41,20 +45,29 @@
 				</div>
 
 				<ul class="list-items">
+					<form method="post" action="/ChoroplethMap/ActionResult">
 					<li class="item" data-type="heatmap">
-						<span class="checkbox">
-							<i class='bx bx-check check-icon'></i>
-						</span>
+						@*<span class="checkbox">*@
+							<input type="radio" name="selectedOption" value="Meat Sources" id="meatSources">
+							@*<label for="meatSources">
+								<i class='bx bx-check check-icon'></i>
+							</label>*@
+						@*</span>*@
 						<span class="item-text">Meat Sources (# of Heads)</span>
 					</li>
 					<li class="item" data-type="heatmap">
-						<span class="checkbox">
-							<i class='bx bx-check check-icon'></i>
-						</span>
+						@*<span class="checkbox">*@
+							<input type="radio" name="selectedOption" value="Meat Distribution" id="meatDistribution">
+							@*<label for="meatDistribution">
+								<i class='bx bx-check check-icon'></i>
+							</label>*@
+						@*</span>*@
 						<span class="item-text">Meat Distribution (Weight)</span>
 					</li>
-					<button type="button" class="btn btn-primary">Apply</button>
+					<button type="submit" class="btn btn-primary">Apply</button>
+					</form>
 				</ul>
+
 			</div>
 
 			<div class="container species">
@@ -113,82 +126,50 @@
 
 <script>
 	// Initial map setup
-
 	const map = L.map('map', {
 		zoomControl: false
 	}).setView([7.3042, 125.6853], 8);
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-	//Diri Isulod ang mga DATA!!!!!
+	
+	
 	const municipalityData = [
-		{ name: "Davao Del Norte, Samal City", value: 1000 },
-		{ name: "Davao Del Norte, Tagum City", value: 2000 },
-		{ name: "Davao Del Norte, Panabo City", value: 1500 },
-		{ name: "Davao Del Norte, Carmen", value: 500 },
-		{ name: "Davao Del Norte, Kapalong", value: 300 },
-		{ name: "Davao Del Norte, New Corella", value: 250 },
-		{ name: "Davao Del Norte, Asuncion", value: 100 },
-		{ name: "Davao Del Norte, Santo Tomas", value: 350 },
-		{ name: "Davao Del Norte, Talaingod", value: 50 },
-		{ name: "Davao Del Norte, Braulio E. Dujali", value: 75 },
-		{ name: "Davao Del Norte, San Isidro", value: 90 },
-
-		{ name: "Davao Del Sur, Davao City", value: 300 },
-		{ name: "Davao Del Sur, Digos City", value: 400 },
-		{ name: "Davao Del Sur, Santa Cruz", value: 250 },
-		{ name: "Davao Del Sur, Hagonoy", value: 150 },
-		{ name: "Davao Del Sur, Bansalan", value: 110 },
-		{ name: "Davao Del Sur, Magsaysay", value: 90 },
-		{ name: "Davao Del Sur, Matanao", value: 80 },
-		{ name: "Davao Del Sur, Sulop", value: 60 },
-		{ name: "Davao Del Sur, Padada", value: 55 },
-		{ name: "Davao Del Sur, Malalag", value: 50 },
-		{ name: "Davao Del Sur, Kiblawan", value: 40 },
-
-		{ name: "Davao Oriental, Mati City", value: 800 },
-		{ name: "Davao Oriental, Lupon", value: 39 },
-		{ name: "Davao Oriental, Banaybanay", value: 1357 },
-		{ name: "Davao Oriental, Cateel", value: 2854 },
-		{ name: "Davao Oriental, San Isidro", value: 546 },
-		{ name: "Davao Oriental, Boston", value: 1875 },
-		{ name: "Davao Oriental, Baganga", value: 600 },
-		{ name: "Davao Oriental, Caraga", value: 250 },
-		{ name: "Davao Oriental, Governor Generoso", value: 200 },
-		{ name: "Davao Oriental, Manay", value: 150 },
-		{ name: "Davao Oriental, Tarragona", value: 100 },
-
-		{ name: "Davao De Oro, Nabunturan", value: 1500 },
-		{ name: "Davao De Oro, Compostela", value: 1400 },
-		{ name: "Davao De Oro, Monkayo", value: 1300 },
-		{ name: "Davao De Oro, Montevista", value: 1250 },
-		{ name: "Davao De Oro, Pantukan", value: 2357 },
-		{ name: "Davao De Oro, Mawab", value: 5200 },
-		{ name: "Davao De Oro, Maragusan", value: 1150 },
-		{ name: "Davao De Oro, Maco", value: 1100 },
-		{ name: "Davao De Oro, Mabini", value: 1050 },
-		{ name: "Davao De Oro, New Bataan", value: 1000 },
-		{ name: "Davao De Oro, Laak", value: 950 },
-
-
-		{ name: "Davao Occidental, Santa Maria", value: 1800 },
-		{ name: "Davao Occidental, Malita", value: 2500 },
-		{ name: "Davao Occidental, Don Marcelino", value: 1600 },
-		{ name: "Davao Occidental, Jose Abad Santos", value: 1450 },
-		{ name: "Davao Occidental, Sarangani", value: 1350 }
+	@for (int i = 0; i < Model.Address.Count; i++)
+	{
+		var parts = Model.Address[i].Split(new[] { ", " }, StringSplitOptions.None);
+		string desiredAddress = (parts.Length >= 3) ? string.Join(", ", parts[1], parts[2]) : "Invalid Address";
+		@:{ name: "@desiredAddress", specie: "Cattle", value: @Model.Cattle[i] },
+		@:{ name: "@desiredAddress", specie: "Carabao", value: @Model.Carabao[i] },
+		@:{ name: "@desiredAddress", specie: "Swine", value: @Model.Swine[i] },
+		@:{ name: "@desiredAddress", specie: "Goat", value: @Model.Goat[i] },
+		@:{ name: "@desiredAddress", specie: "Chicken", value: @Model.Chicken[i] },
+		@:{ name: "@desiredAddress", specie: "Duck", value: @Model.Duck[i] },
+		@:{ name: "@desiredAddress", specie: "Sheep", value: @Model.Sheep[i] },
+		@:{ name: "@desiredAddress", specie: "Horse", value: @Model.Horse[i] },
+		@:{ name: "@desiredAddress", specie: "Ostrich", value: @Model.Ostrich[i] },
+		@:{ name: "@desiredAddress", specie: "Crocodile", value: @Model.Crocodile[i] },
+	}
 	];
 
+	// Aggregating total value per location
+	const locationTotals = municipalityData.reduce((acc, curr) => {
+		const existing = acc.find(item => item.name === curr.name);
+		if (existing) {
+			existing.value += curr.value;
+		} else {
+			acc.push({ name: curr.name, value: curr.value });
+		}
+		return acc;
+	}, []);
 
-	// Calculate the maximum value from the data
-	const maxValue = Math.max(...municipalityData.map(item => item.value));
+	// Getting max value from the aggregated totals
+	const maxValue = Math.max(...locationTotals.map(item => item.value));
 
-	//Truncation of the maximum Value
 	function truncateMaxValue(num) {
 		const length = num.toString().length;
 		const divisor = Math.pow(10, length - 1);
 		return Math.floor(num / divisor) * divisor;
 	}
 
-	// Functions related to map styling
 	function getColor(value, maxValue) {
 		const truncatedMax = truncateMaxValue(maxValue);
 		const getThreshold = (percentage) => {
@@ -207,7 +188,6 @@
 		return '#FFEDA0';
 	}
 
-
 	function styleFeature(feature) {
 		return {
 			fillColor: getColor(feature.properties.value, maxValue),
@@ -219,7 +199,6 @@
 		};
 	}
 
-	// Event handlers for features (e.g., municipalities)
 	function highlightFeature(e) {
 		const layer = e.target;
 		layer.setStyle({
@@ -228,17 +207,23 @@
 			dashArray: '',
 			fillOpacity: 0.7
 		});
-		layer.openTooltip();  // Open tooltip on mouseover
-
-		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-			layer.bringToFront();
-		}
+		layer.openTooltip();
 	}
 
 	function resetHighlight(e) {
 		const layer = e.target;
 		geojsonLayer.resetStyle(layer);
-		layer.closeTooltip();  // Close tooltip on mouseout
+		layer.closeTooltip();
+	}
+
+	function mergeDataWithGeoJSON(geoJSON, data) {
+		geoJSON.features.forEach(feature => {
+			const dataItems = data.filter(item => item.name.toUpperCase() === feature.properties.NAME_1.toUpperCase() + ", " + feature.properties.NAME_2.toUpperCase());
+			if (dataItems.length > 0) {
+				feature.properties.value = dataItems.reduce((sum, item) => sum + item.value, 0);
+				feature.properties.speciesData = dataItems;
+			}
+		});
 	}
 
 	function onEachFeature(feature, layer) {
@@ -246,22 +231,21 @@
 			mouseover: highlightFeature,
 			mouseout: resetHighlight
 		});
-		layer.bindTooltip(`<strong>${feature.properties.NAME_1}, ${feature.properties.NAME_2}</strong><br/>Meat Qty: ${feature.properties.value !== undefined ? feature.properties.value : 0} Kilograms`, {
+
+		let tooltipContent = `<strong>${feature.properties.NAME_1}, ${feature.properties.NAME_2}</strong><br/>Total Meat Qty: ${feature.properties.value !== undefined ? feature.properties.value : 0} Kilograms<br/>`;
+
+		if (feature.properties.speciesData) {
+			feature.properties.speciesData.forEach(item => {
+				tooltipContent += `${item.specie}: ${item.value} Kilograms<br/>`;
+			});
+		}
+
+		layer.bindTooltip(tooltipContent, {
 			permanent: false,
 			interactive: false
 		});
 	}
 
-
-	// Merge municipality data with GeoJSON
-	function mergeDataWithGeoJSON(geoJSON, data) {
-		geoJSON.features.forEach(feature => {
-			const datum = data.find(item => item.name.toUpperCase() === feature.properties.NAME_1.toUpperCase() + ", " + feature.properties.NAME_2.toUpperCase());
-			if (datum) {
-				feature.properties.value = datum.value;
-			}
-		});
-	}
 
 	// Fetch data and render on map
 	fetch('https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippines_municipalities.geojson')

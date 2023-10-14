@@ -15,11 +15,11 @@
 			<!-- Owner -->
 			<div class="container">
 				<header>Personal Information</header>
-				<div class="row">
+				<div class="column">
 					<div class="input-box roles">
 						<label><i class='bx bxs-bulb'></i>Type of Application</label>
 						<div class="select-box">
-							<select asp-for="applicationtype">
+							<select id="applicationType" asp-for="applicationtype">
 								<option hidden>Select Type</option>
 								<option value="NewApplication">New Application</option>
 								<option value="Renewal">Renewal</option>
@@ -27,6 +27,15 @@
 							<span asp-validation-for="applicationtype" class="text-danger"></span>
 						</div>
 					</div>
+					<div class="input-box">
+						<label><i class='bx bxs-user'></i>Accreditation Number</label>
+						<input type="text" id="AccreditationNumber" placeholder="Enter Accreditation Number" required readonly />
+					</div>
+					<li>
+						<a href="#">
+							<i class='bx bxs-search-alt-2'></i>
+						</a>
+					</li>
 				</div>
 				<div class="column">
 					<div class="input-box">
@@ -136,6 +145,10 @@
 								</select>
 								<span asp-validation-for="Est" class="text-danger"></span>
 							</div>
+						</div>
+						<div class="input-box">
+							<input type="text" value="Pending" asp-for="Status" hidden />
+							@*<span asp-validation-for="PlateNo" class="text-danger"></span>*@
 						</div>
 					</div>
 					<div class="row">
@@ -373,6 +386,35 @@
 </section>
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		// Handle change event of the select box
+		$('#applicationType').change(function () {
+			// Get selected value
+			var selectedValue = $(this).val();
+
+			// Check selected value
+			if (selectedValue === 'Renewal') {
+				// If New Application, remove readonly attribute
+				$('#AccreditationNumber').removeAttr('readonly');
+				$('#AccreditationNumber').val(''); // You may also want to clear the value
+			} else if (selectedValue === 'NewApplication') {
+				// If Renewal, set readonly attribute and generate random number
+				$('#AccreditationNumber').attr('readonly', true);
+
+				// Calling an AJAX POST request to get the random number from your controller
+				$.post('/MTVapplication/GenerateRandomNumber', function (data) {
+					// Set the received random number as the value
+					$('#AccreditationNumber').val(data);
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+					alert('Error occurred: ' + textStatus);
+				});
+			}
+		});
+	});
+</script>
 
 
 <script>
@@ -533,7 +575,10 @@
 
 		})
 		.catch(error => console.error('Error fetching JSON:', error));
+
+		
 </script>
+
 
 @section Scripts {
 	@{

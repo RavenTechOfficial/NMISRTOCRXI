@@ -68,6 +68,7 @@ void AddScoped()
     builder.Services.AddScoped<IGeolocationRepository, GeolocationRepository>();
     builder.Services.AddScoped<IResultsRepository, ResultsRepository>();
     builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+    builder.Services.AddScoped<IChroplethMapRepository, ChroplethMapRepository>();
 }
 
 void AddAuthorizationPolicies()

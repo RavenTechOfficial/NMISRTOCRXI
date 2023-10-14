@@ -19,7 +19,9 @@ namespace thesis.Repositories
 
 		public IFeedbackRepository Feedback { get; }
 
-		public UnitOfWork(
+        public IChroplethMapRepository ChroplethMap { get; }
+
+        public UnitOfWork(
             IReceivingReportRepository receivingReport,
             IMeatInspectionReportRepository meatInspectionReport,
             IDashboardRepository dashboard,
@@ -27,7 +29,8 @@ namespace thesis.Repositories
             IUsersManangementRepository usersManangement,
             IGeolocationRepository geolocation,
             IResultsRepository resultpage,
-            IFeedbackRepository feedback
+            IFeedbackRepository feedback,
+            IChroplethMapRepository chroplethMap
         ) 
         {
             ReceivingReport = receivingReport;
@@ -38,6 +41,7 @@ namespace thesis.Repositories
             Geolocation = geolocation;
             ResultPage = resultpage;
             Feedback = feedback;
+            ChroplethMap = chroplethMap;
             
         }
     }

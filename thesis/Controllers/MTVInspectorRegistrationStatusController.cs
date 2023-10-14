@@ -5,18 +5,18 @@ using thesis.Data;
 
 namespace thesis.Controllers
 {
-	public class MTVdashboard : Controller
+	public class MTVInspectorRegistrationStatusController : Controller
 	{
 		private readonly thesisContext _context;
-		
-		public MTVdashboard(thesisContext context)
-		{
+
+        public MTVInspectorRegistrationStatusController(thesisContext context)
+        {
 			_context = context;
 		}
-		[Authorize(Policy = "RequireMTVAdmin")]
+		[Authorize(Policy = "RequireMtvInspector")]
 		public async Task<IActionResult> IndexAsync()
 		{
-			var res = await _context.Users.ToListAsync();
+			var res = await _context.MTVApplications.Include(ve => ve.Vehicle).ToListAsync();
 			return View(res);
 		}
 	}

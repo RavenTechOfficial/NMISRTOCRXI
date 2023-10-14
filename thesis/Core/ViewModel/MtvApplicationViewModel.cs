@@ -15,6 +15,7 @@ namespace thesis.Core.ViewModel
 		public string Email { get; set; }
 		public string TelNo { get; set; }
 		public string FaxNo { get; set; }
+		public string Status { get;set; }
 
 
 		//Vehicle Info

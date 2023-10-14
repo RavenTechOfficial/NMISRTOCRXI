@@ -1,4 +1,54 @@
-﻿const quiz = [
+﻿// JavaScript to show the modal when clicking on .facebook-container1
+document.querySelector(".facebook-container1").addEventListener("click", function () {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+});
+
+// JavaScript to close the modal when clicking on the exit button or outside the modal
+document.getElementById("btnExit").addEventListener("click", function () {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+});
+
+// JavaScript to handle the "FacebookLink" button click
+document.getElementById("fblink").addEventListener("click", function () {
+    // Open the link in a new tab
+    window.open("https://www.facebook.com/jason.olalia.7/videos/3077873365589971/?idorvanity=370501063649021", "_blank");
+});
+
+// JavaScript to show the modal when clicking on .facebook-container1
+document.querySelector(".facebook-container1").addEventListener("click", function () {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+});
+
+// JavaScript to close the first modal when clicking on the exit button or outside the modal
+document.getElementById("btnExit").addEventListener("click", function () {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+});
+
+
+// JavaScript to handle the "Click here for pop-up video" button click
+document.getElementById("drivelink").addEventListener("click", function () {
+    // Show the second modal with the video
+    var videoModal = document.getElementById("videoModal");
+    videoModal.style.display = "block";
+});
+
+// JavaScript to close the video modal when clicking on the exit button or outside the modal
+document.getElementById("btnExitVideo").addEventListener("click", function () {
+    var videoModal = document.getElementById("videoModal");
+    videoModal.style.display = "none";
+});
+
+
+
+
+
+
+
+const quiz = [
     {
         q: 'Unsa nga klase sa kagaw ang pwede makita sa karne sa manok? Mao kini ang rason ngano kinahanglan nga dili moubos sa 4 ˚C ang kabugnaw sa karne ug mao pud kini ang rason ngano ginabanlawan og chilled chlorinated water ang manok sulod sa balay ihawanan.',
         options: ['1', '2', '3', '4'],

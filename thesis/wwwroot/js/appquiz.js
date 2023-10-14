@@ -111,17 +111,29 @@ function quizOver() {
     resultBox.classList.remove("hide");
     quizResult();
 }
-function quizResult() {
-    resultBox.querySelector(".total-question").innerHTML = quiz.length;
-    resultBox.querySelector(".total-attempt").innerHTML = attempt;
-    resultBox.querySelector(".total-correct").innerHTML = correctAnswers;
-    resultBox.querySelector(".total-wrong").innerHTML = attempt - correctAnswers;
+//function quizResult() {
+//    resultBox.querySelector(".total-question").innerHTML = quiz.length;
+//    resultBox.querySelector(".total-attempt").innerHTML = attempt;
+//    resultBox.querySelector(".total-correct").innerHTML = correctAnswers;
+//    resultBox.querySelector(".total-wrong").innerHTML = attempt - correctAnswers;
 
-    const percentage = (correctAnswers / quiz.length) * 100;
-    resultBox.querySelector(".percentage").innerHTML = percentage.toFixed(2) + "%"; // Fixed the usage of toFixed()
+//    const percentage = (correctAnswers / quiz.length) * 100;
+//    resultBox.querySelector(".percentage").innerHTML = percentage.toFixed(2) + "%"; // Fixed the usage of toFixed()
 
-    resultBox.querySelector(".total-score").innerHTML = correctAnswers + " / " + quiz.length;
-}
+//    resultBox.querySelector(".total-score").innerHTML = correctAnswers + " / " + quiz.length;
+
+//    $.ajax({
+//        url: "/MTVquiz/SavePercentage",
+//        type: "POST",
+//        data: { percentage: percentage.toFixed(2) },
+//        success: function (response) {
+//            console.log("Percentage sent successfully:", response);
+//        },
+//        error: function (error) {
+//            console.log("Error sending percentage:", error);
+//        }
+//    });
+//}
 function resetQuiz() {
     questionCounter = 0;
     correctAnswers = 0;
