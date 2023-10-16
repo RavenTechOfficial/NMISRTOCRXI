@@ -1,6 +1,22 @@
 ﻿@model IEnumerable<MTVApplication>
 <link rel="stylesheet" href="~/css/dashy.css" asp-append-version="true" />
-
+@functions {
+	private string GetStatusClass(string status)
+	{
+		switch (status?.ToLower())
+		{
+			
+			case "payment":
+				return "payment";
+			case "process":
+				return "process";
+			case "pending":
+				return "pending";
+			default:
+				return string.Empty; // or return a default class
+		}
+	}
+}
 
 
 <section id="content">
@@ -30,16 +46,19 @@
 					<tbody>
 						@foreach (var item in Model)
 						{
-							<tr>
+							<tr data-id="@item.Id">
 								<td>
 									<p>@item.OwnerFname @item.OwnerLname</p>
 								</td>
 								<td>@item.applicationtype</td>
 								<td>@item.Vehicle?.Est</td>
 								<td>@item.Vehicle?.PlateNo</td>
-								<td><span class="status pending">@item.Status</span></td>
+								<td>
+									<span class="status @GetStatusClass(item.Status)">@item.Status</span>
+								</td>
 							</tr>
 						}
+
 					</tbody>
 				</table>
 			</div>
@@ -51,7 +70,7 @@
 			<div class="modal-content" id="content">
 				<button class="exit-button" onclick="closeModal()">&times;</button>
 				<h2>Approval of Application</h2>
-				<form action="#" class="form">
+				<form action="/MTVRegistrationstatus/ProcessApprovement" method="post" class="form">
 					<div class="column">
 						<div class="input-box">
 							<label>Name of Operator (Name that will appear on the Certificate)</label>
@@ -68,6 +87,8 @@
 							<input id="plateNumber" type="text" placeholder="Plate Number" required readonly />
 						</div>
 					</div>
+					
+
 
 					<div class="row">
 						<div class="column">
@@ -373,27 +394,29 @@
 							<input type="input" id="timeInput" placeholder="time of inspection" required readonly/>
 						</div>
 					</div>
-					<div class="center1">
+					@*<div class="center1">
 						<div class="sex-box">
 							<p>Inspection Result:</p>
 							<div class="sex-option">
 								<div class="sex">
-									<input class="boxy" type="radio" id="check-pass" name="pass" checked />
+									<input class="boxy" type="radio" id="approveBtn" name="pass" checked />
 									<label for="check-pass">Application Passed</label>
 								</div>
 								<div class="sex">
-									<input class="boxy" type="radio" id="check-fail" name="pass" />
+									<input class="boxy" type="radio" id="disapproveBtn" name="pass" />
 									<label for="check-fail">Application Fail</label>
 								</div>
 
 							</div>
 						</div>
-					</div>
+					</div>*@
+					<input type="hidden" name="vehicleId" value="" /> <!-- No need for the default value "12345" -->
 
 					<div class="modal-buttons">
-						<button id="approveBtn">Approve Vehicle</button>
-						<button id="disapproveBtn">Disapprove Application</button>
-						<button id="paymentBtn">Check Payment Details</button>
+						<!-- Assign unique name attributes to the buttons to differentiate between them in the controller -->
+						<button type="submit" name="action" value="approve" id="approveBtn">Approve Vehicle</button>
+						<button type="submit" name="action" value="disapprove" id="disapproveBtn">Disapprove Application</button>
+						<button type="submit" name="action" value="payment" id="paymentBtn">Check Payment Details</button>
 					</div>
 				</form>
 			</div>

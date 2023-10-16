@@ -35,6 +35,9 @@ const meatEstablishmentInput = document.getElementById("meatEstablishment");
 const plateNumberInput = document.getElementById("plateNumber");
 const accreditationNumberInput = document.getElementById("accreditationNumber");
 let selectedRow = null;
+//const vehicleId = row.getAttribute("data-id"); // Get the vehicleId from the data-id attribute
+//document.querySelector("input[name='vehicleId']").value = vehicleId;
+
 
 tableRows.forEach((row, index) => {
     row.addEventListener("click", () => {
@@ -48,10 +51,16 @@ tableRows.forEach((row, index) => {
         const plateNumber = tds[3].innerText;
         const status = tds[4].innerText;
 
-        // Populate modal inputs (example)
+        const vehicleId = row.getAttribute("data-id"); // Get the vehicleId from the data-id attribute
+
+        // Populate modal inputs
         operatorNameInput.value = operatorName;
         meatEstablishmentInput.value = establishmentServed;
         plateNumberInput.value = plateNumber;
+
+        // Populate the hidden input for vehicleId
+        document.querySelector("input[name='vehicleId']").value = vehicleId;
+
         // If you have more data for other fields, populate those here.
 
         //accreditationNumberInput.value = ???;
@@ -60,6 +69,7 @@ tableRows.forEach((row, index) => {
         modal.style.display = "block";
     });
 });
+
 
 
 
