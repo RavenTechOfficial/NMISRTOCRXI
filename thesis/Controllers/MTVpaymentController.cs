@@ -38,12 +38,15 @@ namespace thesis.Controllers
 				}
 			}
 
+			var latestMtv = _context.MTVApplications.OrderBy(p => p.Id).LastOrDefault();
+
 			var mtv = new Payment
 			{
 				PaymentReceipt = imageLicenseBack,
 				SOA = mtvPaymentVM.SOA,
 				Date = mtvPaymentVM.Date,
 				Email = mtvPaymentVM.Email,
+				MTVApplication = latestMtv
 			};
 
 			_context.Add(mtv);

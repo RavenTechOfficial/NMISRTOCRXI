@@ -7,7 +7,14 @@ namespace thesis.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		public MTVquiz MTVquiz { get; set; }
-		public passorfail passorfail { get; set; }
+		public string operatorname { get; set; }
+		public string estserved { get; set; }
+		public string plateno { get; set; }
+		public string inspectorname { get; set; }
+		public string inspectdate { get; set; }
+		public string inspecttime { get; set; }
+		public string status { get; set; }
+		
+		
 	}
 }

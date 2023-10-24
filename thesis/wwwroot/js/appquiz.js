@@ -35,6 +35,7 @@ function getNewQuestion() {
     const optionLen = currentQuestion.options.length
     for (let i = 0; i < optionLen; i++) {
         availableOptions.push(i)
+       
     }
     optionContainer.innerHTML = '';
     let animationDelay = 0.15;
@@ -47,36 +48,50 @@ function getNewQuestion() {
         option.innerHTML = currentQuestion.options[optionIndex];
         option.id = optionIndex;
         option.style.animationDelay = animationDelay + 's';
-        animationDelay = animationDelay + 0.15;
+        animationDelay = animationDelay + 0.15; 
         option.className = "option";
-        optionContainer.appendChild(option)
+        optionContainer.appendChild(option);
         option.setAttribute("onclick", "getResult(this)");
+        option.addEventListener('click', handleChoiceClick); // Add this line to bind the click event
+
     }
     questionCounter++
+}
+function handleChoiceClick(event) {
+    highlightChoice(event.target);
+}
+
+function highlightChoice(choiceElement) {
+    // First, remove highlighting from all choices
+    document.querySelectorAll('.option').forEach(option => {
+        option.classList.remove('active-choice');
+    });
+
+    // Add the 'active-choice' class to the clicked choice
+    choiceElement.classList.add('active-choice');
 }
 function getResult(element) {
     const id = parseInt(element.id);
 
-    if (id === currentQuestion.answer) {
+    element.classList.add("selected");
 
-        element.classList.add("correct");
+    if (id === currentQuestion.answer) {
         updateAnswersIndicator("correct");
         correctAnswers++;
-
     } else {
-        element.classList.add("wrong");
         updateAnswersIndicator("wrong");
-        const optionLen = optionContainer.children.length;
-        for (let i = 0; i < optionLen; i++) {
-            if (parseInt(optionContainer.children[i].id) === currentQuestion.answer) {
-                optionContainer.children[i].classList.add("correct");
-            }
-        }
-
+        // This code still checks which option was the correct one, but it no longer visually indicates it
+        // for (let i = 0; i < optionLen; i++) {
+        //     if (parseInt(optionContainer.children[i].id) === currentQuestion.answer) {
+        //         optionContainer.children[i].classList.add("correct");
+        //     }
+        // }
     }
+
     attempt++;
     unclickableOptions();
 }
+
 
 function unclickableOptions() {
     const optionLen = optionContainer.children.length;
@@ -160,6 +175,66 @@ function startQuiz() {
     answersIndicator();
 }
 
+// Function that gets called when a choice is clicked
+function handleChoiceClick(event) {
+    // Your logic for what happens when a choice is clicked
+
+    // For example, highlight the clicked choice:
+    highlightChoice(event.target);
+}
+
+// Function to highlight a choice (turn its background white, for instance)
+function highlightChoice(choiceElement) {
+    // First, remove highlighting from all choices
+    document.querySelectorAll('.option').forEach(option => {
+        option.classList.remove('active-choice');
+    });
+
+    // Add the 'active-choice' class to the clicked choice
+    choiceElement.classList.add('active-choice');
+}
+
+// Bind the handleChoiceClick function to the click event of each choice
+document.querySelectorAll('.choice-btn').forEach(btn => {
+    btn.addEventListener('click', handleChoiceClick);
+});
+
+
 window.onload = function () {
     homeBox.querySelector(".total-question").innerHTML = quiz.length;
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    var modal = document.getElementById("myModal");
+    var videoModal = document.getElementById("videoModal");
+    var videoContainer = document.getElementById("videoContainer");
+
+    // Open modal when FB link button is clicked
+    document.getElementById("fblink").addEventListener("click", function () {
+        videoModal.style.display = "block";
+    });
+
+    // Display the video when "Click here for pop-up video" is clicked
+    document.getElementById("drivelink").addEventListener("click", function () {
+        videoModal.style.display = "block";  // Show the video modal
+        videoContainer.classList.remove("hidden");  // Ensure the video is visible
+    });
+
+    // Exit modal buttons
+    document.getElementById("btnExit").addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+    document.getElementById("btnExitVideo").addEventListener("click", function () {
+        videoModal.style.display = "none";
+    });
+
+    // Outside click closes modal
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        } else if (event.target === videoModal) {
+            videoModal.style.display = "none";
+        }
+    };
+});
+

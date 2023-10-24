@@ -59,7 +59,9 @@ tableRows.forEach((row, index) => {
         plateNumberInput.value = plateNumber;
 
         // Populate the hidden input for vehicleId
-        document.querySelector("input[name='vehicleId']").value = vehicleId;
+        document.querySelectorAll("input[name='vehicleId']").forEach(input => {
+            input.value = vehicleId;
+        });
 
         // If you have more data for other fields, populate those here.
 
@@ -74,52 +76,52 @@ tableRows.forEach((row, index) => {
 
 
 
-approveBtn.addEventListener("click", () => {
-    if (selectedRow) {
-        const statusCell = selectedRow.querySelector(".status");
-        const newStatus = document.createElement("span");
-        newStatus.className = "status process";
-        newStatus.textContent = "Payment";
-        statusCell.innerHTML = ''; // Clear the old content
-        statusCell.appendChild(newStatus);
-    }
-    modal.style.display = "none";
-});
+//approveBtn.addEventListener("click", () => {
+//    if (selectedRow) {
+//        const statusCell = selectedRow.querySelector(".status");
+//        const newStatus = document.createElement("span");
+//        newStatus.className = "status process";
+//        newStatus.textContent = "Payment";
+//        statusCell.innerHTML = ''; // Clear the old content
+//        statusCell.appendChild(newStatus);
+//    }
+//    modal.style.display = "none";
+//});
 
-disapproveBtn.addEventListener("click", () => {
-    if (selectedRow) {
-        const statusCell = selectedRow.querySelector(".status");
-        const newStatus = document.createElement("span");
-        newStatus.className = "status process";
-        newStatus.textContent = "Process";
-        statusCell.innerHTML = ''; // Clear the old content
-        statusCell.appendChild(newStatus);
-    }
-    modal.style.display = "none";
-});
-approveBtn1.addEventListener("click", () => {
-    if (selectedRow) {
-        const statusCell = selectedRow.querySelector(".status");
-        const newStatus = document.createElement("span");
-        newStatus.className = "status completed";
-        newStatus.textContent = "Completed";
-        statusCell.innerHTML = ''; // Clear the old content
-        statusCell.appendChild(newStatus);
-    }
-    paymentModal.style.display = "none";
-});
+//disapproveBtn.addEventListener("click", () => {
+//    if (selectedRow) {
+//        const statusCell = selectedRow.querySelector(".status");
+//        const newStatus = document.createElement("span");
+//        newStatus.className = "status process";
+//        newStatus.textContent = "Process";
+//        statusCell.innerHTML = ''; // Clear the old content
+//        statusCell.appendChild(newStatus);
+//    }
+//    modal.style.display = "none";
+//});
+//approveBtn1.addEventListener("click", () => {
+//    if (selectedRow) {
+//        const statusCell = selectedRow.querySelector(".status");
+//        const newStatus = document.createElement("span");
+//        newStatus.className = "status completed";
+//        newStatus.textContent = "Completed";
+//        statusCell.innerHTML = ''; // Clear the old content
+//        statusCell.appendChild(newStatus);
+//    }
+//    paymentModal.style.display = "none";
+//});
 
-disapproveBtn1.addEventListener("click", () => {
-    if (selectedRow) {
-        const statusCell = selectedRow.querySelector(".status");
-        const newStatus = document.createElement("span");
-        newStatus.className = "status process";
-        newStatus.textContent = "Process";
-        statusCell.innerHTML = ''; // Clear the old content
-        statusCell.appendChild(newStatus);
-    }
-    paymentModal.style.display = "none";
-});
+//disapproveBtn1.addEventListener("click", () => {
+//    if (selectedRow) {
+//        const statusCell = selectedRow.querySelector(".status");
+//        const newStatus = document.createElement("span");
+//        newStatus.className = "status process";
+//        newStatus.textContent = "Process";
+//        statusCell.innerHTML = ''; // Clear the old content
+//        statusCell.appendChild(newStatus);
+//    }
+//    paymentModal.style.display = "none";
+//});
 
 
 function closeModal() {

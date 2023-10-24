@@ -156,6 +156,8 @@
 
                 #content main .FirstLayer .applications table tr td .status.pending {
                     background: var(--orange);
+                }#content main .FirstLayer .applications table tr td .status.payment {
+                    background-color: green;
                 }
 /* First Layer ENDS */
 
