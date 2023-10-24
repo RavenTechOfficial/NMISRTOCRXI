@@ -10,6 +10,6 @@ namespace thesis.Models
 		public DateTime Date { get; set; }
 		public string Email { get; set; }
 		public string SOA { get; set; }
-		//public MTVApplication MTVApplication { get; set; }
-	}
+        public MTVApplication MTVApplication { get; set; }
+    }
 }

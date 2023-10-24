@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thesis.Data;
 
@@ -11,9 +12,11 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    partial class thesisContextModelSnapshot : ModelSnapshot
+    [Migration("20231018064506_njfanjfajo")]
+    partial class njfanjfajo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -750,39 +753,6 @@ namespace thesis.Migrations
                     b.ToTable("PassedForSlaughters");
                 });
 
-            modelBuilder.Entity("thesis.Models.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MTVApplicationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PaymentReceipt")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SOA")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MTVApplicationId");
-
-                    b.ToTable("Payments");
-                });
-
             modelBuilder.Entity("thesis.Models.PostArticle", b =>
                 {
                     b.Property<int>("Id")
@@ -1354,17 +1324,6 @@ namespace thesis.Migrations
                         .IsRequired();
 
                     b.Navigation("ConductOfInspection");
-                });
-
-            modelBuilder.Entity("thesis.Models.Payment", b =>
-                {
-                    b.HasOne("thesis.Models.MTVApplication", "MTVApplication")
-                        .WithMany()
-                        .HasForeignKey("MTVApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MTVApplication");
                 });
 
             modelBuilder.Entity("thesis.Models.Postmortem", b =>

@@ -1,5 +1,5 @@
-﻿@using thesis.Areas.Identity.Data;
-@model IEnumerable<AccountDetails>
+﻿@using thesis.Core.ViewModel;
+@model MtvDashboardViewModel
 
 <link rel="stylesheet" href="~/css/dashy.css" asp-append-version="true" />
 <section id="content">
@@ -32,7 +32,7 @@
 						</thead>
 						<tbody>
 
-							@foreach (var item in Model)
+							@foreach (var item in Model.AccountDetails)
 							{
 								if (item.Roles == thesis.Data.Enum.Roles.MTVADMIN || item.Roles == thesis.Data.Enum.Roles.MTVINSPECTOR || item.Roles == thesis.Data.Enum.Roles.MTVUSERS)
 								{
@@ -50,7 +50,7 @@
 				</div>
 				<div class="applications">
 					<div class="head">
-						<h3>Checklist Progress</h3>
+						<h3>MTV Checklist</h3>
 						<i class='bx bx-search' id="search-icon1"></i>
 						<i class='bx bx-filter' id="filter-icon1"></i>
 						<i class='bx bx-refresh' id="refresh-icon1"></i>
@@ -66,56 +66,55 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>
 
-									<p>Adrianne Basuel</p>
-								</td>
-								<td>Karlo Sam Badilles</td>
-								<td>619</td>
-								<td>06-10-2023</td>
-								<td><span class="status completed">Completed</span></td>
-							</tr>
+							@foreach (var item in Model.Checklists)
+							{
+								
+									<tr>
+										<td>
+											<p>@item.operatorname</p>
+										</td>
+										<td>@item.inspectorname</td>
+										<td>@item.plateno</td>
+										<td>@item.inspectdate</td>
+										<td>@item.status</td>
+									</tr>
+								
+							}
+						</tbody>
+					</table>
+				</div>
+				<div class="applications">
+					<div class="head">
+						<h3>MTV Payment</h3>
+						<i class='bx bx-search' id="search-icon1"></i>
+						<i class='bx bx-filter' id="filter-icon1"></i>
+						<i class='bx bx-refresh' id="refresh-icon1"></i>
+					</div>
+					<table id="applications-table1">
+						<thead>
 							<tr>
-								<td>
-
-									<p>Jess Arreza</p>
-								</td>
-								<td>Karlo Sam Badilles</td>
-								<td>619</td>
-								<td>06-13-2023</td>
-								<td><span class="status pending">Pending</span></td>
+								<th>SOA</th>
+								<th>Email</th>
+								<th>Date</th>
+								<th>Status</th>
 							</tr>
-							<tr>
-								<td>
+						</thead>
+						<tbody>
 
-									<p>Gerico Alagon</p>
-								</td>
-								<td>Karlo Sam Badilles</td>
-								<td>619</td>
-								<td>06-14-2023</td>
-								<td><span class="status process">Process</span></td>
-							</tr>
-							<tr>
-								<td>
+							@foreach (var item in Model.Payments)
+							{
 
-									<p>Karlo Badilles</p>
-								</td>
-								<td>Karlo Sam Badilles</td>
-								<td>619</td>
-								<td>06-21-2023</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>
-							<tr>
-								<td>
+								<tr>
+									<td>
+										<p>@item.SOA</p>
+									</td>
+									<td>@item.Email</td>
+									<td>@item.Date</td>
+									<td>@item.MTVApplication.Status</td>
+								</tr>
 
-									<p>Leanox Colis</p>
-								</td>
-								<td>Karlo Sam Badilles</td>
-								<td>619</td>
-								<td>06-23-2023</td>
-								<td><span class="status completed">Completed</span></td>
-							</tr>
+							}
 						</tbody>
 					</table>
 				</div>

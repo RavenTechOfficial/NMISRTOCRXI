@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thesis.Data;
 
@@ -11,9 +12,11 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    partial class thesisContextModelSnapshot : ModelSnapshot
+    [Migration("20231018063528_kdakjgagag")]
+    partial class kdakjgagag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -765,7 +768,7 @@ namespace thesis.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MTVApplicationId")
+                    b.Property<int>("MTVApplicationsId")
                         .HasColumnType("int");
 
                     b.Property<string>("PaymentReceipt")
@@ -778,7 +781,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MTVApplicationId");
+                    b.HasIndex("MTVApplicationsId");
 
                     b.ToTable("Payments");
                 });
@@ -1358,13 +1361,13 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.Payment", b =>
                 {
-                    b.HasOne("thesis.Models.MTVApplication", "MTVApplication")
+                    b.HasOne("thesis.Models.MTVApplication", "MTVApplications")
                         .WithMany()
-                        .HasForeignKey("MTVApplicationId")
+                        .HasForeignKey("MTVApplicationsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MTVApplication");
+                    b.Navigation("MTVApplications");
                 });
 
             modelBuilder.Entity("thesis.Models.Postmortem", b =>

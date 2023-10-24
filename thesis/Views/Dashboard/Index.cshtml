@@ -3,7 +3,25 @@
 @model DashboardViewModel
 
 <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+@functions {
+    private string GetStatusClass(string status)
+    {
+        switch (status?.ToLower())
+        {
 
+            case "payment":
+                return "payment";
+            case "process":
+                return "process";
+            case "pending":
+                return "pending";
+            case "completed":
+                return "completed";
+            default:
+                return string.Empty; // or return a default class
+        }
+    }
+}
 <section id="content">
     <!-- MAIN STARTS-->
     <main>
@@ -77,7 +95,9 @@
                                     <p>@item.OwnerFname @item.OwnerLname</p>
                                 </td>
                                 <td>@item.applicationtype</td>
-                                <td><span class="status process">Process</span></td>
+                                    <td>
+                                        <span class="status @GetStatusClass(item.Status)">@item.Status</span>
+                                    </td>
                             </tr>
                         }
                     </tbody>
