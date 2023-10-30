@@ -11,7 +11,9 @@ namespace thesis.Core.ViewModel
 		public EstablishmentType? Type { get; set; }
 		public string Name { get; set; }
 		public string Address { get; set; }
-		public int? LicenseToOperateNumber { get; set; }
+		public string? LicenseToOperateNumber { get; set; }
 		public int? LicenseStatus { get; set; }
+		public double Long { get; set; }
+		public double Lat { get; set; }
 	}
 }

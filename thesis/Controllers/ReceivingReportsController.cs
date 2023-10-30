@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using thesis.Areas.Identity.Data;
 using thesis.Data;
+using thesis.Data.Enum;
 using thesis.Models;
 
 namespace thesis.Controllers
@@ -24,21 +25,41 @@ namespace thesis.Controllers
 		public ReceivingReportsController(thesisContext context, UserManager<AccountDetails> userManager)
 		{
 			_context = context;
-			_userManager = userManager; ;
+			_userManager = userManager;
 		}
 
 		// GET: ReceivingReports
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(int? id, int? meatEstablishmentId, InspectionStatus? statusFilter)
 		{
 			ViewBag.AlertMessage = TempData["AlertMessage"] as string;
-			ViewBag.AlertMessagee = TempData["AlertMessagee"] as string;
+
+			var meatDealers = _context.MeatDealers.ToList();
+
+			ViewData["MeatDealers"] = meatDealers;
+
+			if (meatEstablishmentId.HasValue)
+			{
+				meatDealers = meatDealers.Where(dealer => dealer.MeatEstablishmentId == meatEstablishmentId.Value).ToList();
+			}
+
+			var meatEstablishments = _context.MeatEstablishment
+			.Where(me => me.Name != null)
+			.ToList();
+			ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
+
+			//var statusFilter = _context.ReceivingReports
+			//         .Where(me => me.InspectionStatus == Data.Enum.InspectionStatus.Done)
+			//         .ToList();
+			//         ViewData["statusFilter"] = new SelectList(statusFilter, "Id", "InspectionStatus");
 
 			var thesisContext = _context.ReceivingReports
 				.Include(r => r.AccountDetails)
 				.Include(r => r.MeatDealers);
+
+
+
 			return View(await thesisContext.ToListAsync());
 		}
-
 
 
 		// GET: ReceivingReports/Details/5
@@ -167,7 +188,7 @@ namespace thesis.Controllers
 				return NotFound();
 			}
 
-			if (!ModelState.IsValid)
+			if (ModelState.IsValid)
 			{
 				try
 				{

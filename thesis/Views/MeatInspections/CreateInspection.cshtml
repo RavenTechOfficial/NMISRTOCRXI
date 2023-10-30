@@ -1,0 +1,1790 @@
+﻿@using thesis.Data.Enum;
+@model thesis.Core.ViewModel.MeatInspectionViewModel
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/createMeatCheck.css" asp-append-version="true">
+
+@{
+    ViewData["Title"] = "CreateInspection";
+
+    <style>
+        #content h1 {
+            margin-top: 1px;
+            font-size: 50px;
+            font-weight: 700;
+            color: var(--black);
+            text-align: center;
+        }
+
+        #content h2 {
+            margin-top: 10px;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        #content h4 {
+            margin-top: 10px;
+            font-size: 18px;
+            color: var(--black);
+        }
+
+        .table {
+            color: var(--black);
+        }
+
+        .containertable {
+            margin-top: 30px;
+            padding: 10px;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 15px;
+            border-color: var(--filterborder);
+        }
+
+        .container1 {
+            position: relative;
+            max-width: 1350px;
+            width: 100%;
+            background: var(--filterbgcolor);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-left: 2%;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            color: var(--black);
+        }
+
+        hr {
+            color: var(--black);
+            height: 25px;
+        }
+
+
+        .container1 .form-group {
+            margin-top: 8px;
+        }
+
+        .form-group .input-box {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+            .form-group .input-box input {
+                padding-left: 20px;
+                border-radius: 6px;
+            }
+
+        .form-group :where(.input-box input, .select-box, .rol) {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            outline: none;
+            font-size: 1rem;
+            color: #707070;
+            margin-top: 8px;
+            border: 1px solid #ddd;
+            border-radius: 0px;
+        }
+
+        .input-box input:focus {
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            display: flex;
+            column-gap: 10px;
+        @*width: 100%;*@
+        }
+
+        .centerbtn {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .centerbtn .custombtn {
+                width: 180px;
+                background-color: var(--green7);
+                border: 1px solid var(--green7);
+                color: var(--white);
+            }
+
+                .centerbtn .custombtn:hover {
+                    width: 180px;
+                    background-color: var(--light-green);
+                    border: 1px solid var(--light-green);
+                    color: var(--white);
+                }
+
+        .input-box select {
+            margin-top: 8px;
+            height: 49px;
+        }
+
+        .selected-row {
+            background-color: darkgrey;
+        }
+
+        .img-area5 {
+            width: 100%;
+            height: 300px;
+            border: 2px dashed #ccc;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            overflow: auto;
+        }
+
+        .uploaded-image {
+            width: 100%; /* Set the width explicitly */
+            height: 100%; /* Set the height explicitly */
+            object-fit: cover; /* Ensure the image covers the container */
+            display: block;
+            margin: 0 auto;
+        }
+
+        .image-container {
+            width: 30%;
+            height: 100%;
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .remove-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #ff5555;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .select-images {
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+    </style>
+}
+<head>
+
+    <script>
+        var ReceivingReportId;
+        var MeatInspectionId;
+        var ConductOfInspectionId;
+        var AntemortemRowId;
+        var PassedForSlaughterId;
+        var PostmortemId;
+        var TotalFitId;
+
+        $(document).ready(function () {
+
+            var routeId = window.location.pathname.split('/').pop();
+
+            // disable/enable elements
+            $('#section2 :input, #section2 button').prop('disabled', true);
+            $('#section3 :input, #section3 button').prop('disabled', true);
+            $('#section4 :input, #section4 button').prop('disabled', true);
+
+            $.ajax({
+                url: '/MeatInspections/GetIds',
+                type: 'GET',
+                data: {
+                    routeId: routeId
+                },
+                dataType: 'json',
+                success: function (response) {
+
+                    console.log('Response:', response);
+                    ReceivingReportId = response.receivingReportId;
+                    MeatInspectionId = response.meatInspectionId;
+                    ConductOfInspectionId = response.conductOfInspectionId;
+                    PassedForSlaughterId = response.passedForSlaughterId;
+                    PostmortemId = response.postmortemId;
+                    TotalFitId = response.totalFitId;
+
+                    processIds();
+
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching IDs:', error);
+                }
+            });
+
+
+            function processIds() {
+
+                if (MeatInspectionId !== null) {
+
+                    // disable/enable elements
+                    $('#startInspect').prop('disabled', true);
+                    $('#section2 :input, #section2 button').prop('disabled', false);
+                    $('#antemortemNext').prop('disabled', true);
+
+                    var targetDivPosition = $('#section2').offset().top - 70;
+                    $('html, body').animate({
+                        scrollTop: targetDivPosition
+                    }, 500, function () { });
+                    $('#passedHead').val($('#receivingHead').val());
+                    $('#passedWeight').val($('#receivingWeight').val());
+                }
+                if (ConductOfInspectionId !== null) {
+
+                    // disable/enable elements
+                    $('#antemortemNext').prop('disabled', false);
+
+                    $.ajax({
+                        url: '/MeatInspections/GetAnteTableData',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: { MeatInspectionId: MeatInspectionId },
+                        success: function (response) {
+
+                            console.log(response);
+                            $('#passedHead').val($('#receivingHead').val() - response.totalNoOfHeads);
+                            $('#passedWeight').val($('#receivingWeight').val() - response.totalWeight);
+
+                            response.data.forEach(function (item) {
+
+
+                                var newRow = '<tr>' +
+                                    '<td>' + item.issue + '</td>' +
+                                    '<td>' + item.cause + '</td>' +
+                                    '<td>' + item.noOfHeads + '</td>' +
+                                    '<td>' + item.weight + '</td>' +
+                                    '<td>' +
+                                    '<div class="btn-group">' +
+                                    '<a class="btn btn-warning" id="anteEdit" data-id="' + item.id + '">Edit</a>' +
+                                    '<a class="btn btn-danger" id="anteDelete" data-id="' + item.id + '">Delete</a>' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '</tr>';
+                                // Append new row to the table
+                                $('#anteTable tbody').append(newRow);
+
+                            });
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching Ante Table data:', error);
+                        }
+                    });
+
+                }
+                if (PassedForSlaughterId !== null) {
+
+                    // disable/enable elements
+                    $('#section2 :input, #section2 button').prop('disabled', true);
+                    $('#section3 :input, #section3 button').prop('disabled', false);
+                    $('#postmortemNext').prop('disabled', true);
+                    $('#anteTable').on('click', '.btn', function () {
+                        return false;
+                    });
+                    $('#postHead').prop('disabled', true);
+
+                    $('#fitHead').val($('#passedHead').val());
+                    $('#fitWeight').val($('#passedWeight').val());
+                    var targetDivPosition = $('#section3').offset().top - 70;
+                    $('html, body').animate({
+                        scrollTop: targetDivPosition
+                    }, 500, function () { });
+                }
+                if (PostmortemId !== null) {
+
+                    // disable/enable elements
+                    $('#postmortemNext').prop('disabled', false);
+
+                    $.ajax({
+                        url: '/MeatInspections/GetPostTableData',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: { PassedForSlaughterId: PassedForSlaughterId },
+                        success: function (response) {
+
+                            console.log(response);
+                            $('#fitHead').val($('#passedHead').val() - response.totalNoOfHeads);
+                            $('#fitWeight').val($('#passedWeight').val() - response.totalWeight);
+
+                            response.data.forEach(function (item) {
+
+                                var fileName1 = item.image1 ? item.image1.split('\\').pop() : null;
+                                var fileName2 = item.image2 ? item.image2.split('\\').pop() : null;
+                                var fileName3 = item.image3 ? item.image3.split('\\').pop() : null;
+
+                                var newRow = '<tr>' +
+                                    '<td>' + item.animalPart + '</td>' +
+                                    '<td>' + item.cause + '</td>' +
+                                    '<td>' + item.noOfHeads + '</td>' +
+                                    '<td>' + item.weight + '</td>' +
+                                    '<td>' + fileName1 + '</td>' +
+                                    '<td>' + fileName2 + '</td>' +
+                                    '<td>' + fileName3 + '</td>' +
+                                    '<td>' +
+                                    '<div class="btn-group">' +
+                                    '<a class="btn btn-warning" id="postEdit" data-id="' + item.id + '">Edit</a>' +
+                                    '<a class="btn btn-danger" id="postDelete" data-id="' + item.id + '">Delete</a>' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '</tr>';
+                                // Append new row to the table
+                                $('#postTable tbody').append(newRow);
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching Post Table data:', error);
+                        }
+                    });
+                    if (TotalFitId !== null) {
+
+                        // disable/enable elements
+                        $('#section3 :input, #section3 button').prop('disabled', true);
+                        $('#section4 :input, #section4 button').prop('disabled', false);
+
+                        //$('#postmortemAdd').prop('disabled', true);
+                        //$('#postTable .btn').prop('disabled', true);
+                        //$('#postmortemNext').prop('disabled', true);
+
+                        $("#sumPassedId").val(TotalFitId);
+                        var targetDivPosition = $('#section4').offset().top - 70;
+                        $('html, body').animate({
+                            scrollTop: targetDivPosition
+                        }, 500, function () { });
+                    }
+                }
+
+
+            }
+        });
+
+
+    </script>
+</head>
+
+
+<section id="content">
+    <main class="registration">
+        @*<div>
+        <a asp-action="Index">Back to List</a>
+        </div>*@
+
+        <!-- RECIEVING REPORTS -->
+        <div class="container1">
+            <h1>DAILY MEAT INSPECTION REPORT</h1>
+            <hr />
+
+            <div class="column">
+
+                <form asp-action="CreateInspection">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <h2>I. ANTEMORTEM INSPECTION</h2>
+                    <br />
+                    <h4>A. RECEIVING REPORT</h4>
+                    <br />
+                    @* <div class="form-group">
+                    <label asp-for="ReceivingId" class="control-label"></label>
+                    <input asp-for="ReceivingId" class="form-control" />
+                    <span asp-validation-for="ReceivingId" class="text-danger"></span>
+                    </div>*@
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-center">
+                                    <!-- Center the image horizontally -->
+                                    <img id="image" src="~/img/@(Model.Species).png" style="max-width: 65%; max-height: 65%;" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-box">
+                                        <label asp-for="RecTime" class="control-label">Date & Time:</label>
+                                        <input readonly asp-for="RecTime" class="form-control" />
+                                        <span asp-validation-for="RecTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <label asp-for="Species" class="control-label">Species:</label>
+                                                <input readonly asp-for="Species" class="form-control" />
+                                                <span asp-validation-for="Species" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <label class="control-label">Meat Dealer:</label>
+                                                <input readonly class="form-control" value="@Model.MeatDealer" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <label asp-for="ReceivingNoOfHeads" class="control-label">No. of Heads:</label>
+                                                <input readonly id="receivingHead" asp-for="ReceivingNoOfHeads" class="form-control" />
+                                                <span asp-validation-for="ReceivingNoOfHeads" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <label asp-for="LiveWeight" class="control-label">Live Weight:</label>
+                                                <input readonly id="receivingWeight" asp-for="LiveWeight" class="form-control" />
+                                                <span asp-validation-for="LiveWeight" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            @*   <label asp-for="MeatInspectionReportId" class="control-label" >Meat Inspection ID:</label>*@
+                                            <input hidden asp-for="MeatInspectionReportId" class="form-control" />
+                                            <span asp-validation-for="MeatInspectionReportId" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            @*<label asp-for="AntemortemId" class="control-label">Antemortem ID:</label>*@
+                                            <input hidden asp-for="AntemortemId" class="form-control" />
+                                            <span asp-validation-for="AntemortemId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                </form>
+
+                <input hidden id="receivingId" name="ReceivingId" value="@Model.ReceivingId" />
+                <div class="centerbtn">
+                    <button id="startInspect" type="submit" class="btn btn-warning custombtn">
+                        Inspect
+                    </button>
+                </div>
+
+
+                <br />
+            </div>
+        </div>
+
+        <!-- ANTE INSPECTION -->
+        <div id="section2" class="container1">
+
+
+
+            <h4 id="anteForm">B. CONDUCT OF ANTEMORTEM INSPECTION</h4>
+            <div class="form-group">
+                <div class="input-box">
+                    <label asp-for="Issue" class="control-label">Issue:</label>
+                    <select id="conductIssue" asp-for="Issue" class="form-control" asp-items="@Html.GetEnumSelectList<Issue>()" name="IssueVal" value="@Model.Issue">
+                    </select>
+                    <span asp-validation-for="Issue" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label asp-for="Cause" class="control-label">Cause:</label>
+                    <select id="conductCause" asp-for="Cause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()" name="CauseVal" value="@Model.Cause"></select>
+                    <span asp-validation-for="Cause" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-box">
+                    <label asp-for="NoOfHeads" class="control-label">No. of Heads:</label>
+                    <input id="conductHead" asp-for="NoOfHeads" class="form-control" name="Heads" value="@Model.NoOfHeads" />
+                    <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label asp-for="Weight" class="control-label">Weight:</label>
+                    <input id="conductWeight" asp-for="Weight" class="form-control" name="WeightVal" value="@Model.Weight" />
+                    <span asp-validation-for="Weight" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+
+            <input hidden name="MeatInsId" value="@Model.MeatInspectionReportId" />
+            <div class="centerbtn">
+                <button id="antemortemAdd" type="submit" class="btn btn-warning custombtn">
+                    Add
+                </button>
+            </div>
+
+            <div hidden id="editGroup" class="centerbtn">
+                <button id="editCancel" type="submit" class="btn btn-warning">
+                    Cancel
+                </button>
+                <button id="editConfirm" type="submit" class="btn btn-warning custombtn">
+                    Confirm
+                </button>
+
+            </div>
+
+
+            <!-- KAY TABLE-ANTEMORTEM NI-->
+            <div class="containertable">
+                <div class="FirstLayer">
+                    <div class="applications">
+                        <table id="anteTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Issue</th>
+                                    <th>Cause</th>
+                                    <th>No. of Heads</th>
+                                    <th>Weight</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <hr />
+
+            <h4>C. PASSED FOR SLAUGHTER</h4>
+            <div class="form-group">
+                <div class="input-box">
+                    <label asp-for="NoOfHeadsPassed" class="control-label">No of Heads Passed for Slaughter:</label>
+                    <input readonly id="passedHead" asp-for="NoOfHeadsPassed" class="form-control" name="HeadsPassed" value="@Model.NoOfHeadsPassed" />
+                    <span asp-validation-for="NoOfHeadsPassed" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label asp-for="WeightPassed" class="control-label">Weight Passed for Slaughter:</label>
+                    <input readonly id="passedWeight" WeightPassed" class="form-control" name="WeightPassed" value="@Model.WeightPassed" />
+                    <span asp-validation-for="WeightPassed" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <br />
+
+            <input type="hidden" name="ReceivingId" value="@Model.ReceivingId" />
+            <input type="hidden" name="HeadsPassed" value="@Model.NoOfHeadsPassed" />
+            <input type="hidden" name="WeightPassed" value="@Model.WeightPassed" />
+            <input type="hidden" name="PassedId" value="@Model.AntemortemId" />
+            <input type="hidden" name="MeatInsId" value="@Model.MeatInspectionReportId" />
+            <button id="antemortemNext" type="submit" class="btn btn-warning">Next</button>
+
+        </div>
+
+
+        <!-- POST INSPECTION -->
+        <div id="section3" class="container1">
+            <h2 id="postForm">II. POSTMORTEM INSPECTION </h2>
+            <div class="form-group">
+                <div class="input-box">
+                    <label asp-for="AnimalPart" class="control-label">Animal Part:</label>
+                    <select id="postPart" asp-for="AnimalPart" class="form-control" asp-items="@Html.GetEnumSelectList<AnimalPart>()" name="AnimalPartVal" value="@Model.AnimalPart"></select>
+                    <span asp-validation-for="AnimalPart" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label asp-for="PostmortemCause" class="control-label">Postmortem Cause:</label>
+                    <select id="postCause" asp-for="PostmortemCause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()" name="CauseVal" value="@Model.PostmortemCause"></select>
+                    <span asp-validation-for="PostmortemCause" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-box">
+                    <label asp-for="PostmortemWeight" class="control-label">Postmortem Weight:</label>
+                    <input id="postWeight" asp-for="PostmortemWeight" class="form-control" name="WeightVal" value="@Model.PostmortemWeight" />
+                    <span asp-validation-for="PostmortemWeight" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label asp-for="PostmortemCarcassHead" class="control-label">Postmortem No. of Head (Carcass):</label>
+                    <input id="postHead" asp-for="PostmortemCarcassHead" class="form-control" name="CarcassHead" value="@Model.PostmortemCarcassHead" />
+                    <span asp-validation-for="PostmortemCarcassHead" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+
+            <label for="file">If the meat is condemned, Please upload 3 Images for Inspection (Optional)</label>
+            <br />
+            <br />
+
+            <div id="imageForm" class="containertable">
+                <div class="upload-box">
+                    <div class="lbl">
+                        <label for="fileInput" class="control-label">Upload Images:</label>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" class="form-control-file" multiple hidden />
+                    <div class="img-area5">
+
+                        <!-- More image containers can be added dynamically -->
+                    </div>
+                    <button class="btn btn-primary select-images" type="button">Select Images</button>
+                </div>
+            </div>
+
+
+            <br />
+            <br />
+            <div class="centerbtn">
+                <button id="postmortemAdd" type="submit" class="btn btn-warning custombtn">
+                    Add
+                </button>
+            </div>
+            <div hidden id="posteditGroup" class="centerbtn">
+                <button id="posteditCancel" type="submit" class="btn btn-warning">
+                    Cancel
+                </button>
+                <button id="posteditConfirm" type="submit" class="btn btn-warning custombtn">
+                    Confirm
+                </button>
+
+            </div>
+
+            <!-- KAY TABLE-POSTMORTEM NI-->
+            <div class="containertable">
+                <div class="FirstLayer">
+                    <div class="applications">
+                        <table id="postTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Animal Part</th>
+                                    <th>Postmortem Cause</th>
+                                    <th>No. of Head (Carcass)</th>
+                                    <th>Postmortem Weight</th>
+                                    <th>Image 1</th>
+                                    <th>Image 2</th>
+                                    <th>Image 3</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <hr />
+
+            <h2>III. FIT FOR HUMAN CONSUMPTION</h2>
+            <div class="form-group">
+                <div class="input-box">
+                    <label asp-for="TotalNoOfHeads" class="control-label">Total No. of Heads Fit For Human Consumption:</label>
+                    <input readonly id="fitHead" asp-for="TotalNoOfHeads" class="form-control" name="HeadsPassed" value="@Model.TotalNoOfHeads" />
+                    <span asp-validation-for="TotalNoOfHeads" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label asp-for="DressedWeight" class="control-label">Dressed Weight:</label>
+                    <input readonly id="fitWeight" asp-for="DressedWeight" class="form-control" name="WeightPassed" value="@Model.DressedWeight" />
+                    <span asp-validation-for="DressedWeight" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <br />
+
+
+            <button id="postmortemNext" type="submit" class="btn btn-warning">
+                Next
+            </button>
+
+        </div>
+
+
+        <!-- SUMMARY DSTRBTN -->
+        <div id="section4" class="container1">
+            <form method="post" action="/MeatInspections/CreateSummaryTBL">
+                <h2>IV. SUMMARY & DISTRIBUTION OF MICs</h2>
+                <br />
+                <div class="form-group">
+                    <label asp-for="DestinationName" class="control-label">Destination Name:</label>
+                    <input asp-for="DestinationName" class="form-control" name="NameVal" value="@Model.DestinationName" required />
+                    <span asp-validation-for="DestinationName" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label asp-for="DestinationAddress" class="control-label">Destination Address:</label>
+                    <input asp-for="DestinationAddress" class="form-control" name="AddVal" value="@Model.DestinationAddress" id="addressInput" type="hidden" />
+                    <span asp-validation-for="DestinationAddress" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="select-box">
+                        <select id="regionSelect" onchange="populateProvinces()" required>
+                            <option hidden>Region</option>
+                            <!-- Add region options here -->
+                        </select>
+                    </div>
+                    <div class="select-box">
+                        <select id="provinceSelect" onchange="populateCities()" required>
+                            <option hidden>Province</option>
+                            <!-- Add province options here -->
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="select-box">
+                        <select id="citySelect" onchange="populateBarangays()" required>
+                            <option hidden>City/Municipality</option>
+                            <!-- Add city options here -->
+                        </select>
+                    </div>
+                    <div class="select-box">
+                        <select id="barangaySelect" onchange="updateAddressInput()" required>
+                            <option hidden>Barangay</option>
+                            <!-- Add barangay options here -->
+                        </select>
+                    </div>
+                </div>
+                <br />
+
+
+                <script>
+                    function updateAddressInput() {
+                        var barangay = document.getElementById("barangaySelect").value;
+                        var city = document.getElementById("citySelect").value;
+                        var province = document.getElementById("provinceSelect").value;
+                        var region = document.getElementById("regionSelect").value;
+
+                        var address = barangay + ", " + city + ", " + province + ", " + region;
+                        document.getElementById("addressInput").value = address;
+                    }
+                </script>
+
+                <div class="form-group">
+                    <label asp-for="CertificateStatus" class="control-label">Certificate Status:</label>
+                    <select asp-for="CertificateStatus" class="form-control" asp-items="@Html.GetEnumSelectList<CertificateStatus>()" name="CertStat" value="@Model.CertificateStatus"></select>
+                    <span asp-validation-for="CertificateStatus" class="text-danger"></span>
+                </div>
+                <br />
+                <input type="hidden" name="ReceivingId" value="@Model.ReceivingId" />
+                <input type="hidden" name="NameVal" value="@Model.DestinationName" />
+                <input type="hidden" name="AddVal" value="@Model.DestinationAddress" />
+                <input type="hidden" name="CertStat" value="@Model.CertificateStatus" />
+                <input type="hidden" id="sumPassedId" name="PassedId" value="@Model.FitId" />
+                <input type="hidden" id="sumMeatInsId" name="MeatInsId" value="@Model.MeatInspectionReportId" />
+
+                <div class="centerbtn">
+                    <button type="submit" class="btn btn-warning custombtn">
+
+                        Submit
+                    </button>
+                </div>
+
+            </form>
+            <br />
+        </div>
+
+    </main>
+
+</section>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script src="~/js/register.js"></script>
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+
+
+
+<script>
+
+    //create meatinspection and pass data to (passed)
+    $(document).ready(function () {
+        $('#startInspect').click(function () {
+
+            // disable/enable elements
+            $('#startInspect').prop('disabled', true);
+            $('#section2 :input, #section2 button').prop('disabled', false);
+            $('#antemortemNext').prop('disabled', true);
+
+            // Disable the button
+            $(this).prop('disabled', true);
+
+            var targetDivPosition = $('#section2').offset().top - 70;
+
+            // Scroll to the target div with animation
+            $('html, body').animate({
+                scrollTop: targetDivPosition
+            }, 500, function () {
+
+            });
+
+            var receivingId = $('#receivingId').val();
+            var head = $('#receivingHead').val();
+            var weight = $('#receivingWeight').val();
+
+            console.log(receivingId);
+            $.ajax({
+                url: '/MeatInspections/AddMeatInspectionTBL/',
+                type: 'POST',
+                dataType: 'json',
+                data: { receivingId: receivingId },
+                success: function (response) {
+
+                    $('#passedHead').val(head);
+                    $('#passedWeight').val(weight);
+                    MeatInspectionId = response.id
+                    $('#antemortemAdd').prop('disabled', false);
+
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error('AJAX Error:', error);
+
+                },
+
+            });
+        });
+    });
+
+</script>
+
+<script>
+
+    //script for adding row to antermotem table
+    $(document).ready(function () {
+        $('#antemortemAdd').click(function () {
+
+            //var receivingId = $('#receivingId').val();
+            var conductHead = $('#conductHead').val();
+            var conductWeight = $('#conductWeight').val();
+            var conductIssue = $('#conductIssue').val();
+            var conductCause = $('#conductCause').val();
+
+            const passedHead = $('#receivingHead').val();
+            const passedWeight = $('#receivingWeight').val();
+
+            $.ajax({
+                url: '/MeatInspections/AddAntemortemTBL/',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    meatInsId: MeatInspectionId,
+                    conductHead: conductHead,
+                    conductWeight: conductWeight,
+                    issue: conductIssue,
+                    cause: conductCause
+                },
+                success: function (response) {
+
+                    $('#passedHead').val(passedHead - response.totalhead);
+                    $('#passedWeight').val(passedWeight - response.totalweight);
+                    ConductOfInspectionId = response.id
+
+                    var tableId = 'anteTable';
+                    var newRow = '<tr>' +
+                        '<td>' + response.issue + '</td>' +
+                        '<td>' + response.cause + '</td>' +
+                        '<td>' + response.head + '</td>' +
+                        '<td>' + response.weight + '</td>' +
+                        '<td>' +
+                        '<div class="btn-group">' +
+                        '<a class="btn btn-warning" id="anteEdit"  data-id="' + response.id + '">Edit</a>' +
+                        '<a class="btn btn-danger" id="anteDelete" data-id="' + response.id + '">Delete</a>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>';
+
+                    // Append new row to table
+                    $('#' + tableId + ' tbody').append(newRow);
+
+                    if (anteTable.rows.length <= 1) {
+                        $('#antemortemNext').prop('disabled', true);
+                    } else {
+                        $('#antemortemNext').prop('disabled', false);
+                    }
+
+                    document.getElementById('conductWeight').value = '0';
+                    document.getElementById('conductHead').value = '0';
+                    document.getElementById('conductIssue').selectedIndex = 0;
+                    document.getElementById('conductCause').selectedIndex = 0;
+
+
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    console.error('AJAX Error:', error);
+                    // Handle different HTTP status codes if needed
+                }
+            });
+        });
+
+    });
+
+    var rowId;
+    var row;
+
+
+    // Select row to edit
+    $(document).ready(function () {
+        $(document).on('click', '#anteTable .btn-warning', function () {
+
+            rowId = $(this).data('id');
+            row = $(this).closest('tr');
+            $('#anteTable .btn').prop('disabled', true);
+
+
+            var targetDivPosition = $('#anteForm').offset().top - 70;
+            $('html, body').animate({
+                scrollTop: targetDivPosition
+            }, 500, function () {
+            });
+
+            row.addClass('selected-row');
+            $('#anteTable .btn').css({
+                'color': 'grey',
+                'cursor': 'not-allowed'
+            });
+
+            $('#antemortemAdd').prop('hidden', true);
+            $('#editGroup').prop('hidden', false);
+
+
+            var conductHead = row.find('td:eq(2)').text();
+            var conductWeight = row.find('td:eq(3)').text();
+
+            document.getElementById('conductWeight').value = conductWeight;
+            document.getElementById('conductHead').value = conductHead;
+
+            document.getElementById('conductIssue').value = conductIssue;
+            document.getElementById('conductCause').value = conductCause;
+
+            var conductIssueText = row.find('td:eq(0)').text();
+            var conductCauseText = row.find('td:eq(1)').text();
+
+            // Function to map text to option values
+            function getTextToValueMapping(selectElement, text) {
+                for (var i = 0; i < selectElement.options.length; i++) {
+                    if (selectElement.options[i].text === text) {
+                        return selectElement.options[i].value;
+                    }
+                }
+                return null; // If the text doesn't match any option, handle it accordingly
+            }
+
+            var conductIssue = getTextToValueMapping(document.getElementById('conductIssue'), conductIssueText);
+            var conductCause = getTextToValueMapping(document.getElementById('conductCause'), conductCauseText);
+
+            // Set values for the select elements
+            document.getElementById('conductIssue').value = conductIssue;
+            document.getElementById('conductCause').value = conductCause;
+
+        });
+
+        // Delete Antermortem Table Row
+        $(document).on('click', '#anteTable .btn-danger', function () {
+            rowId = $(this).data('id');
+            row = $(this).closest('tr');
+
+            const passedHead = $('#receivingHead').val();
+            const passedWeight = $('#receivingWeight').val();
+
+            $.ajax({
+                url: '/MeatInspections/AntemortemDelete/',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    meatInsId: MeatInspectionId,
+                    anteRowId: rowId
+                },
+                success: function (response) {
+
+                    $('#passedHead').val(passedHead - response.totalhead);
+                    $('#passedWeight').val(passedWeight - response.totalweight);
+                    ConductOfInspectionId = response.firstConductId
+                    row.remove();
+
+                    if (anteTable.rows.length <= 1) {
+                        $('#antemortemNext').prop('disabled', true);
+                    } else {
+                        $('#antemortemNext').prop('disabled', false);
+                    }
+                },
+                error: function (xhr, status, error) {
+
+                }
+            });
+        });
+
+        // Cancel Antemortem Row Edit
+        $('#editCancel').click(function () {
+
+
+
+            $('#antemortemAdd').prop('hidden', false);
+            $('#editGroup').prop('hidden', true);
+            row.removeClass('selected-row');
+            $('#anteTable .btn').css({
+                'color': '',
+                'cursor': ''
+            });
+            $('#anteTable .btn').prop('disabled', false);
+            document.getElementById('conductWeight').value = '0';
+            document.getElementById('conductHead').value = '0';
+            document.getElementById('conductIssue').selectedIndex = 0;
+            document.getElementById('conductCause').selectedIndex = 0;
+
+        });
+
+
+        // Confirm Antemortem Row Edit
+        $('#editConfirm').click(function () {
+
+
+
+            $('#antemortemAdd').prop('hidden', false);
+            $('#editGroup').prop('hidden', true);
+            row.removeClass('selected-row');
+            $('#anteTable .btn').prop('disabled', false);
+            $('#anteTable .btn').css({
+                'color': '',
+                'cursor': ''
+            });
+            var conductHead = $('#conductHead').val();
+            var conductWeight = $('#conductWeight').val();
+            var conductIssue = $('#conductIssue').val();
+            var conductCause = $('#conductCause').val();
+
+            const passedHead = $('#receivingHead').val();
+            const passedWeight = $('#receivingWeight').val();
+
+
+
+            $.ajax({
+                url: '/MeatInspections/AntemortemRowEdit/',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    meatInsId: MeatInspectionId,
+                    anteRowId: rowId,
+                    conductHead: conductHead,
+                    conductWeight: conductWeight,
+                    issue: conductIssue,
+                    cause: conductCause
+                },
+                success: function (response) {
+
+                    console.log(response.totalhead);
+
+                    $('#passedHead').val(passedHead - response.totalhead);
+                    $('#passedWeight').val(passedWeight - response.totalweight);
+
+
+                    row.removeClass('selected-row');
+                    row.find('td:eq(0)').text(response.issue);
+                    row.find('td:eq(1)').text(response.cause);
+                    row.find('td:eq(2)').text(response.head);
+                    row.find('td:eq(3)').text(response.weight);
+                    //existingRow.replaceWith(updatedRow);
+                    document.getElementById('conductWeight').value = '0';
+                    document.getElementById('conductHead').value = '0';
+                    document.getElementById('conductIssue').selectedIndex = 0;
+                    document.getElementById('conductCause').selectedIndex = 0;
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error('AJAX Error:', error);
+                    // Handle different HTTP status codes if needed
+                },
+
+            });
+        });
+    });
+
+
+</script>
+
+<script>
+    // disable/enable post head input
+    $(document).ready(function () {
+        $('#postHead').prop('disabled', true);
+        $('#postPart').change(function () {
+
+            var selectedValue = $(this).val();
+
+
+            if (selectedValue !== '1') {
+                $('#postHead').val('0');
+                $('#postHead').prop('disabled', true);
+            } else {
+
+                $('#postHead').prop('disabled', false);
+            }
+        });
+    });
+</script>
+
+<script>
+
+    //next --> postmortem section // Create passedData
+    $(document).ready(function () {
+        $('#antemortemNext').click(function () {
+
+            $('#section2 :input, #section2 button').prop('disabled', true);
+            $('#section3 :input, #section3 button').prop('disabled', false);
+            $('#postmortemNext').prop('disabled', true);
+            $('#postHead').prop('disabled', true);
+
+            // Disable the button
+            $(this).prop('disabled', true);
+
+            var anteTable = document.getElementById("anteTable");
+            var targetDivPosition = $('#section3').offset().top - 70;
+            $('html, body').animate({
+                scrollTop: targetDivPosition
+            }, 500, function () {
+            });
+            var passedHead = $('#passedHead').val();
+            var passedWeight = $('#passedWeight').val();
+
+
+            $.ajax({
+                url: '/MeatInspections/AddPostmortem/',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+
+                    meatInsId: MeatInspectionId,
+                    passedHead: passedHead,
+                    passedWeight: passedWeight,
+
+                },
+                success: function (response) {
+
+                    //document.getElementById("imageForm").reset();
+                    PassedForSlaughterId = response.id
+                    $('#fitHead').val(passedHead);
+                    $('#fitWeight').val(passedWeight);
+
+                    //$('#antemortemAdd').prop('disabled', false);
+
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error('AJAX Error:', error);
+                    // Handle different HTTP status codes if needed
+                },
+
+            });
+        });
+    });
+
+</script>
+
+<script>
+
+    //script for adding row to post table
+    $(document).ready(function () {
+        $('#postmortemAdd').click(function () {
+            var files = $('#fileInput')[0].files;
+            var formData = new FormData();
+
+            for (var i = 0; i < selectedFiles.length; i++) {
+                formData.append("images", selectedFiles[i]);
+                console.log('upload', selectedFiles[i]);
+            }
+
+            formData.append("passedId", PassedForSlaughterId);
+
+            formData.append("postPart", $('#postPart').val());
+            formData.append("postCause", $('#postCause').val());
+            formData.append("postWeight", $('#postWeight').val());
+            formData.append("postHead", $('#postHead').val());
+
+            const passedHead = $('#passedHead').val();
+            const passedWeight = $('#passedWeight').val();
+
+            $.ajax({
+                url: '/MeatInspections/AddPostmortemRow',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    var imgArea = $('.img-area5');
+                    $('#fileInput').val('');
+                    imgArea.empty();
+                    currentImages = 0
+                    selectedFiles = [];
+                    $('#fitHead').val(passedHead - response.totalhead);
+                    $('#fitWeight').val(passedWeight - response.totalweight);
+                    PostMortemId = response.id
+
+                    var fileName1 = response.image1 ? response.image1.split('\\').pop() : null;
+                    var fileName2 = response.image2 ? response.image2.split('\\').pop() : null;
+                    var fileName3 = response.image3 ? response.image3.split('\\').pop() : null;
+
+                    var tableId = 'postTable';
+                    var newRow = '<tr>' +
+                        '<td>' + response.issue + '</td>' +
+                        '<td>' + response.cause + '</td>' +
+                        '<td>' + response.head + '</td>' +
+                        '<td>' + response.weight + '</td>' +
+                        '<td>' + fileName1 + '</td>' +
+                        '<td>' + fileName2 + '</td>' +
+                        '<td>' + fileName3 + '</td>' +
+                        '<td>' +
+                        '<div class="btn-group">' +
+                        '<a class="btn btn-warning" id="postEdit" data-id="' + response.id + '">Edit</a>' +
+                        '<a class="btn btn-danger" id="postDelete" data-id="' + response.id + '">Delete</a>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>';
+
+                    $('#' + tableId + ' tbody').append(newRow);
+                    document.getElementById('postWeight').value = '0';
+                    document.getElementById('postHead').value = '0';
+                    document.getElementById('postPart').selectedIndex = 0;
+                    document.getElementById('postCause').selectedIndex = 0;
+                    $('#postHead').prop('disabled', true);
+
+                    if (postTable.rows.length <= 1) {
+                        $('#postmortemNext').prop('disabled', true);
+                    } else {
+                        $('#postmortemNext').prop('disabled', false);
+                    }
+                },
+                error: function (error) {
+                    console.error('Error adding postmortem row:', error);
+                }
+            });
+
+        });
+
+        // IMAGE SELECT
+
+        var selectedFiles = [];
+        var currentImages = 0;
+        var maxImages = 3;
+
+        $('.select-images').click(function () {
+            $('#fileInput').click();
+        });
+
+        $('#fileInput').change(function () {
+            var files = $('#fileInput')[0].files;
+            var imgArea = $('.img-area5');
+
+            if (selectedFiles.length + files.length > maxImages) {
+                alert('You can upload only up to 3 images.');
+                return;
+            }
+
+            for (var i = 0; i < files.length; i++) {
+                (function (file) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        var imgContainer = $('<div>').addClass('image-container');
+                        var img = $('<img>').attr('src', e.target.result).addClass('uploaded-image');
+                        var removeBtn = $('<button>').text('Remove').addClass('remove-button');
+
+                        selectedFiles.push(file); // Store the File object in selectedFiles
+
+                        removeBtn.click(function () {
+                            // Get the index of the file to remove from selectedFiles
+                            var indexToRemove = selectedFiles.indexOf(file);
+                            if (indexToRemove !== -1) {
+                                selectedFiles.splice(indexToRemove, 1); // Remove the file from selectedFiles array
+                            }
+
+                            $(this).parent().remove();
+                        });
+
+                        imgContainer.append(img, removeBtn);
+                        imgArea.append(imgContainer);
+                    };
+
+                    reader.readAsDataURL(file);
+                })(files[i]);
+            }
+
+
+
+            // Clear the file input to allow selecting the same files again
+            $('#fileInput').val('');
+        });
+
+
+        var imageDelete = [];
+        var rowId;
+        var row;
+
+
+        // Select row to edit
+        $(document).ready(function () {
+            $(document).on('click', '#postTable .btn-warning', function () {
+
+                rowId = $(this).data('id');
+                row = $(this).closest('tr');
+                $('#postTable .btn').prop('disabled', true);
+
+                $('#postmortemAdd').prop('hidden', true);
+                $('#posteditGroup').prop('hidden', false);
+
+                var targetDivPosition = $('#postForm').offset().top - 70;
+                $('html, body').animate({
+                    scrollTop: targetDivPosition
+                }, 500, function () {
+                });
+
+                row.addClass('selected-row');
+                $('#postTable .btn').css({
+                    'color': 'grey',
+                    'cursor': 'not-allowed'
+                });
+
+                var postHead = row.find('td:eq(2)').text();
+                var postWeight = row.find('td:eq(3)').text();
+                document.getElementById('postWeight').value = postWeight;
+                document.getElementById('postHead').value = postHead;
+
+                document.getElementById('postPart').value = postPart;
+                document.getElementById('postCause').value = postCause;
+
+                var postPartText = row.find('td:eq(0)').text();
+                var postCauseText = row.find('td:eq(1)').text();
+                // Function to map text to option values
+                function getTextToValueMapping(selectElement, text) {
+                    for (var i = 0; i < selectElement.options.length; i++) {
+                        if (selectElement.options[i].text === text) {
+                            return selectElement.options[i].value;
+                        }
+                    }
+                    return null;
+                }
+                var postPart = getTextToValueMapping(document.getElementById('postPart'), postPartText);
+                var postCause = getTextToValueMapping(document.getElementById('postCause'), postCauseText);
+
+
+                document.getElementById('postPart').value = postPart;
+                document.getElementById('postCause').value = postCause;
+                if (postPart !== '1') {
+
+                    $('#postHead').prop('disabled', true);
+                } else {
+
+                    $('#postHead').prop('disabled', false);
+                }
+
+                var imgArea = $('.img-area5');
+                var imagePathList = [row.find('td:eq(4)').text(), row.find('td:eq(5)').text(), row.find('td:eq(6)').text()];
+                imageDelete = imagePathList.map(function (path) {
+                    if (path !== 'null') {
+                        return 'wwwroot/img/PostmortemImages\\' + path;
+                    }
+                });
+                // add image to image area
+                console.log('imageDelete', imageDelete);
+                imageDelete.forEach(function (imagePath) {
+
+                    if (imagePath !== null || imagePath !== 'wwwroot/img/PostmortemImages\\\null') {
+                        // Construct a Blob from the image path (assuming the image path is a valid URL)
+
+                        //var formattedImagePath = 'img/PostmortemImages/' + imagePath;
+                        var formattedImagePath = imagePath.replace(/\\/g, '/').replace('wwwroot', '');
+                        fetch(formattedImagePath)
+                            .then(response => response.blob())
+                            .then(blob => {
+                                // Create a File object from the Blob
+                                //var formattedImagePath = imagePath.replace(/\\/g, '/').replace('wwwroot', '');
+                                console.log('formatedimagepath', formattedImagePath)
+                                var fileName = formattedImagePath.substring(formattedImagePath.lastIndexOf('/') + 1); // Extract filename from the path
+                                var file = new File([blob], fileName, { type: blob.type });
+
+                                // Add the File object to selectedFiles array
+                                selectedFiles.push(file);
+
+                                var imgContainer = $('<div>').addClass('image-container');
+                                var img = $('<img>').attr('src', formattedImagePath).addClass('uploaded-image');
+                                var removeBtn = $('<button>').text('Remove').addClass('remove-button');
+
+                                removeBtn.click(function () {
+                                    // Remove the corresponding file from selectedFiles array
+                                    var indexToRemove = selectedFiles.indexOf(file);
+                                    if (indexToRemove !== -1) {
+                                        selectedFiles.splice(indexToRemove, 1);
+                                    }
+
+
+                                    $(this).parent().remove();
+                                    console.log('removefiles', selectedFiles)
+                                });
+
+                                imgContainer.append(img, removeBtn);
+                                imgArea.append(imgContainer);
+                            })
+                            .catch(error => {
+                                console.error('Error fetching image:', error);
+                            });
+                    }
+                    console.log('after', selectedFiles)
+                });
+
+
+            });
+
+            // Delete postmortem Table Row
+            $(document).on('click', '#postTable .btn-danger', function () {
+                rowId = $(this).data('id');
+                row = $(this).closest('tr');
+
+                const passedHead = $('#passedHead').val();
+                const passedWeight = $('#passedWeight').val();
+
+                $.ajax({
+                    url: '/MeatInspections/PostmortemDelete/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        passedId: PassedForSlaughterId,
+                        postRowId: rowId
+                    },
+                    success: function (response) {
+
+                        PostMortemId = response.firstPostId;
+
+                        $('#fitHead').val(passedHead - response.totalhead);
+                        $('#fitWeight').val(passedWeight - response.totalweight);
+                        row.remove();
+                        if (postTable.rows.length <= 1) {
+                            $('#postmortemNext').prop('disabled', true);
+                        } else {
+                            $('#postmortemNext').prop('disabled', false);
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+
+                    }
+                });
+            });
+
+            // Cancel Antemortem Row Edit
+            $('#posteditCancel').click(function () {
+                var imgArea = $('.img-area5');
+                $('#fileInput').val('');
+                imgArea.empty();
+
+                selectedFiles = [];
+
+
+                $('#postmortemAdd').prop('hidden', false);
+                $('#posteditGroup').prop('hidden', true);
+                $('#postHead').prop('disabled', true);
+                row.removeClass('selected-row');
+                $('#postTable .btn').css({
+                    'color': '',
+                    'cursor': ''
+                });
+                $('#postTable .btn').prop('disabled', false);
+
+                document.getElementById('postWeight').value = '0';
+                document.getElementById('postHead').value = '0';
+                document.getElementById('postPart').selectedIndex = 0;
+                document.getElementById('postCause').selectedIndex = 0;
+
+            });
+
+
+            // Confirm Postmortem Row Edit
+            $('#posteditConfirm').click(function () {
+
+                $('#postmortemAdd').prop('hidden', false);
+                $('#posteditGroup').prop('hidden', true);
+
+                row.removeClass('selected-row');
+                $('#postTable .btn').prop('disabled', false);
+                $('#postTable .btn').css({
+                    'color': '',
+                    'cursor': ''
+                });
+                var formData = new FormData();
+                for (var i = 0; i < selectedFiles.length; i++) {
+                    formData.append("images", selectedFiles[i]);
+                    console.log('upload', selectedFiles[i]);
+                }
+                for (var i = 0; i < imageDelete.length; i++) {
+                    formData.append("imagePaths", imageDelete[i]);
+                    console.log('upload', imageDelete[i]);
+                }
+
+                formData.append("passedId", PassedForSlaughterId);
+                formData.append("postRowId", rowId);
+                formData.append("postPart", $('#postPart').val());
+                formData.append("postCause", $('#postCause').val());
+                formData.append("postWeight", $('#postWeight').val());
+                formData.append("postHead", $('#postHead').val());
+
+                const passedHead = $('#passedHead').val();
+                const passedWeight = $('#passedWeight').val();
+
+                var postPart = $('#postPart').val();
+                var postCause = $('#postCause').val();
+                var postWeight = $('#postWeight').val();
+                var postHead = $('#postHead').val();
+
+                $.ajax({
+                    url: '/MeatInspections/PostmortemRowEdit/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+
+                        //update head and weight value
+                        $('#fitHead').val(passedHead - response.totalhead);
+                        $('#fitWeight').val(passedWeight - response.totalweight);
+
+
+                        row.removeClass('selected-row');
+                        var imgArea = $('.img-area5');
+                        $('#fileInput').val('');
+                        imgArea.empty();
+                        currentImages = 0
+                        selectedFiles = [];
+
+                        row.find('td:eq(0)').text(response.postPart);
+                        row.find('td:eq(1)').text(response.postCause);
+                        row.find('td:eq(2)').text(response.postHead);
+                        row.find('td:eq(3)').text(response.postWeight);
+
+                        var fileName1 = response.image1 ? response.image1.split('\\').pop() : 'null';
+                        var fileName2 = response.image2 ? response.image2.split('\\').pop() : 'null';
+                        var fileName3 = response.image3 ? response.image3.split('\\').pop() : 'null';
+
+                        row.find('td:eq(4)').text(fileName1);
+                        row.find('td:eq(5)').text(fileName2);
+                        row.find('td:eq(6)').text(fileName3);
+
+                        document.getElementById('postWeight').value = '0';
+                        document.getElementById('postHead').value = '0';
+                        document.getElementById('postPart').selectedIndex = 0;
+                        document.getElementById('postCause').selectedIndex = 0;
+
+                        $('#postHead').prop('disabled', true);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle errors
+                        console.error('AJAX Error:', error);
+                        // Handle different HTTP status codes if needed
+                    },
+
+                });
+
+                // here
+            });
+        });
+    });
+
+
+</script>
+
+<script>
+
+
+
+    //next --> summary section // Create totalFitData
+    $(document).ready(function () {
+        $('#postmortemNext').click(function () {
+
+            // disable/enable elements
+            $('#section3 :input, #section3 button').prop('disabled', true);
+            $('#section4 :input, #section4 button').prop('disabled', false);
+
+            // Disable the button
+            $(this).prop('disabled', true);
+
+            var targetDivPosition = $('#section4').offset().top - 70;
+            $('html, body').animate({
+                scrollTop: targetDivPosition
+            }, 500, function () {
+            });
+
+            var totalHead = $('#fitHead').val();
+            var totalWeight = $('#fitWeight').val();
+
+            //console.log(PostMortemId);
+            console.log(totalHead);
+            console.log(totalWeight);
+
+
+            $.ajax({
+                url: '/MeatInspections/AddTotal/',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+
+                    passedId: PassedForSlaughterId,
+                    totalHead: totalHead,
+                    totalWeight: totalWeight,
+
+                },
+                success: function (response) {
+
+                    TotalFitId = response.id
+
+                    document.getElementById("sumPassedId").value = TotalFitId;
+                    document.getElementById("sumMeatInsId").value = MeatInspectionId;
+                    document.getElementById('postWeight').value = '0';
+                    document.getElementById('postHead').value = '0';
+                    document.getElementById('postPart').selectedIndex = 0;
+                    document.getElementById('postCause').selectedIndex = 0;
+                    $('#postHead').prop('disabled', true);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error('AJAX Error:', error);
+
+                },
+            });
+        });
+    });
+
+
+
+</script>
+
+<script>
+    //integration of Philippines Address JSON
+    fetch('@Url.Content("https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
+        .then(response => response.json())
+        .then(data => {
+            const regionSelect = document.getElementById('regionSelect');
+            const provinceSelect = document.getElementById('provinceSelect');
+            const citySelect = document.getElementById('citySelect');
+            const barangaySelect = document.getElementById('barangaySelect');
+            var addressInput = document.getElementById('addressInput');
+
+            // Define the desired order of regions
+            const regionOrder = [
+                { regionCode: "NCR", regionName: "National Capital Region" },
+                { regionCode: "CAR", regionName: "Cordillera Administrative Region" },
+                { regionCode: "01", regionName: "Region I" },
+                { regionCode: "02", regionName: "Region II" },
+                { regionCode: "03", regionName: "Region III" },
+                { regionCode: "4A", regionName: "Region IV-A" },
+                { regionCode: "4B", regionName: "Region IV-B" },
+                { regionCode: "05", regionName: "Region V" },
+                { regionCode: "06", regionName: "Region VI" },
+                { regionCode: "07", regionName: "Region VII" },
+                { regionCode: "08", regionName: "Region VIII" },
+                { regionCode: "09", regionName: "Region IX" },
+                { regionCode: "10", regionName: "Region X" },
+                { regionCode: "11", regionName: "Region XI" },
+                { regionCode: "12", regionName: "Region XII" },
+                { regionCode: "13", regionName: "Region XIII" },
+                { regionCode: "BARMM", regionName: "Bangsamoro Autonomous Region in Muslim Mindanao" }
+            ];
+
+            // Populate regions dropdown
+            regionOrder.forEach(region => {
+                const option = document.createElement('option');
+                option.value = region.regionCode;
+                option.textContent = region.regionName;
+                regionSelect.appendChild(option);
+            });
+
+            // Function to populate provinces based on the selected region
+            function populateProvinces() {
+                const selectedRegion = regionSelect.value;
+                provinceSelect.innerHTML = "<option hidden>Select Province</option>";
+                citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
+                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+
+                if (selectedRegion !== "") {
+                    const regionData = data[selectedRegion];
+                    const provinceList = regionData.province_list;
+
+                    for (const [provinceCode, province] of Object.entries(provinceList)) {
+                        const option = document.createElement('option');
+                        option.value = provinceCode;
+                        option.textContent = provinceCode;
+                        provinceSelect.appendChild(option);
+                    }
+                }
+            }
+
+            // Function to populate cities/municipalities based on the selected province
+            function populateCities() {
+                const selectedRegion = regionSelect.value;
+                const selectedProvince = provinceSelect.value;
+                citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
+                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+
+                if (selectedRegion !== "" && selectedProvince !== "") {
+                    const regionData = data[selectedRegion];
+                    const provinceData = regionData.province_list[selectedProvince];
+                    const municipalityList = provinceData.municipality_list;
+
+                    for (const [municipalityCode, municipality] of Object.entries(municipalityList)) {
+                        const option = document.createElement('option');
+                        option.value = municipalityCode;
+                        option.textContent = municipalityCode;
+                        citySelect.appendChild(option);
+                    }
+                }
+            }
+
+            // Function to populate barangays based on the selected city/municipality
+            function populateBarangays() {
+                const selectedRegion = regionSelect.value;
+                const selectedProvince = provinceSelect.value;
+                const selectedCity = citySelect.value;
+                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+
+                if (selectedRegion !== "" && selectedProvince !== "" && selectedCity !== "") {
+                    const regionData = data[selectedRegion];
+                    const provinceData = regionData.province_list[selectedProvince];
+                    const municipalityData = provinceData.municipality_list[selectedCity];
+                    const barangayList = municipalityData.barangay_list;
+
+                    for (const barangay of barangayList) {
+                        const option = document.createElement('option');
+                        option.value = barangay;
+                        option.textContent = barangay;
+                        barangaySelect.appendChild(option);
+                    }
+                }
+            }
+            function updateAddress() {
+                var regionSelect = document.getElementById('regionSelect');
+                var provinceSelect = document.getElementById('provinceSelect');
+                var citySelect = document.getElementById('citySelect');
+                var barangaySelect = document.getElementById('barangaySelect');
+                var addressInput = document.getElementById('addressInput');
+
+                var region = regionSelect.value || '';
+                var province = provinceSelect.value || '';
+                var city = citySelect.value || '';
+                var barangay = barangaySelect.value || '';
+
+                var address = region + ', ' + province + ', ' + city + ', ' + barangay;
+                addressInput.value = address;
+            }
+
+
+            // Add event listeners to call the populate functions on change
+            regionSelect.addEventListener('change', populateProvinces);
+            provinceSelect.addEventListener('change', populateCities);
+            citySelect.addEventListener('change', populateBarangays);
+            document.getElementById('regionSelect').addEventListener('change', updateAddress);
+            document.getElementById('provinceSelect').addEventListener('change', updateAddress);
+            document.getElementById('citySelect').addEventListener('change', updateAddress);
+            document.getElementById('barangaySelect').addEventListener('change', updateAddress);
+        })
+        .catch(error => console.error('Error fetching JSON:', error));
+
+</script>
+

@@ -71,9 +71,13 @@ namespace thesis.Repositories
 
 		public List<string> ChroplethAdressMeatDealers()
         {
-            var addresses = _context.MeatDealers
-                                  .Select(p => p.Address)
-                                  .ToList();
+            //var addresses = _context.MeatDealers
+            //                      .Select(p => p.Address)
+            //                      .ToList();
+
+			var addresses = _context.ReceivingReports
+						.Select(p => p.Origin)
+						.ToList();
             return addresses;
         }
 

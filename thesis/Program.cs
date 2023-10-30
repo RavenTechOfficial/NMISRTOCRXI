@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using thesis.Areas.Identity.Data;
@@ -17,7 +18,77 @@ builder.Services.AddDefaultIdentity<AccountDetails>(options => options.SignIn.Re
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMemoryCache();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Set an appropriate expiration time
+    options.SlidingExpiration = true;
+});
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60); // Set an appropriate timeout value
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
+
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie();
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie(options =>
+//    {
+//        options.LoginPath = "/Account/Login"; // Set the login path
+//        options.AccessDeniedPath = "/Account/AccessDenied"; // Set the access denied path
+//        options.Events = new CookieAuthenticationEvents
+//        {
+//            OnSigningIn = async context =>
+//            {
+//                var user = context.Principal;
+//                if (user != null && user.Identity != null && user.Identity.IsAuthenticated)
+//                {
+//                    var userManager = context.HttpContext.RequestServices.GetRequiredService<UserManager<AccountDetails>>();
+
+//                    var roles = await userManager.GetRolesAsync(await userManager.GetUserAsync(user));
+
+//                    var redirectPath = string.Empty;
+
+//                    if (roles.Contains("SuperAdministrator"))
+//                    {
+//                        redirectPath = "/Dashboard/Index";
+//                    }
+//                    else if (roles.Contains("InspectorAdministrator"))
+//                    {
+//                        redirectPath = "/MeatEstablishments/Index";
+//                    }
+//                    else if (roles.Contains("MeatInspector") || roles.Contains("MeatEstablishmentRepresentative"))
+//                    {
+//                        redirectPath = "/ReceivingReports/Index";
+//                    }
+//                    else if (roles.Contains("MTVAdministrator"))
+//                    {
+//                        redirectPath = "/MTVdashboard/Index";
+//                    }
+//                    else if (roles.Contains("MtvInspector"))
+//                    {
+//                        redirectPath = "/MtvInspectorDashboard/Index";
+//                    }
+//                    else if (roles.Contains("MtvUsers"))
+//                    {
+//                        redirectPath = "/MTVapplication/Create";
+//                    }
+
+//                    if (!string.IsNullOrEmpty(redirectPath))
+//                    {
+//                        context.Properties.RedirectUri = redirectPath;
+//                    }
+//                }
+//            }
+//        };
+//    });
 
 #region Authorization
 
@@ -28,10 +99,10 @@ AddScoped();
 
 var app = builder.Build();
 
-if (args.Length == 1 && args[0].ToLower() == "seeddatas")
-{
-    Seed3.SeedDatas(app);
-}
+//if (args.Length == 1 && args[0].ToLower() == "seeddatas")
+//{
+//    Seed3.SeedDatas(app);
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

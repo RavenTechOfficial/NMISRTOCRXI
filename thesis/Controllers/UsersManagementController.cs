@@ -1,165 +1,315 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Encodings.Web;
 using System.Text;
+using System.Text.Encodings.Web;
 using thesis.Areas.Identity.Data;
 using thesis.Core.IRepositories;
 using thesis.Core.ViewModel;
 using thesis.Data;
-using Microsoft.AspNetCore.Authorization;
+using thesis.Data.Enum;
 
 namespace thesis.Controllers
 {
-	public class UsersManagementController : Controller
-	{
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly thesisContext _context;
-		private readonly UserManager<AccountDetails> _userManager;
-		private readonly IEmailSender _emailSender;
+    public class UsersManagementController : Controller
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly thesisContext _context;
+        private readonly UserManager<AccountDetails> _userManager;
+        private readonly IEmailSender _emailSender;
 
-		public UsersManagementController(
-			IUnitOfWork unitOfWork,
-			thesisContext context,
-			UserManager<AccountDetails> userManager,
-			IEmailSender emailSender)
-		{
-			_unitOfWork = unitOfWork;
-			_context = context;
-			_userManager = userManager;
-			_emailSender = emailSender;
-		}
-		[Authorize(Policy = "RequireSuperAdmin")]
-		public async Task<IActionResult> Index()
-		{
-			var users = await _unitOfWork.UsersManangement.GetAllUsersAsync();
-			return View(users);
-		}
-		[Authorize(Policy = "RequireSuperAdmin")]
-		public async Task<IActionResult> Details(string id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
+        public UsersManagementController(
+            IUnitOfWork unitOfWork,
+            thesisContext context,
+            UserManager<AccountDetails> userManager,
+            IEmailSender emailSender)
+        {
+            _unitOfWork = unitOfWork;
+            _context = context;
+            _userManager = userManager;
+            _emailSender = emailSender;
+        }
+        [Authorize(Policy = "RequireSuperAdmin")]
+        public async Task<IActionResult> Index()
+        {
 
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
+            var users = await _unitOfWork.UsersManangement.GetAllUsersAsync();
+            return View(users);
+        }
+        public List<UserManagementInspectorAdminViewModel> GetUserData()
+        {
+            var userList = _context.Users
+                .Join(
+                    _context.MeatEstablishment,
+                    user => user.MeatEstablishmentId,
+                    meatEstablishment => meatEstablishment.Id,
+                    (user, meatEstablishment) => new UserManagementInspectorAdminViewModel
+                    {
+                        Id = user.Id,
+                        firstName = user.firstName,
+                        lastName = user.lastName,
+                        middleName = user.middleName,
+                        address = user.address,
+                        contactNo = user.contactNo,
+                        email = user.Email,
+                        Roles = user.Roles, // Assuming Roles is a property in your User entity
+                        MeatEstablishmentId = user.MeatEstablishmentId,
+                        MeatEstablishmentName = meatEstablishment.Name
+                    })
+                .Where(user => user.Roles == Roles.MEATESTABLISHMENTREPRESENTATIVE || user.Roles == Roles.MEATINSPECTOR)
+                .ToList();
 
-			if (users == null)
-			{
-				return NotFound();
-			}
-			string filename = Path.GetFileName(users.image);
-			ViewBag.filename = filename;
+            return userList;
 
-			return View(users);
-		}
-		[Authorize(Policy = "RequireSuperAdmin")]
-		public async Task<IActionResult> Edit(string id)
-		{
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id); // AccountDetails
-			if (users == null) return View("Error");
-			var accountVm = new AccountUserViewModel
-			{
-				firstName = users.firstName,
-				lastName = users.lastName,
-				middleName = users.middleName,
-				contactNo = users.contactNo,
-				birthdate = users.birthdate,
-				sex = users.sex,
-			};
-			return View(accountVm);
-		}
-		[HttpPost]
-		public async Task<IActionResult> Edit(string id, AccountUserViewModel accountDetails)
-		{
-			if (!ModelState.IsValid)
-			{
-				ModelState.AddModelError("", "Failed to edit account");
-				return View("Edit", accountDetails);
-			}
+        }
 
-			try
-			{
-				if (_unitOfWork.UsersManangement.Update(accountDetails))
-				{
-					_unitOfWork.UsersManangement.Save();
+        public async Task<IActionResult> IndexInspectorAdmin()
+        {
+            var userList = GetUserData();
 
-					// Send confirmation email
-					var user = await _userManager.GetUserAsync(User);
-					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-					code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-					var callbackUrl = Url.Page(
-						"/EditConfirmation",
-						pageHandler: null,
-						values: new { area = "Identity", userId = user.Id, code = code },
-						protocol: Request.Scheme);
+            return View(userList);
+        }
+        [Authorize(Policy = "RequireSuperAdmin")]
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-					await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
-						$"Please confirm your updated account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
 
-					return RedirectToAction(nameof(EditConfirmation));
-				}
-				else
-				{
-					// Handle the case when the account is not found
-					return View("Error");
-				}
-			}
-			catch (DbUpdateConcurrencyException ex)
-			{
-				_context.Entry(accountDetails).Reload();
-				ModelState.AddModelError("", "The entity has been modified or deleted by another user.");
-				return View("Edit", accountDetails);
-			}
-		}
-		[Authorize(Policy = "RequireSuperAdmin")]
-		public IActionResult EditConfirmation()
-		{
-			return View();
-		}
-		[Authorize(Policy = "RequireSuperAdmin")]
-		public async Task<IActionResult> Delete(string id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
+            if (users == null)
+            {
+                return NotFound();
+            }
+            string filename = Path.GetFileName(users.image);
+            ViewBag.filename = filename;
 
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
+            return View(users);
+        }
+        public async Task<IActionResult> MeatCheckDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-			if (users == null)
-			{
-				return NotFound();
-			}
-			string filename = Path.GetFileName(users.image);
-			ViewBag.filename = filename;
+            var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
 
-			return View(users);
-		}
+            if (users == null)
+            {
+                return NotFound();
+            }
+            string filename = Path.GetFileName(users.image);
+            ViewBag.filename = filename;
 
-		[HttpPost, ActionName("Delete")]
-		public async Task<IActionResult> DeleteConfirmed(string id)
-		{
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
-			if (users == null)
-			{
-				return Problem("your user doesn't exist");
-			}
+            return View(users);
+        }
+        
+        public async Task<IActionResult> MeatCheckEdit(string id)
+        {
+            var users = await _unitOfWork.UsersManangement.GetAccountDetails(id); // AccountDetails
+            if (users == null) return View("Error");
+            var accountVm = new AccountUserViewModel
+            {
+                firstName = users.firstName,
+                lastName = users.lastName,
+                middleName = users.middleName,
+                contactNo = users.contactNo,
+                birthdate = users.birthdate,
+                sex = users.sex,
+            };
+            return View(accountVm);
+        }
+        [Authorize(Policy = "RequireSuperAdmin")]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var users = await _unitOfWork.UsersManangement.GetAccountDetails(id); // AccountDetails
+            if (users == null) return View("Error");
+            var accountVm = new AccountUserViewModel
+            {
+                firstName = users.firstName,
+                lastName = users.lastName,
+                middleName = users.middleName,
+                contactNo = users.contactNo,
+                birthdate = users.birthdate,
+                sex = users.sex,
+            };
+            return View(accountVm);
+        }
 
-			if (users != null)
-			{
-				_unitOfWork.UsersManangement.Delete(users);
-			}
+        [HttpPost]
+        public async Task<IActionResult> MeatCheckEdit(string id, AccountUserViewModel accountDetails)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit account");
+                return View("Edit", accountDetails);
+            }
 
-			_unitOfWork.UsersManangement.Save();
-			return RedirectToAction(nameof(Index));
-		}
+            try
+            {
+                if (_unitOfWork.UsersManangement.Update(accountDetails))
+                {
+                    _unitOfWork.UsersManangement.Save();
+
+                    // Send confirmation email
+                    var user = await _userManager.GetUserAsync(User);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/EditConfirmation",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = user.Id, code = code },
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
+                        $"Please confirm your updated account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    return RedirectToAction(nameof(EditConfirmation));
+                }
+                else
+                {
+                    // Handle the case when the account is not found
+                    return View("Error");
+                }
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _context.Entry(accountDetails).Reload();
+                ModelState.AddModelError("", "The entity has been modified or deleted by another user.");
+                return View("Edit", accountDetails);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, AccountUserViewModel accountDetails)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit account");
+                return View("Edit", accountDetails);
+            }
+
+            try
+            {
+                if (_unitOfWork.UsersManangement.Update(accountDetails))
+                {
+                    _unitOfWork.UsersManangement.Save();
+
+                    // Send confirmation email
+                    var user = await _userManager.GetUserAsync(User);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/EditConfirmation",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = user.Id, code = code },
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
+                        $"Please confirm your updated account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    return RedirectToAction(nameof(EditConfirmation));
+                }
+                else
+                {
+                    // Handle the case when the account is not found
+                    return View("Error");
+                }
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _context.Entry(accountDetails).Reload();
+                ModelState.AddModelError("", "The entity has been modified or deleted by another user.");
+                return View("Edit", accountDetails);
+            }
+        }
+        //[Authorize(Policy = "RequireSuperAdmin")]
+        public IActionResult EditConfirmation()
+        {
+            return View();
+        }
+        [Authorize(Policy = "RequireSuperAdmin")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
+
+            if (users == null)
+            {
+                return NotFound();
+            }
+            string filename = Path.GetFileName(users.image);
+            ViewBag.filename = filename;
+
+            return View(users);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
+            if (users == null)
+            {
+                return Problem("your user doesn't exist");
+            }
+
+            if (users != null)
+            {
+                _unitOfWork.UsersManangement.Delete(users);
+            }
+
+            _unitOfWork.UsersManangement.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> MeatCheckDelete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
+
+            if (users == null)
+            {
+                return NotFound();
+            }
+            string filename = Path.GetFileName(users.image);
+            ViewBag.filename = filename;
+
+            return View(users);
+        }
+
+        [HttpPost, ActionName("MeatCheckDelete")]
+        public async Task<IActionResult> MeatCheckDeleteConfirmed(string id)
+        {
+            var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
+            if (users == null)
+            {
+                return Problem("your user doesn't exist");
+            }
+
+            if (users != null)
+            {
+                _unitOfWork.UsersManangement.Delete(users);
+            }
+
+            _unitOfWork.UsersManangement.Save();
+            return RedirectToAction(nameof(IndexInspectorAdmin));
+        }
 
 
 
-
-	}
+    }
 }

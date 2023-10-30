@@ -19,7 +19,7 @@ namespace thesis.Models
         public int? MeatDealersId { get; set; }
         public MeatDealers? MeatDealers { get; set; }
         public string Origin { get; set; }
-        public ShippingDocuments ShippingDoc { get; set; }
+        public string ShippingDoc { get; set; }
         public int HoldingPenNo { get; set; }
         public string ReceivingBy { get; set; }
         [ForeignKey("AccountDetails")]

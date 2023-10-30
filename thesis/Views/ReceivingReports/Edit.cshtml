@@ -3,31 +3,46 @@
 @{
 
 }
-<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
-<link href="~/css/register.css" rel="stylesheet" />
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
+<link href="~/css/createMeatCheck.css" rel="stylesheet" asp-append-version="true" />
+
+<style>
+    #content .FirstLayer .applications h3 {
+        font-size: 40px;
+        font-weight: 600;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 5px;
+        color: var(--black);
+    }
+
+    .backbtn {
+        margin-left: 5px;
+    }
+</style>
+
 <section id="content">
-
-
     <!-- MAIN STARTS-->
     <main class="registration">
+        @*<div class="FirstLayer">
+        </div>*@
+        @*<div class="FirstLayer">
+        <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Receiving/Acceptance</li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
 
-        <div class="FirstLayer">
-            <h3>Daily Receiving / Acceptance of Food Animals</h3>
+        </ol>
+        </nav>
+        </div>*@
+        <div>
+            <a class="backbtn" asp-action="Index">Back to List</a>
         </div>
         <div class="FirstLayer">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Receiving/Acceptance</li>
-                    <li class="breadcrumb-item active" aria-current="page">Edit</li>
-
-                </ol>
-            </nav>
-        </div>
-
-        <div class="FirstLayer">
-
             <div class="applications">
+                <h3>Edit | Receiving Report</h3>
+                <hr />
                 @if (User.IsInRole("MeatInspector"))
                 {
                     <a asp-action="Index">
@@ -86,14 +101,10 @@
                     <div>
                     </div>
                 }
+
                 @if (User.IsInRole("MeatEstablishmentRepresentative"))
                 {
-                    <div>
-                        <a asp-action="Index">Back to List</a>
-                    </div>
-                    <hr />
-
-                    <form asp-action="Create" class="form">
+                    <form asp-action="Edit" class="form">
                         <div class="column">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -141,12 +152,7 @@
                             </div>
                         </div>
                         <div class="column">
-                            <div class="column" style="display: none;">
-                                <div class="input-box">
-                                    <input asp-for="Origin" class="form-control" id="addressInput" />
-                                    <span asp-validation-for="Origin" class="text-danger"></span>
-                                </div>
-                            </div>
+
                             @* <div class="input-box">
                         <label asp-for="Origin" class="control-label"></label>
                         <input asp-for="Origin" class="form-control" />
@@ -155,6 +161,11 @@
                             <div class="input-box address">
 
                                 <label asp-for="Origin" class="control-label">Origin:</label>
+                                <div class="input-box">
+                                    <input asp-for="Origin" class="form-control" id="addressInput" />
+                                    <span asp-validation-for="Origin" class="text-danger"></span>
+                                </div>
+
                                 <div class="column">
                                     <div class="select-box">
                                         <select id="regionSelect" onchange="populateProvinces()">
@@ -205,27 +216,47 @@
                         </div>
                         <div class="input-box">
                             <label asp-for="ShippingDoc" class="control-label">Shipping Documents:</label>
-                            <select asp-for="ShippingDoc" class="form-control">
-                                <option>--Select--</option>
-                                <option value="CertificateOfOwnerShip">Certificate Of Ownership</option>
-                                <option value="CertificateOfTransfer">Certificate Of Transfer</option>
-                                <option value="VeterinaryHealthCertificate">Veterinary Health Certificate</option>
-                                <option value="ShippingPermit">Shipping Permit</option>
-                            </select>
+                            <input asp-for="ShippingDoc" id="selectedShippingDocs">
                             <span asp-validation-for="ShippingDoc" class="text-danger"></span>
-                        </div>
-                        @*    <div class="input-box">
-                    <label class="control-label">Shipping Documents:</label><br>
-                    <input type="checkbox" name="ShippingDoc" value="CertificateOfOwnerShip" id="CertificateOfOwnerShip">
-                    <label for="CertificateOfOwnerShip">Certificate Of Ownership</label><br>
-                    <input type="checkbox" name="ShippingDoc" value="CertificateOfTransfer" id="CertificateOfTransfer">
-                    <label for="CertificateOfTransfer">Certificate Of Transfer</label><br>
-                    <input type="checkbox" name="ShippingDoc" value="VeterinaryHealthCertificate" id="VeterinaryHealthCertificate">
-                    <label for="VeterinaryHealthCertificate">Veterinary Health Certificate</label><br>
-                    <input type="checkbox" name="ShippingDoc" value="ShippingPermit" id="ShippingPermit">
-                    <label for="ShippingPermit">Shipping Permit</label><br>
-                    </div>*@
+                            <div class="checkbox-list">
+                                <div class="checkbox-row">
+                                    <label>
+                                        <input type="checkbox" name="ShippingDoc" value="CertificateOfOwnerShip">
+                                        Certificate Of Ownership
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="ShippingDoc" value="CertificateOfTransfer">
+                                        Certificate Of Transfer
+                                    </label>
+                                </div>
+                                <div class="checkbox-row">
+                                    <label>
+                                        <input type="checkbox" name="ShippingDoc" value="VeterinaryHealthCertificate">
+                                        Veterinary Health Certificate
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="ShippingDoc" value="ShippingPermit">
+                                        Shipping Permit
+                                    </label>
+                                </div>
+                            </div>
 
+                        </div>
+                        <script>
+                            const checkboxes = document.querySelectorAll('input[type="checkbox"][name="ShippingDoc"]');
+                            const hiddenInput = document.getElementById('selectedShippingDocs');
+
+                            checkboxes.forEach(checkbox => {
+                                checkbox.addEventListener('change', () => {
+                                    const selectedDocs = Array.from(checkboxes)
+                                        .filter(cb => cb.checked)
+                                        .map(cb => cb.value)
+                                        .join(',');
+
+                                    hiddenInput.value = selectedDocs;
+                                });
+                            });
+                        </script>
                         <div class="column">
                             <div class="input-box">
                                 <label asp-for="HoldingPenNo" class="control-label">Holding Pen No.:</label>
@@ -250,7 +281,7 @@
                                 <option>Pending</option>
                             </select>
                         </div>
-                        <button type="submit" value="Create">Create</button>
+                        <button type="submit" value="Create">Save</button>
                     </form>
                 }
 

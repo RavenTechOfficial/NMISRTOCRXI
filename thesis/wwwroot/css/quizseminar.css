@@ -168,6 +168,9 @@ body {
     cursor: pointer;
     display: inline-block;
 }
+.btn:hover{
+    background-color: #09e9d4;
+}
 
 .quiz-box .question-number,
 .quiz-box .question-text,

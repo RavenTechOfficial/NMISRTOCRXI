@@ -7,45 +7,128 @@
 
 @{
     ViewData["Title"] = "Index";
-    <style>
-        [aria-hidden="true"] {
-            position: absolute;
-            left: -9999px;
-        }
-    </style>
+
 }
 
-<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+<style>
+    [aria-hidden="true"] {
+        position: absolute;
+        left: -9999px;
+    }
+
+    #content h1 {
+        text-align: center;
+        font-size: 53px;
+        font-weight: 700;
+    }
+
+    #content main .head-title .left1 {
+        margin-top: 2px;
+        margin-left: 2px;
+        margin-bottom: 25px;
+    }
+
+    #content main .left1 h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-top: 10px;
+        margin-bottom: 3px;
+        margin-left: 10px;
+        color: var(--black);
+    }
+
+    #content main .FirstLayer .applications h3 {
+        font-size: 35px;
+        font-weight: 600;
+        margin-top: 5px;
+        /*margin-bottom: 3px;*/
+        /* margin-left: 10px;*/
+        color: var(--black);
+    }
+
+    .filterEst {
+        width: 200px;
+        padding: 10px;
+        color: var(--black);
+        border: 1px solid var(--filterborder);
+        background-color: var(--filterbgcolor);
+        border-radius: 5px;
+    }
+
+    #contentWrapper {
+        max-height: 100%; /* Limit the maximum height to the viewport height */
+        max-width: 100%; /* Limit the maximum width to the viewport width */
+        overflow: hidden; /* Hide overflow to prevent scroll bars */
+        position: relative; /* Needed for absolute positioning of the toggle button */
+    }
+
+    #tableContainer {
+        overflow: auto; /* Enable scrolling for the table container */
+        max-height: calc(100% - 30px); /* Calculate the maximum height minus padding */
+        max-width: 100%; /* Limit the maximum width to the viewport width */
+    }
+
+    #toggleButton {
+        position: absolute;
+        top: 5px; /* Adjust button positioning as needed */
+        right: 5px; /* Adjust button positioning as needed */
+        z-index: 1; /* Ensure the button is above the content */
+    }
+
+    #showInspection {
+        /*margin-top: 10px;
+        margin-bottom: 0px;
+        margin-left: 10px;*/
+        border: 1px solid var(--btndownload);
+        background-color: var(--btndownload);
+        padding: 5px 10px;
+        color: var(--white);
+        border-radius: 7px;
+    }
+
+        #showInspection:hover {
+            background-color: var(--light-green);
+            border: 1px solid var(--light-green);
+        }
+</style>
 
 <section id="content">
     <main>
 
-        <div class="FirstLayer">
-
-            <button id="downloadButton" onclick="download()">
-                Download <i class="bx bx-download"></i>
-            </button>
-
-        </div>
-
-        <div class="head-title">
+        <div class="head-title" id="filter">
             <div class="left">
-                <h1>Meat Inspection Report</h1>
                 <h3>Filters:</h3>
                 <div class="filter-box">
+
+                    @if (User.IsInRole("InspectorAdministrator"))
+                    {
+
+                        <div class="input-wrapper">
+                            <label>Meat Establishment:</label>
+                            <select id="meatEstablishmentFilter" asp-items="@ViewBag.MeatEstablishments" class="form-control">
+                                <option value="">All Establishment</option>
+                            </select>
+
+                        </div>
+
+                    }
+
                     <div class="input-wrapper">
-                        <label for="startdate">Start Date</label>
-                        <input onchange="filterDataDate()" type="date" id="startdate" class="filter">
-                    </div>
-                    <div class="input-wrapper">
-                        <label for="enddate">End Date</label>
-                        <input onchange="filterDataDate()" type="date" id="enddate" class="filter">
+                        <label for="dateFilter">Month:</label>
+                        <input type="month" id="dateFilter" class="form-control" />
                     </div>
 
                     <div class="input-wrapper">
                         <label for="species">Species</label>
-                        <select onchange="filterDataSpecies()" id="species" class="filter">
-                            <option value="All">All</option>
+                        <select id="species" class="form-control">
+                            <option value="">Select Species</option>
                             <option value="Cattle">Cattle</option>
                             <option value="Carabao">Carabao</option>
                             <option value="Swine">Swine</option>
@@ -59,24 +142,14 @@
                         </select>
                     </div>
 
-                    @if (User.IsInRole("InspectorAdministrator"))
-                    {
-                        @* <div class="input-wrapper">
-                    <label for="timeFrame">Time Frame</label>
-                    <select onchange="filterDatatimeFrame()" id="timeFrame" class="filter">
-                    <option value="">Monthly</option>
-                    <option value="">Daily</option>
-                    <option value="">Weekly</option>
-                    <option value="">Yearly</option>
-                    </select>
-                    </div>*@
-                        @*<div class="input-wrapper">
-                    <label>Filter by Meat Establishment:</label>
-                    <select id="meatEstablishmentFilter" asp-items="@ViewBag.MeatEstablishments" class="filter">
-                    <option value="">All Establishment</option>
-                    </select>
-                    </div>*@
-                    }
+
+
+                    <div class="input-wrapper">
+                        <label for="filter">Summary</label>
+                        <button id="showInspection" onclick="filterbutton()" class="btn btn-primary">Show All Inspections</button>
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -87,6 +160,9 @@
                 <tr>
                     <th scope="col">Date</th>
                     <th scope="col">VerifiedByPOSMSHead</th>
+                    <th scope="col">Meat Establishment</th>
+                    <th scope="col">License To Operate Number</th>
+                    <th scope="col">Address</th>
                     <th scope="col">Id</th>
                     <th scope="col">ReceivingReportId</th>
 
@@ -99,6 +175,9 @@
                     <tr>
                         <td>@inspection.RepDate</td>
                         <td>@inspection.VerifiedByPOSMSHead</td>
+                        <td>@inspection.ReceivingReport.AccountDetails.MeatEstablishment.Name</td>
+                        <td>@inspection.ReceivingReport.AccountDetails.MeatEstablishment.LicenseToOperateNumber</td>
+                        <td>@inspection.ReceivingReport.AccountDetails.MeatEstablishment.Address</td>
                         <td>@inspection.Id</td>
                         <td>@inspection.ReceivingReportId</td>
                     </tr>
@@ -110,23 +189,32 @@
         </table>
 
         <div class="FirstLayer">
-            <div class="applications">
+            <button id="downloadButton" onclick="download()">
+                Download <i class="bx bx-download"></i>
+            </button>
 
-                <h3 class="card-title m-b-0">I.Antemortem Inspection</h3>
+        </div>
+        <div class="FirstLayer">
+            <div class="applications">
+                <h1>MONTHLY MEAT INSPECTION REPORT (MMIR)</h1>
+                <hr />
+
+                <h3 class="card-title m-b-0">I. ANTEMORTEM INSPECTION</h3>
                 <br />
                 <h5 class="card-title m-b-0">A. Receiving of Food Animals for Slaughter</h5>
                 <br />
 
-                <table class="table table-bordered table-responsive-sm " id="tableOne">
+                <table id="tableOne" class="table table-striped table-bordered table-responsive" style="width:100%">
                     <thead>
                         <tr>
                             <th scope="col">Time</th>
-                            <th scope="col">Name of Meat Dealer</th>
                             <th scope="col">Species of Food Animals</th>
                             <th scope="col">Total Number of Animals</th>
-
+                            <th scope="col">Origin</th>
+                            <th scope="col">Meat Establishment</th>
+                            <th scope="col">License To Operate Number</th>
+                            <th scope="col">Address</th>
                             <th scope="col" aria-hidden="true">Id</th>
-
                         </tr>
                     </thead>
                     @{
@@ -156,84 +244,19 @@
                         @foreach (var item in filteredModel)
                         {
                             <tr>
-                                <td>@item.RecTime</td>
-                                <td>@item.MeatDealers.FirstName</td>
-                                <td>@item.Species</td>
+                                <td>@item.RecTime.ToString("yyyy-MM")</td>
+                                <td>
+                                    <img src="~/img/@(item.Species).png" class="img-large">
+                                    <div>@item.Species</div>
+                                </td>
                                 <td>@item.NoOfHeads</td>
+                                <td>@item.Origin</td>
+                                <td>@item.AccountDetails.MeatEstablishment.Name</td>
+                                <td>@item.AccountDetails.MeatEstablishment.LicenseToOperateNumber</td>
+                                <td>@item.AccountDetails.MeatEstablishment.Address</td>
                                 <td aria-hidden="true">@item.Id</td>
                             </tr>
                         }
-
-                    </tbody>
-
-                </table>
-
-
-                <h5 class="card-title m-b-0">B. Conduct of Antemortem Inspection</h5>
-                <br />
-                <table class="table table-bordered table-responsive-sm " id="tableTwo">
-                    <thead>
-                        <tr>
-                            <th scope="col">Name of Meat Dealer</th>
-                            <th scope="col">Species of Food Animals</th>
-                            <th scope="col">Issue</th>
-                            <th scope="col">No. of heads</th>
-                            <th scope="col">Weight (kg)</th>
-                            <th scope="col">Cause</th>
-                            <th scope="col" aria-hidden="true">Id</th>
-                            <th scope="col" aria-hidden="true">MeatInspectionId</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var inspection in ViewData["ConductOfInspections"] as IEnumerable<thesis.Models.ConductOfInspection>)
-                        {
-                            <tr>
-                                <td>@inspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
-                                <td>@inspection.MeatInspectionReport.ReceivingReport.Species</td>
-                                <td>@inspection.Issue</td>
-                                <td>@inspection.NoOfHeads</td>
-                                <td>@inspection.Weight</td>
-                                <td>@inspection.Cause</td>
-                                <td aria-hidden="true">@inspection.Id</td>
-                                <td aria-hidden="true">@inspection.MeatInspectionReportId</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-
-
-
-                <h5 class="card-title m-b-0">C. Passed for Slaughter</h5>
-                <br />
-                <table class="table table-bordered" id="tableThree">
-                    <thead>
-                        <tr>
-                            <th scope="col">Name of Meat Dealer</th>
-                            <th scope="col">Species of Food Animal</th>
-                            <th scope="col">No. of heads</th>
-                            <th scope="col">Weight</th>
-                            <th scope="col" aria-hidden="true">Id</th>
-                            <th scope="col" aria-hidden="true">ConductOfInpscetionId</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @foreach (var passed in ViewData["PassedForSlaughters"] as IEnumerable<thesis.Models.PassedForSlaughter>)
-                        {
-                            <tr>
-                                <td>@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
-                                <td>@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
-                                <td>@passed.NoOfHeads</td>
-                                <td>@passed.Weight</td>
-                                <td aria-hidden="true">@passed.Id</td>
-                                <td aria-hidden="true">@passed.ConductOfInspectionId</td>
-                                <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
-                            </tr>
-                            // Build a unique key for each combination of Issue, Cause, Species, and Meat Dealer
-
-                        }
                     </tbody>
 
                 </table>
@@ -241,137 +264,238 @@
             </div>
         </div>
 
-        <div class="FirstLayer">
-            <div class="applications">
-                <h3 class="card-title m-b-0">II. Postmortem Inspection</h3>
-                <br />
-                <table class="table table-bordered" id="tableFour">
-                    <thead>
-                        <tr>
-                            <th scope="col">Name of Meat Dealer></th>
-                            <th scope="col">Type of Meat</th>
-                            <th scope="col">Animal Part</th>
-                            <th scope="col">Cause</th>
-                            <th scope="col">No. of heads</th>
-                            <th scope="col">Weight (kg)</th>
-                            <th scope="col" aria-hidden="true">Id</th>
-                            <th scope="col" aria-hidden="true">passedSlaughterId</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var post in ViewData["postmortem"] as IEnumerable<thesis.Models.Postmortem>)
-                        {
-                            <tr>
-                                <td>@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
-                                <td>@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
-                                <td>@post.AnimalPart</td>
-                                <td>@post.Cause</td>
-                                <td>@post.NoOfHeads</td>
-                                <td>@post.Weight</td>
-                                <td aria-hidden="true">@post.Id</td>
-                                <td aria-hidden="true">@post.PassedForSlaughterId</td>
+        <br />
+        <div id="contentWrapper">
+            <div id="tableContainer" style="visibility: hidden; width: 0; height: 0;">
+                <div class="FirstLayer">
+                    <div class="applications">
+                        <h5 class="card-title m-b-0">B. Conduct of Antemortem Inspection</h5>
+                        <br />
+                        <table class="table table-bordered table-responsive-sm " id="tableTwo">
+                            <thead>
+                                <tr>
+                                    <th scope="col" aria-hidden="true">Name of Meat Dealer</th>
+                                    <th scope="col">Species of Food Animals</th>
+                                    <th scope="col">Issue</th>
+                                    <th scope="col">No. of heads</th>
+                                    <th scope="col">Weight (kg)</th>
+                                    <th scope="col">Cause</th>
+                                    <th scope="col" aria-hidden="true">Id</th>
+                                    <th scope="col" aria-hidden="true">MeatInspectionId</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    // Assuming accountId is the specific AccountDetails id you want to filter by
+                                    var model = ViewData["ConductOfInspections"] as IEnumerable<thesis.Models.ConductOfInspection>;
+                                    string accountIdd = UserManager.GetUserId(User);
+                                    var filteredModell = model;
 
-                                <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
-                            </tr>
+                                    if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
+                                    {
+                                        // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
+                                        var loggedInUser = await UserManager.GetUserAsync(User);
 
-                        }
-                    </tbody>
+                                        // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
+                                        int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
 
-                </table>
+                                        // Filter the Model based on the MeatEstablishmentId
+                                        filteredModell = model.Where(item => item.MeatInspectionReport.ReceivingReport.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
+                                    }
+                                    else if (User.IsInRole("InspectorAdmin"))
+                                    {
+                                        // No filtering required for InspectorAdmin, so keep the original Model.
+                                        filteredModell = model;
+                                    }
+                                }
+                                @foreach (var inspection in model)
+                                {
+                                    <tr>
+                                        <td aria-hidden="true">@inspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
+                                        <td>@inspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                        <td>@inspection.Issue</td>
+                                        <td>@inspection.NoOfHeads</td>
+                                        <td>@inspection.Weight</td>
+                                        <td>@inspection.Cause</td>
+                                        <td aria-hidden="true">@inspection.Id</td>
+                                        <td aria-hidden="true">@inspection.MeatInspectionReportId</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
 
 
+                        <br />
+                        <h5 class="card-title m-b-0">C. Passed for Slaughter</h5>
+                        <br />
+                        <table class="table table-bordered" id="tableThree">
+                            <thead>
+                                <tr>
+                                    <th scope="col" aria-hidden="true">Name of Meat Dealer</th>
+                                    <th scope="col">Species of Food Animal</th>
+                                    <th scope="col">No. of heads</th>
+                                    <th scope="col">Weight</th>
+                                    <th scope="col" aria-hidden="true">Id</th>
+                                    <th scope="col" aria-hidden="true">ConductOfInpscetionId</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var passed in ViewData["PassedForSlaughters"] as IEnumerable<thesis.Models.PassedForSlaughter>)
+                                {
+                                    <tr>
+                                        <td aria-hidden="true">@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
+                                        <td>@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                        <td>@passed.NoOfHeads</td>
+                                        <td>@passed.Weight</td>
+                                        <td aria-hidden="true">@passed.Id</td>
+                                        <td aria-hidden="true">@passed.ConductOfInspectionId</td>
+                                        <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
+                                    </tr>
+                                    // Build a unique key for each combination of Issue, Cause, Species, and Meat Dealer
+
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="FirstLayer">
+                    <div class="applications">
+                        <h3 class="card-title m-b-0">II. POSTMORTEM INSPECTION</h3>
+                        <br />
+                        <table class="table table-bordered" id="tableFour">
+                            <thead>
+                                <tr>
+                                    <th scope="col" aria-hidden="true">Name of Meat Dealer></th>
+                                    <th scope="col">Type of Meat</th>
+                                    <th scope="col">Animal Part</th>
+                                    <th scope="col">Cause</th>
+                                    <th scope="col">No. of heads</th>
+                                    <th scope="col">Weight (kg)</th>
+                                    <th scope="col" aria-hidden="true">Id</th>
+                                    <th scope="col" aria-hidden="true">passedSlaughterId</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var post in ViewData["postmortem"] as IEnumerable<thesis.Models.Postmortem>)
+                                {
+                                    <tr>
+                                        <td aria-hidden="true">@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
+                                        <td>@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                        <td>@post.AnimalPart</td>
+                                        <td>@post.Cause</td>
+                                        <td>@post.NoOfHeads</td>
+                                        <td>@post.Weight</td>
+                                        <td aria-hidden="true">@post.Id</td>
+                                        <td aria-hidden="true">@post.PassedForSlaughterId</td>
+
+                                        <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
+                                    </tr>
+
+                                }
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                </div>
+
+
+                <div class="FirstLayer">
+                    <div class="applications">
+
+                        <h3 class="card-title m-b-0">III. TOTAL NUMBER OF FOOD ANIMALS FIT FOR HUMAN CONSUMPTION</h3>
+                        <br />
+                        <table class="table table-bordered" id="tableFive">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Species of Food Animals</th>
+                                    <th scope="col">Total Number of Animals</th>
+                                    <th scope="col">Total Dressed Weight</th>
+                                    <th scope="col" aria-hidden="true">Id</th>
+                                    <th scope="col" aria-hidden="true">PostmortemId</th>
+
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+
+                                @foreach (var total in ViewData["totalNoFitForHumanConsumption"] as IEnumerable<thesis.Models.totalNoFitForHumanConsumptions>)
+                                {
+                                    <tr>
+
+                                        <td>@total.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                        <td>@total.NoOfHeads</td>
+                                        <td>@total.DressedWeight</td>
+                                        <td aria-hidden="true">@total.Id</td>
+                                        <td aria-hidden="true">@total.PostmortemId</td>
+
+                                        <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
+                                    </tr>
+
+                                }
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <div class="FirstLayer">
+                    <div class="applications">
+
+                        <h3 class="card-title m-b-0">IV. SUMMARY AND DISTRIBUTION OF MEAT INSPECTION CERTIFICATE</h3>
+                        <br />
+                        <table class="table table-bordered" id="tableSix">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Type of Meat</th>
+                                    <th scope="col">No. of heads</th>
+                                    <th scope="col">Weight (kg.)</th>
+                                    <th scope="col">Destination Name</th>
+                                    <th scope="col">Destination Address</th>
+                                    <th scope="col">Meat Inspection Certificate Cancelled (sheets) If any</th>
+                                    <th scope="col" aria-hidden="true">Id</th>
+                                    <th scope="col" aria-hidden="true">totalfitId</th>
+
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @foreach (var summary in ViewData["SummaryAndDistributionOfMICs"] as IEnumerable<thesis.Models.SummaryAndDistributionOfMIC>)
+                                {
+                                    <tr>
+
+                                        <td>@summary.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                        <td>@summary.TotalNoFitForHumanConsumption.NoOfHeads</td>
+                                        <td>@summary.TotalNoFitForHumanConsumption.DressedWeight</td>
+                                        <td>@summary.DestinationName</td>
+                                        <td>@summary.DestinationAddress</td>
+                                        <td>@summary.CertificateStatus</td>
+                                        <td aria-hidden="true">@summary.Id</td>
+                                        <td aria-hidden="true">@summary.TotalNoFitForHumanConsumptionId</td>
+
+
+                                        <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
-
-
-
-        <div class="FirstLayer">
-            <div class="applications">
-
-                <h3 class="card-title m-b-0">III. Total Number of Food Animals Fit for Human Consumption</h3>
-                <br />
-                <table class="table table-bordered" id="tableFive">
-                    <thead>
-                        <tr>
-                            <th scope="col">Species of Food Animals</th>
-                            <th scope="col">Total Number of Animals</th>
-                            <th scope="col">Total Dressed Weight</th>
-                            <th scope="col" aria-hidden="true">Id</th>
-                            <th scope="col" aria-hidden="true">PostmortemId</th>
-
-
-                        </tr>
-
-                    </thead>
-                    <tbody>
-
-                        @foreach (var total in ViewData["totalNoFitForHumanConsumption"] as IEnumerable<thesis.Models.totalNoFitForHumanConsumptions>)
-                        {
-                            <tr>
-
-                                <td>@total.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
-                                <td>@total.NoOfHeads</td>
-                                <td>@total.DressedWeight</td>
-                                <td aria-hidden="true">@total.Id</td>
-                                <td aria-hidden="true">@total.PostmortemId</td>
-
-                                <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
-                            </tr>
-
-                        }
-
-                </table>
-
-            </div>
-
         </div>
-
-        <div class="FirstLayer">
-            <div class="applications">
-
-                <h3 class="card-title m-b-0">IV. Summary and Distribution of Meat Inspection Certificate</h3>
-                <br />
-                <table class="table table-bordered" id="tableSix">
-                    <thead>
-                        <tr>
-                            <th scope="col">Type of Meat</th>
-                            <th scope="col">No. of heads</th>
-                            <th scope="col">Weight (kg.)</th>
-                            <th scope="col">Destination Name</th>
-                            <th scope="col">Destination Address</th>
-                            <th scope="col">Meat Inspection Certificate Cancelled (sheets) If any</th>
-                            <th scope="col" aria-hidden="true">Id</th>
-                            <th scope="col" aria-hidden="true">totalfitId</th>
-
-
-                        </tr>
-
-                    </thead>
-                    <tbody>
-                        @foreach (var summary in ViewData["SummaryAndDistributionOfMICs"] as IEnumerable<thesis.Models.SummaryAndDistributionOfMIC>)
-                        {
-                            <tr>
-
-                                <td>@summary.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
-                                <td>@summary.TotalNoFitForHumanConsumption.NoOfHeads</td>
-                                <td>@summary.TotalNoFitForHumanConsumption.DressedWeight</td>
-                                <td>@summary.DestinationName</td>
-                                <td>@summary.DestinationAddress</td>
-                                <td>@summary.CertificateStatus</td>
-                                <td aria-hidden="true">@summary.Id</td>
-                                <td aria-hidden="true">@summary.TotalNoFitForHumanConsumptionId</td>
-
-
-                                <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
-                            </tr>
-                        }
-                    </tbody>
-
-                </table>
-            </div>
-        </div>
-
 
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script>
@@ -381,334 +505,80 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-style/0.8.16/xlsx.full.min.js"></script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/jszip.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx-style.min.js"></script>
+        <script src="xlsx.full.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 
-        </script>
+        <script src="~/js/meatinspectionindex.js"></script>
 
-
-
-        <script>
-
-            function download() {
-                // Initialize the allData array to empty before appending data from each table
-                allData = [];
-
-
-                // Combine data from all tables into the allData array
-                var tableOneData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(document.getElementById('tableOne')), { header: 1 });
-                var tableTwoData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(document.getElementById('tableTwo')), { header: 1 });
-                var tableThreeData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(document.getElementById('tableThree')), { header: 1 });
-                var tableFourData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(document.getElementById('tableFour')), { header: 1 });
-                var tableFiveData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(document.getElementById('tableFive')), { header: 1 });
-                var tableSixData = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(document.getElementById('tableSix')), { header: 1 });
-
-
-                var headerRow = ["MEAT INSPECTION REPORT", "", "", ""];
-                allData.unshift(headerRow);
-
-                // Determine the maximum number of rows in all six tables
-                var maxRows = Math.max(tableOneData.length, tableTwoData.length, tableThreeData.length, tableFourData.length, tableFiveData.length, tableSixData.length);
-
-                // Create a new row in the allData array for each row in tableOne, tableTwo, and tableThree
-                for (var i = 0; i < maxRows; i++) {
-
-                    var rowData = [];
-                    // Add data from tableOne
-                    if (i < tableOneData.length) {
-                        rowData.push(...tableOneData[i]);
-                    } else {
-                        // Add empty cells for rows that are not present in tableOne
-
-                        rowData.push('', '', '', '');
-                    }
-
-                    rowData.push('');
-                    // Add data from tableTwo
-                    if (i < tableTwoData.length) {
-                        rowData.push(...tableTwoData[i]);
-                    } else {
-                        // Add empty cells for rows that are not present in tableTwo
-                        rowData.push('', '', '', '', '', '');
-                    }
-                    rowData.push('');
-                    // Add data from tableThree
-                    if (i < tableThreeData.length) {
-                        rowData.push(...tableThreeData[i]);
-                    } else {
-                        // Add empty cells for rows that are not present in tableThree
-                        rowData.push('', '', '', '');
-                    }
-
-                    allData.push(rowData);
-                }
-
-                // Create a new row in the allData array for each row in tableFour, tableFive, and tableSix
-                for (var i = 0; i < maxRows; i++) {
-                    var rowData = [];
-
-                    // Add data from tableFour
-                    if (i < tableFourData.length) {
-                        rowData.push(...tableFourData[i]);
-                    } else {
-                        // Add empty cells for rows that are not present in tableFour
-                        rowData.push('', '', '', '', '', '');
-                    }
-                    allData.push(rowData);
-                }
-
-                for (var i = 0; i < maxRows; i++) {
-                    var rowData = [];
-                    // Add data from tableFive
-                    if (i < tableFiveData.length) {
-                        rowData.push(...tableFiveData[i]);
-                    } else {
-                        // Add empty cells for rows that are not present in tableFive
-                        rowData.push('', '', '', '');
-                    }
-                    allData.push(rowData);
-                }
-
-
-                for (var i = 0; i < maxRows; i++) {
-                    var rowData = [];
-                    // Add data from tableSix
-                    if (i < tableSixData.length) {
-                        rowData.push(...tableSixData[i]);
-                    } else {
-                        // Add empty cells for rows that are not present in tableSix
-                        rowData.push('', '', '', '', '', '');
-                    }
-
-                    allData.push(rowData);
-                }
-
-                // Create a new workbook with a single sheet
-                var ws = XLSX.utils.json_to_sheet(allData, { skipHeader: true });
-
-                var mergeHeaderRange = { s: { r: 0, c: 0 }, e: { r: 0, c: 15 } };
-                if (!ws['!merges']) ws['!merges'] = [];
-                ws['!merges'].push(mergeHeaderRange);
-
-
-                // Create a new workbook
-                var wb = XLSX.utils.book_new();
-
-                // Add the sheet to the workbook
-                XLSX.utils.book_append_sheet(wb, ws, 'CombinedData');
-
-                // Convert workbook to binary XLSX format
-                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-
-                // Save the file
-                saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'data5.xlsx');
-            }
-        </script>
-
-
+        <script src="https://code.jquery.com/jquery-3.3.1.js" defer></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" defer></script>
 
         <script>
             $(document).ready(function () {
-                // Check if tableOne is initially empty
-                var isTableOneEmpty = $('#tableOne tbody tr').length === 0;
+                var tables = $('#tableOne').DataTable({
+                    paging: true,
+                    lengthChange: true,
+                    pageLength: 30,
+                    lengthMenu: [30, 50, 100],
+                    searching: true,
+                    ordering: true,
+                    responsive: true,
+                });
 
-                if (isTableOneEmpty) {
-                    $('#tableni').hide(); // Hide tableni if tableOne is empty
-                    $('#tableThree').hide();
-                    $('#tableTwo').hide();
-                    $('#tableFour').hide();
-                    $('#tableFive').hide();
-                    $('#tableSix').hide(); // Hide tableSix if tableOne is empty
-                    // Add logic here to hide related rows in tableni and tableSix
-                }
+                var currentDate = new Date();
+                currentDate.setDate(1); // Set the day to the 1st of the current month
 
-                // Other code and event listeners...
+                // Format the date as 'YYYY-MM' (year and month)
+                var currentMonth = currentDate.toISOString().slice(0, 7);
+
+                // Set the value of the date input field to the current month
+                $('#dateFilter').val(currentMonth);
+
+                // Add an event listener to the date input field
+                tables.column(0).search(currentMonth).draw();
+                // Add an event listener to the date input field
+                $('#dateFilter').on('change', function () {
+                    tables.column(0).search(this.value).draw();
+                    updateFilter();
+                    tableTwo();
+                    tableThree();
+                    tableFour();
+                    tableFive();
+                    tableSix();
+                });
+
+
+                $('#meatEstablishmentFilter').on('change', function () {
+                    var selectedTexts = $(this).find('option:selected').text();
+                    tables.column(4).search(selectedTexts).draw();
+                    updateFilter();
+                    tableTwo();
+                    tableThree();
+                    tableFour();
+                    tableFive();
+                    tableSix();
+                });
+
+                $('#species').on('change', function () {
+                    var selectedText = $(this).find('option:selected').text();
+                    tables.column(1).search(selectedText).draw();
+                    updateFilter();
+                    tableTwo();
+                    tableThree();
+                    tableFour();
+                    tableFive();
+                    tableSix();
+                });
+
             });
-            function updateFilter() {
-                var receivingReportIds = [];
-
-                // Loop through the visible rows in tableOne and store their IDs
-                $('#tableOne tbody tr:visible').each(function () {
-                    var id = $(this).find('td:last').text();
-                    receivingReportIds.push(id);
-                });
-
-                // Loop through the rows in tableni and show/hide based on the filter
-                $('#tableni tbody tr').each(function () {
-                    var receivingReportId = $(this).find('td:last').text();
-
-                    if (receivingReportIds.includes(receivingReportId)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-
-            function tableTwo() {
-                var meatInspectionIds = [];
-
-                // Loop through the visible rows in tableOne and store their IDs
-                $('#tableni tbody tr:visible').each(function () {
-                    var id = $(this).find('td:eq(2)').text();
-                    meatInspectionIds.push(id);
-                });
-
-
-
-                $('#tableTwo tbody tr').each(function () {
-                    var meatInspectionId = $(this).find('td:eq(7)').text(); // Get MeatInspectionId from the 8th column
-
-                    if (meatInspectionIds.includes(meatInspectionId)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-            function tableThree() {
-                var ConductOfInpsectionIds = [];
-
-                // Loop through the visible rows in tableOne and store their IDs
-                $('#tableTwo tbody tr:visible').each(function () {
-                    var id = $(this).find('td:eq(6)').text();
-                    ConductOfInpsectionIds.push(id);
-                });
-
-
-
-                $('#tableThree tbody tr').each(function () {
-                    var ConductOfInpsectionId = $(this).find('td:eq(5)').text(); // Get MeatInspectionId from the 8th column
-
-                    if (ConductOfInpsectionIds.includes(ConductOfInpsectionId)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-            function tableFour() {
-                var passedSlaughterIds = [];
-
-                // Loop through the visible rows in tableOne and store their IDs
-                $('#tableThree tbody tr:visible').each(function () {
-                    var id = $(this).find('td:eq(4)').text();
-                    passedSlaughterIds.push(id);
-                });
-
-
-                $('#tableFour tbody tr').each(function () {
-                    var passedSlaughterId = $(this).find('td:eq(7)').text(); // Get MeatInspectionId from the 8th column
-
-                    if (passedSlaughterIds.includes(passedSlaughterId)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-            function tableFive() {
-                var PostmortemIds = [];
-
-                // Loop through the visible rows in tableOne and store their IDs
-                $('#tableFour tbody tr:visible').each(function () {
-                    var id = $(this).find('td:eq(6)').text();
-                    PostmortemIds.push(id);
-                });
-
-
-                $('#tableFive tbody tr').each(function () {
-                    var PostmortemId = $(this).find('td:eq(4)').text(); // Get MeatInspectionId from the 8th column
-
-                    if (PostmortemIds.includes(PostmortemId)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-            function tableSix() {
-                var totalfitIds = [];
-
-                // Loop through the visible rows in tableOne and store their IDs
-                $('#tableFive tbody tr:visible').each(function () {
-                    var id = $(this).find('td:eq(3)').text();
-                    totalfitIds.push(id);
-                });
-
-
-                $('#tableSix tbody tr').each(function () {
-                    var totalfitId = $(this).find('td:eq(7)').text(); // Get MeatInspectionId from the 8th column
-
-                    if (totalfitIds.includes(totalfitId)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-
-            //date
-            function filterDataDate() {
-                var startDate = new Date(document.getElementById("startdate").value);
-                startDate.setHours(0, 0, 0, 0); // Set time to start of the day
-                var endDate = new Date(document.getElementById("enddate").value);
-                endDate.setHours(23, 59, 59, 999); // Set time to end of the day
-
-                var rows = document.querySelectorAll("#tableOne tbody tr");
-
-                rows.forEach(function (row) {
-                    var dateCell = row.querySelector("td:first-child");
-                    var dateString = dateCell.textContent;
-                    var rowDate = new Date(dateString.split(" ")[0]);
-
-                    if (startDate && endDate) {
-                        if (rowDate >= startDate && rowDate <= endDate) {
-                            row.style.display = "";
-                        } else {
-                            row.style.display = "none";
-                        }
-                    }
-                });
-                updateFilter();
-                tableTwo();
-                tableThree();
-                tableFour();
-                tableFive();
-                tableSix();
-            }
-            //species
-
-            function filterDataSpecies() {
-                var selectedSpecies = document.getElementById("species").value;
-                var table = document.getElementById("tableOne");
-                var rows = table.getElementsByTagName("tr");
-
-                for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
-                    var speciesCell = rows[i].cells[2]; // Assuming species is in the third column (index 2)
-
-                    if (selectedSpecies === "All" || speciesCell.innerHTML === selectedSpecies) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
-                    }
-                }
-                updateFilter();
-                tableTwo();
-                tableThree();
-                tableFour();
-                tableFive();
-                tableSix();
-            }
-
         </script>
-
-
-
 
 
     </main>
