@@ -1,0 +1,264 @@
+﻿body {
+    text-size-adjust: initial;
+    font-weight: 50;
+}
+
+#content main {
+    max-height: 100%;
+}
+
+.registration {
+    margin-top: -40px;
+}
+
+    .registration .row {
+        width: 100%;
+    }
+
+    .registration .container {
+        position: relative;
+        max-width: 1350px;
+        width: 100%;
+        background: var(--filterbgcolor);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        margin-left: 5%;
+        margin-top: 30px;
+    }
+        /**/
+        .registration .container header {
+            font-size: 2.5rem;
+            color: var(--black);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .registration .container .form {
+            margin-top: 30px;
+        }
+
+    .registration .form .input-box {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .registration .input-box label {
+        color: var(--black);
+    }
+
+    .registration .form .input-box input {
+        padding-left: 20px;
+        border-radius: 6px;
+    }
+
+    .registration .form :where(.input-box input, .select-box, .rol) {
+        position: relative;
+        height: 50px;
+        width: 100%;
+        outline: none;
+        font-size: 1rem;
+        color: #707070;
+        margin-top: 8px;
+        border: 1px solid #ddd;
+        border-radius: 0px;
+    }
+
+    .registration .input-box input:focus {
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .registration .form .column {
+        display: flex;
+        column-gap: 15px;
+    }
+
+    .registration .form .roles {
+        width: 100%;
+    }
+
+    .registration .form .sex-box, .registration .form .upload-box {
+        margin-top: 20px;
+    }
+
+        .registration .sex-box h3, .registration .form .upload-box label {
+            color: var(--black);
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 21px;
+        }
+
+    .registration .form :where(.sex-option, .sex) {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .registration .form .sex {
+        column-gap: 5px;
+    }
+
+    .registration .sex input {
+        accent-color: var(--btndownload);
+    }
+
+    .registration .form :where(.sex input, .sex label) {
+        cursor: pointer;
+    }
+
+    .registration .sex label {
+        color: var(--black);
+    }
+    /* Upload File Starts */
+
+    .registration .upload-box .container {
+        max-width: 400px;
+        width: 100%;
+        background: #fff;
+        padding: 30px;
+        border-radius: 30px;
+        margin-top: -5px;
+        margin-left: 20%;
+    }
+
+    .registration .img-area {
+        position: relative;
+        width: 100%;
+        height: 160px;
+        background: #f2f2f2;
+        margin-bottom: 5px;
+        border-radius: 15px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+        .registration .img-area .icon {
+            font-size: 100px;
+        }
+
+        .registration .img-area h3 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .registration .img-area p {
+            text-align: center;
+            color: black;
+        }
+
+            .registration .img-area p span {
+                font-weight: 600;
+            }
+
+        .registration .img-area img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: 100;
+        }
+
+        .registration .img-area::before {
+            content: attr(data-img);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            color: #fff;
+            font-weight: 500;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: all .3s ease;
+            z-index: 200;
+        }
+
+        .registration .img-area.active:hover::before {
+            opacity: 1;
+        }
+
+    .registration .select-image {
+        display: block;
+        width: 100%;
+        padding: 16px 0;
+        border-radius: 15px;
+        background: var(--green7);
+        color: #fff;
+        font-weight: 500;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        transition: all .3s ease;
+        margin-top: -10px;
+    }
+
+        .registration .select-image:hover {
+            background: var(--light-green);
+        }
+
+    /* Upload File Ends */
+
+    .registration .address :where(input, .select-box) {
+        margin-top: 15px;
+    }
+
+    .registration .select-box select {
+        height: 100%;
+        width: 100%;
+        outline: none;
+        border: none;
+        color: #707070;
+        font-size: 1rem;
+        padding-left: 20px;
+    }
+
+    .registration .form button {
+        height: 55px;
+        width: 100%;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 400;
+        margin-top: 30px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: var(--btndownload);
+    }
+
+        .registration .form button:hover {
+            background: var(--light-green);
+        }
+
+
+
+/*Responsive*/
+
+
+@media screen and (max-width: 768px) {
+    .registration .form .column {
+        flex-wrap: wrap;
+    }
+
+    .registration .form :where(.sex-option, .sex) {
+        row-gap: 15px;
+    }
+
+    .registration label {
+        display: block;
+        margin-bottom: 7px;
+    }
+}

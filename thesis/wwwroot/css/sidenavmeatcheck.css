@@ -12,6 +12,10 @@ a, p, ul, ol, input, label, div {
 	padding: 0;
 }
 
+a {
+	color: var(--breadcrumb);
+}
+
 li {
 	list-style: none;
 }
@@ -19,33 +23,66 @@ li {
 :root {
 	--poppins: 'Poppins', sans-serif;
 	--lato: 'Lato', sans-serif;
-	--light: #18544c;
-	--blue: #00ffdd;
-	--light-blue: #CFE8FF;
-	--grey: #002923;
+	--white: #F9F9F9;
+	--white1: #FFFFFF;
+	--bgcontent: #DDDDDD;
+	--light-green: #18544c; /* light-green */
+	/*--blue: #00ffdd;*/ /* teal */
+	--green2: #005262;
+	--green3: #00A76B;
+	--green6: #0D9A56;
+	--green7: #11B07A;
+	--finalgreen: #11B07A;
+	--breadcrumb: #11B07A;
+	--btndownload: #11B07A;
+	--filterbgcolor: #FFFFFF;
+	--filterborder: #0D9A56;
+	--tblHeader: #342E37;
+	--apple-green: #8ABE53;
+	--apple-green1: #C7FF9B;
+	--apple-green2: #FEFFC2;
+	--hrColor: #FEFFC2;
+	--black: #342E37;
+	/*--tblColor: #FFFFFF;*/
+	--tablefontcolor: #342E37;
+	--dark-green: #002923; /* dark-green */
 	--dark-grey: #AAAAAA;
 	--dark: #f7f7f7;
 	--red: #DB504A;
 	--yellow: #FFCE26;
+	--yellow1: #E1CE7A;
 	--light-yellow: #18b432;
 	--orange: #FD7238;
 	--light-orange: #FFE0D3;
 	--violet: rgb(187, 57, 187);
 	--light-violet: rgb(248, 188, 248);
+	--dirlist: #FFFFFF;
+	--black1: #342E37;
+	--grey: #DDDDDD;
 }
 
 html {
 	overflow-x: hidden;
 }
 
+/* Dark Mode */
 body.dark {
-	--light: #0C0C1E;
-	--grey: #060714;
+	--finalgreen: #151515; /*dating light*/
+	--bgcontent: #272A2C; /* black content bg */ /*dating grey name*/
 	--dark: #FBFBFB;
+	--black: #FFFFFF;
+	--black1: #342E37;
+	--apple-green2: #11B07A;
+	--tablefontcolor: #FFFFFF;
+	--btndownload: #11B07A;
+	--filterbgcolor: #151515;
+	--dirlist: #11B07A;
+	--filterborder: #FFFFFF;
+	/*--tblColor: #151515;*/
 }
 
 body {
-	background: var(--grey);
+	background: var(--bgcontent);
 	overflow-x: hidden;
 }
 
@@ -60,7 +97,7 @@ body {
 	left: 0;
 	width: 280px;
 	height: 100%;
-	background: var(--light);
+	background: var(--finalgreen);
 	z-index: 2000;
 	font-family: var(--lato);
 	transition: .3s ease;
@@ -106,7 +143,7 @@ body {
 }
 
 .details .region {
-	color: var(--dark);
+	color: var(--black);
 }
 
 #sidebar .side-menu.top {
@@ -117,7 +154,7 @@ body {
 .title {
 	font-size: 10px;
 	font-weight: 500;
-	color: var(--blue);
+	color: var(--white);
 	text-transform: uppercase;
 	margin: 10px auto 10px 10px;
 }
@@ -145,7 +182,7 @@ body {
 	}
 
 	#sidebar .side-menu li.active {
-		background: var(--grey);
+		background: var(--bgcontent);
 		position: relative;
 	}
 
@@ -157,7 +194,7 @@ body {
 			border-radius: 50%;
 			top: -40px;
 			right: 0;
-			box-shadow: 20px 20px 0 var(--grey);
+			box-shadow: 20px 20px 0 var(--bgcontent);
 			z-index: -1;
 		}
 
@@ -169,7 +206,7 @@ body {
 			border-radius: 50%;
 			bottom: -40px;
 			right: 0;
-			box-shadow: 20px -20px 0 var(--grey);
+			box-shadow: 20px -20px 0 var(--bgcontent);
 			z-index: -1;
 		}
 
@@ -177,18 +214,18 @@ body {
 	#sidebar .side-menu li a {
 		width: 100%;
 		height: 100%;
-		background: var(--light);
+		background: var(--finalgreen);
 		display: flex;
 		align-items: center;
 		border-radius: 48px;
 		font-size: 16px;
-		color: var(--dark);
+		color: var(--white);
 		white-space: nowrap;
 		overflow-x: hidden;
 	}
 
 #sidebar .side-menu.top li.active a {
-	color: var(--blue);
+	color: var(--apple-green2);
 }
 
 #sidebar.hide .side-menu li a {
@@ -206,7 +243,7 @@ body {
 }
 
 #sidebar .side-menu.top li a:hover {
-	color: var(--blue);
+	color: var(--apple-green2);
 }
 
 #sidebar .side-menu li a .bx {
@@ -218,18 +255,20 @@ body {
 
 
 #meatcheck #navbar .logo {
-	width: 100%; /* Logo stretches to fill the available width */
-	height: 48px; /* Adjust the height as needed */
+	width: 50%; /* Logo stretches to fill the available width */
+	height: 65px; /* Adjust the height as needed */
 	display: flex;
 	align-items: center;
 	margin-right: 5px; /* Add some margin for spacing */
+	margin-top: 10px;
 }
 
 	/* Update the logo image styles */
 	#meatcheck #navbar .logo img {
-		width: 100%;
-		height: 100%; /* Logo stretches to fill the available height */
+		width: 155%;
+		height: 155%; /* Logo stretches to fill the available height */
 		object-fit: contain;
+		/*background-color:var(--green7);*/
 	}
 
 
@@ -258,12 +297,11 @@ body {
 /* NAVBAR */
 #meatcheck #navbar nav {
 	height: 56px;
-	background: var(--light);
+	background: var(--finalgreen);
 	padding: 0 24px;
 	display: flex;
 	align-items: center;
 	grid-gap: 12px;
-	;
 	font-family: var(--lato);
 	position: fixed;
 	top: 0;
@@ -285,12 +323,12 @@ body {
 	}
 
 	#meatcheck #navbar nav a {
-		color: var(--dark);
+		color: var(--black);
 	}
 
 	#meatcheck #navbar nav .bx.bx-menu {
 		cursor: pointer;
-		color: var(--dark);
+		color: var(--white);
 	}
 
 	#meatcheck #navbar nav .nav-link {
@@ -300,7 +338,7 @@ body {
 	}
 
 		#meatcheck #navbar nav .nav-link:hover {
-			color: var(--blue);
+			color: var(--green7);
 		}
 
 	#meatcheck #navbar nav form {
@@ -378,7 +416,7 @@ body {
 		min-width: 50px;
 		height: 25px;
 		border-radius: 25px;
-		background: var(--grey);
+		background: var(--bgcontent);
 		cursor: pointer;
 		position: relative;
 	}
@@ -390,7 +428,7 @@ body {
 			left: 2px;
 			bottom: 2px;
 			width: calc(25px - 4px);
-			background: var(--blue);
+			background: var(--green3);
 			border-radius: 50%;
 			transition: all .3s ease;
 		}
@@ -421,17 +459,21 @@ body {
 	}
 
 		#content main .head-title .left h1 {
-			font-size: 36px;
+			font-size: 50px;
 			font-weight: 600;
 			margin-bottom: 8px;
-			color: var(--dark);
+			margin-top: 35px;
+			margin-left: 10px;
+			color: var(--black);
 		}
 
 		#content main .head-title .left h3 {
 			font-size: 18px;
 			font-weight: 500;
+			margin-top: 30px;
 			margin-bottom: 3px;
-			color: var(--dark);
+			margin-left: 10px;
+			color: var(--black);
 		}
 /* Header Ends*/
 

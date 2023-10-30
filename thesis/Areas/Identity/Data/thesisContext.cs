@@ -28,7 +28,7 @@ public class thesisContext : IdentityDbContext<AccountDetails>
     public DbSet<ReceivingReport> ReceivingReports { get; set; }
     public DbSet<SummaryAndDistributionOfMIC> SummaryAndDistributionOfMICs { get; set; }
     public DbSet<totalNoFitForHumanConsumptions> totalNoFitForHumanConsumptions { get; set; }
-	public DbSet<Driver> Drivers { get; set; }
+    public DbSet<Driver> Drivers { get; set; }
 	public DbSet<Helper> Helpers { get; set; }
 	public DbSet<MTVquiz> MTVquizzes { get; set; }
 	public DbSet<checklist> checklists { get; set; }

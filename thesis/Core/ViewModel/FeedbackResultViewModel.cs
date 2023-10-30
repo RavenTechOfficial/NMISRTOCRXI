@@ -1,4 +1,4 @@
-﻿using thesis.Migrations;
+﻿
 using thesis.Models;
 
 namespace thesis.Core.ViewModel

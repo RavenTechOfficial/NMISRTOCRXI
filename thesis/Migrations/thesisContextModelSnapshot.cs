@@ -710,6 +710,9 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AccountDetailsId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("ReceivingReportId")
                         .HasColumnType("int");
 
@@ -720,6 +723,8 @@ namespace thesis.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountDetailsId");
 
                     b.HasIndex("ReceivingReportId");
 
@@ -959,8 +964,9 @@ namespace thesis.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ShippingDoc")
-                        .HasColumnType("int");
+                    b.Property<string>("ShippingDoc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Species")
                         .HasColumnType("int");
@@ -1338,9 +1344,15 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Models.MeatInspectionReport", b =>
                 {
+                    b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
+                        .WithMany()
+                        .HasForeignKey("AccountDetailsId");
+
                     b.HasOne("thesis.Models.ReceivingReport", "ReceivingReport")
                         .WithMany()
                         .HasForeignKey("ReceivingReportId");
+
+                    b.Navigation("AccountDetails");
 
                     b.Navigation("ReceivingReport");
                 });

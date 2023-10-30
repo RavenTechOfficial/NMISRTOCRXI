@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using thesis.Areas.Identity.Data;
 
 namespace thesis.Models
 {
@@ -12,6 +13,9 @@ namespace thesis.Models
         [ForeignKey("ReceivingReport")]
         public int? ReceivingReportId { get; set; }
         public ReceivingReport? ReceivingReport { get; set; }
+        [ForeignKey("AccountDetails")]
+        public string? AccountDetailsId { get; set; }
+        public AccountDetails? AccountDetails { get; set; }
 
     }
 }

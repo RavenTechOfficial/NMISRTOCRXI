@@ -8,31 +8,42 @@
 @{
     ViewData["Title"] = "Create";
 }
-<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
-<section id="content">
 
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
+<style>
+    #content .FirstLayer .applications h3 {
+        text-align: center;
+        font-size: 40px;
+        font-weight: 700;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 5px;
+        color: var(--black);
+    }
+</style>
+
+
+<section id="content">
     <!-- MAIN STARTS-->
     <main class="registration">
-        <div class="FirstLayer">
-            <h3>Meat Establishment Registration</h3>
-        </div>
-        <div class="FirstLayer">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Registration</li>
-                </ol>
-            </nav>
-        </div>
+
+        @*<div class="FirstLayer">
+        </div>*@
+        @*<div class="FirstLayer">
+        <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Registration</li>
+        </ol>
+        </nav>
+        </div>*@
 
 
         <div class="FirstLayer">
-
             <div class="applications">
-
-
+                <h3>MEAT ESTABLISHMENT REGISTRATION</h3>
+                <hr />
                 <form class="form" asp-action="Create">
-
                     <div class="column">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="input-box">
@@ -121,7 +132,16 @@
                         <input asp-for="LicenseToOperateNumber" class="form-control" />
                         <span asp-validation-for="LicenseToOperateNumber" class="text-danger"></span>
                     </div>
-
+                    <div class="input-box">
+                        <label asp-for="Lat" class="control-label">Latitude:</label>
+                        <input asp-for="Lat" class="form-control" />
+                        <span asp-validation-for="Lat" class="text-danger"></span>
+                    </div>
+                    <div class="input-box">
+                        <label asp-for="Long" class="control-label">Longitude:</label>
+                        <input asp-for="Long" class="form-control" />
+                        <span asp-validation-for="Long" class="text-danger"></span>
+                    </div>
 
                     <br />
 
@@ -141,6 +161,7 @@
                 <div class="search">
                     <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
                 </div>
+                <br />
                 <table class="table">
                     <thead>
                         <tr>
@@ -211,7 +232,7 @@
                     </tbody>
                 </table>
 
-                <div /><div /> <div />  <div />
+                <div /> <div /> <div />  <div />
     </main>
 
 

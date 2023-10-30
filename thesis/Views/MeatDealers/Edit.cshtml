@@ -1,119 +1,138 @@
 ﻿@model thesis.Models.MeatDealers
-<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
 @{
     ViewData["Title"] = "Edit";
 }
-<link href="~/css/register.css" rel="stylesheet" />
+<link href="~/css/createMeatCheck.css" rel="stylesheet" asp-append-version="true" />
+
+<style>
+    #content .FirstLayer .applications h3 {
+        font-size: 40px;
+        font-weight: 600;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 5px;
+        color: var(--black);
+    }
+
+    .backbtn {
+        margin-left: 5px;
+    }
+</style>
+
+
 <section id="content">
 
     <!-- MAIN STARTS-->
     <main class="registration">
-        <div class="FirstLayer">
-            <h3>Meat Dealer</h3>
-        </div>
-        <div class="FirstLayer">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Meat Dealer</li>
-                    <li class="breadcrumb-item active" aria-current="page">Edit</li>
+        @*<div class="FirstLayer">
 
-                </ol>
-            </nav>
-        </div>
+        </div>*@
+        @*<div class="FirstLayer">
+        <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Meat Dealer</li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
 
-
-
-        <div class="container">
-
-
-            <form asp-action="Edit" class="form">
-
-                <div class="column">
-
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Id" />
-                    <div class="input-box">
-                        <label asp-for="FirstName" class="control-label">First Name</label>
-                        <input asp-for="FirstName" class="form-control" />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="input-box">
-                        <label asp-for="MiddleName" class="control-label">Middle Name</label>
-                        <input asp-for="MiddleName" class="form-control" />
-                        <span asp-validation-for="MiddleName" class="text-danger"></span>
-                    </div>
-                    <div class="input-box">
-                        <label asp-for="LastName" class="control-label">Last Name</label>
-                        <input asp-for="LastName" class="form-control" />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="column" style="display: none">
-                    <div class="input-box">
-                        <label asp-for="Address" class="control-label"></label>
-                        <input asp-for="Address" class="form-control" id="addressInput" />
-                        <span asp-validation-for="Address" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="input-box address">
-                    <label asp-for="Address" class="control-label"></label>
-                    <div class="column">
-                        <div class="select-box">
-                            <select id="regionSelect" onchange="populateProvinces()">
-                                <option hidden>Region</option>
-                                <!-- Add region options here -->
-                            </select>
-                        </div>
-                        <div class="select-box">
-                            <select id="provinceSelect" onchange="populateCities()">
-                                <option hidden>Province</option>
-                                <!-- Add province options here -->
-                            </select>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="select-box">
-                            <select id="citySelect" onchange="populateBarangays()">
-                                <option hidden>City/Municipality</option>
-                                <!-- Add city options here -->
-                            </select>
-                        </div>
-                        <div class="select-box">
-                            <select id="barangaySelect" onchange="updateAddressInput()">
-                                <option hidden>Barangay</option>
-                                <!-- Add barangay options here -->
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <br />
-
-                <div class="column"
-           <div class="input-box">
-                <label asp-for="ContactNo" class="control-label">Contact No.</label>
-                <input asp-for="ContactNo" class="form-control" />
-                <span asp-validation-for="ContactNo" class="text-danger"></span>
-            </div>
-            </div>
-                <div class="input-box" style="display: none">
-                    <label asp-for="MeatEstablishmentId" class="control-label"></label>
-                    <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentId"></select>
-                    <span asp-validation-for="MeatEstablishmentId" class="text-danger"></span>
-
-                </div>
-
-                <br />
-                <div class="button">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
+        </ol>
+        </nav>
+        </div>*@
 
         <div>
-            <a asp-action="Index">Back to List</a>
+            <a class="backbtn" asp-action="Index">Back to List</a>
         </div>
+
+        <div class="FirstLayer">
+            <div class="applications">
+                <h3>Edit | Meat Dealer</h3>
+                <hr />
+                <form asp-action="Edit" class="form">
+                    <div class="column">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <div class="input-box">
+                            <label asp-for="FirstName" class="control-label">First Name</label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="input-box">
+                            <label asp-for="MiddleName" class="control-label">Middle Name</label>
+                            <input asp-for="MiddleName" class="form-control" />
+                            <span asp-validation-for="MiddleName" class="text-danger"></span>
+                        </div>
+                        <div class="input-box">
+                            <label asp-for="LastName" class="control-label">Last Name</label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="column" @* style="display: none" *@>
+                        <div class="input-box">
+                            <label asp-for="Address" class="control-label"></label>
+                            <input asp-for="Address" class="form-control" id="addressInput" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="input-box address">
+                        <label asp-for="Address" class="control-label"></label>
+                        <div class="column">
+                            <div class="select-box">
+                                <select id="regionSelect" onchange="populateProvinces()">
+                                    <option hidden>Region</option>
+                                    <!-- Add region options here -->
+                                </select>
+                            </div>
+                            <div class="select-box">
+                                <select id="provinceSelect" onchange="populateCities()">
+                                    <option hidden>Province</option>
+                                    <!-- Add province options here -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="select-box">
+                                <select id="citySelect" onchange="populateBarangays()">
+                                    <option hidden>City/Municipality</option>
+                                    <!-- Add city options here -->
+                                </select>
+                            </div>
+                            <div class="select-box">
+                                <select id="barangaySelect" onchange="updateAddressInput()">
+                                    <option hidden>Barangay</option>
+                                    <!-- Add barangay options here -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="column">
+                        <div class="input-box">
+                            <label asp-for="ContactNo" class="control-label">Contact No.</label>
+                            <input asp-for="ContactNo" class="form-control" />
+                            <span asp-validation-for="ContactNo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="input-box" style="display: none">
+                        <label asp-for="MeatEstablishmentId" class="control-label"></label>
+                        <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentId"></select>
+                        <span asp-validation-for="MeatEstablishmentId" class="text-danger"></span>
+
+                    </div>
+
+                    <br />
+                    @* <div class="button">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>*@
+                    <button type="submit" value="Create">Save</button>
+                </form>
+            </div>
+        </div>
+
+
 
         @section Scripts {
             @{
@@ -144,7 +163,7 @@
     <script src="~/js/register.js"></script>
     <script>
         //integration of Philippines Address JSON
-        fetch('@Url.Content("~/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
+        fetch('@Url.Content("https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
             .then(response => response.json())
             .then(data => {
                 const regionSelect = document.getElementById('regionSelect');
@@ -160,8 +179,8 @@
                     { regionCode: "01", regionName: "Region I" },
                     { regionCode: "02", regionName: "Region II" },
                     { regionCode: "03", regionName: "Region III" },
-                    { regionCode: "04A", regionName: "Region IV-A" },
-                    { regionCode: "04B", regionName: "Region IV-B" },
+                    { regionCode: "4A", regionName: "Region IV-A" },
+                    { regionCode: "4B", regionName: "Region IV-B" },
                     { regionCode: "05", regionName: "Region V" },
                     { regionCode: "06", regionName: "Region VI" },
                     { regionCode: "07", regionName: "Region VII" },

@@ -6,29 +6,39 @@
 }
 <link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
 
-<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
+
+<style>
+	#content .FirstLayer .applications h3 {
+		font-size: 40px;
+		font-weight: 600;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		margin-left: 5px;
+		color: var(--black);
+	}
+</style>
 
 <section id="content">
 
 	<!-- MAIN STARTS-->
 	<main class="registration">
 
-		<div class="FirstLayer">
-			<h3>Edit | Meat Establishment</h3>
-		</div>
-		<div class="FirstLayer">
-			<nav aria-label="breadcrumb">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Registration</li>
-				</ol>
-			</nav>
-		</div>
+		@*<div class="FirstLayer">
+		</div>*@
+		@*<div class="FirstLayer">
+		<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item active" aria-current="page">Registration</li>
+		</ol>
+		</nav>
+		</div>*@
 
 		<div class="FirstLayer">
-
 			<div class="applications">
-
+				<h3>Edit | Meat Establishment</h3>
+				<hr />
 				<form class="form" asp-action="Edit">
 					<div class="column">
 						<div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -116,14 +126,24 @@
 						</select>
 					</div>
 					<div class="input-box">
-						<label asp-for="LicenseToOperateNumber" class="control-label"></label>
+						<label asp-for="LicenseToOperateNumber" class="control-label">LTO No.:</label>
 						<input asp-for="LicenseToOperateNumber" class="form-control" />
 						<span asp-validation-for="LicenseToOperateNumber" class="text-danger"></span>
+					</div>
+					<div class="input-box">
+						<label asp-for="Lat" class="control-label">Latitude:</label>
+						<input asp-for="Lat" class="form-control" />
+						<span asp-validation-for="Lat" class="text-danger"></span>
+					</div>
+					<div class="input-box">
+						<label asp-for="Long" class="control-label">Longitude:</label>
+						<input asp-for="Long" class="form-control" />
+						<span asp-validation-for="Long" class="text-danger"></span>
 					</div>
 
 					<br />
 
-					<button type="submit" value="Create">Create</button>
+					<button type="submit" value="Create">Save</button>
 
 
 				</form>

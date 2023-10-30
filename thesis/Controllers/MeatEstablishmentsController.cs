@@ -61,7 +61,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,Type,Name,Address,LicenseToOperateNumber, LicenseStatus")] MeatEstablishment meatEstablishment)
+		public async Task<IActionResult> Create([Bind("Id,Type,Name,Address,LicenseToOperateNumber,LicenseStatus,Long,Lat")] MeatEstablishment meatEstablishment)
 		{
 			if (ModelState.IsValid)
 			{
@@ -98,7 +98,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Address,LicenseToOperateNumber, LicenseStatus")] MeatEstablishment meatEstablishment)
+		public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Address,LicenseToOperateNumber, LicenseStatus,Lat,Long")] MeatEstablishment meatEstablishment)
 		{
 			if (id != meatEstablishment.Id)
 			{
@@ -123,7 +123,7 @@ namespace thesis.Controllers
 						throw;
 					}
 				}
-				TempData["AlertMessagee"] = "Transaction Success";
+				//TempData["AlertMessagee"] = "Transaction Success";
 
 				return RedirectToAction(nameof(Index));
 			}
