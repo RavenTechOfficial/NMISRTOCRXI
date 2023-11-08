@@ -94,7 +94,7 @@ namespace thesis.Repositories
             var stackchart = _context.totalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers)
                 .Where(p => p.Species == species
-                && p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.Address == address)
+                && p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Origin == address)
                 .Sum(p => p.DressedWeight);
 
             return stackchart;

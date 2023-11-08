@@ -17,10 +17,10 @@
 <link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
 
 <style>
-    [aria-hidden="true"] {
+   /*  /* [aria-hidden="true"] {
         position: absolute;
         left: -9999px;
-    }
+    } */ */
 
     #content h1 {
         text-align: center;
@@ -133,7 +133,7 @@
                             <tr>
                                 <td> @item.DateReceived.ToString("yyyy-MM-dd")</td>
                                 <td>
-                                    <img src="~/img/@(item.Specie).jpg" class="img-large">
+                                    <img src="~/img/@(item.Specie).png" class="img-large">
                                     <div>@item.Specie</div>
                                 </td>
                                 <td>@item.MeatDealer</td>
@@ -149,7 +149,9 @@
                                             <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.MeatInspectionReportId">Verification</a>
                                         }
 
-                                        <a class="btn btn-success" asp-action="DailyIndex" asp-route-id="@item.MeatInspectionReportId">Show</a>
+                                        <a class="btn btn-success py-1 " asp-action="DailyIndex" asp-route-id="@item.MeatInspectionReportId">Show</a>
+                                        @* <a class="btn btn-info" value="@item.MeatInspectionReportId">QrCode</a> *@
+                                        <a class="btn btn-primary py-1 ms-1 font-weight-light view" value="@item.UID">QR Code</a>
                                     </div>
                                 </td>
                                 <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
@@ -161,6 +163,33 @@
                 </table>
             </div>
         </div>
+
+        @*Modals*@
+        <div class="modal fade" id="viewQr" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">QR Code</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div id="qrcode"></div>
+                        <h3 id="uniqueId" style="margin-top: 10px;"></h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="downloadBtn" class="btn btn-primary">Download</button>
+                        <button type="button" id="printBtn" class="btn btn-warning" data-dismiss="modal">Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="~/js/meatInspectionReports.js" asp-append-version="true"></script>
+
+
 
 
         <script>
@@ -181,7 +210,7 @@
 
         </script>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.js" defer></script>
+       @*  <script src="https://code.jquery.com/jquery-3.3.1.js" defer></script> *@
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" defer></script>
 

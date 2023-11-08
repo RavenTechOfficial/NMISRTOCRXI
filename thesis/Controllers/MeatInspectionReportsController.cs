@@ -115,7 +115,8 @@ namespace thesis.Controllers
 								   MeatEstablishment = me.Name,
 								   DateInspected = mir.RepDate,
 								   MeatInspector = au.firstName + " " + au.lastName,
-								   VerifiedBy = mir.VerifiedByPOSMSHead
+								   VerifiedBy = mir.VerifiedByPOSMSHead,
+								   UID = mir.UID,
 							   })
 					.ToList();
 
@@ -172,12 +173,17 @@ namespace thesis.Controllers
 
 
 
-			if (id == null || _context.MeatInspectionReports == null)
+
+
+	
+
+			if (id == null  || _context.MeatInspectionReports == null)
 			{
 				return NotFound();
 			}
 
 			var meatInspectionReport = await _context.MeatInspectionReports.FindAsync(id);
+			
 			if (meatInspectionReport == null)
 			{
 				return NotFound();
@@ -193,20 +199,16 @@ namespace thesis.Controllers
 				LicenseToOperateNumber = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.LicenseToOperateNumber,
 				MeatEstablishment = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Name,
 				VerifiedBy = meatInspectionReport.VerifiedByPOSMSHead,
-				Specie = meatInspectionReport.ReceivingReport.Species
-
+				Specie = meatInspectionReport.ReceivingReport.Species,
+				UID = meatInspectionReport.UID,
 
 			};
 
-			var result = new Result
-			{
-				
-			};
-
+			
 			ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
 
-			// Pass the viewModel to the view
-			return View(viewModel);
+            // Pass the viewModel to the view
+            return View(viewModel);
 		}
 
 		// GET: MeatInspectionReports/Create
