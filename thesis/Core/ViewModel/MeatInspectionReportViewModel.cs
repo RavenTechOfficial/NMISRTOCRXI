@@ -17,6 +17,8 @@ namespace thesis.Core.ViewModel
 
 		public thesis.Models.MeatInspectionReport MeatInspectionReports { get; set; }
 
+		public string UID { get; set; }
+
 		public int Id { get; set; }
 		public int MeatInspectionReportId { get; set; }
 		public DateTime DateReceived { get; set; }

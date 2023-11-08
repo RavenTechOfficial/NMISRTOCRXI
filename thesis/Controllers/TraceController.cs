@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using thesis.Core.IRepositories;
 using thesis.Core.ViewModel;
@@ -36,23 +37,109 @@ namespace thesis.Controllers
         //    }
         //    return View();
         //}
-        public async Task<IActionResult> Result(string? id)
+        public async Task<IActionResult> Result(string? id, int? meatEstablishmentId)
         
         {
 
-            if (id == null || _context.Results == null)
+            var receivingReports = _context.ReceivingReports.ToList();
+            var conductOfInspections = _context.ConductOfInspections.ToList();
+            var passedForSlaughters = _context.PassedForSlaughters.ToList();
+            var meatDealers = _context.MeatDealers.ToList();
+            var meatInspectionReports = _context.MeatInspectionReports.ToList();
+            var postmortem = _context.Postmortems.ToList();
+            var totalNoFitForHumanConsumption = _context.totalNoFitForHumanConsumptions.ToList();
+            var SummaryAndDistributionOfMICs = _context.SummaryAndDistributionOfMICs.ToList();
+
+            ViewData["ReceivingReports"] = receivingReports;
+            ViewData["ConductOfInspections"] = conductOfInspections;
+            ViewData["PassedForSlaughters"] = passedForSlaughters;
+            ViewData["MeatDealers"] = meatDealers;
+            ViewData["meatInspectionReports"] = meatInspectionReports;
+            ViewData["postmortem"] = postmortem;
+            ViewData["totalNoFitForHumanConsumption"] = totalNoFitForHumanConsumption;
+            ViewData["SummaryAndDistributionOfMICs"] = SummaryAndDistributionOfMICs;
+            var concatenatedList = _context.Users
+              .Join(
+                  _context.MeatInspectionReports,
+                  user => user.Id,
+                  report => report.AccountDetailsId,
+                  (user, report) => new SelectListItem
+                  {
+                      Value = user.Id.ToString(),
+                      Text = $"{user.firstName} {user.lastName}"
+                  })
+              .ToList();
+
+            ViewData["AccountDetailsId"] = new SelectList(concatenatedList, "Value", "Text");
+
+            if (meatEstablishmentId.HasValue)
+            {
+                meatDealers = meatDealers.Where(dealer => dealer.MeatEstablishmentId == meatEstablishmentId.Value).ToList();
+            }
+
+            var meatEstablishments = _context.MeatEstablishment
+            .Where(me => me.Name != null)
+            .ToList();
+            ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
+
+
+            var thesisContext = _context.ReceivingReports
+               .Include(r => r.AccountDetails)
+               .Include(r => r.MeatDealers);
+
+
+
+            if (id == null || _context.MeatInspectionReports == null)
             {
                 return NotFound();
             }
 
-            var result = await _context.Results
-                .FirstOrDefaultAsync(m => m.uid == id);
-            if (result == null)
+            //var meatInspectionReport = await _context.MeatInspectionReports.FindAsync(id);
+            var meatInspectionReport = _context.MeatInspectionReports.Where(p => p.UID == id).FirstOrDefault();
+
+
+            //var meatInspectionReport = _context.MeatInspectionReports.Where(p => p.UID == id).FirstOrDefault();
+
+            // Assuming UID is a unique identifier in your MeatInspectionReports table
+
+            //var meatInspectionReport = await _context.MeatInspectionReports
+            //    .Include(r => r.ReceivingReport)
+            //    .ThenInclude(rr => rr.MeatDealers)
+            //    .ThenInclude(md => md.MeatEstablishment)
+            //    .FirstOrDefaultAsync(p => p.UID == id);
+
+            //var meatInspectionReport = _context.MeatInspectionReports.Where(p => p.UID == id).FirstOrDefault();
+
+            if (meatInspectionReport == null)
             {
                 return NotFound();
             }
 
-            return View(result);
+            // Create a MeatInspectionReportViewModel instance and populate its properties
+            var viewModel = new MeatInspectionReportViewModel
+            {
+                Id = meatInspectionReport.Id,
+                RepDate = meatInspectionReport.RepDate,
+                AccountDetailsId = meatInspectionReport.AccountDetailsId,
+                Address = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Address,
+                LicenseToOperateNumber = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.LicenseToOperateNumber,
+                MeatEstablishment = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Name,
+                VerifiedBy = meatInspectionReport.VerifiedByPOSMSHead,
+                Specie = meatInspectionReport.ReceivingReport.Species,
+                UID = meatInspectionReport.UID
+
+
+            };
+
+            var result = new Result
+            {
+
+            };
+
+            ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
+
+            // Pass the viewModel to the view
+            return View(viewModel);
         }
         [HttpPost]
         public IActionResult SubmitRating([FromBody] FeedbackResultViewModel feedVM)

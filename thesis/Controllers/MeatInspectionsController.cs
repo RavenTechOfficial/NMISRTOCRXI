@@ -215,7 +215,8 @@ namespace thesis.Controllers
                         LiveWeight = rr.LiveWeight,
                         MeatDealer = md.FirstName + " " + md.LastName,
                         ReceivingNoOfHeads = rr.NoOfHeads,
-                        InspectionCount = inspectionCount
+                        InspectionCount = inspectionCount,
+                        
                     }
                 )
                 .FirstOrDefaultAsync();
@@ -374,10 +375,21 @@ namespace thesis.Controllers
         // ACTIONS FOR AJAX //
 
 
+        //Random UID Function
+        private string GenerateRandomUID(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+
         // INSPECT BUTTON // add data to MeatInspectionReport
         [HttpPost]
         public IActionResult AddMeatInspectionTBL(int receivingId)
         {
+            string randomUID = GenerateRandomUID(8);
             Console.WriteLine($"Received request for receivingId: {receivingId}");
 
 
@@ -388,6 +400,7 @@ namespace thesis.Controllers
                 ReceivingReportId = receivingId,
                 RepDate = DateTime.Now,
                 AccountDetailsId = loggedInUserId,
+                UID = randomUID,
 
             };
             _context.Add(result);
