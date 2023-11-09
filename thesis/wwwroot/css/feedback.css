@@ -24,7 +24,7 @@
 
 .rating-box {
     position: relative;
-    background: #fff;
+    background: var(--main-color);
     padding: 25px 50px 38px;
     border-radius: 25px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
@@ -45,7 +45,7 @@
 
 .rating-box h1 {
     font-size: 22px;
-    color: #dadada;
+    color: #ffffff;
     font-weight: 500;
     margin-bottom: 20px;
     text-align: center;
@@ -73,12 +73,12 @@
     margin: 40px auto auto 75px;
     border: 2px solid var(--second-color);
     border-radius: 40px;
-    color: var(--second-color);
+    color: #ffffff;
     font-weight: 500;
     text-decoration: none;
 }
 
-#rating-box-modal .btn:hover {
-    color: #fff;
-    background: var(--second-color);
-}
+    #rating-box-modal .btn:hover {
+        color: #fff;
+        background: var(--second-color);
+    }

@@ -56,6 +56,28 @@
         background: var(--blue);
     }
 
+.suggestions {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    z-index: 1000; /* To make sure it appears above other elements */
+}
+
+.suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+
+    .suggestion:hover {
+        background-color: #f1f1f1; /* Light gray background on hover */
+    }
+
+
+
 /* Multi-select Dropdown */
 
 #content .geolocation .container {

@@ -30,9 +30,9 @@ namespace thesis.Controllers
         public IActionResult actionResult(AnalyticsViewModel analytics)
         {
             var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries(
-                analytics.timeSeries, 
-                analytics.species, 
-                analytics.start, 
+                analytics.timeSeries,
+                analytics.species,
+                analytics.start,
                 analytics.end);
             return View("Index", analyticsViewModel);
         }
