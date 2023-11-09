@@ -3,60 +3,110 @@
 
 
 <style data-tag="reset-style-sheet">
-      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    html {
+        line-height: 1.15;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    * {
+        box-sizing: border-box;
+        border-width: 0;
+        border-style: solid;
+    }
+
+    p, li, ul, pre, div, h1, h2, h3, h4, h5, h6, figure, blockquote, figcaption {
+        margin: 0;
+        padding: 0;
+    }
+
+    button {
+        background-color: transparent;
+    }
+
+    button, input, optgroup, select, textarea {
+        font-family: inherit;
+        font-size: 100%;
+        line-height: 1.15;
+        margin: 0;
+    }
+
+    button, select {
+        text-transform: none;
+    }
+
+    button, [type="button"], [type="reset"], [type="submit"] {
+        -webkit-appearance: button;
+    }
+
+        button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
+            border-style: none;
+            padding: 0;
+        }
+
+        button:-moz-focus, [type="button"]:-moz-focus, [type="reset"]:-moz-focus, [type="submit"]:-moz-focus {
+            outline: 1px dotted ButtonText;
+        }
+
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+
+    input {
+        padding: 2px 4px;
+    }
+
+    img {
+        display: block;
+    }
+
+    html {
+        scroll-behavior: smooth
+    }
 </style>
 <style data-tag="default-style-sheet">
-      html {
+    html {
         font-family: Poppins;
         font-size: 16px;
-      }
+    }
 
-      body {
+    body {
         font-weight: 400;
-        font-style:normal;
+        font-style: normal;
         text-decoration: none;
         text-transform: none;
         letter-spacing: normal;
         line-height: 1.15;
         color: var(--dl-color-scheme-green100);
         background-color: var(--dl-color-scheme-yellow20);
-
-      }
+    }
 </style>
-    <link
-      rel="shortcut icon"
+<link rel="shortcut icon"
       href="~/img/logo1.png"
       type="icon/png"
-      sizes="32x32"
-    />
-    <link
-      rel="stylesheet"
+      sizes="32x32" />
+<link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
+      data-tag="font" />
+<link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
+      data-tag="font" />
+<link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
+      data-tag="font" />
+<link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&amp;display=swap"
-      data-tag="font"
-    />
+      data-tag="font" />
 
 <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/landingpageIndex.css" asp-append-version="true" />
 
 <div>
     <script type="text/javascript"
-            src="https://unpkg.com/@@lottiefiles/lottie-player@1.6.0/dist/lottie-player.js"
-    ></script>
+            src="https://unpkg.com/@@lottiefiles/lottie-player@1.6.0/dist/lottie-player.js"></script>
 
     <div class="home-container">
         <div class="navbar-container">
@@ -72,7 +122,7 @@
                 <a class="home-articles" href="#articles">ARTICLES</a>
                 <a class="home-faqs" href="#FAQs">FAQS</a>
                 <a class="home-aboutus" href="#footer">ABOUT US</a>
-                
+
                 <a asp-controller="Trace" asp-action="Index">
                     <button class="button-secondary button">TRACE</button>
                 </a>
@@ -82,20 +132,20 @@
             </div>
             <button class="home-burger-menu navbar-burger-menu">
                 <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <svg viewBox="0 0 1024 1024" class="home-icon">
-                    <path d="M128 256h768v86h-768v-86zM128 554v-84h768v84h-768zM128 768v-86h768v86h-768z"></path>
-                </svg>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" asp-controller="Home" asp-action="Index">HOME</a>
-                    <a class="dropdown-item" href="#articles">ARTICLES</a>
-                    <a class="dropdown-item" href="#FAQs">FAQS</a>
-                    <a class="dropdown-item" href="#footer">About Us</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" asp-controller="Trace" asp-action="Index">TRACE</a>
-                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">LOG IN</a>
-                </div>
-             </a>
-             </button>
+                    <svg viewBox="0 0 1024 1024" class="home-icon">
+                        <path d="M128 256h768v86h-768v-86zM128 554v-84h768v84h-768zM128 768v-86h768v86h-768z"></path>
+                    </svg>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" asp-controller="Home" asp-action="Index">HOME</a>
+                        <a class="dropdown-item" href="#articles">ARTICLES</a>
+                        <a class="dropdown-item" href="#FAQs">FAQS</a>
+                        <a class="dropdown-item" href="#footer">About Us</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-controller="Trace" asp-action="Index">TRACE</a>
+                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">LOG IN</a>
+                    </div>
+                </a>
+            </button>
         </div>
         <div class="home-hero hero-container section-container">
             <div class="home-max-width hero-container max-width">
@@ -112,10 +162,11 @@
                             <span></span>
                             <span class="home-text008">experience</span>
                         </h1>
+                        @*                        HERO SECTION DESCRIPTION
+                        *@
                         <span class="home-description">
-                            Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                            amet sint. Velit officia consequat duis enim velit mollit.
-                            Exercitation veniam consequat sunt nostrud amet.
+                            Your trusted partner in meat safety. Our pioneering Meat Profiling System promises a ‘safe meat for all’ experience.
+                            Join us in our mission to make every meal secure and enjoyable.
                         </span>
                         <div class="home-container02">
                             <a class="button button-gradient home-getstartedbtn" href="#getstarted">
@@ -151,11 +202,12 @@
                                 <svg viewBox="0 0 1024 1024" class="home-icon02">
                                     <path d="M809.003 291.328l-297.003 171.819-297.003-171.819 275.456-157.397c4.779-2.731 9.899-4.48 15.147-5.333 9.301-1.451 18.987 0.128 27.904 5.291zM491.776 979.669c6.016 3.243 12.928 5.077 20.224 5.077 7.381 0 14.336-1.877 20.395-5.163 15.189-2.475 29.909-7.68 43.392-15.36l298.709-170.709c26.368-15.232 45.269-38.315 55.424-64.597 5.675-14.592 8.619-30.165 8.747-46.251v-341.333c0-20.395-4.821-39.723-13.397-56.917-0.939-3.029-2.219-5.973-3.883-8.832-1.963-3.371-4.267-6.357-6.912-8.96-1.323-1.835-2.731-3.669-4.139-5.419-9.813-12.203-21.845-22.528-35.456-30.507l-299.051-170.88c-26.027-15.019-55.467-19.84-83.328-15.531-15.531 2.432-30.507 7.637-44.288 15.488l-298.709 170.709c-16.341 9.429-29.824 21.888-40.149 36.267-2.56 2.56-4.864 5.547-6.784 8.832-1.664 2.901-2.987 5.888-3.925 8.96-1.707 3.456-3.243 6.955-4.608 10.496-5.632 14.635-8.576 30.208-8.704 45.995v341.632c0.043 30.293 10.581 58.197 28.331 80.128 9.813 12.203 21.845 22.528 35.456 30.507l299.051 170.88c13.824 7.979 28.587 13.099 43.605 15.445zM469.333 537.045v340.949l-277.12-158.336c-4.736-2.773-8.832-6.315-12.16-10.411-5.931-7.381-9.387-16.512-9.387-26.581v-318.379zM554.667 877.995v-340.949l298.667-172.757v318.379c-0.043 5.163-1.067 10.496-2.987 15.445-3.413 8.789-9.6 16.384-18.176 21.333z"></path>
                                 </svg>
+                                @*UNIQUE FEATURES SECTION*@
+
                                 <h2 class="home-text012">Meat &amp; MTV Inspection</h2>
                                 <span class="home-text013">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    In lorem lorem, malesuada in metus vitae, scelerisque
-                                    accumsan ipsum.
+                                    Ensuring quality control in meat products and transport.
+                                    Our system focuses on safety regulations and resource management for a safer meat experience.
                                 </span>
                             </div>
                             <div class="home-feature-card1">
@@ -164,9 +216,8 @@
                                 </svg>
                                 <h2 class="home-text014">QR Scanning</h2>
                                 <span class="home-text015">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    In lorem lorem, malesuada in metus vitae, scelerisque
-                                    accumsan ipsum.
+                                    Our QR scanning feature allows for quick access to meat product information,
+                                    enhancing transparency and consumer trust in our meat supply.
                                 </span>
                             </div>
                             <div class="home-feature-card2">
@@ -175,9 +226,8 @@
                                 </svg>
                                 <h2 class="home-text016">Geolocation</h2>
                                 <span class="home-text017">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    In lorem lorem, malesuada in metus vitae, scelerisque
-                                    accumsan ipsum.
+                                    With our geolocation feature, trace the journey of your meat.
+                                    Experience the power of knowledge and assurance in every bite.
                                 </span>
                             </div>
                             <div class="home-feature-card3">
@@ -187,9 +237,8 @@
                                 </svg>
                                 <h2 class="home-text018">Analytics</h2>
                                 <span class="home-text019">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    In lorem lorem, malesuada in metus vitae, scelerisque
-                                    accumsan ipsum.
+                                    Our analytics systematically examine and interpret meat inspection data,
+                                    providing valuable insights for informed decision-making and improved safety.
                                 </span>
                             </div>
                         </div>
@@ -203,33 +252,37 @@
                 </div>
             </div>
         </div>
+
+        @*STATISTICS SECTION*@
         <div class="home-stats">
             <div class="home-stat">
                 <h1 class="home-text020">50+</h1>
-                <span class="home-text021">New Users</span>
+                <span class="home-text021">
+                    Professional Users
+                </span>
                 <span class="home-text022">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing.
+                    Are working to bring you safe and trusted meat quality.
                 </span>
             </div>
             <div class="home-stat1">
                 <h1 class="home-text023">36</h1>
-                <span class="home-text024">New Producers</span>
+                <span class="home-text024">Registered Meat Establishments </span>
                 <span class="home-text025">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing.
+                    Committed to delivering trusted, quality meat products.
                 </span>
             </div>
             <div class="home-stat2">
-                <h1 class="home-text026">500</h1>
-                <span class="home-text027">Hours</span>
+                <h1 class="home-text026">500+</h1>
+                <span class="home-text027">New Users </span>
                 <span class="home-text028">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing.
+                    Informed consumers accessing detailed meat product info.
                 </span>
             </div>
             <div class="home-stat3">
                 <h1 class="home-text029"><span>24/7</span></h1>
                 <span class="home-text031">Support</span>
                 <span class="home-text032">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing.
+                    Always ready to assist with your queries and concerns.
                 </span>
             </div>
         </div>
@@ -248,43 +301,43 @@
 
 
                     <a class="home-container07" asp-controller="Articles" asp-action="Details" asp-route-id="@article.Id">
-                    <div class="blog-post-blog-post-card blog-post-root-class-name2">
-                        <img alt="image"
-                             src="~/img/Articles/@article.Image"
-                             class="blog-post-image" />
-                        <div class="blog-post-container">
-                            <span class="blog-post-text">
-                                <span>@article.Label</span>
-                            </span>
-                            <span class="blog-post-text1">
-                                <span>@article.Title</span>
-                            </span>
-                            <span class="blog-post-text2">
-                                <span>
-                                    @article.Description
+                        <div class="blog-post-blog-post-card blog-post-root-class-name2">
+                            <img alt="image"
+                                 src="~/img/Articles/@article.Image"
+                                 class="blog-post-image" />
+                            <div class="blog-post-container">
+                                <span class="blog-post-text">
+                                    <span>@article.Label</span>
                                 </span>
-                            </span>
-                            <div class="blog-post-container1">
-                                <div class="blog-post-profile">
-                                    <img alt="profile"
-                                             src="https://naris.nmis.gov.ph/img/company_logo.png"
-                                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                         class="blog-post-image1" />
-                                    <span class="blog-post-text3">
-                                        <span>@article.Author</span>
+                                <span class="blog-post-text1">
+                                    <span>@article.Title</span>
+                                </span>
+                                <span class="blog-post-text2">
+                                    <span>
+                                        @article.Description
                                     </span>
-                                </div>
+                                </span>
+                                <div class="blog-post-container1">
+                                    <div class="blog-post-profile">
+                                        <img alt="profile"
+                                             src="https://naris.nmis.gov.ph/img/company_logo.png"
+                                             image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                             class="blog-post-image1" />
+                                        <span class="blog-post-text3">
+                                            <span>@article.Author</span>
+                                        </span>
+                                    </div>
                                     <span class="blog-post-text4"><span>@article.Date.ToString("MM/dd/yyyy")</span></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
 
                 }
             </div>
             <a style="color: white; margin-top: -10px; padding: 10px 20px;" asp-controller="Articles" asp-action="Index" class="button button-transparent home-loginbt">
                 See All
-                </a>
+            </a>
         </div>
 
         <div id="getstarted" class="home-section2 section-container">
@@ -292,6 +345,8 @@
                 <img alt="image"
                      src="~/img/jc-gellidon-fnc3yctccoi-unsplash 14 [1]-1500w.png"
                      class="home-hero-image1" />
+
+                @*GET STARTED SECTION*@
                 <div class="home-content1">
                     <span class="home-text038">get started</span>
                     <h1 class="home-text039">Visit Our Website</h1>
@@ -302,9 +357,7 @@
                         <div class="home-container09">
                             <span class="home-title1">Go to Trace Page</span>
                             <span class="home-text041">
-                                Amet minim mollit non deserunt ullamco est sit aliqua dolor
-                                do amet sint. Velit officia consequat duis enim velit
-                                mollit.
+                                Navigate to the trace page by clicking the trace button.
                             </span>
                         </div>
                     </div>
@@ -315,9 +368,7 @@
                         <div class="home-container10">
                             <span class="home-title2">Scan your QR Code</span>
                             <span class="home-text043">
-                                Amet minim mollit non deserunt ullamco est sit aliqua dolor
-                                do amet sint. Velit officia consequat duis enim velit
-                                mollit.
+                                Activate your camera or scan manually the meat UID/QR code to access detailed meat information.
                             </span>
                         </div>
                     </div>
@@ -328,9 +379,8 @@
                         <div class="home-container11">
                             <span class="home-title3">See Meat Information</span>
                             <span class="home-text045">
-                                Amet minim mollit non deserunt ullamco est sit aliqua dolor
-                                do amet sint. Velit officia consequat duis enim velit
-                                mollit.
+                                Explore comprehensive meat inspection reports, locate addresses,
+                                and access valuable guides for your next purchase.
                             </span>
                         </div>
                     </div>
@@ -342,6 +392,7 @@
                 <div class="home-faq">
                     <div class="home-questions">
                         <span class="home-text046 beforeHeading">faq</span>
+                        @*FREQUENTLY ASKED QUESTIONS*@
                         <h1 class="home-text047">
                             <span class="home-text048">Frequently Asked</span>
                             <br />
@@ -358,9 +409,8 @@
                             </div>
                             <div data-type="accordion-content" class="question-content">
                                 <span class="home-text052">
-                                    Amet minim mollit non deserunt ullamco est sit aliqua
-                                    dolor do amet sint. Velit officia consequat duis enim
-                                    velit mollit.
+                                    A meat profiling system is a revolutionary tool that ensures the safety and
+                                    quality of meat products through rigorous inspection and data analysis.
                                 </span>
                             </div>
                         </div>
@@ -375,9 +425,8 @@
                             </div>
                             <div data-type="accordion-content" class="question-content">
                                 <span class="home-text054">
-                                    Amet minim mollit non deserunt ullamco est sit aliqua
-                                    dolor do amet sint. Velit officia consequat duis enim
-                                    velit mollit.
+                                    Meat profiling enhances food safety by providing transparency in the meat supply chain, ensuring compliance with safety regulations,
+                                    and making data-driven decisions based on inspection data.
                                 </span>
                             </div>
                         </div>
@@ -392,9 +441,8 @@
                             </div>
                             <div data-type="accordion-content" class="question-content">
                                 <span class="home-text056">
-                                    Amet minim mollit non deserunt ullamco est sit aliqua
-                                    dolor do amet sint. Velit officia consequat duis enim
-                                    velit mollit.
+                                    Meat profiling positively impacts the meat industry by promoting trust and transparency,
+                                    improving quality control, and enabling informed decision-making based on data analytics.
                                 </span>
                             </div>
                         </div>
@@ -409,9 +457,8 @@
                             </div>
                             <div data-type="accordion-content" class="question-content">
                                 <span class="home-text058">
-                                    Amet minim mollit non deserunt ullamco est sit aliqua
-                                    dolor do amet sint. Velit officia consequat duis enim
-                                    velit mollit.
+                                    While highly beneficial, a meat profiling system requires meticulous data management, relies on the accuracy of inspections,
+                                    and its effectiveness is dependent on the cooperation of all stakeholders in the meat supply chain.
                                 </span>
                             </div>
                         </div>
@@ -423,23 +470,23 @@
                 <div class="home-banner">
                     <span class="home-text059 beforeHeading">get started</span>
                     <h1 class="home-text060">
-                        <span>Scan your Meat UID Now</span>
+                        <span>Scan your meat UID now</span>
                         <br />
                         <span>to know your safety.</span>
                         <br />
                     </h1>
                     <span class="home-text065">
-                        <span>Amet minim mollit non deserunt ullamco est sit</span>
+                        <span>Now for peace of mind.</span>
                         <br />
-                        <span>aliqua dolor do amet sint.</span>
+                        <span>Embark on a path to safer consumption.</span>
                     </span>
                     <div class="home-btns">
-                        <button class="home-feautures button button-transparent">
+                        <a class="button button-transparent home-feautures" href="#features">
                             See all features
-                        </button>
-                        <button class="home-getstarted button button-gradient">
-                            Get started
-                        </button>
+                        </a>
+                        <a class="button home-getstarted button button-gradient" href="#getstarted">
+                            Get Started
+                        </a>
                     </div>
                 </div>
             </div>

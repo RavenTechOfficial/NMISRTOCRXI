@@ -6,7 +6,7 @@ namespace thesis.Core.ViewModel
 {
     public class AnalyticsViewModel
     {
-        
+
         // for area chart
         public List<double> monthlyRangeApproved { get; set; }
         public List<double> monthlyRangeCondemned { get; set; }
@@ -30,9 +30,22 @@ namespace thesis.Core.ViewModel
         public DateTime end { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         public Species species { get; set; }
         public string timeSeries { get; set; } = "Monthly";
-        
+
+
+        public bool CattleBool { get; set; }
+        public bool CarabaoBool { get; set; }
+        public bool SwineBool { get; set; }
+        public bool GoatBool { get; set; }
+        public bool ChickenBool { get; set; }
+        public bool DuckBool { get; set; }
+        public bool SheepBool { get; set; }
+        public bool HorseBool { get; set; }
+        public bool OstrichBool { get; set; }
+        public bool CrocodileBool { get; set; }
+
 
         public string[] monthAbbreviationsArray { get; set; }
     }
-
 }
+
+

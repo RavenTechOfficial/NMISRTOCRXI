@@ -92,19 +92,30 @@ namespace thesis.Repositories
         public double ChroplethValueMeatDealers(Species species, string address)
         {
             var stackchart = _context.totalNoFitForHumanConsumptions
-                .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers)
-                .Where(p => p.Species == species
+                .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
+                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species == species
                 && p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Origin == address)
                 .Sum(p => p.DressedWeight);
 
             return stackchart;
         }
 
-        public double ChroplethValue(Species species, string address)
+  //      public double ChroplethValue(Species species, string address)
+		//{
+		//	var stackchart = _context.SummaryAndDistributionOfMICs
+  //              .Include(p => p.TotalNoFitForHumanConsumption)
+		//		.Where(p => p.TotalNoFitForHumanConsumption.Species == species
+		//		&& p.DestinationAddress == address)
+		//		.Sum(p => p.TotalNoFitForHumanConsumption.DressedWeight);
+
+		//	return stackchart;
+		//}
+
+		public double ChroplethValue(Species species, string address)
 		{
 			var stackchart = _context.SummaryAndDistributionOfMICs
-                .Include(p => p.TotalNoFitForHumanConsumption)
-				.Where(p => p.TotalNoFitForHumanConsumption.Species == species
+				.Include(p => p.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
+				.Where(p => p.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species == species
 				&& p.DestinationAddress == address)
 				.Sum(p => p.TotalNoFitForHumanConsumption.DressedWeight);
 

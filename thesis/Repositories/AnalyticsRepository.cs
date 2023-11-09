@@ -18,7 +18,7 @@ namespace thesis.Repositories
         public AnalyticsViewModel GetTotalOfMeatPerTimeSeries(string timeseries, Species species, DateTime startDate, DateTime endDate)
         {
 
-            
+
             var startOfDate = startDate;
             var currentDate = endDate;
 
@@ -60,31 +60,48 @@ namespace thesis.Repositories
 
 
 
-            for (DateTime date = startOfDate; date < currentDate; date = timeseries == "Monthly" ? date.AddMonths(1) : date.AddYears(1))
+            for (DateTime date = startOfDate; date < currentDate; date = timeseries == "Monthly" ? date.AddMonths(1) : timeseries == "Yearly" ? date.AddYears(1) : date.AddDays(1))
             {
-                var startOfMonth = date;
-                var endOfMonth = timeseries == "Monthly" ? date.AddMonths(1) : date.AddYears(1);
+                var startOfPeriod  = date;
+				DateTime endOfPeriod;
 
-                var monthRangeApproved = AreaChartTimeSeriesRangeApproved(species, startOfMonth, endOfMonth);
-                var monthRangeCondemned = AreaChartTimeSeriesRangeCondemned(species, startOfMonth, endOfMonth);
+				if (timeseries == "Monthly")
+				{
+					endOfPeriod = date.AddMonths(1);
+				}
+				else if (timeseries == "Yearly")
+				{
+					// Set the endOfPeriod to the end of the year or endDate, whichever comes first
+					DateTime endOfYear = new DateTime(date.Year, 12, 31);
+					endOfPeriod = endOfYear < endDate ? endOfYear : endDate;
+				}
+				else // Default to "Daily"
+				{
+					endOfPeriod = date.AddDays(1);
+				}
 
-                var monthRangeOfHead = BarChartTimeSeriesRangeOfHead(species, startOfMonth, endOfMonth);
-                var monthRangeOfLiveWeight = BarChartTimeSeriesRangeOfLiveWeight(species, startOfMonth, endOfMonth);
-                
-                var cattle = StackBarsSpeciesSeries(Species.Cattle, startOfMonth, endOfMonth);
-                var carabao = StackBarsSpeciesSeries(Species.Carabao, startOfMonth, endOfMonth);
-                var swine = StackBarsSpeciesSeries(Species.Swine, startOfMonth, endOfMonth);
-                var goat = StackBarsSpeciesSeries(Species.Goat, startOfMonth, endOfMonth);
-                var chicken = StackBarsSpeciesSeries(Species.Chicken, startOfMonth, endOfMonth);
-                var duck = StackBarsSpeciesSeries(Species.Duck, startOfMonth, endOfMonth);
-                var horse = StackBarsSpeciesSeries(Species.Horse, startOfMonth, endOfMonth);
-                var sheep = StackBarsSpeciesSeries(Species.Sheep, startOfMonth, endOfMonth);
-                var ostrich = StackBarsSpeciesSeries(Species.Ostrich, startOfMonth, endOfMonth);
-                var crocodile = StackBarsSpeciesSeries(Species.Crocodile, startOfMonth, endOfMonth);
+				endOfPeriod = endOfPeriod > endDate ? endDate : endOfPeriod;
 
-                var suspect = BarChartTimeSeriesAntemortem(species, Issue.Suspect, startOfMonth, endOfMonth);
-                var condemned = BarChartTimeSeriesAntemortem(species, Issue.Condemned, startOfMonth, endOfMonth);
-                var pass = BarChartTimeSeriesAntemortemPass(species, startOfMonth, endOfMonth);
+				var monthRangeApproved = AreaChartTimeSeriesRangeApproved(species, startOfPeriod , endOfPeriod);
+                var monthRangeCondemned = AreaChartTimeSeriesRangeCondemned(species, startOfPeriod , endOfPeriod);
+
+                var monthRangeOfHead = BarChartTimeSeriesRangeOfHead(species, startOfPeriod , endOfPeriod);
+                var monthRangeOfLiveWeight = BarChartTimeSeriesRangeOfLiveWeight(species, startOfPeriod , endOfPeriod);
+
+                var cattle = StackBarsSpeciesSeries(Species.Cattle, startOfPeriod , endOfPeriod);
+                var carabao = StackBarsSpeciesSeries(Species.Carabao, startOfPeriod , endOfPeriod);
+                var swine = StackBarsSpeciesSeries(Species.Swine, startOfPeriod , endOfPeriod);
+                var goat = StackBarsSpeciesSeries(Species.Goat, startOfPeriod , endOfPeriod);
+                var chicken = StackBarsSpeciesSeries(Species.Chicken, startOfPeriod , endOfPeriod);
+                var duck = StackBarsSpeciesSeries(Species.Duck, startOfPeriod , endOfPeriod);
+                var horse = StackBarsSpeciesSeries(Species.Horse, startOfPeriod , endOfPeriod);
+                var sheep = StackBarsSpeciesSeries(Species.Sheep, startOfPeriod , endOfPeriod);
+                var ostrich = StackBarsSpeciesSeries(Species.Ostrich, startOfPeriod , endOfPeriod);
+                var crocodile = StackBarsSpeciesSeries(Species.Crocodile, startOfPeriod , endOfPeriod);
+
+                var suspect = BarChartTimeSeriesAntemortem(species, Issue.Suspect, startOfPeriod , endOfPeriod);
+                var condemned = BarChartTimeSeriesAntemortem(species, Issue.Condemned, startOfPeriod , endOfPeriod);
+                var pass = BarChartTimeSeriesAntemortemPass(species, startOfPeriod , endOfPeriod);
 
 
                 monthRangesApproved.Add(monthRangeApproved);
@@ -106,9 +123,15 @@ namespace thesis.Repositories
 
                 suspects.Add(suspect);
                 condemneds.Add(condemned);
-                passes.Add(pass);    
+                passes.Add(pass);
 
-            }
+
+				if (timeseries == "Yearly" && date.Year == endDate.Year)
+				{
+					break;
+				}
+
+			}
 
 
             var currentDateFormatted = currentDate.ToString("MMM dd");
@@ -123,17 +146,27 @@ namespace thesis.Repositories
                 timeAbbreviationsList.AddRange(Enumerable.Range(startMonth, currentMonths - startMonth + 1)
                     .Select(month => startDate.AddMonths(month - startMonth).ToString("MMM dd")));
             }
-            else if (timeseries == "Yearly")
-            {
-                var startYear = startDate.Year;
-                var endYear = endDate.Year;
+			else if (timeseries == "Yearly")
+			{
+				
+				timeAbbreviationsList.Add(startDate.ToString("MMM yyyy"));
 
-                timeAbbreviationsList.AddRange(Enumerable.Range(startYear, endYear - startYear + 1)
-                    .Select(year => startDate.ToString("MMM") + " " + year));
-            }
+				
+				if (startDate.Year != endDate.Year)
+				{
+					timeAbbreviationsList.Add(endDate.ToString("MMM yyyy"));
+				}
+			}
+			else if (timeseries == "Daily")
+			{
+				var totalDays = (endDate - startDate).Days; 
 
-            // Add the current month and day if it's not already included
-            if (!timeAbbreviationsList.Contains(currentDateFormatted))
+				timeAbbreviationsList.AddRange(Enumerable.Range(0, totalDays + 1)
+					.Select(day => startDate.AddDays(day).ToString("MMM dd")));
+			}
+
+			// Add the current month and day if it's not already included
+			if (!timeAbbreviationsList.Contains(currentDateFormatted))
             {
                 timeAbbreviationsList.Add(currentDateFormatted);
             }
@@ -165,11 +198,11 @@ namespace thesis.Repositories
             };
 
         }
-        
+
         //from meatINspectionReport to Receiving DATE
         public double BarChartTimeSeriesAntemortem(Species species, Issue issue, DateTime start, DateTime end)
         {
-           
+
             var barchart = _context.ConductOfInspections
             .Include(p => p.MeatInspectionReport)
             .Include(p => p.MeatInspectionReport.ReceivingReport)
@@ -185,16 +218,16 @@ namespace thesis.Repositories
         }
         //from meatINspectionReport to Receiving DATE
         public double BarChartTimeSeriesAntemortemPass(Species species, DateTime start, DateTime end)
-		{
-			var barchart = _context.PassedForSlaughters
-				.Include(p => p.ConductOfInspection.MeatInspectionReport.ReceivingReport)
-				.Where(p => p.ConductOfInspection.MeatInspectionReport.ReceivingReport.RecTime.Date >= start.Date
-				&& p.ConductOfInspection.MeatInspectionReport.ReceivingReport.RecTime.Date <= end.Date
+        {
+            var barchart = _context.PassedForSlaughters
+                .Include(p => p.ConductOfInspection.MeatInspectionReport.ReceivingReport)
+                .Where(p => p.ConductOfInspection.MeatInspectionReport.ReceivingReport.RecTime.Date >= start.Date
+                && p.ConductOfInspection.MeatInspectionReport.ReceivingReport.RecTime.Date <= end.Date
                 && p.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species == species)
-				.Sum(p => p.Weight);
+                .Sum(p => p.Weight);
 
-			return barchart;
-		}
+            return barchart;
+        }
 
 
         //from meatINspectionReport to Receiving DATE
@@ -227,13 +260,13 @@ namespace thesis.Repositories
             var hbarchart = _context.ReceivingReports
                 .Where(p => p.RecTime >= start.Date && p.RecTime <= end.Date
                 && p.Species == species)
-                
+
                 .Sum(p => p.NoOfHeads);
 
             return hbarchart;
         }
 
-        public double BarChartTimeSeriesRangeOfLiveWeight(Species species ,DateTime start, DateTime end)
+        public double BarChartTimeSeriesRangeOfLiveWeight(Species species, DateTime start, DateTime end)
         {
             var vbarchart = _context.ReceivingReports
                 .Where(p => p.RecTime >= start.Date && p.RecTime <= end.Date

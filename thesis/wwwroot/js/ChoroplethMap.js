@@ -85,6 +85,7 @@ speciesItems.forEach(item => {
 });
 
 
+
 //Search Bar Configurations
 //Search Suggestions Delay
 var currentMarker = null;
@@ -141,7 +142,7 @@ function getSuggestions() {
                 var suggestions = results.map(function (result) {
                     return result.name;
                 });
-                suggestionsElement.innerHTML = suggestions.map(s => <div class="suggestion">${s}</div>).join('');
+                suggestionsElement.innerHTML = suggestions.map(s => `<div class="suggestion">${s}</div>`).join('');
                 suggestionsElement.style.display = 'block';
             } else {
                 suggestionsElement.style.display = 'none';
@@ -163,3 +164,4 @@ suggestionsElement.addEventListener('click', function (e) {
 });
 
 document.querySelector(".search-form").addEventListener('submit', performSearch);
+
