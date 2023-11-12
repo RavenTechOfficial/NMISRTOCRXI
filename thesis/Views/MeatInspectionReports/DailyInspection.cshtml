@@ -17,10 +17,10 @@
 <link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
 
 <style>
-   /*  /* [aria-hidden="true"] {
+    /* [aria-hidden="true"] {
         position: absolute;
         left: -9999px;
-    } */ */
+    } */
 
     #content h1 {
         text-align: center;
@@ -28,17 +28,17 @@
         font-weight: 700;
     }
 
-    #content main .head-title .left1 {
+    #content main .head-title .column {
         margin-top: 2px;
         margin-left: 2px;
         margin-bottom: 25px;
     }
 
-    #content main .left1 h3 {
-        font-size: 20px;
+    #content main .column h3 {
+        font-size: 25px;
         font-weight: 600;
         margin-top: 10px;
-        margin-bottom: 3px;
+        margin-bottom: 10px;
         margin-left: 10px;
         color: var(--black);
     }
@@ -51,30 +51,38 @@
         background-color: var(--filterbgcolor);
         border-radius: 5px;
     }
-
 </style>
 
 <section id="content">
     <main>
         <div class="head-title">
-            <div class="left1">
+            <div class="column">
                 <h3>Filters:</h3>
-                <div class="filter-box">
-                    @if (User.IsInRole("InspectorAdministrator"))
-                    {
-                        <div class="input-wrapper">
-                            <label>Meat Establishment:</label>
-                            <select id="meatEstablishmentFilter" asp-items="@ViewBag.MeatEstablishments" class="form-control">
-                                <option value="">Select Establishment</option>
-                            </select>
+                <div class="form-group">
+                    <div class="row gx-1">
+                        @*<div class="col-md-6">*@
+                        @if (User.IsInRole("InspectorAdministrator"))
+                        {
+                            <div class="col-md-6">
+                                <div class="input-wrapper">
+                                    <label>Meat Establishment:</label>
+                                    <select id="meatEstablishmentFilter" asp-items="@ViewBag.MeatEstablishments" class="form-control">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                        }
+                        @*</div>*@
 
+                        <div class="col">
+                            <div class="input-wrapper">
+                                <label for="dateFilter">Date:</label>
+                                <input type="date" id="dateFilter" class="form-control" />
+                            </div>
                         </div>
-                    }
 
-                    <div class="input-wrapper">
-                        <label for="dateFilter">Date:</label>
-                        <input type="date" id="dateFilter" class="form-control" />
                     </div>
+
 
 
                 </div>
@@ -140,8 +148,16 @@
                                 <td>@item.MeatEstablishment</td>
                                 <td>@item.DateInspected</td>
                                 <td>@item.MeatInspector</td>
-                                <td>@item.VerifiedBy</td>
-
+                                <td>
+                                    @if (item.VerifiedBy == null)
+                                    {
+                                        <p>Not yet verified.</p>
+                                    }
+                                    else
+                                    {
+                                        @item.VerifiedBy
+                                    }
+                                </td>
                                 <td>
                                     <div class="btn-group">
                                         @if (User.IsInRole("InspectorAdministrator"))
@@ -149,8 +165,7 @@
                                             <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.MeatInspectionReportId">Verification</a>
                                         }
 
-                                        <a class="btn btn-success py-1 " asp-action="DailyIndex" asp-route-id="@item.MeatInspectionReportId">Show</a>
-                                        @* <a class="btn btn-info" value="@item.MeatInspectionReportId">QrCode</a> *@
+                                        <a class="btn btn-success" asp-action="DailyIndex" asp-route-id="@item.MeatInspectionReportId">Show</a>
                                         <a class="btn btn-primary py-1 ms-1 font-weight-light view" value="@item.UID">QR Code</a>
                                     </div>
                                 </td>
@@ -186,15 +201,13 @@
             </div>
         </div>
 
-
         <script src="~/js/meatInspectionReports.js" asp-append-version="true"></script>
-
-
 
 
         <script>
             function filterTable() {
                 var selectedText = document.getElementById("meatEstablishmentFilter").options[document.getElementById("meatEstablishmentFilter").selectedIndex].text;
+
 
                 $("#tableSix tbody tr").each(function () {
                     var cellValue = $(this).find("td:eq(3)").text(); // Assuming the "Meat Establishment" column is the fourth column (index 3).
@@ -210,7 +223,7 @@
 
         </script>
 
-       @*  <script src="https://code.jquery.com/jquery-3.3.1.js" defer></script> *@
+        @* <script src="https://code.jquery.com/jquery-3.3.1.js" defer></script> *@
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" defer></script>
 
@@ -241,7 +254,12 @@
 
                 $('#meatEstablishmentFilter').on('change', function () {
                     var selectedText = $(this).find('option:selected').text();
-                    table.column(3).search(selectedText).draw();
+                    // table.column(3).search(selectedText).draw();
+                    if (selectedText === "All") {
+                        table.column(3).search('').draw(); // Clear the search filter
+                    } else {
+                        table.column(3).search(selectedText).draw(); // Apply the selected filter
+                    }
                 });
 
             });

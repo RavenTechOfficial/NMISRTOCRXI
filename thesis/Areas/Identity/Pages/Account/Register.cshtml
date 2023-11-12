@@ -2,11 +2,16 @@
 @model RegisterModel
 
 
-<link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
+
 
 @if (User.Identity.IsAuthenticated)
 {
-	
+	<link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
+	@if (User.IsInRole("InspectorAdministrator"))
+	{
+		<link rel="stylesheet" href="~/css/createMeatCheck.css" asp-append-version="true">
+	}
+
 	<section id="content">
 		<!-- MAIN STARTS-->
 		<main class="registration">
@@ -94,6 +99,7 @@
 											}
 											@if (User.IsInRole("InspectorAdministrator"))
 											{
+												
 												<option>MEATESTABLISHMENTREPRESENTATIVE</option>
 												<option>MEATINSPECTOR</option>
 											}

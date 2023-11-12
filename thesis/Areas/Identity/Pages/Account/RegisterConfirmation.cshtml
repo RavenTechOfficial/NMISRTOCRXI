@@ -1,10 +1,10 @@
 ﻿@page
 @model RegisterConfirmationModel
-@{
-    ViewData["Title"] = "Register confirmation";
-}
-<div class="container">
-    <h1>@ViewData["Title"]</h1>
+
+<link rel="stylesheet" href="~/css/registerConfirmation.css" asp-append-version="true" />
+
+@*<div class="container">
+
     @{
         if (@Model.DisplayConfirmAccountLink)
         {
@@ -20,4 +20,38 @@
     </p>
         }
     }
-</div>
+</div>*@
+
+@*class="confirmButton"*@
+
+
+<section id="content">
+    <!-- MAIN STARTS-->
+    <main class="registration">
+        <div class="container">
+            <header>Confirm Registration</header>
+
+            @{
+                if (@Model.DisplayConfirmAccountLink)
+                {
+                    <form action="#" class="form">
+                        <div class="column">
+                            <p>Please click the button below to confirm your account registration!</p>
+                        </div>
+                        <a class="confirmButton" id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
+                    </form>
+                }
+                else
+                {
+                    <p>
+                        Please check your email to confirm your account.
+                    </p>
+                }
+
+            }
+        </div>
+
+    </main>
+    <!-- MAIN ENDS -->
+
+</section>

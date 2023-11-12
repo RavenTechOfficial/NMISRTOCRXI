@@ -65,16 +65,16 @@
 
         <div class="FirstLayer">
 
-            <div class="antemortem-chart charts-card">
+            <div class="supply-chart charts-card">
                 <div class="head">
-                    <h3>Antemortem Inspection Reports</h3>
+                    <h3>Meat Quantity Produced This Year</h3>
                 </div>
-                <div id="bar-chart"></div>
+                <div id="area-chart"></div>
             </div>
 
             <div class="applications">
                 <div class="head">
-                    <h3>Pending MTV Applications</h3>
+                    <h3>MTV Application Status</h3>
                     <i class='bx bx-search'></i>
                     <i class='bx bx-filter'></i>
                 </div>
@@ -107,14 +107,14 @@
         </div>
 
         <div class="charts">
-            <div class="supply-chart charts-card">
+           
+            <div class="supply-chart charts-card unique-chart">
                 <div class="head">
-                    <h3>Meat Quantity Produced This Year</h3>
+                    <h3>Total Fit for Human Consumption</h3>
                 </div>
-                <div id="area-chart"></div>
+                <div id="fit-chart"></div>
+
             </div>
-
-
 
             <div class="users-chart charts-card">
                 <div class="head">
@@ -142,137 +142,137 @@
 
 
     // BAR CHART with darkmode
-    let barChart;
+    // let barChart;
 
-    let computedStyle = getComputedStyle(document.documentElement);
-    let labelColorDark = computedStyle.getPropertyValue('--dark').trim();
-    let labelColorLight = computedStyle.getPropertyValue('--light').trim();
+    // let computedStyle = getComputedStyle(document.documentElement);
+    // let labelColorDark = computedStyle.getPropertyValue('--dark').trim();
+    // let labelColorLight = computedStyle.getPropertyValue('--light').trim();
 
-    if (currentMode === 'dark') {
-        document.body.classList.add('dark');
-        switchMode.checked = true;
-        renderBarChart(labelColorLight, 'dark');
-    } else {
-        document.body.classList.remove('dark');
-        switchMode.checked = false;
-        renderBarChart(labelColorDark, 'light');
-    }
+    // if (currentMode === 'dark') {
+    //     document.body.classList.add('dark');
+    //     switchMode.checked = true;
+    //     renderBarChart(labelColorLight, 'dark');
+    // } else {
+    //     document.body.classList.remove('dark');
+    //     switchMode.checked = false;
+    //     renderBarChart(labelColorDark, 'light');
+    // }
 
-    switchMode.addEventListener('change', function () {
-        if (barChart) {
-            barChart.destroy();
-        }
+    // switchMode.addEventListener('change', function () {
+    //     if (barChart) {
+    //         barChart.destroy();
+    //     }
 
-        if (this.checked) {
-            document.body.classList.add('dark');
-            localStorage.setItem('mode', 'dark'); // Save mode to localStorage
-            renderBarChart(labelColorLight, 'dark');
-        } else {
-            document.body.classList.remove('dark');
-            localStorage.setItem('mode', 'light'); // Save mode to localStorage
-            renderBarChart(labelColorDark, 'light');
-        }
-    });
-    function renderBarChart(labelColor, tooltipTheme) {
-        let barChartOptions = {
-            series: [
-                {
-                    name: 'Suspect/Hold',
-                    data: [@string.Join(",", Model.TotalWeightModel.Suspect)]
-                },
-                {
-                    name: 'Condemned',
-                    data: [@string.Join(",", Model.TotalWeightModel.Condemned)]
-                },
-                {
-                    name: 'Passed for Slaughter',
-                    data: [@string.Join(",", Model.TotalWeightModel.Pass)]
-                }
-            ],
-            chart: {
-                type: 'bar',
-                height: 350,
-                toolbar: {
-                    show: false,
-                },
-            },
-            colors: [
-                '#2962ff',
-                '#d50000',
-                '#2e7d32',
-            ],
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '55%',
-                    endingShape: 'rounded',
-                },
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                show: true,
-                width: 2,
-                colors: ['transparent']
-            },
-            xaxis: {
-                categories: @Html.Raw(Json.Serialize(Model.TotalWeightModel.monthAbbreviationsArray)),
-                labels: {
-                    style: {
-                        colors: labelColor,
-                    },
-                },
-            },
-            yaxis: {
-                title: {
-                    text: 'Number of Heads',
-                    style: {
-                        color: labelColor,
-                    },
-                },
-                labels: {
-                    style: {
-                        colors: labelColor,
-                    },
-                },
-            },
-            fill: {
-                opacity: 1
-            },
-            grid: {
-                borderColor: "#55596e",
-                yaxis: {
-                    lines: {
-                        show: true,
-                    },
-                },
-                xaxis: {
-                    lines: {
-                        show: true,
-                    },
-                },
-            },
-            legend: {
-                labels: {
-                    colors: labelColor,
-                },
-                show: true,
-                position: "bottom",
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return val + ' Heads'
-                    }
-                },
-                theme: tooltipTheme,
-            }
-        };
+    //     if (this.checked) {
+    //         document.body.classList.add('dark');
+    //         localStorage.setItem('mode', 'dark');
+    //         renderBarChart(labelColorLight, 'dark');
+    //     } else {
+    //         document.body.classList.remove('dark');
+    //         localStorage.setItem('mode', 'light'); 
+    //         renderBarChart(labelColorDark, 'light');
+    //     }
+    // });
+    // function renderBarChart(labelColor, tooltipTheme) {
+    //     let barChartOptions = {
+    //         series: [
+    //             {
+    //                 name: 'Suspect/Hold',
+    //                 data: [@string.Join(",", Model.TotalWeightModel.Suspect)]
+    //             },
+    //             {
+    //                 name: 'Condemned',
+    //                 data: [@string.Join(",", Model.TotalWeightModel.Condemned)]
+    //             },
+    //             {
+    //                 name: 'Passed for Slaughter',
+    //                 data: [@string.Join(",", Model.TotalWeightModel.Pass)]
+    //             }
+    //         ],
+    //         chart: {
+    //             type: 'bar',
+    //             height: 350,
+    //             toolbar: {
+    //                 show: false,
+    //             },
+    //         },
+    //         colors: [
+    //             '#2962ff',
+    //             '#d50000',
+    //             '#2e7d32',
+    //         ],
+    //         plotOptions: {
+    //             bar: {
+    //                 horizontal: false,
+    //                 columnWidth: '55%',
+    //                 endingShape: 'rounded',
+    //             },
+    //         },
+    //         dataLabels: {
+    //             enabled: false
+    //         },
+    //         stroke: {
+    //             show: true,
+    //             width: 2,
+    //             colors: ['transparent']
+    //         },
+    //         xaxis: {
+    //             categories: @Html.Raw(Json.Serialize(Model.TotalWeightModel.monthAbbreviationsArray)),
+    //             labels: {
+    //                 style: {
+    //                     colors: labelColor,
+    //                 },
+    //             },
+    //         },
+    //         yaxis: {
+    //             title: {
+    //                 text: 'Number of Heads',
+    //                 style: {
+    //                     color: labelColor,
+    //                 },
+    //             },
+    //             labels: {
+    //                 style: {
+    //                     colors: labelColor,
+    //                 },
+    //             },
+    //         },
+    //         fill: {
+    //             opacity: 1
+    //         },
+    //         grid: {
+    //             borderColor: "#55596e",
+    //             yaxis: {
+    //                 lines: {
+    //                     show: true,
+    //                 },
+    //             },
+    //             xaxis: {
+    //                 lines: {
+    //                     show: true,
+    //                 },
+    //             },
+    //         },
+    //         legend: {
+    //             labels: {
+    //                 colors: labelColor,
+    //             },
+    //             show: true,
+    //             position: "bottom",
+    //         },
+    //         tooltip: {
+    //             y: {
+    //                 formatter: function (val) {
+    //                     return val + ' Heads'
+    //                 }
+    //             },
+    //             theme: tooltipTheme,
+    //         }
+    //     };
 
-        barChart = new ApexCharts(document.querySelector("#bar-chart"), barChartOptions);
-        barChart.render();
-    }
+    //     barChart = new ApexCharts(document.querySelector("#bar-chart"), barChartOptions);
+    //     barChart.render();
+    // }
 
 
 
@@ -410,7 +410,152 @@
         areaChart.render();
     }
 
+    // Fit For Human Consumption
+    // var fitchartoptions = {
+    //     series: [{
+    //         name: 'Cattle',
+    //         data: [string.Join(",", Model.Cattle)]
+    //     }, {
+    //         name: 'Carabao',
+    //         data: [string.Join(",", Model.Carabao)]
+    //     }, {
+    //         name: 'Swine',
+    //         data: [string.Join(",", Model.Swine)]
+    //     }, {
+    //         name: 'Goat',
+    //         data: [string.Join(",", Model.Goat)]
+    //     }, {
+    //         name: 'Chicken',
+    //         data: [string.Join(",", Model.Chicken)]
+    //     }, {
+    //         name: 'Duck',
+    //         data: [string.Join(",", Model.Duck)]
+    //     }, {
+    //         name: 'Horse',
+    //         data: [string.Join(",", Model.Horse)]
+    //     }, {
+    //         name: 'Sheep',
+    //         data: [string.Join(",", Model.Sheep)]
+    //     }, {
+    //         name: 'Ostrich',
+    //         data: [string.Join(",", Model.Ostrich)]
+    //     }, {
+    //         name: 'Crocodile',
+    //         data: [string.Join(",", Model.Crocodile)]
+    //     }],
 
+    var fitchartoptions = {
+        series: [{
+            name: 'Cattle',
+            data: [@string.Join(",", Model.TotalWeightModel.Cattle)]
+        }, {
+            name: 'Carabao',
+            data: [@string.Join(",", Model.TotalWeightModel.Carabao)]
+        }, {
+            name: 'Swine',
+            data: [@string.Join(",", Model.TotalWeightModel.Swine)]
+        }, {
+            name: 'Goat',
+            data: [@string.Join(",", Model.TotalWeightModel.Goat)]
+        }, {
+            name: 'Chicken',
+            data: [@string.Join(",", Model.TotalWeightModel.Chicken)]
+        }, {
+            name: 'Duck',
+            data: [@string.Join(",", Model.TotalWeightModel.Duck)]
+        }, {
+            name: 'Horse',
+            data: [@string.Join(",", Model.TotalWeightModel.Horse)]
+        }, {
+            name: 'Sheep',
+            data: [@string.Join(",", Model.TotalWeightModel.Sheep)]
+        }, {
+            name: 'Ostrich',
+            data: [@string.Join(",", Model.TotalWeightModel.Ostrich)]
+        }, {
+            name: 'Crocodile',
+            data: [@string.Join(",", Model.TotalWeightModel.Crocodile)]
+        }],
+
+        chart: {
+            type: 'bar',
+            height: 350,
+            stacked: true,
+            stackType: '100%',
+            toolbar: {
+                show: true,
+                offsetX: 0,
+                offsetY: -30,
+                tools: {
+                    download: true,
+                    selection: true,
+                    zoom: true,
+                    zoomin: true,
+                    zoomout: true,
+                    pan: true,
+                    reset: true | '<img src="/static/icons/reset.png" width="20">',
+                    customIcons: []
+                },
+                export: {
+                    csv: {
+                        filename: 'Receiving Analytics',
+                        columnDelimiter: ',',
+                        headerCategory: 'Date',
+                        headerValue: 'value',
+                        dateFormatter(timestamp) {
+                            return new Date(timestamp).toDateString()
+                        }
+                    },
+                    svg: {
+                        filename: 'Receiving Analytics',
+                    },
+                    png: {
+                        filename: 'Receiving Analytics',
+                    }
+                },
+                autoSelected: 'zoom'
+            },
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+            },
+        },
+        stroke: {
+            width: 1,
+            colors: ['#fff']
+        },
+
+        xaxis: {
+            categories: @Html.Raw(Json.Serialize(Model.TotalWeightModel.monthAbbreviationsArray)),
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return val + "Kilograms"
+                },
+            },
+        },
+        fill: {
+            opacity: 1
+
+        },
+        legend: {
+            color: 'dark',
+            position: 'top',
+            horizontalAlign: 'center',
+            offsetX: 40,
+            itemMargin: {
+                horizontal: 7,
+            },
+            labels: {
+                colors: ['dark'] // Change this to the color you want
+            }
+        }
+    };
+
+    var fitchart = new ApexCharts(document.querySelector("#fit-chart"), fitchartoptions);
+    fitchart.render();
 
 
     //doughnut Chart JS

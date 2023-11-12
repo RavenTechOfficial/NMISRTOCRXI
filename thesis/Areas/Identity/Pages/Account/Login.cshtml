@@ -125,16 +125,19 @@
                         </div>
                     </div>
                     <form id="account" method="post">
+                        
                         <span class="log-in-page-text07">Sign in your account</span>
                         <div class="log-in-page-container07">
                             <span class="log-in-page-text08">Email</span>
                             <input asp-for="Input.Email" class="log-in-page-email input" autocomplete="username" aria-required="true" />
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
+
                         </div>
                         <div class="log-in-page-container08">
                             <span class="log-in-page-text09">Password</span>
                             <input asp-for="Input.Password" class="log-in-page-email1 input" autocomplete="current-password" aria-required="true" />
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <div asp-validation-summary="All" class="text-danger"></div>
                         </div>
                         <div class="log-in-page-container09">
                             <span class="log-in-page-text10">Forgot your password?</span>

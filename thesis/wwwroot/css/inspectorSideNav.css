@@ -283,16 +283,16 @@
 	margin-top: 10px;
 	margin-bottom: 0px;
 	margin-left: 10px;
-	border: 1px solid var(--btndownload);
-	background-color: var(--btndownload);
+	border: 1px solid var(--blue);
+	background-color: var(--blue);
 	padding: 5px 10px;
 	color: var(--white);
 	border-radius: 7px;
 }
 
 	#downloadButton:hover {
-		background-color: var(--light-green);
-		border: 1px solid var(--light-green);
+		background-color: var(--btndownload);
+		border: 1px solid var(--btndownload);
 	}
 
 .filter-box {
@@ -493,6 +493,22 @@
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 	margin-left: 5%;
 	margin-top: 30px;
+}
+
+.container2 {
+	position: absolute;
+	max-width: 12px;
+	/*width: 200%;*/
+	background: var(--light);
+	padding: 20px;
+	border-radius: 15px;
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+	margin-left: 5px;
+	margin-top: 30px;
+	margin-right: auto;
+	will-change: transform;
+	word-wrap: break-word;
+	/*margin-bottom: 15px;*/
 }
 
 .img-area {

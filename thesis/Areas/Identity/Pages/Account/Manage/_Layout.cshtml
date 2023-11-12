@@ -1,5 +1,5 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
     {
         Layout = parentLayout.ToString();
     }
@@ -8,6 +8,34 @@
         Layout = "/Areas/Identity/Pages/_Layout.cshtml";
     }
 }
+
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/accountSettings.css" asp-append-version="true" />
+
+
+
+<div class="container p-0">
+    <h1>Account Settings</h1>
+    <h3 style = "ms-1">Manage your account</h3>
+    <div class="row">
+        <div class="col-md-5 col-xl-4">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-7 col-xl-8">
+            <div class="tab-content">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+@*
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>*@
+
+
+@*
 <div class="container">
     <h1>Manage your account</h1>
 
@@ -23,7 +51,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 @section Scripts {
     @RenderSection("Scripts", required: false)
