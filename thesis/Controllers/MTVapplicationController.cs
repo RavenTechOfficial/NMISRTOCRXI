@@ -55,15 +55,46 @@ namespace thesis.Controllers
 
 		// GET: MTVapplication/Create
 		[Authorize(Policy = "RequireMtvUsers")]
-		public IActionResult Create()
-        {
-            return View();
-        }
+		public IActionResult Create(string accreditationNumber)
+		{
 
-        // POST: MTVapplication/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+			if (string.IsNullOrEmpty(accreditationNumber))
+			{
+
+				return View(new MtvApplicationViewModel());
+			}
+
+
+			var mtv = _context.MTVApplications.FirstOrDefault(p => p.AccreditionNo == accreditationNumber);
+
+			
+			if (mtv != null)
+			{
+				var mtvVM = new MtvApplicationViewModel
+				{
+					OwnerFname = mtv.OwnerFname,
+					OwnerMname = mtv.OwnerMname,
+					OwnerLname = mtv.OwnerLname,
+					Email = mtv.Email,
+					TelNo = mtv.TelNo,
+					FaxNo = mtv.FaxNo
+				};
+
+				
+				return View(mtvVM);
+			}
+
+
+			return View(mtv); 
+		}
+
+
+
+
+		// POST: MTVapplication/Create
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MtvApplicationViewModel mTVApplicationVM)
         {
@@ -125,6 +156,7 @@ namespace thesis.Controllers
 			var mtv = new MTVApplication
 			{
 				applicationtype = mTVApplicationVM.applicationtype,
+				AccreditionNo = mTVApplicationVM.AccreditionNo,
 				OwnerFname = mTVApplicationVM.OwnerFname,
 				OwnerMname = mTVApplicationVM.OwnerMname,
 				OwnerLname = mTVApplicationVM.OwnerLname,
@@ -173,6 +205,19 @@ namespace thesis.Controllers
                 return RedirectToAction("Index", "MTVquiz");
             
         }
+
+		//[HttpGet]
+		//public async Task<IActionResult> YourSearchAction(string accreditationNumber)
+		//{
+		//	// Search for the record using the accreditation number
+		//	var record = await _context.MTVApplications
+		//							   .Where(x => x.AccreditionNo == accreditationNumber)
+		//							   .FirstOrDefaultAsync();
+
+			
+		//		return View();
+			
+		//}
 
 		// GET: MTVapplication/Edit/5
 		[Authorize(Policy = "RequireMtvUsers")]

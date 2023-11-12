@@ -759,7 +759,9 @@
 
                 <div class="form-group">
                     <label asp-for="CertificateStatus" class="control-label">Certificate Status:</label>
-                    <select asp-for="CertificateStatus" class="form-control" asp-items="@Html.GetEnumSelectList<CertificateStatus>()" name="CertStat" value="@Model.CertificateStatus"></select>
+                    <select asp-for="CertificateStatus" class="form-control" asp-items="@Html.GetEnumSelectList<CertificateStatus>()" name="CertStat" value="@Model.CertificateStatus">
+                        <option>---Select---</option>
+                    </select>
                     <span asp-validation-for="CertificateStatus" class="text-danger"></span>
                 </div>
                 <br />
@@ -1787,4 +1789,3 @@
         .catch(error => console.error('Error fetching JSON:', error));
 
 </script>
-

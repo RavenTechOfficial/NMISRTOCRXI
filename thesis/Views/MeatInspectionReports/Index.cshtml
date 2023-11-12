@@ -35,11 +35,11 @@
         margin-bottom: 25px;
     }
 
-    #content main .left1 h3 {
-        font-size: 20px;
+    #content main .column h3 {
+        font-size: 25px;
         font-weight: 600;
         margin-top: 10px;
-        margin-bottom: 3px;
+        margin-bottom: 10px;
         margin-left: 10px;
         color: var(--black);
     }
@@ -84,8 +84,8 @@
 
     #showInspection {
         /*margin-top: 10px;
-        margin-bottom: 0px;
-        margin-left: 10px;*/
+            margin-bottom: 0px;
+            margin-left: 10px;*/
         border: 1px solid var(--btndownload);
         background-color: var(--btndownload);
         padding: 5px 10px;
@@ -97,57 +97,78 @@
             background-color: var(--light-green);
             border: 1px solid var(--light-green);
         }
+
+    .disabled-button {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+        .disabled-button i {
+            opacity: 0.5;
+        }
 </style>
 
 <section id="content">
     <main>
 
         <div class="head-title" id="filter">
-            <div class="left">
+            <div class="column">
                 <h3>Filters:</h3>
-                <div class="filter-box">
+                <div class="form-group">
+                    <div class="row">
+                        @*<div class="col-md-6">*@
+                        @if (User.IsInRole("InspectorAdministrator"))
+                        {
+                            <div class="col-md-6">
+                                <div class="input-wrapper">
+                                    <label>Meat Establishment:</label>
+                                    <select id="meatEstablishmentFilter" asp-items="@ViewBag.MeatEstablishments" class="form-control">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                        }
+                        @*</div>*@
 
-                    @if (User.IsInRole("InspectorAdministrator"))
-                    {
+                        <div class="col-md-6">
+                            <div class="input-wrapper">
+                                <label for="dateFilter">Month:</label>
+                                <input type="month" id="dateFilter" class="form-control" />
+                            </div>
+                        </div>
 
-                        <div class="input-wrapper">
-                            <label>Meat Establishment:</label>
-                            <select id="meatEstablishmentFilter" asp-items="@ViewBag.MeatEstablishments" class="form-control">
-                                <option value="">All Establishment</option>
-                            </select>
+
+                        <div class="col-md-6">
+                            <div class="input-wrapper">
+                                <label for="species">Species:</label>
+                                <select id="species" class="form-control">
+                                    <option value="">--Select--</option>
+                                    <option value="Cattle">Cattle</option>
+                                    <option value="Carabao">Carabao</option>
+                                    <option value="Swine">Swine</option>
+                                    <option value="Goat">Goat</option>
+                                    <option value="Chicken">Chicken</option>
+                                    <option value="Duck">Duck</option>
+                                    <option value="Horse">Horse</option>
+                                    <option value="Sheep">Sheep</option>
+                                    <option value="Ostrich">Ostrich</option>
+                                    <option value="Crocodile">Crocodile</option>
+                                </select>
+                            </div>
+
 
                         </div>
 
-                    }
 
-                    <div class="input-wrapper">
-                        <label for="dateFilter">Month:</label>
-                        <input type="month" id="dateFilter" class="form-control" />
-                    </div>
-
-                    <div class="input-wrapper">
-                        <label for="species">Species</label>
-                        <select id="species" class="form-control">
-                            <option value="">Select Species</option>
-                            <option value="Cattle">Cattle</option>
-                            <option value="Carabao">Carabao</option>
-                            <option value="Swine">Swine</option>
-                            <option value="Goat">Goat</option>
-                            <option value="Chicken">Chicken</option>
-                            <option value="Duck">Duck</option>
-                            <option value="Horse">Horse</option>
-                            <option value="Sheep">Sheep</option>
-                            <option value="Ostrich">Ostrich</option>
-                            <option value="Crocodile">Crocodile</option>
-                        </select>
+                        <div class="col-md-6">
+                            <div class="input-wrapper">
+                                <label for="filter">Summary</label>
+                                <button id="showInspection" onclick="filterbutton()" class="btn btn-primary" disabled>Show All Inspections</button>
+                            </div>
+                        </div>
                     </div>
 
 
-
-                    <div class="input-wrapper">
-                        <label for="filter">Summary</label>
-                        <button id="showInspection" onclick="filterbutton()" class="btn btn-primary">Show All Inspections</button>
-                    </div>
 
 
                 </div>
@@ -188,12 +209,13 @@
 
         </table>
 
+
         <div class="FirstLayer">
-            <button id="downloadButton" onclick="download()">
+            <button id="downloadButton" onclick="download()" class="disabled-button" disabled>
                 Download <i class="bx bx-download"></i>
             </button>
-
         </div>
+
         <div class="FirstLayer">
             <div class="applications">
                 <h1>MONTHLY MEAT INSPECTION REPORT (MMIR)</h1>
@@ -554,10 +576,33 @@
                     tableSix();
                 });
 
+                $('#meatEstablishmentFilter, #species').on('change', function () {
+                    var selectedMEText = $('#meatEstablishmentFilter').find('option:selected').text();
+                    var selectedSpeciesText = $('#species').find('option:selected').text();
+
+                    if (selectedMEText === "All" || selectedSpeciesText === "--Select--") {
+                        $('#showInspection').prop('disabled', true);
+                        $('#downloadButton').addClass('disabled-button');
+
+                    } else {
+                        $('#showInspection').prop('disabled', false);
+                        $('#downloadButton').removeClass('disabled-button');
+
+                    }
+
+                });
+
 
                 $('#meatEstablishmentFilter').on('change', function () {
                     var selectedTexts = $(this).find('option:selected').text();
-                    tables.column(4).search(selectedTexts).draw();
+                    // tables.column(4).search(selectedTexts).draw();
+                    if (selectedTexts === "All") {
+                        // Clear the filter to display all data
+                        tables.column(4).search('').draw();
+                    } else {
+                        tables.column(4).search(selectedTexts).draw();
+                    }
+
                     updateFilter();
                     tableTwo();
                     tableThree();
@@ -568,7 +613,13 @@
 
                 $('#species').on('change', function () {
                     var selectedText = $(this).find('option:selected').text();
-                    tables.column(1).search(selectedText).draw();
+                    // tables.column(1).search(selectedText).draw();
+                    if (selectedText === "--Select--") {
+                        // Clear the filter to display all data
+                        tables.column(1).search('').draw();
+                    } else {
+                        tables.column(1).search(selectedText).draw();
+                    }
                     updateFilter();
                     tableTwo();
                     tableThree();
@@ -576,13 +627,11 @@
                     tableFive();
                     tableSix();
                 });
-
             });
         </script>
 
 
     </main>
 </section>
-
 
 

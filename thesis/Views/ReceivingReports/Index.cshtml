@@ -50,7 +50,7 @@
     }
 
     #content main h3 {
-        font-size: 20px;
+        font-size: 25px;
         font-weight: 600;
         margin-top: 8px;
         margin-bottom: 3px;
@@ -69,13 +69,13 @@
     }
 
     /*.input-wrapper1 .form-control {
-            width: 320px;
-            margin-top: 50px;
-            margin-left: 1px;
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 10px;
-        }*/
+                width: 320px;
+                margin-top: 50px;
+                margin-left: 1px;
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 10px;
+            }*/
 
     .centerbtn .custombtn {
         margin-top: 15px;
@@ -125,46 +125,21 @@
 
         <h3>Filters:</h3>
         <div class="head-title">
-            <div class="left">
-                <div class="filter-box">
+            <div class="column">
+                <div class="form-group">
+                    <div class="row gx-1">
+                        @if (User.IsInRole("InspectorAdministrator"))
+                        {
+                            <div class="col-md-5">
+                                <div class="input-wrapper">
+                                    <label>Meat Establishment:</label>
+                                    <select id="meatEstablishmentFilter" asp-items="@ViewBag.MeatEstablishments" class="form-control">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            </div>
 
-
-                    @if (User.IsInRole("InspectorAdministrator"))
-                    {
-
-                        <div class="input-wrapper">
-                            <label>Meat Establishment:</label>
-                            <select id="meatEstablishmentFilter" asp-items="@ViewBag.MeatEstablishments" class="form-control">
-                                <option value="">Select Establishment</option>
-                            </select>
-                        </div>
-
-                        <div class="input-wrapper">
-                            <label for="dateFilter">Date:</label>
-                            <input type="date" id="dateFilter" class="form-control" />
-                        </div>
-
-                        <div class="input-wrapper">
-                            <label>Status:</label>
-                            <select id="statusFilter" asp-items="@Html.GetEnumSelectList<InspectionStatus>()" asp-items="@ViewBag.statusFilter" class="form-control">
-                                <option value="">All</option>
-                            </select>
-                        </div>
-
-                    }
-
-                    @if (User.IsInRole("MeatInspector"))
-                    {
-                        <div class="input-wrapper">
-                            <label for="dateFilter">Date:</label>
-                            <input type="date" id="dateFilter" class="form-control" />
-                        </div>
-                    }
-
-                    @if (User.IsInRole("MeatEstablishmentRepresentative"))
-                    {
-                        <div class="row gx-1">
-                            <div class="col">
+                            <div class="col-md-4">
                                 <div class="input-wrapper">
                                     <label for="dateFilter">Date:</label>
                                     <input type="date" id="dateFilter" class="form-control" />
@@ -179,17 +154,38 @@
                                     </select>
                                 </div>
                             </div>
+                        }
 
-                        </div>
+                        @if (User.IsInRole("MeatInspector"))
+                        {
+                            <div class="input-wrapper">
+                                <label for="dateFilter">Date:</label>
+                                <input type="date" id="dateFilter" class="form-control" />
+                            </div>
+                        }
 
+                        @if (User.IsInRole("MeatEstablishmentRepresentative"))
+                        {
+                            <div class="row gx-1">
+                                <div class="col">
+                                    <div class="input-wrapper">
+                                        <label for="dateFilter">Date:</label>
+                                        <input type="date" id="dateFilter" class="form-control" />
+                                    </div>
+                                </div>
 
+                                <div class="col">
+                                    <div class="input-wrapper">
+                                        <label>Status:</label>
+                                        <select id="statusFilter" asp-items="@Html.GetEnumSelectList<InspectionStatus>()" asp-items="@ViewBag.statusFilter" class="form-control">
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                    }
-
-
-
-
-
+                            </div>
+                        }
+                    </div>
 
                 </div>
             </div>
@@ -412,7 +408,12 @@
 
         $('#meatEstablishmentFilter').on('change', function () {
             var selectedTexts = $(this).find('option:selected').text();
-            table.column(4).search(selectedTexts).draw();
+            // table.column(4).search(selectedTexts).draw();
+            if (selectedTexts === "All") {
+                table.column(4).search('').draw(); // Clear the search filter
+            } else {
+                table.column(4).search(selectedTexts).draw(); // Apply the selected filter
+            }
         });
 
         $('#statusFilter').on('change', function () {

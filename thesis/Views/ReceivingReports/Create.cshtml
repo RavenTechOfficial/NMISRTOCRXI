@@ -202,43 +202,47 @@
                         <div class="checkbox-list">
                             <div class="checkbox-row">
                                 <label>
-                                    <input type="checkbox" name="ShippingDoc" value="Certificate Of OwnerShip">
+                                    @*  <input type="checkbox" name="ShippingDoc" value="Certificate Of OwnerShip"> *@
+                                    <input type="checkbox" id="COO" class="checkbox">
                                     Certificate Of Ownership
                                 </label>
                                 <label>
-                                    <input type="checkbox" name="ShippingDoc" value="Certificate Of Transfer">
+                                    @*  <input type="checkbox" name="ShippingDoc" value="Certificate Of Transfer"> *@
+                                    <input type="checkbox" id="COT" class="checkbox">
                                     Certificate Of Transfer
                                 </label>
                             </div>
                             <div class="checkbox-row">
                                 <label>
-                                    <input type="checkbox" name="ShippingDoc" value="Veterinary Health Certificate">
+                                    @*   <input type="checkbox" name="ShippingDoc" value="Veterinary Health Certificate"> *@
+                                    <input type="checkbox" id="VHC" class="checkbox">
                                     Veterinary Health Certificate
                                 </label>
                                 <label>
-                                    <input type="checkbox" name="ShippingDoc" value="Shipping Permit">
+                                    @* <input type="checkbox" name="ShippingDoc" value="Shipping Permit"> *@
+                                    <input type="checkbox" id="SP" class="checkbox">
                                     Shipping Permit
                                 </label>
                             </div>
                         </div>
-                        <input asp-for="ShippingDoc" id="selectedShippingDocs">
-                        <span asp-validation-for="ShippingDoc" class="text-danger"></span>
+                        @*     <input asp-for="ShippingDoc" id="selectedShippingDocs" readonly>
+                        <span asp-validation-for="ShippingDoc" class="text-danger"></span> *@
+                        <input asp-for="ShippingDoc" type="text" id="result" readonly>
                     </div>
 
                     <script>
-                        const checkboxes = document.querySelectorAll('input[type="checkbox"][name="ShippingDoc"]');
-                        const hiddenInput = document.getElementById('selectedShippingDocs');
+                        const checkboxes = document.querySelectorAll('.checkbox');
+                        const resultField = document.getElementById('result');
 
                         checkboxes.forEach(checkbox => {
-                            checkbox.addEventListener('change', () => {
-                                const selectedDocs = Array.from(checkboxes)
-                                    .filter(cb => cb.checked)
-                                    .map(cb => cb.value)
-                                    .join(',');
-
-                                hiddenInput.value = selectedDocs;
-                            });
+                            checkbox.addEventListener('change', updateResult);
                         });
+
+                        function updateResult() {
+                            const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+                            const selectedValues = selectedCheckboxes.map(checkbox => checkbox.nextSibling.textContent.trim());
+                            resultField.value = selectedValues.join(', ');
+                        }
                     </script>
 
                     <div class="column">
@@ -437,5 +441,4 @@
         .catch(error => console.error('Error fetching JSON:', error));
 
 </script>
-
 

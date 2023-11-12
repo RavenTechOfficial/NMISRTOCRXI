@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "thesis", "thesis\thesis.csproj", "{FFD84FDE-B5E7-4DDD-8936-ACBA64F714AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "thesis.Tests", "thesis.Tests\thesis.Tests.csproj", "{0010629F-EC0A-46C8-A7E4-74EE99A9427E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "thesis.Tests", "thesis.Tests\thesis.Tests.csproj", "{0010629F-EC0A-46C8-A7E4-74EE99A9427E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

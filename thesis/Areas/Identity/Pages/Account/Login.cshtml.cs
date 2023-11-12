@@ -116,7 +116,7 @@ namespace thesis.Areas.Identity.Pages.Account
                 var user = await _signInManager.UserManager.FindByNameAsync(Input.Email);
                 if (user == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login Attempt");
+                    ModelState.AddModelError(string.Empty, "The username is incorrect");
                     return Page();
                 }
 
@@ -147,6 +147,7 @@ namespace thesis.Areas.Identity.Pages.Account
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
@@ -158,7 +159,7 @@ namespace thesis.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "The password is incorrect");
                     return Page();
                 }
             }

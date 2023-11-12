@@ -37,13 +37,20 @@
         color: var(--black);
     }
 
+    #content main .FirstLayer .applications1 {
+        flex-grow: 1;
+        flex-basis: 200px;
+        margin-bottom: 10px;
+        overflow-x: hidden;
+    }
+
     #image {
-        // display:flex;
-        // justify-content:center;
-        // align-items:center;
-        width: 300px;
-        height: 300px;
-        // //display: block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 600px;
+        height: 400px;
+        display: block;
     }
 
     .form-group1 {
@@ -87,26 +94,6 @@
         font-weight: bold;
         cursor: pointer;
     }
-    /*.form-group1 .input-box input {
-                        padding-left: 20px;
-                        border-radius: 6px;
-                    }
-
-            .form-group1 :where(.input-box input, .select-box, .rol) {
-                position: relative;
-                height: 50px;
-                width: 100%;
-                outline: none;
-                font-size: 1rem;
-                color: #707070;
-                margin-top: 8px;
-                border: 1px solid #ddd;
-                border-radius: 0px;
-            }
-
-            .input-box input:focus {
-                box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-            }*/
 </style>
 
 <section id="content">
@@ -148,7 +135,7 @@
         </table>
 
         <div class="FirstLayer">
-            <div class="applications">
+            <div class="applications1">
                 <h1>DAILY MEAT INSPECTION REPORT (DMIR)</h1>
                 <hr />
 
@@ -157,53 +144,79 @@
                     <input type="hidden" asp-for="Id" />
 
                     <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
-                        <img id="image" src="~/img/@(Model.Specie).png" />
+                        <img id="image" src="~/img/@(Model.Specie).gif" />
+
                     </div>
                     <br />
 
                     <div class="form-group1">
-                        <div class="input-box">
-                            <label asp-for="RepDate" class="control-label">Date Inspected:</label>
-                            <input type="text" value="@Model.RepDate.ToString("yyyy-MM-dd h:mm tt")" class="form-control" disabled />
-
-                            <span asp-validation-for="RepDate" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="input-box">
+                                    <label asp-for="RepDate" class="control-label">Date Inspected:</label>
+                                    <input type="text" value="@Model.RepDate.ToString("yyyy-MM-dd h:mm tt")" class="form-control" disabled />
+                                    <span asp-validation-for="RepDate" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
+                    <div class="column">
+                        <div class="form-group1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-box">
+                                        <label asp-for="Address" class="control-label">Address:</label>
+                                        <input asp-for="Address" class="form-control" disabled />
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-box">
+                                        <label asp-for="AccountDetailsId" class="control-label">Inspected by:</label>
+                                        <select asp-for="AccountDetailsId" class="form-control" asp-items="ViewBag.AccountDetailsId" disabled></select>
+                                        <span asp-validation-for="AccountDetailsId" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="column">
+                        <div class="form-group1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-box">
+                                        <label asp-for="MeatEstablishment" class="control-label">Meat Establishment:</label>
+                                        <input asp-for="MeatEstablishment" class="form-control" disabled />
+                                        <span asp-validation-for="MeatEstablishment" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-box">
+                                        <label asp-for="LicenseToOperateNumber" class="control-label">License to Operate Number:</label>
+                                        <input asp-for="LicenseToOperateNumber" class="form-control" disabled />
+                                        <span asp-validation-for="LicenseToOperateNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group1">
-                        <div class="input-box">
-                            <label asp-for="Address" class="control-label">Address:</label>
-                            <input asp-for="Address" class="form-control" disabled />
-                            <span asp-validation-for="Address" class="text-danger"></span>
-                        </div>
-                        <div class="input-box">
-                            <label asp-for="AccountDetailsId" class="control-label">Inspected by:</label>
-                            <select asp-for="AccountDetailsId" class="form-control" asp-items="ViewBag.AccountDetailsId" disabled></select>
-                            <span asp-validation-for="AccountDetailsId" class="text-danger"></span>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group1">
-                        <div class="input-box">
-                            <label asp-for="MeatEstablishment" class="control-label">Meat Establishment:</label>
-                            <input asp-for="MeatEstablishment" class="form-control" disabled />
-                            <span asp-validation-for="MeatEstablishment" class="text-danger"></span>
-                        </div>
-                        <div class="input-box">
-                            <label asp-for="LicenseToOperateNumber" class="control-label">License to Operate Number:</label>
-                            <input asp-for="LicenseToOperateNumber" class="form-control" disabled />
-                            <span asp-validation-for="LicenseToOperateNumber" class="text-danger"></span>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group1">
-                        <div class="input-box">
-                            <label asp-for="VerifiedBy" class="control-label">Verified by POSMS Head:</label>
-                            <input disabled asp-for="VerifiedBy" class="form-control" />
-                            <span asp-validation-for="VerifiedBy" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="input-box">
+                                    <label asp-for="VerifiedBy" class="control-label">Verified by POSMS Head:</label>
+                                    <input disabled asp-for="VerifiedBy" class="form-control" />
+                                    <span asp-validation-for="VerifiedBy" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -649,7 +662,10 @@
 
 
         <script>
-
+            //gif looping and autoplay
+            var img = document.getElementById('image');
+            img.setAttribute('autoplay', true);
+            img.setAttribute('loop', true);
         </script>
 
 
@@ -989,7 +1005,6 @@
 
     </main>
 </section>
-
 
 
 

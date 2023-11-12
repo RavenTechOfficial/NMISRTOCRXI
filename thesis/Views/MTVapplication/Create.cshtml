@@ -11,7 +11,7 @@
 
 	<!-- MAIN STARTS-->
 	<main class="registration">
-		<form asp-action="Create" enctype="multipart/form-data" class="form" method="post">
+		<form id="yourFormId" asp-action="Create" enctype="multipart/form-data" class="form" method="post">
 			<!-- Owner -->
 			<div class="container">
 				<header>Personal Information</header>
@@ -29,28 +29,26 @@
 					</div>
 					<div class="input-box">
 						<label><i class='bx bxs-user'></i>Accreditation Number</label>
-						<input type="text" id="AccreditationNumber" placeholder="Enter Accreditation Number" required readonly />
+						<input asp-for="AccreditionNo" type="text" id="AccreditationNumber" placeholder="Enter Accreditation Number" required readonly />
 					</div>
 					<li>
-						<a href="#">
-							<i class='bx bxs-search-alt-2'></i>
-						</a>
+						<button type="button" class="btn btn-default" id="searchButton">Search</button>
 					</li>
 				</div>
 				<div class="column">
 					<div class="input-box">
 						<label><i class='bx bxs-user'></i>Registered Owner</label>
-						<input type="text" placeholder="Enter your First Name" asp-for="OwnerFname" required />
+						<input type="text" placeholder="Enter your First Name" asp-for="OwnerFname"  required />
 						<span asp-validation-for="OwnerFname" class="text-danger"></span>
 					</div>
 					<div class="input-box">
 						<label> </label>
-						<input type="text" placeholder="Enter your Middle Name" asp-for="OwnerMname" required />
+						<input type="text" placeholder="Enter your Middle Name" asp-for="OwnerMname"  required />
 						<span asp-validation-for="OwnerMname" class="text-danger"></span>
 					</div>
 					<div class="input-box">
 						<label> </label>
-						<input type="text" placeholder="Enter your Last Name" asp-for="OwnerLname" required />
+						<input type="text" placeholder="Enter your Last Name" asp-for="OwnerLname"  required />
 						<span asp-validation-for="OwnerLname" class="text-danger"></span>
 					</div>
 				</div>
@@ -93,7 +91,7 @@
 
 					<div class="input-box">
 						<label><i class='bx bxs-phone'></i>Telephone Number</label>
-						<input type="number" placeholder="Enter Telephone Number" asp-for="TelNo" required />
+						<input type="text" placeholder="Enter Telephone Number" asp-for="TelNo" required />
 						<span asp-validation-for="TelNo" class="text-danger"></span>
 					</div>
 					<div class="input-box">
@@ -388,6 +386,22 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	document.getElementById('searchButton').addEventListener('click', function () {
+		var accreditationNumber = document.getElementById('AccreditationNumber').value;
+		fetch('/MTVapplication/Create?accreditationNumber=' + accreditationNumber)
+			.then(function (response) {
+				return response.json(); 
+			})
+			.then(function (data) {
+				
+				document.getElementById('OwnerFname').value = data.OwnerFname; 
+			})
+			.catch(function (error) {
+				console.error('Error:', error);
+			});
+	});
+</script>
 <script type="text/javascript">
 	$(document).ready(function () {
 		// Handle change event of the select box

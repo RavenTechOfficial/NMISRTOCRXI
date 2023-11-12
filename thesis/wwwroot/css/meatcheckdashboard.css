@@ -1,0 +1,266 @@
+﻿#content main .box-info {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-gap: 24px;
+	margin-top: 20px;
+}
+
+	#content main .box-info li {
+		padding: 24px;
+		background: var(--filterbgcolor);
+		border-radius: 20px;
+		display: flex;
+		align-items: center;
+		grid-gap: 24px;
+	}
+
+		#content main .box-info li .bx {
+			width: 80px;
+			height: 80px;
+			border-radius: 10px;
+			font-size: 36px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#content main .box-info li:nth-child(1) .bx {
+			background: var(--light-blue);
+			color: var(--blue);
+		}
+
+		#content main .box-info li:nth-child(2) .bx {
+			background: var(--light-yellow);
+			color: var(--yellow);
+		}
+
+		#content main .box-info li:nth-child(3) .bx {
+			background: var(--light-orange);
+			color: var(--orange);
+		}
+
+		#content main .box-info li:nth-child(4) .bx {
+			background: var(--light-violet);
+			color: var(--violet);
+		}
+
+		#content main .box-info li .text h3 {
+			font-size: 24px;
+			font-weight: 600;
+			color: var(--black);
+		}
+
+		#content main .box-info li .text p {
+			color: var(--black);
+		}
+
+
+
+
+/* First Layer STARTS */
+#content main .FirstLayer {
+	display: flex;
+	flex-wrap: wrap;
+	grid-gap: 24px;
+	margin-top: 24px;
+	width: 100%;
+	color: var(--dark);
+}
+
+	#content main .FirstLayer > div {
+		border-radius: 20px;
+		background: var(--light);
+		padding: 24px;
+		overflow-x: auto;
+	}
+
+	#content main .FirstLayer .head {
+		display: flex;
+		align-items: center;
+		grid-gap: 16px;
+		margin-bottom: 24px;
+	}
+
+		#content main .FirstLayer .head h3 {
+			margin-right: auto;
+			font-size: 24px;
+			font-weight: 600;
+		}
+
+		#content main .FirstLayer .head .bx {
+			cursor: pointer;
+		}
+
+	#content main .FirstLayer .applications {
+		flex-grow: 1;
+		flex-basis: 300px;
+	}
+
+/* Set a fixed height for the table container */
+.table-container {
+	max-height: 400px; /* Adjust the height as needed */
+	overflow-y: auto; /* Enable vertical scrolling if content overflows */
+}
+
+
+#content main .FirstLayer .applications table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+	#content main .FirstLayer .applications table th {
+		padding-bottom: 12px;
+		font-size: 13px;
+		text-align: left;
+		border-bottom: 1px solid var(--grey);
+	}
+
+	#content main .FirstLayer .applications table td {
+		padding: 16px 0;
+	}
+
+	#content main .FirstLayer .applications table tr td:first-child {
+		display: flex;
+		align-items: center;
+		grid-gap: 12px;
+		padding-left: 6px;
+	}
+
+	#content main .FirstLayer .applications table td img {
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	#content main .FirstLayer .applications table tbody tr:hover {
+		background: var(--grey);
+	}
+
+	#content main .FirstLayer .applications table tr td .status {
+		font-size: 12px;
+		padding: 6px 16px;
+		color: var(--light);
+		border-radius: 20px;
+		font-weight: 700;
+	}
+
+		#content main .FirstLayer .applications table tr td .status.completed {
+			background: var(--blue);
+		}
+
+		#content main .FirstLayer .applications table tr td .status.process {
+			background: var(--yellow);
+		}
+
+		#content main .FirstLayer .applications table tr td .status.pending {
+			background: var(--orange);
+		}
+
+		#content main .FirstLayer .applications table tr td .status.payment {
+			background-color: green;
+		}
+/* First Layer ENDS */
+
+
+/* Second Layer STARTS */
+
+/* Area Charts STARTS*/
+#content main .charts {
+	display: flex;
+	flex-wrap: wrap;
+	grid-gap: 24px;
+	margin-top: 24px;
+	max-width: 100%;
+	height: auto;
+	color: var(--black);
+}
+
+	#content main .charts > div {
+		border-radius: 20px;
+		background: var(--filterbgcolor);
+		padding: 24px;
+		overflow-x: auto;
+	}
+
+#content main .head {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+	margin-bottom: 24px;
+}
+
+	#content main .head h3 {
+		margin-right: auto;
+		font-size: 24px;
+		font-weight: 600;
+	}
+
+#content main .supply-chart, #content main .antemortem-chart {
+	flex-grow: 1;
+	flex-basis: 500px;
+}
+
+/* Area Charts ENDS*/
+
+/* doughnut Chart User feedbacks STARTS*/
+.feedback-stats {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	margin: 0 auto;
+	width: fit-content;
+	box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+	border-radius: 20px;
+	padding: 8px 32px;
+	color: var(--dark);
+	transition: all 400ms ease;
+}
+
+	.feedback-stats:hover {
+		transform: scale(1.02);
+		box-shadow: 0 4px 16px -7px rgba(0, 0, 0, 0.3);
+	}
+
+	.feedback-stats .details ul {
+		list-style: none;
+		padding: 0;
+	}
+
+		.feedback-stats .details ul li {
+			font-size: 16px;
+			margin: 12px 0;
+			text-transform: uppercase;
+		}
+
+	.feedback-stats .details .percentage {
+		font-weight: 700;
+		color: var(--dark);
+	}
+
+#content main .users-chart {
+	flex-grow: 1;
+	flex-basis: 300px;
+}
+
+/* doughnut Chart User feedbacks ENDS*/
+
+/* Second Layer ENDS */
+
+/* MAIN */
+
+
+@media screen and (max-width: 576px) {
+
+	#content main .box-info {
+		grid-template-columns: 1fr;
+	}
+
+	#content main .FirstLayer .head {
+		min-width: 420px;
+	}
+
+	#content main .FirstLayer .applications table {
+		min-width: 420px;
+	}
+}

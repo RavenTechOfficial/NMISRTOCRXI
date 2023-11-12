@@ -35,5 +35,21 @@ namespace thesis.Controllers
 
 			return View(dashboardViewModel);
         }
+        public IActionResult InspectorAdminDashboard()
+        {
+            var totalWeightModel = _unitOfWork.Dashboard.GetTotalOfMeatPerTimeSeries();
+			var accountDetails = _context.MTVApplications.ToList();
+            var feedbacks = _unitOfWork.Feedback.GetFeedbacks();
+
+			var dashboardViewModel = new DashboardViewModel
+			{
+				TotalWeightModel = totalWeightModel,
+				AccountDetails = accountDetails,
+                Feedbacks = feedbacks
+               
+			};
+
+			return View(dashboardViewModel);
+        }
     }
 }

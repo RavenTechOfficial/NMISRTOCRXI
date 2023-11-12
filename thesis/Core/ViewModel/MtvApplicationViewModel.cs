@@ -8,6 +8,7 @@ namespace thesis.Core.ViewModel
 	{
 		//Mtv application
 		public applicationtype applicationtype { get; set; }
+		public string AccreditionNo { get; set; }
 		public string OwnerFname { get; set; }
 		public string OwnerMname { get; set; }
 		public string OwnerLname { get; set; }
