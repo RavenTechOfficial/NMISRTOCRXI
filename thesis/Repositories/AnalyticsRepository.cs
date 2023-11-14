@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Humanizer.Localisation;
+using Microsoft.EntityFrameworkCore;
 using thesis.Core.IRepositories;
 using thesis.Core.ViewModel;
 using thesis.Data;
@@ -62,46 +63,47 @@ namespace thesis.Repositories
 
             for (DateTime date = startOfDate; date < currentDate; date = timeseries == "Monthly" ? date.AddMonths(1) : timeseries == "Yearly" ? date.AddYears(1) : date.AddDays(1))
             {
-                var startOfPeriod  = date;
-				DateTime endOfPeriod;
+                var startOfPeriod = date;
+                DateTime endOfPeriod;
 
-				if (timeseries == "Monthly")
-				{
-					endOfPeriod = date.AddMonths(1);
-				}
-				else if (timeseries == "Yearly")
-				{
-					// Set the endOfPeriod to the end of the year or endDate, whichever comes first
-					DateTime endOfYear = new DateTime(date.Year, 12, 31);
-					endOfPeriod = endOfYear < endDate ? endOfYear : endDate;
-				}
-				else // Default to "Daily"
-				{
-					endOfPeriod = date.AddDays(1);
-				}
+                if (timeseries == "Monthly")
+                {
+                    endOfPeriod = date.AddMonths(1);
+                }
+                else if (timeseries == "Yearly")
+                {
+                    // Set the endOfPeriod to the end of the year or endDate, whichever comes first
+                    //DateTime endOfYear = new DateTime(date.Year, 12, 31);
+                    //endOfPeriod = endOfYear < endDate ? endOfYear : endDate;
+                    endOfPeriod = date.AddYears(1);
+                }
+                else // Default to "Daily"
+                {
+                    endOfPeriod = date.AddDays(1);
+                }
 
-				endOfPeriod = endOfPeriod > endDate ? endDate : endOfPeriod;
+                //endOfPeriod = endOfPeriod > endDate ? endDate : endOfPeriod;
 
-				var monthRangeApproved = AreaChartTimeSeriesRangeApproved(species, startOfPeriod , endOfPeriod);
-                var monthRangeCondemned = AreaChartTimeSeriesRangeCondemned(species, startOfPeriod , endOfPeriod);
+                var monthRangeApproved = AreaChartTimeSeriesRangeApproved(species, startOfPeriod, endOfPeriod);
+                var monthRangeCondemned = AreaChartTimeSeriesRangeCondemned(species, startOfPeriod, endOfPeriod);
 
-                var monthRangeOfHead = BarChartTimeSeriesRangeOfHead(species, startOfPeriod , endOfPeriod);
-                var monthRangeOfLiveWeight = BarChartTimeSeriesRangeOfLiveWeight(species, startOfPeriod , endOfPeriod);
+                var monthRangeOfHead = BarChartTimeSeriesRangeOfHead(species, startOfPeriod, endOfPeriod);
+                var monthRangeOfLiveWeight = BarChartTimeSeriesRangeOfLiveWeight(species, startOfPeriod, endOfPeriod);
 
-                var cattle = StackBarsSpeciesSeries(Species.Cattle, startOfPeriod , endOfPeriod);
-                var carabao = StackBarsSpeciesSeries(Species.Carabao, startOfPeriod , endOfPeriod);
-                var swine = StackBarsSpeciesSeries(Species.Swine, startOfPeriod , endOfPeriod);
-                var goat = StackBarsSpeciesSeries(Species.Goat, startOfPeriod , endOfPeriod);
-                var chicken = StackBarsSpeciesSeries(Species.Chicken, startOfPeriod , endOfPeriod);
-                var duck = StackBarsSpeciesSeries(Species.Duck, startOfPeriod , endOfPeriod);
-                var horse = StackBarsSpeciesSeries(Species.Horse, startOfPeriod , endOfPeriod);
-                var sheep = StackBarsSpeciesSeries(Species.Sheep, startOfPeriod , endOfPeriod);
-                var ostrich = StackBarsSpeciesSeries(Species.Ostrich, startOfPeriod , endOfPeriod);
-                var crocodile = StackBarsSpeciesSeries(Species.Crocodile, startOfPeriod , endOfPeriod);
+                var cattle = StackBarsSpeciesSeries(Species.Cattle, startOfPeriod, endOfPeriod);
+                var carabao = StackBarsSpeciesSeries(Species.Carabao, startOfPeriod, endOfPeriod);
+                var swine = StackBarsSpeciesSeries(Species.Swine, startOfPeriod, endOfPeriod);
+                var goat = StackBarsSpeciesSeries(Species.Goat, startOfPeriod, endOfPeriod);
+                var chicken = StackBarsSpeciesSeries(Species.Chicken, startOfPeriod, endOfPeriod);
+                var duck = StackBarsSpeciesSeries(Species.Duck, startOfPeriod, endOfPeriod);
+                var horse = StackBarsSpeciesSeries(Species.Horse, startOfPeriod, endOfPeriod);
+                var sheep = StackBarsSpeciesSeries(Species.Sheep, startOfPeriod, endOfPeriod);
+                var ostrich = StackBarsSpeciesSeries(Species.Ostrich, startOfPeriod, endOfPeriod);
+                var crocodile = StackBarsSpeciesSeries(Species.Crocodile, startOfPeriod, endOfPeriod);
 
-                var suspect = BarChartTimeSeriesAntemortem(species, Issue.Suspect, startOfPeriod , endOfPeriod);
-                var condemned = BarChartTimeSeriesAntemortem(species, Issue.Condemned, startOfPeriod , endOfPeriod);
-                var pass = BarChartTimeSeriesAntemortemPass(species, startOfPeriod , endOfPeriod);
+                var suspect = BarChartTimeSeriesAntemortem(species, Issue.Suspect, startOfPeriod, endOfPeriod);
+                var condemned = BarChartTimeSeriesAntemortem(species, Issue.Condemned, startOfPeriod, endOfPeriod);
+                var pass = BarChartTimeSeriesAntemortemPass(species, startOfPeriod, endOfPeriod);
 
 
                 monthRangesApproved.Add(monthRangeApproved);
@@ -126,47 +128,51 @@ namespace thesis.Repositories
                 passes.Add(pass);
 
 
-				if (timeseries == "Yearly" && date.Year == endDate.Year)
-				{
-					break;
-				}
+                //if (timeseries == "Yearly" && date.Year == endDate.Year)
+                //{
+                //    break;
+                //}
 
-			}
+            }
 
 
             var currentDateFormatted = currentDate.ToString("MMM dd");
 
             var timeAbbreviationsList = new List<string>();
-
             if (timeseries == "Monthly")
             {
-                var startMonth = startDate.Month;
-                var currentMonths = endDate.Month;
-
-                timeAbbreviationsList.AddRange(Enumerable.Range(startMonth, currentMonths - startMonth + 1)
-                    .Select(month => startDate.AddMonths(month - startMonth).ToString("MMM dd")));
+                int monthsApart = 12 * (endDate.Year - startDate.Year) + endDate.Month - startDate.Month;
+                for (int i = 0; i < monthsApart; i++) // Loop through full months before the end date
+                {
+                    timeAbbreviationsList.Add(startDate.AddMonths(i).ToString("MMM yyyy")); // Use "MMM yyyy" format for month-year
+                }
+                // Add the end month and year if it's not the same month as the last added (in case of the current month)
+                if (timeAbbreviationsList.LastOrDefault() != endDate.ToString("MMM yyyy"))
+                {
+                    timeAbbreviationsList.Add(endDate.ToString("MMM yyyy"));
+                }
             }
-			else if (timeseries == "Yearly")
-			{
-				
-				timeAbbreviationsList.Add(startDate.ToString("MMM yyyy"));
+            else if (timeseries == "Yearly")
+            {
+                int yearsApart = endDate.Year - startDate.Year;
+                for (int i = 0; i < yearsApart; i++) // Loop to one less than the total to add the exact end date later
+                {
+                    timeAbbreviationsList.Add(new DateTime(startDate.Year + i, 1, 1).ToString("MMM yyyy"));
+                }
+                // Add the current date at the end to reflect the last piece of data.
+                timeAbbreviationsList.Add(endDate.ToString("MMM yyyy"));
+            }
+            else if (timeseries == "Daily")
+            {
+                var totalDays = (endDate - startDate).Days;
+                for (int i = 0; i <= totalDays; i++)
+                {
+                    timeAbbreviationsList.Add(startDate.AddDays(i).ToString("MMM dd"));
+                }
+            }
 
-				
-				if (startDate.Year != endDate.Year)
-				{
-					timeAbbreviationsList.Add(endDate.ToString("MMM yyyy"));
-				}
-			}
-			else if (timeseries == "Daily")
-			{
-				var totalDays = (endDate - startDate).Days; 
-
-				timeAbbreviationsList.AddRange(Enumerable.Range(0, totalDays + 1)
-					.Select(day => startDate.AddDays(day).ToString("MMM dd")));
-			}
-
-			// Add the current month and day if it's not already included
-			if (!timeAbbreviationsList.Contains(currentDateFormatted))
+            // Add the current month and day if it's not already included
+            if (!timeAbbreviationsList.Contains(currentDateFormatted))
             {
                 timeAbbreviationsList.Add(currentDateFormatted);
             }

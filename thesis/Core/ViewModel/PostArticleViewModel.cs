@@ -1,8 +1,11 @@
-﻿namespace thesis.Core.ViewModel
+﻿using thesis.Areas.Identity.Data;
+
+namespace thesis.Core.ViewModel
 {
 	public class PostArticleViewModel
 	{
-		public string Author { get; set; }
+        
+        public string Author { get; set; }
 		public string Label { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }

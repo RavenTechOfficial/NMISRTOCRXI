@@ -199,6 +199,7 @@ namespace thesis.Controllers
             {
                 if (_unitOfWork.UsersManangement.Update(accountDetails))
                 {
+                    TempData["success"] = "User Edited Successfully";
                     _unitOfWork.UsersManangement.Save();
 
                     // Send confirmation email

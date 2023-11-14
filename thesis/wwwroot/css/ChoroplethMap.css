@@ -220,7 +220,7 @@
 
 .legend {
     line-height: 25px;
-    width: 130px;
+    max-width: 350px;
     color: #555;
 }
 
