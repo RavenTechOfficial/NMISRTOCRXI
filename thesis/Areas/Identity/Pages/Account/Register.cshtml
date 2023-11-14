@@ -106,7 +106,6 @@
 											@if (User.IsInRole("MTVAdministrator"))
 											{
 												<option>MTVINSPECTOR</option>
-												<option>MTVUSERS</option>
 											}
 										</select>
 									</div>
@@ -189,11 +188,167 @@
 	</section>
 
 }
+
 else
 {
-    <div>
-        <h1>Page Not Available</h1>
-    </div>
+	<link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
+	
+
+	<section id="content">
+		<!-- MAIN STARTS-->
+		<main class="registration">
+			<div class="container">
+				<header>Registration Form</header>
+
+				<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form" enctype="multipart/form-data">
+					<div class="column">
+						<div class="input-box">
+							<label>First Name</label>
+							<input asp-for="Input.firstName" autocomplete="firstname" aria-required="true" type="text" placeholder="Enter your First Name" required />
+							<span asp-validation-for="Input.firstName" class="text-danger"></span>
+						</div>
+						<div class="input-box">
+							<label>Middle Name</label>
+							<input type="text" asp-for="Input.middleName" autocomplete="middlename" aria-required="true" placeholder="Enter your Middle Name" required />
+							<span asp-validation-for="Input.middleName" class="text-danger"></span>
+						</div>
+						<div class="input-box">
+							<label>Last Name</label>
+							<input type="text" asp-for="Input.lastName" autocomplete="lastname" aria-required="true" placeholder="Enter your Last Name" required />
+							<span asp-validation-for="Input.lastName" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="input-box address">
+						<label>Address</label>
+						<div class="column">
+							<div class="select-box">
+								<select id="regionSelect" onchange="populateProvinces()">
+									<option hidden>Region</option>
+									<!-- Add region options here -->
+								</select>
+							</div>
+							<div class="select-box">
+								<select id="provinceSelect" onchange="populateCities()">
+									<option hidden>Province</option>
+									<!-- Add province options here -->
+								</select>
+							</div>
+						</div>
+						<div class="column">
+							<div class="select-box">
+								<select id="citySelect" onchange="populateBarangays()">
+									<option hidden>City/Municipality</option>
+									<!-- Add city options here -->
+								</select>
+							</div>
+							<div class="select-box">
+								<select id="barangaySelect">
+									<option hidden>Barangay</option>
+									<!-- Add barangay options here -->
+								</select>
+							</div>
+						</div>
+						<input type="hidden" id="addressInput" asp-for="Input.address" />
+						<span asp-validation-for="Input.address" class="text-danger"></span>
+					</div>
+
+
+
+					<div class="column">
+						<div class="row">
+							<div class="input-box">
+								<label>Phone Number</label>
+								<input type="number" asp-for="Input.contactNo" autocomplete="contactno" aria-required="true" placeholder="Enter phone number" required />
+								<span asp-validation-for="Input.contactNo" class="text-danger"></span>
+							</div>
+							<div class="input-box">
+								<label>Birth Date</label>
+								<input type="date" placeholder="Enter birth date" asp-for="Input.Birthdate" aria-required="true" required />
+								<span asp-validation-for="Input.Birthdate" class="text-danger"></span>
+							</div>
+
+							<div class="column">
+									
+										<input asp-for="Input.Roles" type="text" value="MTVUSERS" readonly hidden  />
+									
+								@if (User.IsInRole("InspectorAdministrator"))
+								{
+									<div class="input-box roles">
+										<label>Meat Establishment</label>
+										<div class="select-box">
+
+											<select asp-for="Input.MeatEsblishmentId" asp-items="ViewBag.MeatEstablishments"></select>
+											<span asp-validation-for="Input.MeatEsblishmentId" class="text-danger"></span>
+										</div>
+									</div>
+								}
+								<div class="sex-box">
+									<h3>Sex</h3>
+									<div class="sex-option">
+										<div class="sex">
+											@Html.RadioButtonFor(Model => Model.Input.Sex, "Male", new { id = "check-male" })
+											<label for="check-male">Male</label>
+										</div>
+										<div class="sex">
+											@Html.RadioButtonFor(Model => Model.Input.Sex, "Female", new { id = "check-female" })
+											<label for="check-female">Female</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="upload-box">
+								<label>Upload Image for Profile</label>
+								<div class="container">
+									<input type="file" id="file" accept="image/*" asp-for="Input.image" hidden>
+									<span asp-validation-for="Input.image" class="text-danger"></span>
+									<div class="img-area" data-img="">
+										<i class='bx bxs-cloud-upload icon'></i>
+										<h3>Upload Image</h3>
+										<p>Image size must be less than <span>5MB</span></p>
+									</div>
+									<button class="select-image" type="button">Select Image</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					@*this is hidden -dont touch-*@
+					<select asp-for="Input.MeatEstablishment.Type" hidden>
+						<option>SLH</option>
+						<option>PDP</option>
+						<option>MCP</option>
+						<option>CSW</option>
+					</select>
+
+					<div class="column">
+						<div class="input-box">
+							<label>Email</label>
+							<input type="email" asp-for="Input.Email" autocomplete="username" aria-required="true" placeholder="Put an Email" class="text" required />
+							<span asp-validation-for="Input.Email" class="text-danger"></span>
+						</div>
+						<div class="input-box">
+							<label>Password</label>
+							<input type="password" asp-for="Input.Password" autocomplete="new-password" aria-required="true" placeholder="Put a Password" class="text" required />
+							<span asp-validation-for="Input.Password" class="text-danger"></span>
+						</div>
+						<div class="input-box">
+							<label>Confirm Password</label>
+							<input type="password" asp-for="Input.ConfirmPassword" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" class="text" required />
+							<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+						</div>
+					</div>
+					<button id="registerSubmit" type="submit">Register</button>
+				</form>
+			</div>
+
+		</main>
+		<!-- MAIN ENDS -->
+
+	</section>
+
 }
 <script src="~/js/register.js"></script>
 <script>

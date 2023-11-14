@@ -1,5 +1,6 @@
 ﻿@using thesis.Core.ViewModel;
 @model PostArticleViewModel
+<partial name ="_Notifications"/>
 
 @{
     ViewData["Title"] = "Create";
@@ -14,7 +15,8 @@
 	<main class="article">
 		<div class="container">
 			<header>Article Form</header>
-			<form asp-action="Create" class="form" enctype="multipart/form-data">
+			<form asp-action="Create" class="form" enctype="multipart/form-data"> 
+				
 				<div class="input-box">
 					<label asp-for="Author">Author</label>
 					<input type="text" placeholder="Enter Author's Name" asp-for="Author" required />
@@ -83,6 +85,7 @@
 
 				<button>Post Article</button>
 			</form>
+		
 		</div>
 	</main>
 	<!-- MAIN ENDS -->

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -66,7 +67,10 @@ namespace thesis.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PostArticleViewModel postArticleVM)
         {
-            var imageArticle = "";
+
+			
+
+			var imageArticle = "";
             if (postArticleVM.Image != null && postArticleVM.Image.Length > 0)
             {
                 var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(postArticleVM.Image.FileName)}";
@@ -78,9 +82,10 @@ namespace thesis.Controllers
                     await postArticleVM.Image.CopyToAsync(fileStream);
                 }
             }
-
-            var postArticle = new PostArticle
+			
+			var postArticle = new PostArticle
             {
+                
                 Author = postArticleVM.Author,
                 Label = postArticleVM.Label,
                 Title = postArticleVM.Title,
@@ -95,7 +100,23 @@ namespace thesis.Controllers
 
 			if (ModelState.IsValid)
             {
-                _context.Add(postArticle);
+				string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+				var user = _context.Users.FirstOrDefault(pu => pu.Id == userId);
+
+				if (user != null)
+				{
+					// Construct a success message with the user's name
+					var name = user.firstName + " " + user.lastName;
+					TempData["success"] = $"Article Successfully Added by {name}";
+				}
+				else
+				{
+					// Handle the case where the user is not found
+					TempData["error"] = "User not found.";
+				}
+
+				_context.Add(postArticle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
