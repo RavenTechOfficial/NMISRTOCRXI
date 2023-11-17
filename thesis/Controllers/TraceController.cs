@@ -98,7 +98,7 @@ namespace thesis.Controllers
                 RepDate = meatInspectionReport.RepDate,
                 RepHeads = totalfit.NoOfHeads,
                 DressedWeight = totalfit.DressedWeight,
-                CertificateStatus = summary.CertificateStatus,
+                //CertificateStatus = summary.CertificateStatus,
                 origin = meatInspectionReport.ReceivingReport.Origin,
                 MeatDealerFName = meatInspectionReport.ReceivingReport.MeatDealers.FirstName,
                 MeatDealerMName = meatInspectionReport.ReceivingReport.MeatDealers.MiddleName,

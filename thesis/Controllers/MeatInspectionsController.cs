@@ -193,9 +193,6 @@ namespace thesis.Controllers
                 return NotFound();
             }
 
-
-
-
             // Add the code to count rows in MeatInspectionReports table
             var inspectionCount = await _context.MeatInspectionReports
                 .Where(mir => mir.ReceivingReportId == id)
@@ -216,7 +213,7 @@ namespace thesis.Controllers
                         MeatDealer = md.FirstName + " " + md.LastName,
                         ReceivingNoOfHeads = rr.NoOfHeads,
                         InspectionCount = inspectionCount,
-                        
+
                     }
                 )
                 .FirstOrDefaultAsync();
@@ -387,7 +384,7 @@ namespace thesis.Controllers
 
         // INSPECT BUTTON // add data to MeatInspectionReport
         [HttpPost]
-        public IActionResult AddMeatInspectionTBL(int receivingId)
+        public IActionResult AddMeatInspectionTBL(int receivingId, DateTime dateInspected)
         {
             string randomUID = GenerateRandomUID(8);
             Console.WriteLine($"Received request for receivingId: {receivingId}");
@@ -398,7 +395,7 @@ namespace thesis.Controllers
             var result = new MeatInspectionReport
             {
                 ReceivingReportId = receivingId,
-                RepDate = DateTime.Now,
+                RepDate = dateInspected,
                 AccountDetailsId = loggedInUserId,
                 UID = randomUID,
 
@@ -884,7 +881,7 @@ namespace thesis.Controllers
 
         // 
         [HttpPost]
-        public IActionResult AddSummary(int totalId, string destinationName, string destinationAddress, int certStatus)
+        public IActionResult AddSummary(int totalId, string destinationName, string destinationAddress, int micIssued, int micCancelled)
         {
 
             var result = new SummaryAndDistributionOfMIC
@@ -892,7 +889,9 @@ namespace thesis.Controllers
                 TotalNoFitForHumanConsumptionId = totalId,
                 DestinationName = destinationName,
                 DestinationAddress = destinationAddress,
-                CertificateStatus = (Data.Enum.CertificateStatus)certStatus,
+                //CertificateStatus = (Data.Enum.CertificateStatus)certStatus,
+                MICIssued = micIssued,
+                MICCancelled = micCancelled,
             };
 
             _context.Add(result);
@@ -914,7 +913,7 @@ namespace thesis.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateSummaryTBL(int MeatInsId, string NameVal, string AddVal, int CertStat, int ReceivingId, int PassedId, MeatInspectionViewModel viewModel)
+        public IActionResult CreateSummaryTBL(int MeatInsId, string NameVal, string AddVal, int micIssued, int micCancelled, int ReceivingId, int PassedId, MeatInspectionViewModel viewModel)
         {
             int inspectionReportCount = _context.MeatInspectionReports
                 .Where(mir => mir.ReceivingReportId == ReceivingId)
@@ -925,7 +924,9 @@ namespace thesis.Controllers
                 TotalNoFitForHumanConsumptionId = PassedId,
                 DestinationName = NameVal,
                 DestinationAddress = AddVal,
-                CertificateStatus = (Data.Enum.CertificateStatus)CertStat,
+                //CertificateStatus = (Data.Enum.CertificateStatus)CertStat,
+                MICIssued = micIssued,
+                MICCancelled = micCancelled,
             };
 
             _context.Add(result);
@@ -955,7 +956,8 @@ namespace thesis.Controllers
                                                DressedWeight = tnfhc.DressedWeight,
                                                DestinationName = sadmic.DestinationName,
                                                DestinationAddress = sadmic.DestinationAddress,
-                                               CertificateStatus = sadmic.CertificateStatus,
+                                               MICIssued = sadmic.MICIssued,
+                                               MICCancelled = sadmic.MICCancelled,
                                                Passed = pfs.Id
                                            })
                             .FirstOrDefault();
@@ -979,7 +981,8 @@ namespace thesis.Controllers
 
             viewModel.DestinationName = meatInspectionViewModel.DestinationName;
             viewModel.DestinationAddress = meatInspectionViewModel.DestinationAddress;
-            viewModel.CertificateStatus = meatInspectionViewModel.CertificateStatus;
+            viewModel.MICIssued = meatInspectionViewModel.MICIssued;
+            viewModel.MICCancelled = meatInspectionViewModel.MICCancelled;
 
             var antemortemInspectionData = _context.ConductOfInspections.Where(item => item.MeatInspectionReportId == MeatInsId).ToList();
             viewModel.AntemortemInspectionData = antemortemInspectionData;

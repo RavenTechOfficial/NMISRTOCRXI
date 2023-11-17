@@ -13,6 +13,8 @@ namespace thesis.Models
         public totalNoFitForHumanConsumptions TotalNoFitForHumanConsumption { get; set; }
         public string DestinationName { get; set; }
         public string DestinationAddress { get; set; }
-        public CertificateStatus CertificateStatus { get; set; }
+        //  public CertificateStatus CertificateStatus { get; set; }
+        public int MICIssued { get; set; }
+        public int MICCancelled { get; set; }
     }
 }
