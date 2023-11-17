@@ -4,43 +4,43 @@
 <link rel="stylesheet" href="~/css/analytics.css" asp-append-version="true" />
 
 <section id="content">
-	<!-- MAIN STARTS-->
-	<main>
-		<div class="head-title">
-			<div class="left">
-                
-				    <h1>Analytics</h1>
-				    <h3>Filters:</h3>
-				    <button id="toggleFiltersButton" onclick="toggleFilters()">
-					    Show Filters <i class="bx bx-filter-alt"></i>
-				    </button>
-                <form method="post" action="/Analytics/actionResult">
-				    <div class="filter-box" id="filtersContainer">
-					    <div class="input-wrapper">
-						    <label for="startdate">Start Date</label>
-						    <input type="date" id="startdate" class="filter" asp-for="start">
-					    </div>
-					    <div class="input-wrapper">
-						    <label for="enddate">End Date</label>
-                            <input type="date" id="enddate" class="filter" asp-for="end">
-					    </div>
+    <!-- MAIN STARTS-->
+    <main>
+        <div class="head-title">
+            <div class="left">
 
-					    <div class="input-wrapper">
-						    <label for="species">Species</label>
-						    <select id="species" class="filter" asp-for="species">
-							    <option value="Cattle">Cattle</option>
-							    <option value="Carabao">Carabao</option>
-							    <option value="Swine">Swine</option>
-							    <option value="Goat">Goat</option>
-							    <option value="Chicken">Chicken</option>
-							    <option value="Duck">Duck</option>
+                <h1>Analytics</h1>
+                <h3>Filters:</h3>
+                <button id="toggleFiltersButton" onclick="toggleFilters()">
+                    Show Filters <i class="bx bx-filter-alt"></i>
+                </button>
+                <form method="post" action="/Analytics/actionResult">
+                    <div class="filter-box" id="filtersContainer">
+                        <div class="input-wrapper">
+                            <label for="startdate">Start Date</label>
+                            <input type="date" id="startdate" class="filter" asp-for="start">
+                        </div>
+                        <div class="input-wrapper">
+                            <label for="enddate">End Date</label>
+                            <input type="date" id="enddate" class="filter" asp-for="end">
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label for="species">Species</label>
+                            <select id="species" class="filter" asp-for="species">
+                                <option value="Cattle">Cattle</option>
+                                <option value="Carabao">Carabao</option>
+                                <option value="Swine">Swine</option>
+                                <option value="Goat">Goat</option>
+                                <option value="Chicken">Chicken</option>
+                                <option value="Duck">Duck</option>
                                 <option value="Sheep">Sheep</option>
                                 <option value="Horse">Horse</option>
-							    <option value="Ostrich">Ostrich</option>
-							    <option value="Crocodile">Crocodile</option>
-						    </select>
-					    </div>
-					    <div class="input-wrapper">
+                                <option value="Ostrich">Ostrich</option>
+                                <option value="Crocodile">Crocodile</option>
+                            </select>
+                        </div>
+                        <div class="input-wrapper">
                             @Html.LabelFor(model => model.timeSeries, "Time Frame")
                             @Html.DropDownListFor(model => model.timeSeries, new List<SelectListItem>
                             {
@@ -48,84 +48,84 @@
                             new SelectListItem { Text = "Monthly", Value = "Monthly" },
                             new SelectListItem { Text = "Yearly", Value = "Yearly" }
                             }, new { @class = "filter", id = "timeFrame" })
-					    </div>
-					    @*<div class="input-wrapper">
-						    <label for="meatEstablishment">Meat Establishment</label>
-						    <select id="meatEstablishment" class="filter meatEstablishment">
-							    <option value="">All</option>
-							    <option value="">Contora Halal SLH</option>
-							    <option value="">Davao City Slaughterhouse/ BLMC</option>
-							    <option value="">Digos City Slaughterhouse</option>
-							    <option value="">JK Mercado & Sons Agri. Ent., Inc.</option>
-							    <option value="">Luchay SH</option>
-							    <option value="">Malagos SLH</option>
-							    <option value="">Malalag Municipal SLH</option>
-							    <option value="">Mati City Slaughterhouse</option>
-							    <option value="">Nabunturan Public Slaughterhouse</option>
-							    <option value="">Sto. Tomas Municipal Slaughterhouse</option>
-						    </select>
-					    </div>*@
+                        </div>
+                        @*<div class="input-wrapper">
+                        <label for="meatEstablishment">Meat Establishment</label>
+                        <select id="meatEstablishment" class="filter meatEstablishment">
+                        <option value="">All</option>
+                        <option value="">Contora Halal SLH</option>
+                        <option value="">Davao City Slaughterhouse/ BLMC</option>
+                        <option value="">Digos City Slaughterhouse</option>
+                        <option value="">JK Mercado & Sons Agri. Ent., Inc.</option>
+                        <option value="">Luchay SH</option>
+                        <option value="">Malagos SLH</option>
+                        <option value="">Malalag Municipal SLH</option>
+                        <option value="">Mati City Slaughterhouse</option>
+                        <option value="">Nabunturan Public Slaughterhouse</option>
+                        <option value="">Sto. Tomas Municipal Slaughterhouse</option>
+                        </select>
+                        </div>*@
                         <div class="input-wrapper">
                             <button class="btn btn-primary py-2 px-4" style="align-items: center; margin-top: 30px;" type="submit">Filter</button>
                         </div>
                     </div>
-                 </form>
-			</div>
-		</div>
-        
+                </form>
+            </div>
+        </div>
 
 
 
-		<div class="charts">
-			<div class="supply-chart charts-card">
-				<div class="head">
-					<h3>Meat Quantity Produced</h3>
-				</div>
-				<div id="area-chart"></div>
-			</div>
-		</div>
 
-		<div class="charts">
-			<div class=" antemortem-chart charts-card">
-				<div class="head">
-					<h3>Receiving / Acceptance Reports</h3>
-				</div>
-				<div id="receiving-bar-chart"></div>
-			</div>
+        <div class="charts">
+            <div class="supply-chart charts-card">
+                <div class="head">
+                    <h3>Meat Quantity Produced</h3>
+                </div>
+                <div id="area-chart"></div>
+            </div>
+        </div>
 
-			<div class="antemortem-chart charts-card">
-				<div class="head">
-					<h3>Antemortem Inspection Reports</h3>
-				</div>
-				<div id="antemortem-bar-chart"></div>
-@*				<a href="#" id="anteHeads" class="btn btn-primary btn-lg active pt-1 px-2" style="font-size: 12px;" role="button" aria-pressed="true" onclick="updateTooltip('Heads')">By # of Heads</a>
-				<a href="#" id="anteWeight" class="btn btn-success btn-lg active pt-1 px-2" style="font-size: 12px;" role="button" aria-pressed="true" onclick="updateTooltip('Kilograms')">By Weight(in Kg.)</a>*@
+        <div class="charts">
+            <div class=" antemortem-chart charts-card">
+                <div class="head">
+                    <h3>Receiving / Acceptance Reports</h3>
+                </div>
+                <div id="receiving-bar-chart"></div>
+            </div>
 
-			</div>
-		</div>
+            <div class="antemortem-chart charts-card">
+                <div class="head">
+                    <h3>Antemortem Inspection Reports</h3>
+                </div>
+                <div id="antemortem-bar-chart"></div>
+                @*				<a href="#" id="anteHeads" class="btn btn-primary btn-lg active pt-1 px-2" style="font-size: 12px;" role="button" aria-pressed="true" onclick="updateTooltip('Heads')">By # of Heads</a>
+                <a href="#" id="anteWeight" class="btn btn-success btn-lg active pt-1 px-2" style="font-size: 12px;" role="button" aria-pressed="true" onclick="updateTooltip('Kilograms')">By Weight(in Kg.)</a>*@
 
-
-
-		<div class="charts">
-			<div class="supply-chart charts-card" style="align-items: center;">
-				<div class="head">
-					<h3>Postmortem Inspection Report</h3>
-				</div>
-				<div id="postmortem-chart"></div>
-			</div>
-			<div class="supply-chart charts-card unique-chart">
-				<div class="head">
-					<h3>Total Fit for Human Consumption</h3>
-				</div>
-				<div id="fit-chart"></div>
-
-			</div>
-		</div>
+            </div>
+        </div>
 
 
 
-	</main>
-	<!-- MAIN ENDS -->
+        <div class="charts">
+            <div class="supply-chart charts-card" style="align-items: center;">
+                <div class="head">
+                    <h3>Postmortem Inspection Report</h3>
+                </div>
+                <div id="postmortem-chart"></div>
+            </div>
+            <div class="supply-chart charts-card unique-chart">
+                <div class="head">
+                    <h3>Total Fit for Human Consumption</h3>
+                </div>
+                <div id="fit-chart"></div>
+
+            </div>
+        </div>
+
+
+
+    </main>
+    <!-- MAIN ENDS -->
 
 </section>
 
@@ -155,19 +155,6 @@
             toggleFiltersButton.innerHTML = "Show Filters <i class='bx bx-filter-alt'></i>";
         }
     }
-
-    function filterDataDate() {
-        // Implement filtering logic for date
-    }
-
-    function filterDataSpecies() {
-        // Implement filtering logic for species
-    }
-
-    function filterDatameatEstablishment() {
-        // Implement filtering logic for meat establishment
-    }
-
 
     //Calendar Restrictions
     document.addEventListener("DOMContentLoaded", function () {
@@ -256,20 +243,49 @@
         }
     });
 
+
+
+    //Area Chart
+
+
     function renderChart(labelColor, titleColor) {
+
+        const dbData = @Html.Raw(Json.Serialize(Model.analyObjs));
+
+        // Convert to format expected by ApexCharts
+        const condemnedData = dbData.map(item => {
+            const date = new Date(item.datetime);
+            const timestamp = date.getTime();
+            return [timestamp, item.condemnedValue];
+        });
+
+        const approvedData = dbData.map(item => {
+            const date = new Date(item.datetime);
+            const timestamp = date.getTime();
+            return [timestamp, item.approvedValue];
+        });
+
+
+
+
         let areaChartOptions = {
             series: [{
-                name: "Approved Meat",
-                data: [@string.Join(",", Model.monthlyRangeApproved)],
-            }, {
                 name: "Condemned Meat",
-                data: [@string.Join(",", Model.monthlyRangeCondemned)],
+                data: condemnedData,
+            },
+            {
+                name: "Approved Meat",
+                data: approvedData,
             }],
             chart: {
                 type: "area",
                 background: "transparent",
-                height: 400,
+                height: 550,
+                width: 1500,
                 stacked: false,
+                zoom: {
+                    autoScaleYaxis: true
+                },
                 toolbar: {
                     show: true,
                     offsetX: 0,
@@ -286,7 +302,7 @@
                     },
                     export: {
                         csv: {
-                            filename: 'Approved Vs. Condemned Analytics',
+                            filename: 'Approved Vs. Condemned Meat Analytics',
                             columnDelimiter: ',',
                             headerCategory: 'Date',
                             headerValue: 'value',
@@ -295,18 +311,26 @@
                             }
                         },
                         svg: {
-                            filename: 'Approved Vs. Condemned Analytics',
+                            filename: 'Approved Vs. Condemned Meat Analytics',
                         },
                         png: {
-                            filename: 'Approved Vs. Condemned Analytics',
+                            filename: 'Approved Vs. Condemned Meat Analytics',
                         }
                     },
                     autoSelected: 'zoom'
                 },
             },
-            colors: ["#00ab57", "#d50000"],
+            colors: ["#d50000", "#00ab57"],
+
+
+
+
+
             xaxis: {
-                categories: @Html.Raw(Json.Serialize(Model.monthAbbreviationsArray)),
+                // categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                type: 'datetime',
+                min: new Date('@Model.start').getTime(),
+                tickAmount: 6,
                 labels: {
                     style: {
                         colors: labelColor,
@@ -335,7 +359,7 @@
                 },
                 xaxis: {
                     lines: {
-                        show: true,
+                        show: false,
                     },
                 },
             },
@@ -346,28 +370,10 @@
                 show: true,
                 position: "bottom",
             },
-            markers: {
-                size: 6,
-                strokeColors: "#1b2635",
-                strokeWidth: 3,
-            },
             stroke: {
                 curve: "smooth",
             },
             yaxis: [
-                {
-                    title: {
-                        text: "Approved Meat",
-                        style: {
-                            color: titleColor,
-                        },
-                    },
-                    labels: {
-                        style: {
-                            colors: [labelColor],
-                        },
-                    },
-                },
                 {
                     opposite: true,
                     title: {
@@ -382,26 +388,47 @@
                         },
                     },
                 },
+                {
+                    title: {
+                        text: "Approved Meat",
+                        style: {
+                            color: titleColor,
+                        },
+                    },
+                    labels: {
+                        style: {
+                            colors: [labelColor],
+                        },
+                    },
+                },
+
             ],
             tooltip: {
                 shared: true,
                 intersect: false,
                 theme: "dark",
+                x: {
+                    format: 'dd MMM yyyy'
+                },
             }
         };
 
         areaChart = new ApexCharts(document.querySelector("#area-chart"), areaChartOptions);
         areaChart.render();
+
+
     }
+
+
 
 
 
     // Receiving BAR CHART with darkmode
     let ReceivingbarChart;
 
-   
 
-    let receivingTimestamp = @Html.Raw(Json.Serialize(Model.monthAbbreviationsArray));
+
+    let receivingTimestamp = @Html.Raw(Json.Serialize(Model.dayMonthYearAbbreviationsArray));
     let dataHeads = [@string.Join(",", Model.monthlyRangeOfHead)];
     let dataWeight = [@string.Join(",", Model.monthlyRangeOfLiveWeight)];
     let usedTimestamp = receivingTimestamp.slice(0, dataHeads.length);
@@ -440,7 +467,7 @@
                     data: dataHeads
                 },
                 {
-                    name: 'Weight in Kg.',
+                    name: 'LiveWeight',
                     data: dataWeight
                 },
             ],
@@ -677,7 +704,7 @@
                 colors: ['transparent']
             },
             xaxis: {
-                categories: @Html.Raw(Json.Serialize(Model.monthAbbreviationsArray)),
+                categories: @Html.Raw(Json.Serialize(Model.dayMonthYearAbbreviationsArray)),
                 labels: {
                     style: {
                         colors: labelColor,
@@ -911,7 +938,7 @@
         },
 
         xaxis: {
-            categories: @Html.Raw(Json.Serialize(Model.monthAbbreviationsArray)),
+            categories: @Html.Raw(Json.Serialize(Model.dayMonthYearAbbreviationsArray)),
         },
         tooltip: {
             y: {

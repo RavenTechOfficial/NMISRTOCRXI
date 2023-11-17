@@ -11,11 +11,44 @@ namespace thesis.Repositories
 	public class DashboardRepository : IDashboardRepository
     {
         private readonly thesisContext _context;
+		//area cahrt
+		private List<double> monthRangesApproved;
+		private List<double> monthRangesCondemned;
+		//bar chart
+		private List<double> suspects;
+		private List<double> condemneds;
+		private List<double> passes;
 
-        public DashboardRepository(thesisContext context)
+		private List<double> cattles;
+		private List<double> carabaos;
+		private List<double> swines;
+		private List<double> goats;
+		private List<double> chickens;
+		private List<double> ducks;
+		private List<double> horses;
+		private List<double> sheeps;
+		private List<double> ostrichs;
+		private List<double> crocodiles;
+
+		public DashboardRepository(thesisContext context)
         {
             _context = context;
-        }
+			this.monthRangesApproved = new List<double>();
+			this.monthRangesCondemned = new List<double>();
+			this.suspects = new List<double>();
+			this.condemneds = new List<double>();
+			this.passes = new List<double>();
+			this.cattles = new List<double>();
+			this.carabaos = new List<double>();
+			this.swines = new List<double>();
+			this.goats = new List<double>();
+			this.chickens = new List<double>();
+			this.ducks = new List<double>();
+			this.horses = new List<double>();
+			this.sheeps = new List<double>();
+			this.ostrichs = new List<double>();
+			this.crocodiles = new List<double>();
+		}
         public async Task<ICollection<totalNoFitForHumanConsumptions>> GetTotalNoFitForHumanConsumptions()
         {
             throw new NotImplementedException();
@@ -37,31 +70,15 @@ namespace thesis.Repositories
                 .Sum(p => p.DressedWeight);
 
 
-            //area cahrt
-            var monthRangesApproved = new List<double>();
-            var monthRangesCondemned = new List<double>();
-            //bar chart
-            var suspects = new List<double>();
-            var condemneds = new List<double>();
-            var passes = new List<double>();
-
-            var cattles = new List<double>();
-            var carabaos = new List<double>();
-            var swines = new List<double>();
-            var goats = new List<double>();
-            var chickens = new List<double>();
-            var ducks = new List<double>();
-            var horses = new List<double>();
-            var sheeps = new List<double>();
-            var ostrichs = new List<double>();
-            var crocodiles = new List<double>();
 
             for (DateTime date = startDateOfYear; date < currentDate; date = date.AddMonths(1))
             {
                 var startOfMonth = date;
-                var endOfMonth = date.AddMonths(1);
+                var endOfMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
 
-                var monthRangeApproved = AreaChartTimeSeriesRangeApproved(startOfMonth, endOfMonth);
+				endOfMonth = endOfMonth < currentDate ? endOfMonth : currentDate;
+
+				var monthRangeApproved = AreaChartTimeSeriesRangeApproved(startOfMonth, endOfMonth);
                 var monthRangeCondemned = AreaChartTimeSeriesRangeCondemned(startOfMonth, endOfMonth);
 
                 var suspect = BarChartTimeSeriesAntemortem(Issue.Suspect, startOfMonth, endOfMonth);
@@ -113,13 +130,13 @@ namespace thesis.Repositories
 
 			return new TotalWeightViewModel
             {
-                TotalWeight = totalWeight,
-                DailyWeight = dailyWeight,
-                WeeklyWeight = weeklyWeight,
-                MonthlyWeight = monthlyWeight,
-                YearlyWeight = yearlyWeight,
-				monthlyRangeApproved = monthRangesApproved,
-				monthlyRangeCondemned = monthRangesCondemned,
+                TotalWeight = Math.Round(totalWeight, 1),
+                DailyWeight = Math.Round(dailyWeight, 1),
+                WeeklyWeight = Math.Round(weeklyWeight, 1),
+                MonthlyWeight = Math.Round(monthlyWeight,1),
+                YearlyWeight = Math.Round(yearlyWeight,1),
+				monthlyRangeApproved = monthRangesApproved.Select(x => Math.Round(x, 1)).ToList(),
+				monthlyRangeCondemned = monthRangesApproved.Select(x => Math.Round(x, 1)).ToList(),
 				monthAbbreviationsArray = monthAbbreviationsArray,
                 Pass = passes,
                 Condemned = condemneds,
@@ -139,7 +156,7 @@ namespace thesis.Repositories
         }
         //na change
 
-        public double StackBarsSpeciesSeries(Species species, DateTime start, DateTime end)
+        private double StackBarsSpeciesSeries(Species species, DateTime start, DateTime end)
         {
             var stackchart = _context.totalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
@@ -150,7 +167,7 @@ namespace thesis.Repositories
 
             return stackchart;
         }
-        public double BarChartTimeSeriesAntemortem(Issue issue, DateTime start, DateTime end)
+		private double BarChartTimeSeriesAntemortem(Issue issue, DateTime start, DateTime end)
         {
             var barchart = _context.ConductOfInspections
                 .Include(p => p.MeatInspectionReport)
@@ -161,8 +178,8 @@ namespace thesis.Repositories
 
             return barchart;
         }
-        //na change
-		public double BarChartTimeSeriesAntemortemPass(DateTime start, DateTime end)
+		//na change
+		private double BarChartTimeSeriesAntemortemPass(DateTime start, DateTime end)
 		{
 			var barchart = _context.PassedForSlaughters
 				.Include(p => p.ConductOfInspection.MeatInspectionReport)
@@ -173,8 +190,8 @@ namespace thesis.Repositories
 			return barchart;
 		}
 
-        //na change
-		public double AreaChartTimeSeriesRangeApproved(DateTime start, DateTime end)
+		//na change
+		private double AreaChartTimeSeriesRangeApproved(DateTime start, DateTime end)
         {
 			var areaChart = _context.totalNoFitForHumanConsumptions
 				.Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
@@ -184,8 +201,8 @@ namespace thesis.Repositories
 
             return areaChart;
 		}
-        //na change
-		public double AreaChartTimeSeriesRangeCondemned(DateTime start, DateTime end)
+		//na change
+		private double AreaChartTimeSeriesRangeCondemned(DateTime start, DateTime end)
 		{
 			var areaChart = _context.totalNoFitForHumanConsumptions
 				.Include(p => p.Postmortem)
@@ -196,8 +213,8 @@ namespace thesis.Repositories
 			return areaChart;
 		}
 
-        //na change
-		public double InspectionWithinDataRange(DateTime dates)
+		//na change
+		private double InspectionWithinDataRange(DateTime dates)
         {
             var inspectionWithinDataRange = _context.totalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
@@ -206,8 +223,8 @@ namespace thesis.Repositories
 
             return inspectionWithinDataRange;
         }
-        //na change
-        public int InspectionDate(DateTime dates, Issue issue)
+		//na change
+		private int InspectionDate(DateTime dates, Issue issue)
         {
             var conduct = _context.ConductOfInspections
                 .Include(p => p.MeatInspectionReport.ReceivingReport)
