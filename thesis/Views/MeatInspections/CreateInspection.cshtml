@@ -293,7 +293,7 @@
                     $('#postHead').prop('disabled', true);
 
                     $('#fitHead').val($('#passedHead').val());
-                    $('#fitWeight').val($('#passedWeight').val());
+                    //     $('#fitWeight').val($('#passedWeight').val());
                     var targetDivPosition = $('#section3').offset().top - 70;
                     $('html, body').animate({
                         scrollTop: targetDivPosition
@@ -313,7 +313,7 @@
 
                             console.log(response);
                             $('#fitHead').val($('#passedHead').val() - response.totalNoOfHeads);
-                            $('#fitWeight').val($('#passedWeight').val() - response.totalWeight);
+                            //   $('#fitWeight').val($('#passedWeight').val() - response.totalWeight);
 
                             response.data.forEach(function (item) {
 
@@ -446,6 +446,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="input-box">
+                                    <label asp-for="DateInspected" class="control-label">Date & Time Inspected:</label>
+                                    <input id="dateInspected" asp-for="DateInspected" class="form-control" />
+                                    <span asp-validation-for="DateInspected" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
@@ -683,7 +688,7 @@
                 </div>
                 <div class="input-box">
                     <label asp-for="DressedWeight" class="control-label">Dressed Weight:</label>
-                    <input readonly id="fitWeight" asp-for="DressedWeight" class="form-control" name="WeightPassed" value="@Model.DressedWeight" />
+                    <input @* readonly *@ id="fitWeight" asp-for="DressedWeight" class="form-control" name="WeightPassed" value="@Model.DressedWeight" />
                     <span asp-validation-for="DressedWeight" class="text-danger"></span>
                 </div>
             </div>
@@ -757,18 +762,21 @@
                     }
                 </script>
 
-                <div class="form-group">
-                    <label asp-for="CertificateStatus" class="control-label">Certificate Status:</label>
-                    <select asp-for="CertificateStatus" class="form-control" asp-items="@Html.GetEnumSelectList<CertificateStatus>()" name="CertStat" value="@Model.CertificateStatus">
-                        <option>---Select---</option>
-                    </select>
-                    <span asp-validation-for="CertificateStatus" class="text-danger"></span>
+                <div class="input-box">
+                    <label asp-for="MICIssued" class="control-label">Meat Inspection Certificate (ISSUED):</label>
+                    <input id="micIssued" asp-for="MICIssued" class="form-control" name="micIssued" value="@Model.MICIssued" />
+                    <span asp-validation-for="MICIssued" class="text-danger"></span>
+                    @* </div>
+                    <div class="input-box"> *@
+                    <label asp-for="MICCancelled" class="control-label">Meat Inspection Certificate (CANCELLED):</label>
+                    <input id="micCancelled" asp-for="MICCancelled" class="form-control" name="micCancelled" value="@Model.MICCancelled" />
+                    <span asp-validation-for="MICCancelled" class="text-danger"></span>
                 </div>
                 <br />
                 <input type="hidden" name="ReceivingId" value="@Model.ReceivingId" />
                 <input type="hidden" name="NameVal" value="@Model.DestinationName" />
                 <input type="hidden" name="AddVal" value="@Model.DestinationAddress" />
-                <input type="hidden" name="CertStat" value="@Model.CertificateStatus" />
+                @* <input type="hidden" name="CertStat" value="@Model.CertificateStatus" /> *@
                 <input type="hidden" id="sumPassedId" name="PassedId" value="@Model.FitId" />
                 <input type="hidden" id="sumMeatInsId" name="MeatInsId" value="@Model.MeatInspectionReportId" />
 
@@ -795,10 +803,13 @@
 }
 <script src="~/js/register.js"></script>
 <script src="/lib/jquery/dist/jquery.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 
 <script>
+
+    var defaultDateTime = moment().format('YYYY-MM-DDTHH:mm');
+    document.getElementById("dateInspected").value = defaultDateTime;
 
     //create meatinspection and pass data to (passed)
     $(document).ready(function () {
@@ -824,16 +835,22 @@
             var receivingId = $('#receivingId').val();
             var head = $('#receivingHead').val();
             var weight = $('#receivingWeight').val();
+            var dateInspected = $('#dateInspected').val();
 
             console.log(receivingId);
             $.ajax({
                 url: '/MeatInspections/AddMeatInspectionTBL/',
                 type: 'POST',
                 dataType: 'json',
-                data: { receivingId: receivingId },
+                data: {
+                    receivingId: receivingId,
+                    dateInspected: dateInspected,
+
+                },
                 success: function (response) {
 
                     $('#passedHead').val(head);
+                    $('#dateInspected').val(dateInspected);
                     $('#passedWeight').val(weight);
                     MeatInspectionId = response.id
                     $('#antemortemAdd').prop('disabled', false);
@@ -1166,7 +1183,7 @@
                     //document.getElementById("imageForm").reset();
                     PassedForSlaughterId = response.id
                     $('#fitHead').val(passedHead);
-                    $('#fitWeight').val(passedWeight);
+                    //  $('#fitWeight').val(passedWeight);
 
                     //$('#antemortemAdd').prop('disabled', false);
 
@@ -1219,7 +1236,7 @@
                     currentImages = 0
                     selectedFiles = [];
                     $('#fitHead').val(passedHead - response.totalhead);
-                    $('#fitWeight').val(passedWeight - response.totalweight);
+                    //  $('#fitWeight').val(passedWeight - response.totalweight);
                     PostMortemId = response.id
 
                     var fileName1 = response.image1 ? response.image1.split('\\').pop() : null;
@@ -1457,7 +1474,7 @@
                         PostMortemId = response.firstPostId;
 
                         $('#fitHead').val(passedHead - response.totalhead);
-                        $('#fitWeight').val(passedWeight - response.totalweight);
+                        //  $('#fitWeight').val(passedWeight - response.totalweight);
                         row.remove();
                         if (postTable.rows.length <= 1) {
                             $('#postmortemNext').prop('disabled', true);
@@ -1547,7 +1564,7 @@
 
                         //update head and weight value
                         $('#fitHead').val(passedHead - response.totalhead);
-                        $('#fitWeight').val(passedWeight - response.totalweight);
+                        //    $('#fitWeight').val(passedWeight - response.totalweight);
 
 
                         row.removeClass('selected-row');
