@@ -276,3 +276,27 @@
 .file-input {
     display: none;
 }
+
+/*sa search button*/
+.input-group {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+    .input-container input {
+        flex: 1;
+        margin-right: 10px; /* Adjust the margin as needed */
+    }

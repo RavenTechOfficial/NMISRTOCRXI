@@ -44,7 +44,8 @@ namespace thesis.Core.ViewModel
         public bool CrocodileBool { get; set; }
 
 
-        public string[] monthAbbreviationsArray { get; set; }
+        public string[] dayMonthYearAbbreviationsArray { get; set; }
+        public List<analyticViewModel> analyObjs { get; set; }
     }
 }
 

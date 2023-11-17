@@ -11,46 +11,62 @@ namespace thesis.Repositories
     public class AnalyticsRepository : IAnalyticsRepository
     {
         private readonly thesisContext _context;
+		//area chart 
+		private List<double> monthRangesApproved;
+		private List<double> monthRangesCondemned;
+		//horizontal bar chart
+		private List<int> monthRangesOfHead;
+		private List<double> monthRangesOfLiveWeight;
+		//vertical bar chart
+		private List<double> suspects;
+		private List<double> condemneds;
+		private List<double> passes;
+		//piechart
+		private List<double> animalType;
+		//stack bars 100 chart
+		private List<double> cattles;
+		private List<double> carabaos;
+		private List<double> swines;
+		private List<double> goats;
+		private List<double> chickens;
+		private List<double> ducks;
+		private List<double> horses;
+		private List<double> sheeps;
+		private List<double> ostrichs;
+		private List<double> crocodiles;
 
-        public AnalyticsRepository(thesisContext context)
+		private List<analyticViewModel> analyticObject;
+
+		public AnalyticsRepository(thesisContext context)
         {
             _context = context;
-        }
+			this.monthRangesApproved = new List<double>();
+			this.monthRangesCondemned = new List<double>();
+			this.monthRangesOfHead = new List<int>();
+			this.monthRangesOfLiveWeight = new List<double>();
+			this.suspects = new List<double>();
+			this.condemneds = new List<double>();
+			this.passes = new List<double>();
+			this.animalType = new List<double>();
+			this.cattles = new List<double>();
+			this.carabaos = new List<double>();
+			this.swines = new List<double>();
+			this.goats = new List<double>();
+			this.chickens = new List<double>();
+			this.ducks = new List<double>();
+			this.horses = new List<double>();
+			this.sheeps = new List<double>();
+			this.ostrichs = new List<double>();
+			this.crocodiles = new List<double>();
+            this.analyticObject = new List<analyticViewModel>();
+		}
+
         public AnalyticsViewModel GetTotalOfMeatPerTimeSeries(string timeseries, Species species, DateTime startDate, DateTime endDate)
         {
 
 
             var startOfDate = startDate;
             var currentDate = endDate;
-
-            //var startDateOfWeek = DateTime.Now.AddDays(-7);
-            //var startDateOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            var currentMonth = DateTime.Now.Month;
-
-            //area chart 
-            var monthRangesApproved = new List<double>();
-            var monthRangesCondemned = new List<double>();
-            //horizontal bar chart
-            var monthRangesOfHead = new List<int>();
-            var monthRangesOfLiveWeight = new List<double>();
-            //vertical bar chart
-            var suspects = new List<double>();
-            var condemneds = new List<double>();
-            var passes = new List<double>();
-            //piechart
-            var animalType = new List<double>();
-            //stack bars 100 chart
-            var cattles = new List<double>();
-            var carabaos = new List<double>();
-            var swines = new List<double>();
-            var goats = new List<double>();
-            var chickens = new List<double>();
-            var ducks = new List<double>();
-            var horses = new List<double>();
-            var sheeps = new List<double>();
-            var ostrichs = new List<double>();
-            var crocodiles = new List<double>();
-
 
 
             foreach (AnimalPart animalPart in Enum.GetValues(typeof(AnimalPart)))
@@ -60,32 +76,89 @@ namespace thesis.Repositories
             }
 
 
-
-            for (DateTime date = startOfDate; date < currentDate; date = timeseries == "Monthly" ? date.AddMonths(1) : timeseries == "Yearly" ? date.AddYears(1) : date.AddDays(1))
+            // has daily
+            for (DateTime date = startOfDate; date < currentDate;)
             {
                 var startOfPeriod = date;
                 DateTime endOfPeriod;
 
                 if (timeseries == "Monthly")
                 {
-                    endOfPeriod = date.AddMonths(1);
+                    endOfPeriod = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+                    endOfPeriod = endOfPeriod < currentDate ? endOfPeriod : currentDate;
                 }
                 else if (timeseries == "Yearly")
                 {
-                    // Set the endOfPeriod to the end of the year or endDate, whichever comes first
-                    //DateTime endOfYear = new DateTime(date.Year, 12, 31);
-                    //endOfPeriod = endOfYear < endDate ? endOfYear : endDate;
-                    endOfPeriod = date.AddYears(1);
+                    endOfPeriod = new DateTime(date.Year, 12, 31);
+                    endOfPeriod = endOfPeriod < currentDate ? endOfPeriod : currentDate;
                 }
                 else // Default to "Daily"
                 {
-                    endOfPeriod = date.AddDays(1);
+                    // Set the endOfPeriod to the end of the current day
+                    endOfPeriod = date.Date.AddDays(1).AddTicks(-1);
+                }
+
+                // Consolidate data for the period from 'date' to 'endOfPeriod'
+
+                // Move to the start of the next period
+                if (timeseries == "Monthly")
+                {
+                    date = endOfPeriod.AddDays(1);
+                }
+                else if (timeseries == "Yearly")
+                {
+                    date = endOfPeriod.AddDays(1);
+                }
+                else // Default to "Daily"
+                {
+                    date = endOfPeriod.AddTicks(1);
                 }
 
                 //endOfPeriod = endOfPeriod > endDate ? endDate : endOfPeriod;
 
                 var monthRangeApproved = AreaChartTimeSeriesRangeApproved(species, startOfPeriod, endOfPeriod);
                 var monthRangeCondemned = AreaChartTimeSeriesRangeCondemned(species, startOfPeriod, endOfPeriod);
+
+                monthRangesApproved.Add(monthRangeApproved);
+                monthRangesCondemned.Add(monthRangeCondemned);
+
+                analyticObject.Add(new analyticViewModel
+                {
+                    datetime = startOfPeriod.AddDays(1),
+                    condemnedValue = monthRangeCondemned,
+                    approvedValue = monthRangeApproved
+                });
+
+            }
+
+            // has no daily
+            for (DateTime date = startOfDate; date < currentDate;)
+            {
+                var startOfPeriod = date;
+                DateTime endOfPeriod;
+
+                if (timeseries == "Yearly")
+                {
+                    
+
+                    endOfPeriod = new DateTime(date.Year, 12, 31);
+                    endOfPeriod = endOfPeriod < currentDate ? endOfPeriod : currentDate;
+                }
+                else
+                {
+                    endOfPeriod = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+                    endOfPeriod = endOfPeriod < currentDate ? endOfPeriod : currentDate;
+                }
+
+                // Consolidate data for the period from 'date' to 'endOfPeriod'
+
+                // Move to the start of the next period
+                
+                date = endOfPeriod.AddDays(1);
+                
+
+                //endOfPeriod = endOfPeriod > endDate ? endDate : endOfPeriod;
+
 
                 var monthRangeOfHead = BarChartTimeSeriesRangeOfHead(species, startOfPeriod, endOfPeriod);
                 var monthRangeOfLiveWeight = BarChartTimeSeriesRangeOfLiveWeight(species, startOfPeriod, endOfPeriod);
@@ -106,12 +179,9 @@ namespace thesis.Repositories
                 var pass = BarChartTimeSeriesAntemortemPass(species, startOfPeriod, endOfPeriod);
 
 
-                monthRangesApproved.Add(monthRangeApproved);
-                monthRangesCondemned.Add(monthRangeCondemned);
 
                 monthRangesOfHead.Add(monthRangeOfHead);
                 monthRangesOfLiveWeight.Add(monthRangeOfLiveWeight);
-
                 cattles.Add(cattle);
                 carabaos.Add(carabao);
                 swines.Add(swine);
@@ -122,52 +192,42 @@ namespace thesis.Repositories
                 sheeps.Add(sheep);
                 ostrichs.Add(ostrich);
                 crocodiles.Add(crocodile);
-
                 suspects.Add(suspect);
                 condemneds.Add(condemned);
                 passes.Add(pass);
 
-
-                //if (timeseries == "Yearly" && date.Year == endDate.Year)
-                //{
-                //    break;
-                //}
-
             }
+
 
 
             var currentDateFormatted = currentDate.ToString("MMM dd");
 
             var timeAbbreviationsList = new List<string>();
-            if (timeseries == "Monthly")
+
+
+            
+            if (timeseries == "Yearly")
+            {
+                int yearsApart = endDate.Year - startDate.Year;
+                for (int i = 0; i < yearsApart; i++) // Loop to one less than the total to add the exact end date later
+                {
+                    timeAbbreviationsList.Add(new DateTime(startDate.Year + i, 1, 1).ToString("yyyy"));
+                }
+
+                timeAbbreviationsList.Add(endDate.ToString("yyyy"));
+            }
+
+            else 
             {
                 int monthsApart = 12 * (endDate.Year - startDate.Year) + endDate.Month - startDate.Month;
                 for (int i = 0; i < monthsApart; i++) // Loop through full months before the end date
                 {
                     timeAbbreviationsList.Add(startDate.AddMonths(i).ToString("MMM yyyy")); // Use "MMM yyyy" format for month-year
                 }
-                // Add the end month and year if it's not the same month as the last added (in case of the current month)
+
                 if (timeAbbreviationsList.LastOrDefault() != endDate.ToString("MMM yyyy"))
                 {
                     timeAbbreviationsList.Add(endDate.ToString("MMM yyyy"));
-                }
-            }
-            else if (timeseries == "Yearly")
-            {
-                int yearsApart = endDate.Year - startDate.Year;
-                for (int i = 0; i < yearsApart; i++) // Loop to one less than the total to add the exact end date later
-                {
-                    timeAbbreviationsList.Add(new DateTime(startDate.Year + i, 1, 1).ToString("MMM yyyy"));
-                }
-                // Add the current date at the end to reflect the last piece of data.
-                timeAbbreviationsList.Add(endDate.ToString("MMM yyyy"));
-            }
-            else if (timeseries == "Daily")
-            {
-                var totalDays = (endDate - startDate).Days;
-                for (int i = 0; i <= totalDays; i++)
-                {
-                    timeAbbreviationsList.Add(startDate.AddDays(i).ToString("MMM dd"));
                 }
             }
 
@@ -200,10 +260,14 @@ namespace thesis.Repositories
                 Suspect = suspects,
                 Condemned = condemneds,
                 Pass = passes,
-                monthAbbreviationsArray = timeAbbreviationsArray
+                dayMonthYearAbbreviationsArray = timeAbbreviationsArray,
+
+                start = startDate,
+                analyObjs = analyticObject
             };
 
         }
+
 
         //from meatINspectionReport to Receiving DATE
         public double BarChartTimeSeriesAntemortem(Species species, Issue issue, DateTime start, DateTime end)
@@ -306,5 +370,7 @@ namespace thesis.Repositories
 
             return areaChart;
         }
+
+
     }
 }
