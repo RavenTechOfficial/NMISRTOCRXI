@@ -1,6 +1,6 @@
 ﻿@page
 @model RegisterModel
-
+<partial name="_Notifications" />
 
 
 
@@ -269,8 +269,8 @@ else
 							</div>
 
 							<div class="column">
-									
-										<input asp-for="Input.Roles" type="text" value="MTVUSERS" readonly hidden  />
+
+								<input asp-for="Input.Roles" type="text" value="MTVUSERS" readonly hidden />
 									
 								@if (User.IsInRole("InspectorAdministrator"))
 								{

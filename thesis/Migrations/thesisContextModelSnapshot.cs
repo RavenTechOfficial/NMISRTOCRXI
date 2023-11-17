@@ -428,6 +428,30 @@ namespace thesis.Migrations
                     b.ToTable("Helpers");
                 });
 
+            modelBuilder.Entity("thesis.Models.LogTransaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("LogDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LogName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogPurpose")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogTransactions");
+                });
+
             modelBuilder.Entity("thesis.Models.MTVApplication", b =>
                 {
                     b.Property<int>("Id")

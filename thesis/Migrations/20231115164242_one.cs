@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace thesis.Migrations
 {
     /// <inheritdoc />
-    public partial class ere : Migration
+    public partial class one : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -325,6 +325,7 @@ namespace thesis.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     applicationtype = table.Column<int>(type: "int", nullable: false),
+                    AccreditionNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OwnerFname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OwnerMname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OwnerLname = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -476,7 +477,7 @@ namespace thesis.Migrations
                     LiveWeight = table.Column<double>(type: "float", nullable: false),
                     MeatDealersId = table.Column<int>(type: "int", nullable: true),
                     Origin = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShippingDoc = table.Column<int>(type: "int", nullable: false),
+                    ShippingDoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HoldingPenNo = table.Column<int>(type: "int", nullable: false),
                     ReceivingBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -573,7 +574,8 @@ namespace thesis.Migrations
                     RepDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     VerifiedByPOSMSHead = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceivingReportId = table.Column<int>(type: "int", nullable: true),
-                    AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UID = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
