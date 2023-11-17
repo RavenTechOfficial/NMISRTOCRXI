@@ -12,8 +12,8 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20231025113653_ere")]
-    partial class ere
+    [Migration("20231115173519_AddLogSystem")]
+    partial class AddLogSystem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -431,6 +431,31 @@ namespace thesis.Migrations
                     b.ToTable("Helpers");
                 });
 
+            modelBuilder.Entity("thesis.Models.LogSystem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("LogDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogPurpose")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogSystems");
+                });
+
             modelBuilder.Entity("thesis.Models.MTVApplication", b =>
                 {
                     b.Property<int>("Id")
@@ -438,6 +463,10 @@ namespace thesis.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccreditionNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -722,6 +751,10 @@ namespace thesis.Migrations
                     b.Property<DateTime>("RepDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("VerifiedByPOSMSHead")
                         .HasColumnType("nvarchar(max)");
 
@@ -967,8 +1000,9 @@ namespace thesis.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ShippingDoc")
-                        .HasColumnType("int");
+                    b.Property<string>("ShippingDoc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Species")
                         .HasColumnType("int");

@@ -101,7 +101,6 @@ namespace thesis.Controllers
 			if (ModelState.IsValid)
             {
 				string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
 				var user = _context.Users.FirstOrDefault(pu => pu.Id == userId);
 
 				if (user != null)
@@ -109,16 +108,27 @@ namespace thesis.Controllers
 					// Construct a success message with the user's name
 					var name = user.firstName + " " + user.lastName;
 					TempData["success"] = $"Article Successfully Added by {name}";
+
+
+                    // Add the new article to the database
+					_context.Add(postArticle);
+
+					var logEntry = new LogTransaction
+                    {
+						LogName = name,
+						LogPurpose = "Created an Article [" + postArticle.Title + "]",
+						LogDate = DateTime.Now
+					};
+					_context.Add(logEntry);
+					await _context.SaveChangesAsync();
+					return RedirectToAction(nameof(Index));
+			
 				}
 				else
 				{
 					// Handle the case where the user is not found
-					TempData["error"] = "User not found.";
+					TempData["error"] = "Error Found";
 				}
-
-				_context.Add(postArticle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
             return View(postArticle);
         }
@@ -156,8 +166,35 @@ namespace thesis.Controllers
             {
                 try
                 {
-                    _context.Update(postArticle);
-                    await _context.SaveChangesAsync();
+
+                    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var user = _context.Users.FirstOrDefault(pu => pu.Id == userId);
+
+                    if (user != null)
+                    {
+                        // Construct a success message with the user's name
+                        var name = user.firstName + " " + user.lastName;
+                        TempData["info"] = $"Article Successfully Edited by {name}";
+
+
+                        // Add the new article to the database
+                        _context.Update(postArticle);
+
+                        var logEntry = new LogTransaction
+                        {
+                            LogName = name,
+                            LogPurpose = "Edited an Article [" + postArticle.Title + "]",
+                            LogDate = DateTime.Now
+                        };
+                        _context.Add(logEntry);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        // Handle the case where the user is not found
+                        TempData["error"] = "Error Found";
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -204,9 +241,35 @@ namespace thesis.Controllers
                 return Problem("Entity set 'thesisContext.PostArticles'  is null.");
             }
             var postArticle = await _context.PostArticles.FindAsync(id);
+
             if (postArticle != null)
             {
-                _context.PostArticles.Remove(postArticle);
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = _context.Users.FirstOrDefault(pu => pu.Id == userId);
+
+                if (user != null)
+                {
+                    // Construct a success message with the user's name
+                    var name = user.firstName + " " + user.lastName;
+                    TempData["success"] = $"Article Successfully Deleted by {name}";
+
+
+                    // Deletes the article from the database
+                    _context.PostArticles.Remove(postArticle);
+
+                    var logEntry = new LogTransaction
+                    {
+                        LogName = name,
+                        LogPurpose = "Deleted an Article [" + postArticle.Title + "]",
+                        LogDate = DateTime.Now
+                    };
+                    _context.Add(logEntry);
+                }
+                else
+                {
+                    // Handle the case where the user is not found
+                    TempData["error"] = "Error Found";
+                }
             }
             
             await _context.SaveChangesAsync();

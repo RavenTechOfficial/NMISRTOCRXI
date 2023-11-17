@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -205,6 +206,7 @@ namespace thesis.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -218,6 +220,39 @@ namespace thesis.Areas.Identity.Pages.Account
                     await _userManager.AddToRoleAsync(user, Input.Roles.ToString());
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+					//Notifications
+
+					string USER_ID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+					var USER_ = _context.Users.FirstOrDefault(pu => pu.Id == USER_ID);
+                    var admintypecreated = user.Roles;
+
+
+                    if (USER_ != null)
+                    {
+                        // Construct a success message with the user's name
+                        var name = USER_.firstName + " " + USER_.lastName;
+                        TempData["success"] = $"Admin Successfully Added by {name}";
+
+
+                        var logEntry = new LogTransaction
+                        {
+                            LogName = name,
+                            LogPurpose = $"Created an Admin [{admintypecreated}]",
+                            LogDate = DateTime.Now
+                        };
+						_context.Add(logEntry);
+						await _context.SaveChangesAsync();
+					}
+                    else
+                    {
+                        // Handle the case where the user is not found
+                        TempData["error"] = "Error Found";
+                    }
+
+                    // Notification End
+
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
