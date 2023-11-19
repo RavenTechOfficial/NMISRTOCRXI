@@ -55,37 +55,10 @@ namespace thesis.Controllers
 
 		// GET: MTVapplication/Create
 		[Authorize(Policy = "RequireMtvUsers")]
-		public IActionResult Create(string accreditationNumber)
+		public IActionResult Create()
 		{
-
-			if (string.IsNullOrEmpty(accreditationNumber))
-			{
-
-				return View(new MtvApplicationViewModel());
-			}
-
-
-			var mtv = _context.MTVApplications.FirstOrDefault(p => p.AccreditionNo == accreditationNumber);
-
 			
-			if (mtv != null)
-			{
-				var mtvVM = new MtvApplicationViewModel
-				{
-					OwnerFname = mtv.OwnerFname,
-					OwnerMname = mtv.OwnerMname,
-					OwnerLname = mtv.OwnerLname,
-					Email = mtv.Email,
-					TelNo = mtv.TelNo,
-					FaxNo = mtv.FaxNo
-				};
-
-				
-				return View(mtvVM);
-			}
-
-
-			return View(mtv); 
+			return View();
 		}
 
 
@@ -318,9 +291,13 @@ namespace thesis.Controllers
 		[HttpPost]
 		public ActionResult GenerateRandomNumber()
 		{
-			Random random = new Random();
-			int randomNumber = random.Next(100000, 999999);
-			return Content(randomNumber.ToString());
+			DateTime date = DateTime.Now;
+			var mtv = _context.MTVApplications.Count();
+			var yearFormatted = (date.Year % 100).ToString("D2");
+			var mtvFormatted = mtv.ToString("D4");
+
+			var accreditation = "RTOCXI - " + yearFormatted + " - " + mtvFormatted;
+			return Content(accreditation);
 		}
 
 

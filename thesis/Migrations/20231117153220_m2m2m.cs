@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace thesis.Migrations
 {
     /// <inheritdoc />
-    public partial class one : Migration
+    public partial class m2m2m : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -100,6 +100,21 @@ namespace thesis.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Helpers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LogTransactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LogName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LogPurpose = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LogDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LogTransactions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -733,7 +748,8 @@ namespace thesis.Migrations
                     TotalNoFitForHumanConsumptionId = table.Column<int>(type: "int", nullable: false),
                     DestinationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DestinationAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CertificateStatus = table.Column<int>(type: "int", nullable: false)
+                    MICIssued = table.Column<int>(type: "int", nullable: false),
+                    MICCancelled = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -912,6 +928,9 @@ namespace thesis.Migrations
 
             migrationBuilder.DropTable(
                 name: "Feedbacks");
+
+            migrationBuilder.DropTable(
+                name: "LogTransactions");
 
             migrationBuilder.DropTable(
                 name: "MTVApplicationResults");

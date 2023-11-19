@@ -16,6 +16,7 @@
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<link rel="stylesheet" href="~/css/sidenav.css" asp-append-version="true" />
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 	<title>@ViewData["Title"] - NMIS</title>
 	@*<script src="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css"></script>*@
@@ -92,21 +93,9 @@
 						</a>
 					</li>
 					<li>
-						<a asp-area="Identity" asp-page="/Account/Register">
-							<i class='bx bx-user-plus'></i>
-							<span class="text">Register Admin Accounts</span>
-						</a>
-					</li>
-					<li>
 						<a asp-controller="UsersManagement" asp-action="Index">
 							<i class='bx bxs-user-account'></i>
 							<span class="text">Users Management</span>
-						</a>
-					</li>
-					<li>
-						<a asp-controller="PostArticles" asp-action="Create">
-							<i class='bx bxs-user-account'></i>
-							<span class="text">Create Article</span>
 						</a>
 					</li>
 					<li>

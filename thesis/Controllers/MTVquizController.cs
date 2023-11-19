@@ -23,8 +23,7 @@ namespace thesis.Controllers
 		[HttpPost]
 		public ActionResult SavePercentage(double percentage)
 		{
-			// Do whatever you need to do with the percentage
-			// For instance, save it to a database, etc.
+			
 
 			var application = _context.MTVApplications.OrderBy(p => p.Id).LastOrDefault();
 

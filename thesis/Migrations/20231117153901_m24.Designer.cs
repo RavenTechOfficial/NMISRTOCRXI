@@ -12,8 +12,8 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20231115191446_AddTransactions")]
-    partial class AddTransactions
+    [Migration("20231117153901_m24")]
+    partial class m24
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1103,9 +1103,6 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CertificateStatus")
-                        .HasColumnType("int");
-
                     b.Property<string>("DestinationAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1113,6 +1110,12 @@ namespace thesis.Migrations
                     b.Property<string>("DestinationName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MICCancelled")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MICIssued")
+                        .HasColumnType("int");
 
                     b.Property<int>("TotalNoFitForHumanConsumptionId")
                         .HasColumnType("int");

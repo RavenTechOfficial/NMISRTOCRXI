@@ -37,8 +37,8 @@ public class thesisContext : IdentityDbContext<AccountDetails>
 	public DbSet<Result> Results { get; set; }
 	public DbSet<PostArticle> PostArticles { get; set; }
 	public DbSet<Feedback> Feedbacks { get; set; }
-	public DbSet<LogTransaction> LogTransactions { get; set; }
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public DbSet<LogTransaction> LogTransactions { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
     }
