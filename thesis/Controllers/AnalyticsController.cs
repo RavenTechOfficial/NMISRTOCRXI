@@ -23,18 +23,37 @@ namespace thesis.Controllers
             var startDateOfYear = new DateTime(DateTime.Now.Year, 1, 1);
             var currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
-            var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries("Monthly", Species.Cattle, startDateOfYear, currentDate);
+			List<Species> selectedSpecies = new List<Species>
+			{
+				Species.Cattle
+			};
+
+			var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries("Monthly", selectedSpecies, startDateOfYear, currentDate);
             return View(analyticsViewModel);
         }
         [HttpPost]
         public IActionResult actionResult(AnalyticsViewModel analytics)
         {
-            var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries(
-                analytics.timeSeries,
-                analytics.species,
-                analytics.start,
-                analytics.end);
-            return View("Index", analyticsViewModel);
+			List<Species> selectedSpecies = new List<Species>();
+
+			if (analytics.CattleBool) selectedSpecies.Add(Species.Cattle);
+			if (analytics.CarabaoBool) selectedSpecies.Add(Species.Carabao);
+			if (analytics.SwineBool) selectedSpecies.Add(Species.Swine);
+			if (analytics.GoatBool) selectedSpecies.Add(Species.Goat);
+			if (analytics.ChickenBool) selectedSpecies.Add(Species.Chicken);
+			if (analytics.DuckBool) selectedSpecies.Add(Species.Duck);
+			if (analytics.SheepBool) selectedSpecies.Add(Species.Sheep);
+			if (analytics.HorseBool) selectedSpecies.Add(Species.Horse);
+			if (analytics.OstrichBool) selectedSpecies.Add(Species.Ostrich);
+			if (analytics.CrocodileBool) selectedSpecies.Add(Species.Crocodile);
+
+
+			var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries(
+				analytics.timeSeries,
+				selectedSpecies,
+				analytics.start,
+				analytics.end);
+			return View("Index", analyticsViewModel);
         }
 
     }

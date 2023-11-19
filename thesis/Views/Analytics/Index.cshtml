@@ -26,20 +26,40 @@
                         </div>
 
                         <div class="input-wrapper">
-                            <label for="species">Species</label>
-                            <select id="species" class="filter" asp-for="species">
-                                <option value="Cattle">Cattle</option>
-                                <option value="Carabao">Carabao</option>
-                                <option value="Swine">Swine</option>
-                                <option value="Goat">Goat</option>
-                                <option value="Chicken">Chicken</option>
-                                <option value="Duck">Duck</option>
-                                <option value="Sheep">Sheep</option>
-                                <option value="Horse">Horse</option>
-                                <option value="Ostrich">Ostrich</option>
-                                <option value="Crocodile">Crocodile</option>
-                            </select>
+                            <label>Species</label>
+                            <div class="filter">
+                                <input type="checkbox" id="cattle" name="CattleBool" value="true">
+                                <label for="cattle">Cattle</label><br>
+
+                                <input type="checkbox" id="carabao" name="CarabaoBool" value="true">
+                                <label for="carabao">Carabao</label><br>
+
+                                <input type="checkbox" id="swine" name="SwineBool" value="true">
+                                <label for="swine">Swine</label><br>
+
+                                <input type="checkbox" id="goat" name="GoatBool" value="true">
+                                <label for="goat">Goat</label><br>
+
+                                <input type="checkbox" id="chicken" name="ChickenBool" value="true">
+                                <label for="chicken">Chicken</label><br>
+
+                                <input type="checkbox" id="duck" name="DuckBool" value="true">
+                                <label for="duck">Duck</label><br>
+
+                                <input type="checkbox" id="sheep" name="SheepBool" value="true">
+                                <label for="sheep">Sheep</label><br>
+
+                                <input type="checkbox" id="horse" name="HorseBool" value="true">
+                                <label for="horse">Horse</label><br>
+
+                                <input type="checkbox" id="ostrich" name="OstrichBool" value="true">
+                                <label for="ostrich">Ostrich</label><br>
+
+                                <input type="checkbox" id="crocodile" name="CrocodileBool" value="true">
+                                <label for="crocodile">Crocodile</label>
+                            </div>
                         </div>
+
                         <div class="input-wrapper">
                             @Html.LabelFor(model => model.timeSeries, "Time Frame")
                             @Html.DropDownListFor(model => model.timeSeries, new List<SelectListItem>
