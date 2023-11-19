@@ -5,7 +5,7 @@
 namespace thesis.Migrations
 {
     /// <inheritdoc />
-    public partial class two : Migration
+    public partial class m24 : Migration
     {
         private string SuperAdminRoleId = Guid.NewGuid().ToString();
         private string InspectorAdminRoleId = Guid.NewGuid().ToString();
@@ -19,7 +19,6 @@ namespace thesis.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             SeedRolesSQL(migrationBuilder);
-
         }
 
         private void SeedRolesSQL(MigrationBuilder migrationBuilder)
@@ -41,7 +40,6 @@ namespace thesis.Migrations
             migrationBuilder.Sql(@$"INSERT INTO [dbo].[AspNetRoles] ([Id],[Name],[NormalizedName],[ConcurrencyStamp])
             VALUES ('{MTVUsersId}', 'MtvUsers', 'MTVUSERS', null);");
         }
-
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)

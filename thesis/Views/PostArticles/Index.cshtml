@@ -4,16 +4,25 @@
 <link rel="stylesheet" href="~/css/users.css" asp-append-version="true" />
 
 
+
 @if (User.IsInRole("SuperAdministrator"))
 {
 	<section id="content">
 
+		
 
 		<!-- MAIN STARTS-->
 		<main class="registration">
 			<div class="head-title">
 				<div class="left">
 					<h1>Articles Section</h1>
+				</div>
+			</div>
+			<div class="head-title">
+				<div class="left">
+					<a asp-controller="PostArticles" asp-action="Create" class="btn btn-primary">
+						<i class="bi bi-plus-circle"></i> Create Articles
+					</a>
 				</div>
 			</div>
 			<div class="table-container">

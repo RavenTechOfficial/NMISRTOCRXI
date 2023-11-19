@@ -12,8 +12,8 @@ using thesis.Data;
 namespace thesis.Migrations
 {
     [DbContext(typeof(thesisContext))]
-    [Migration("20231115164623_two")]
-    partial class two
+    [Migration("20231117153220_m2m2m")]
+    partial class m2m2m
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -429,6 +429,30 @@ namespace thesis.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Helpers");
+                });
+
+            modelBuilder.Entity("thesis.Models.LogTransaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("LogDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LogName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogPurpose")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogTransactions");
                 });
 
             modelBuilder.Entity("thesis.Models.MTVApplication", b =>
@@ -1079,9 +1103,6 @@ namespace thesis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CertificateStatus")
-                        .HasColumnType("int");
-
                     b.Property<string>("DestinationAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1089,6 +1110,12 @@ namespace thesis.Migrations
                     b.Property<string>("DestinationName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MICCancelled")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MICIssued")
+                        .HasColumnType("int");
 
                     b.Property<int>("TotalNoFitForHumanConsumptionId")
                         .HasColumnType("int");

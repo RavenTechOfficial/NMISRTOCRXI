@@ -29,6 +29,9 @@ namespace thesis.Controllers
 
 			return View(mtvRegistrationViewModel);
 		}
+
+
+
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ProcessApprovement(string action, int vehicleId, MtvRegistrationStatusViewModel checks)

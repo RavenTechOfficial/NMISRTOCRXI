@@ -25,30 +25,34 @@
     width: 100%;
     max-width: 400px;
     z-index: 5001;
+    background: var(--light);
+    border: 1px solid var(--dark);
 }
 
     #content .geolocation .search input {
         height: 50px;
-        text-indent: 25px;
+        text-indent: 15px;
         border: 1.5px solid var(--dark);
-        background: var(--light);
-        color: var(--dark);
+        background-color: var(--light);
+        -webkit-text-fill-color: var(--dark);
+        max-width: 280px;
+        border: none;
     }
 
         #content .geolocation .search input:focus {
             box-shadow: none;
-            border: 2px solid var(--blue);
         }
 
     #content .geolocation .search .bx-search {
         position: absolute;
-        top: 18px;
-        left: 16px;
-        color: var(--dark);
+        top: 12px;
+        right: 4px;
+        color: #F9F9F9;
     }
 
     #content .geolocation .search button {
         position: absolute;
+        padding-right: 20px;
         top: 5px;
         right: 5px;
         height: 40px;
@@ -57,9 +61,12 @@
     }
 
 .suggestions {
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    -webkit-text-fill-color: var(--dark);
+    background-color: var(--light);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 8px;
+    margin-top: 5px;
     max-height: 200px;
     overflow-y: auto;
     position: absolute;
@@ -73,7 +80,7 @@
 }
 
     .suggestion:hover {
-        background-color: #f1f1f1; /* Light gray background on hover */
+        background-color: var(--light-blue); /* Light gray background on hover */
     }
 
 
