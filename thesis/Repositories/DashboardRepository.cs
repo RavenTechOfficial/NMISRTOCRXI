@@ -25,10 +25,8 @@ namespace thesis.Repositories
 		private List<double> goats;
 		private List<double> chickens;
 		private List<double> ducks;
-		private List<double> horses;
+		private List<double> hogs;
 		private List<double> sheeps;
-		private List<double> ostrichs;
-		private List<double> crocodiles;
 
 		public DashboardRepository(thesisContext context)
         {
@@ -44,10 +42,8 @@ namespace thesis.Repositories
 			this.goats = new List<double>();
 			this.chickens = new List<double>();
 			this.ducks = new List<double>();
-			this.horses = new List<double>();
+			this.hogs = new List<double>();
 			this.sheeps = new List<double>();
-			this.ostrichs = new List<double>();
-			this.crocodiles = new List<double>();
 		}
         public async Task<ICollection<totalNoFitForHumanConsumptions>> GetTotalNoFitForHumanConsumptions()
         {
@@ -91,10 +87,8 @@ namespace thesis.Repositories
                 var goat = StackBarsSpeciesSeries(Species.Goat, startOfMonth, endOfMonth);
                 var chicken = StackBarsSpeciesSeries(Species.Chicken, startOfMonth, endOfMonth);
                 var duck = StackBarsSpeciesSeries(Species.Duck, startOfMonth, endOfMonth);
-                var horse = StackBarsSpeciesSeries(Species.Horse, startOfMonth, endOfMonth);
+                var hog = StackBarsSpeciesSeries(Species.Hog, startOfMonth, endOfMonth);
                 var sheep = StackBarsSpeciesSeries(Species.Sheep, startOfMonth, endOfMonth);
-                var ostrich = StackBarsSpeciesSeries(Species.Ostrich, startOfMonth, endOfMonth);
-                var crocodile = StackBarsSpeciesSeries(Species.Crocodile, startOfMonth, endOfMonth);
 
                 monthRangesApproved.Add(monthRangeApproved);
                 monthRangesCondemned.Add(monthRangeCondemned);
@@ -105,10 +99,8 @@ namespace thesis.Repositories
                 goats.Add(goat);
                 chickens.Add(chicken);
                 ducks.Add(duck);
-                horses.Add(horse);
+                hogs.Add(hog);
                 sheeps.Add(sheep);
-                ostrichs.Add(ostrich);
-                crocodiles.Add(crocodile);
 
                 //suspects.Add(suspect);
                 //condemneds.Add(condemned);
@@ -147,10 +139,8 @@ namespace thesis.Repositories
                 Goat = goats,
                 Chicken = chickens,
                 Duck = ducks,
-                Horse = horses,
+                Hog = hogs,
                 Sheep = sheeps,
-                Ostrich = ostrichs,
-                Crocodile = crocodiles,
 
             };
         }

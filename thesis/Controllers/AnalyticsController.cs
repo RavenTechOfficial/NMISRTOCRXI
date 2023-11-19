@@ -43,9 +43,7 @@ namespace thesis.Controllers
 			if (analytics.ChickenBool) selectedSpecies.Add(Species.Chicken);
 			if (analytics.DuckBool) selectedSpecies.Add(Species.Duck);
 			if (analytics.SheepBool) selectedSpecies.Add(Species.Sheep);
-			if (analytics.HorseBool) selectedSpecies.Add(Species.Horse);
-			if (analytics.OstrichBool) selectedSpecies.Add(Species.Ostrich);
-			if (analytics.CrocodileBool) selectedSpecies.Add(Species.Crocodile);
+			if (analytics.HorseBool) selectedSpecies.Add(Species.Hog);
 
 
 			var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries(

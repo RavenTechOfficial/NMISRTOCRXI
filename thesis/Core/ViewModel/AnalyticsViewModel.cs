@@ -19,10 +19,8 @@ namespace thesis.Core.ViewModel
         public List<double> Goat { get; set; }
         public List<double> Chicken { get; set; }
         public List<double> Duck { get; set; }
-        public List<double> Horse { get; set; }
+        public List<double> Hog { get; set; }
         public List<double> Sheep { get; set; }
-        public List<double> Ostrich { get; set; }
-        public List<double> Crocodile { get; set; }
         public List<double> Suspect { get; set; }
         public List<double> Condemned { get; set; }
         public List<double> Pass { get; set; }

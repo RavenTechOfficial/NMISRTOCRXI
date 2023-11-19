@@ -108,63 +108,164 @@
 </section>
 
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+
 <script>
-	//var nmisrtocxi = @((Model.NMISRTOCXI ? "true" : "false").ToLower());
-	var map = L.map('map');
-	map.setView([7.1907, 125.4553], 8);
+	const selectBtn = document.querySelector(".select-btn"),
+		items = document.querySelectorAll(".item");
+
+	selectBtn.addEventListener("click", () => {
+		selectBtn.classList.toggle("open");
+	});
+
+	// Initialize the Leaflet map
+	var map = L.map('map', {
+		center: [7.1907, 125.4553],
+		zoom: 9,
+		zoomControl: false
+	});
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
-	@{
-		var addressCount = Model.address.Length;
-	}
 
-	@for (var i = 0; i < addressCount; i++)
-	{
-		var addressParts = Model.address[i].Split(','); // Assuming comma-separated parts
+	var locations = [
+		{ type: "MeatDealer", address: "MaaDavao City Slaughterhouse" },
+		{ type: "MeatDealer", address: "MATANAO, LOWER MARBER" },
+		{ type: "MeatDestination", address: " MALALAG, POBLACION" },
+		{ type: "MeatOrigin", address: " SANTA CRUZ, Zone III" },
+		{ type: "Slaughterhouse", address: "Lupon Slaughterhouse, 11,DAVAO ORIENTAL, LUPON, POBLACION" },
+		{ type: "CSW", address: "11, Davao Oriental, LUPON, POBLACION" },
+		{ type: "CSW", address: "11, Davao Oriental, LUPON, POBLACION" },
 
-		// Check if there are at least 4 parts (region, province, municipality, barangay)
-		if (addressParts.Length >= 4)
-		{
-			var municipality = addressParts[2].Trim(); // third part
-			var barangay = addressParts[3].Trim();     // fourth part
+		{ type: "CSW", address: "11, Davao Oriental, LUPON Port" },
+		{ type: "CSW", address: "11, Davao Oriental, LUPON Port" },
+		{ type: "NMISOffice", address: "11,Davao Del Sur, Davao City, Bangkerohan, NMIS RTOC XI" },
+		{ type: "NMISOffice", address: "11,Davao Del Sur, Davao City, Bangkerohan, NMIS RTOC XI" },
 
-			var geolocation = municipality + ", " + barangay;
+	];
 
-			var color = Model.colors[i];
-			@:fetchGeolocation('@geolocation', '@color');
-		}
-		// else: handle or ignore addresses that don't fit the expected format
-	}
 
-		function fetchGeolocation(address, color) {
-			var url = 'https://geocode.maps.co/search?q=' + encodeURIComponent(address);
+	// Define the icons
+	var icons = {
+		MeatDealer: L.icon({
+			iconUrl: '/img/Markers/MeatDealerMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [-30, 40],
+			popupAnchor: [0, -40]
+		}),
+		MeatDestination: L.icon({
+			iconUrl: '/img/Markers/meatDestinationMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		MeatOrigin: L.icon({
+			iconUrl: '/img/Markers/meatOriginMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		Slaughterhouse: L.icon({
+			iconUrl: '/img/Markers/slaughterhouseMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		PDP: L.icon({
+			iconUrl: '/img/Markers/pdpMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		CSW: L.icon({
+			iconUrl: '/img/Markers/cswMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		MCP: L.icon({
+			iconUrl: '/img/Markers/mcpMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		NMISOffice: L.icon({
+			iconUrl: '/img/Markers/nmisOfficeMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		})
+	};
+
+	var markers = L.markerClusterGroup();
+
+
+	function fetchGeolocation(address) {
+		return new Promise((resolve, reject) => {
+			var apiKey = 'hYMy6xfMTFlvLlwrgU9UGgyRezH8czpA7kHsRMk9CmMcRus7FTgJTchhVV55mEer';
+			var url = `https://api.distancematrix.ai/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
 
 			fetch(url)
 				.then(response => response.json())
 				.then(data => {
-					// Extract the latitude and longitude from the response
-					var lat = data[0].lat;
-					var lon = data[0].lon;
+					console.log('DistanceMatrix.ai response:', data);
 
-					// Add a marker to the map using the retrieved coordinates
-					var marker = L.marker([lat, lon]).addTo(map);
-
-					// Create a circle with the specified color for the address
-					var circle = L.circle([lat, lon], {
-						color: color,
-						fillColor: color,
-						fillOpacity: 0.5,
-						radius: 500
-					}).addTo(map);
+					if (data.status === 'OK' && data.result && data.result.length > 0) {
+						var lat = data.result[0].geometry.location.lat;
+						var lon = data.result[0].geometry.location.lng;
+						resolve([lat, lon]);
+					} else {
+						console.error('No results found:', data);
+						reject('Location not found: ' + (data.error_message || 'No results'));
+					}
 				})
 				.catch(error => {
-					console.error('Error fetching geolocation:', error);
+					console.error('Geocoding error:', error);
+					reject('Geocoding error: ' + error.message);
 				});
-		}
+		});
+	}
+
+	// Process each location
+	var locationMarkers = {};
+
+	locations.forEach(function (location) {
+		fetchGeolocation(location.address)
+			.then(latLng => {
+				var locationKey = location.type + "|" + location.address;
+
+				if (!locationMarkers[locationKey]) {
+					locationMarkers[locationKey] = {
+						count: 0,
+						marker: null
+					};
+				}
+
+				locationMarkers[locationKey].count++;
+
+				var icon = icons[location.type];
+				if (icon) {
+					if (locationMarkers[locationKey].marker) {
+						markers.removeLayer(locationMarkers[locationKey].marker);
+					}
+
+					var markerInstance = L.marker(latLng, { icon: icon });
+					markers.addLayer(markerInstance);
+
+					locationMarkers[locationKey].marker = markerInstance;
+
+					var tooltipText = "<b>" + location.address + "</b> - " + location.type + "<br/>Count: " + locationMarkers[locationKey].count;
+					markerInstance.bindTooltip(tooltipText, { permanent: false, direction: 'top' });
+				}
+			})
+			.catch(error => console.error('Geolocation error:', error));
+	});
+
+	map.addLayer(markers);
 
 </script>
 <script src="~/js/geolocation.js" asp-append-version="true"></script>
