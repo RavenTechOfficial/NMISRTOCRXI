@@ -27,38 +27,49 @@
 
                         <div class="input-wrapper">
                             <label>Species</label>
-                            <div class="filter">
-                                <input type="checkbox" id="cattle" name="CattleBool" value="true">
-                                <label for="cattle">Cattle</label><br>
+                            <div class="filter meatEstablishment">
+                                <div>
+                                    @Html.CheckBoxFor(model => model.CattleBool, new { id = "cattle", @class = "checkbox" })
+                                    <label for="cattle">Cattle</label><br>
+                                </div>
 
-                                <input type="checkbox" id="carabao" name="CarabaoBool" value="true">
-                                <label for="carabao">Carabao</label><br>
+                                <div>
+                                    @Html.CheckBoxFor(model => model.CarabaoBool, new { id = "carabao", @class = "checkbox" })
+                                    <label for="carabao">Carabao</label><br>
+                                </div>
 
-                                <input type="checkbox" id="swine" name="SwineBool" value="true">
-                                <label for="swine">Swine</label><br>
+                                <div>
+                                    @Html.CheckBoxFor(model => model.SwineBool, new { id = "swine", @class = "checkbox" })
+                                    <label for="swine">Swine</label><br>
+                                </div>
 
-                                <input type="checkbox" id="goat" name="GoatBool" value="true">
-                                <label for="goat">Goat</label><br>
+                                <div>
+                                    @Html.CheckBoxFor(model => model.GoatBool, new { id = "goat", @class = "checkbox" })
+                                    <label for="goat">Goat</label><br>
+                                </div>
 
-                                <input type="checkbox" id="chicken" name="ChickenBool" value="true">
-                                <label for="chicken">Chicken</label><br>
+                                <div>
+                                    @Html.CheckBoxFor(model => model.ChickenBool, new { id = "chicken", @class = "checkbox" })
+                                    <label for="chicken">Chicken</label><br>
+                                </div>
 
-                                <input type="checkbox" id="duck" name="DuckBool" value="true">
-                                <label for="duck">Duck</label><br>
+                                <div>
+                                    @Html.CheckBoxFor(model => model.DuckBool, new { id = "duck", @class = "checkbox" })
+                                    <label for="duck">Duck</label><br>
+                                </div>
 
-                                <input type="checkbox" id="sheep" name="SheepBool" value="true">
-                                <label for="sheep">Sheep</label><br>
+                                <div>
+                                    @Html.CheckBoxFor(model => model.SheepBool, new { id = "sheep", @class = "checkbox" })
+                                    <label for="sheep">Sheep</label><br>
+                                </div>
 
-                                <input type="checkbox" id="horse" name="HorseBool" value="true">
-                                <label for="horse">Horse</label><br>
-
-                                <input type="checkbox" id="ostrich" name="OstrichBool" value="true">
-                                <label for="ostrich">Ostrich</label><br>
-
-                                <input type="checkbox" id="crocodile" name="CrocodileBool" value="true">
-                                <label for="crocodile">Crocodile</label>
+                                <div>
+                                    @Html.CheckBoxFor(model => model.HorseBool, new { id = "horse", @class = "checkbox" })
+                                    <label for="horse">Horse</label><br>
+                                </div>
                             </div>
                         </div>
+
 
                         <div class="input-wrapper">
                             @Html.LabelFor(model => model.timeSeries, "Time Frame")
@@ -893,17 +904,11 @@
             name: 'Duck',
             data: [@string.Join(",", Model.Duck)]
         }, {
-            name: 'Horse',
-            data: [@string.Join(",", Model.Horse)]
+            name: 'Hog',
+            data: [@string.Join(",", Model.Hog)]
         }, {
             name: 'Sheep',
             data: [@string.Join(",", Model.Sheep)]
-        }, {
-            name: 'Ostrich',
-            data: [@string.Join(",", Model.Ostrich)]
-        }, {
-            name: 'Crocodile',
-            data: [@string.Join(",", Model.Crocodile)]
         }],
 
 

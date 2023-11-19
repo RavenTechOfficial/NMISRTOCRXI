@@ -9,8 +9,6 @@
       Chicken,
       Duck,
       Sheep,
-	  Horse,
-	  Ostrich,
-      Crocodile
+	  Hog
 	}
 }

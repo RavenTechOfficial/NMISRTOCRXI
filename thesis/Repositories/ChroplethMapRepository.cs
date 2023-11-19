@@ -46,10 +46,8 @@ namespace thesis.Repositories
 				Goat = speciesValues[Species.Goat],
 				Chicken = speciesValues[Species.Chicken],
 				Duck = speciesValues[Species.Duck],
-				Horse = speciesValues[Species.Horse],
+				Hog = speciesValues[Species.Hog],
 				Sheep = speciesValues[Species.Sheep],
-				Ostrich = speciesValues[Species.Ostrich],
-				Crocodile = speciesValues[Species.Crocodile],
 				Address = addresses.Distinct().ToList()
 			};
 		}
