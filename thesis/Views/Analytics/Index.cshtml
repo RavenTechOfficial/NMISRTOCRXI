@@ -26,6 +26,22 @@
                         </div>
 
                         <div class="input-wrapper">
+                            <label for="species-dropdown">Species</label>
+                            <div class="dropdown">
+                                <button id="dropdownButton" type="button" class="dropbtn">Select Species</button>
+                                <div id="species-dropdown" class="dropdown-content">
+                                    <label>@Html.CheckBoxFor(model => model.SwineBool) Swine</label>
+                                    <label>@Html.CheckBoxFor(model => model.CattleBool) Cattle</label>
+                                    <label>@Html.CheckBoxFor(model => model.CarabaoBool) Carabao</label>
+                                    <label>@Html.CheckBoxFor(model => model.GoatBool) Goat</label>
+                                    <label>@Html.CheckBoxFor(model => model.ChickenBool) Chicken</label>
+                                    <label>@Html.CheckBoxFor(model => model.DuckBool) Duck</label>
+                                    <label>@Html.CheckBoxFor(model => model.SheepBool) Sheep</label>
+                                    <label>@Html.CheckBoxFor(model => model.HorseBool) Horse</label>
+                                </div>
+                            </div>
+                        </div>
+                        @* <div class="input-wrapper">
                             <label>Species</label>
                             <div class="filter meatEstablishment">
                                 <div>
@@ -65,10 +81,10 @@
 
                                 <div>
                                     @Html.CheckBoxFor(model => model.HorseBool, new { id = "horse", @class = "checkbox" })
-                                    <label for="horse">Horse</label><br>
+                                    <label for="hog">Hog</label><br>
                                 </div>
                             </div>
-                        </div>
+                        </div> *@
 
 
                         <div class="input-wrapper">
@@ -246,6 +262,42 @@
     });
 
 
+    //Multiselect-Checkbox
+    const dropBtn = document.getElementById("dropdownButton"),
+        dropdownContent = document.getElementById("species-dropdown");
+
+    dropBtn.addEventListener("click", () => {
+        dropdownContent.classList.toggle("show");
+    });
+
+    const items = document.querySelectorAll('#species-dropdown input[type="checkbox"]');
+
+    items.forEach(item => {
+        item.addEventListener("click", (event) => {
+            event.stopPropagation();
+            updateButtonLabel();
+        });
+    });
+
+    function updateButtonLabel() {
+        let checkedItems = document.querySelectorAll('#species-dropdown input[type="checkbox"]:checked'),
+            btnText = dropBtn;
+
+        if (checkedItems.length > 0) {
+            btnText.innerText = `${checkedItems.length} Selected`;
+        } else {
+            btnText.innerText = "Select Species";
+        }
+    }
+
+    window.addEventListener('click', (event) => {
+        if (!dropBtn.contains(event.target) && !dropdownContent.contains(event.target)) {
+            dropdownContent.classList.remove('show');
+        }
+    });
+
+
+
     let computedStyle = getComputedStyle(document.documentElement);
     let labelColorDark = computedStyle.getPropertyValue('--dark').trim();
     let labelColorLight = computedStyle.getPropertyValue('--light').trim();
@@ -312,7 +364,7 @@
                 type: "area",
                 background: "transparent",
                 height: 550,
-                width: 1500,
+                // width: 1500,
                 stacked: false,
                 zoom: {
                     autoScaleYaxis: true

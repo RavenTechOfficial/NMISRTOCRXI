@@ -275,7 +275,9 @@
     //     barChart.render();
     // }
 
-
+    let computedStyle = getComputedStyle(document.documentElement);
+    let labelColorDark = computedStyle.getPropertyValue('--dark').trim();
+    let labelColorLight = computedStyle.getPropertyValue('--light').trim();
 
 
 

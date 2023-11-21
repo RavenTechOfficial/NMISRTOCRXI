@@ -7,15 +7,18 @@ namespace thesis.Repositories
 {
 	public class GeolocationRepository : IGeolocationRepository
 	{
+		
 		private readonly thesisContext _context;
-
+		private List<GeoData> geodatas;
 		public GeolocationRepository(thesisContext context)
         {
 			_context = context;
+            geodatas = new List<GeoData>();
 		}
 		public GeolocationViewModel Getgeolocation(GeolocationViewModel geolocationData)
 		{
 			var meatDealers = _context.MeatDealers.Select(p => p.Address).ToList();
+			var meatDestinations = _context.SummaryAndDistributionOfMICs.Select(p => p.DestinationAddress).ToList();
 			var summary = _context.SummaryAndDistributionOfMICs
 				.Select(p => p.DestinationAddress)
 				.ToList();
@@ -32,42 +35,47 @@ namespace thesis.Repositories
 			var colors = new List<string>();
             if (meatDealer)
             {
-                var distinctAddresses = meatDealers.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+                var distinctAddresses = meatDealers.Where(address => !string.IsNullOrEmpty(address));
 
-                addressList.AddRange(distinctAddresses);
 
                 foreach (var address in distinctAddresses)
                 {
-                    colors.Add("red");
+                    geodatas.Add(new GeoData{
+                        Type = "MeatDealer",
+                        Address = address
+					});
                 }
             }
             if (meatDestination)
             {
-                if (summary != null)
-                {
-                    var distinctAddresses = summary.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+				var distinctAddresses = meatDestinations.Where(DestinationAddress => !string.IsNullOrEmpty(DestinationAddress));
 
-                    addressList.AddRange(distinctAddresses);
 
-                    foreach (var address in distinctAddresses)
-                    {
-                        colors.Add("blue");
-                    }
-                }
-            }
+				foreach (var address in distinctAddresses)
+				{
+					geodatas.Add(new GeoData
+					{
+						Type = "MeatDestination",
+						Address = address
+					});
+				}
+			}
             if (slaughterhouses)
             {
                 var meatEst = MeatEstType(EstablishmentType.SLH);
                 if (meatEst != null)
                 {
-                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address));
 
-                    addressList.AddRange(distinctAddresses);
-                    foreach (var address in distinctAddresses)
-                    {
-                        colors.Add("green");
-                    }
-                }
+					foreach (var address in distinctAddresses)
+					{
+						geodatas.Add(new GeoData
+						{
+							Type = "Slaughterhouse",
+							Address = address
+						});
+					}
+				}
             }
 
             if (poultryDressingPlants)
@@ -75,14 +83,17 @@ namespace thesis.Repositories
                 var meatEst = MeatEstType(EstablishmentType.PDP);
                 if (meatEst != null)
                 {
-                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address));
 
-                    addressList.AddRange(distinctAddresses);
-                    foreach (var address in distinctAddresses)
-                    {
-                        colors.Add("blue");
-                    }
-                }
+					foreach (var address in distinctAddresses)
+					{
+						geodatas.Add(new GeoData
+						{
+							Type = "PDP",
+							Address = address
+						});
+					}
+				}
             }
 
             if (meatcuttinplants)
@@ -90,14 +101,17 @@ namespace thesis.Repositories
                 var meatEst = MeatEstType(EstablishmentType.MCP);
                 if (meatEst != null)
                 {
-                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address));
 
-                    addressList.AddRange(distinctAddresses);
-                    foreach (var address in distinctAddresses)
-                    {
-                        colors.Add("white");
-                    }
-                }
+					foreach (var address in distinctAddresses)
+					{
+						geodatas.Add(new GeoData
+						{
+							Type = "MCP",
+							Address = address
+						});
+					}
+				}
             }
 
             if (coldstoragewarehouse)
@@ -105,20 +119,22 @@ namespace thesis.Repositories
                 var meatEst = MeatEstType(EstablishmentType.CSW);
                 if (meatEst != null)
                 {
-                    var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address)).Distinct();
+					var distinctAddresses = meatEst.Where(address => !string.IsNullOrEmpty(address));
 
-                    addressList.AddRange(distinctAddresses);
-                    foreach (var address in distinctAddresses)
-                    {
-                        colors.Add("black");
-                    }
-                }
+					foreach (var address in distinctAddresses)
+					{
+						geodatas.Add(new GeoData
+						{
+							Type = "CSW",
+							Address = address
+						});
+					}
+				}
             }
 
             return new GeolocationViewModel()
 			{
-				address = addressList.ToArray(),
-				colors = colors.ToArray(),
+				GeoDatas = geodatas
 			};
 		}
 

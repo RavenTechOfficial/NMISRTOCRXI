@@ -46,30 +46,24 @@
 				<ul class="list-items">
 					<form method="post" action="/ChoroplethMap/ActionResult">
 					<li class="item" data-type="heatmap">
-							@*<span class="checkbox">*@
-						<input type="radio" name="selectedOption" value="Meat Sources" id="meatSources">
-							@*<label for="meatSources">
-						<i class='bx bx-check check-icon'></i>
-						</label>*@
-							@*</span>*@
-						<span class="item-text">Meat Sources (Weight)</span>
+						<label>
+								@Html.CheckBoxFor(model => model.MeatSourcesBool, new { @class = "single-checkbox", @id = "meatSources" })
+							<span class="item-text ms-1">Meat Sources (Weight)</span>
+						</label>
 					</li>
 					<li class="item" data-type="heatmap">
-							@*<span class="checkbox">*@
-						<input type="radio" name="selectedOption" value="Meat Distribution" id="meatDistribution">
-							@*<label for="meatDistribution">
-						<i class='bx bx-check check-icon'></i>
-						</label>*@
-							@*</span>*@
-						<span class="item-text">Meat Distribution (Weight)</span>
+						<label>
+								@Html.CheckBoxFor(model => model.MeatDestinationBool, new { @class = "single-checkbox", @id = "meatDistribution" })
+							<span class="item-text ms-1">Meat Distribution (Weight)</span>
+						</label>
 					</li>
 					<button type="submit" class="btn btn-primary">Apply</button>
 					</form>
 				</ul>
-
 			</div>
 
-			<div class="container species">
+
+			@* <div class="container species">
 				<div class="select-btn">
 					<span class="btn-text">Select Species</span>
 					<span class="arrow-dwn">
@@ -105,7 +99,7 @@
 					<button type="button" class="btn btn-primary">Apply</button>
 				</ul>
 			</div>
-
+ *@
 
 		</div>
 

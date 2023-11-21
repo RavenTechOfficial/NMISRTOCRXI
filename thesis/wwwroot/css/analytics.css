@@ -1,20 +1,29 @@
-﻿/* Filters Starts */
+﻿
+section#content
+{
+    margin-top: -25px;
+    overflow:hidden;
+}
 
-#filtersContainer {
+
+/* Filters Starts */
+
+#content main #filtersContainer {
     display: none;
     flex-wrap: wrap;
 }
 
-#toggleFiltersButton {
+#content main #toggleFiltersButton {
+    margin-top: 10px;
     margin-bottom: 10px;
     border: 1px solid var(--blue);
     background-color: var(--blue);
-    padding: 5px 10px;
+    padding: 10px 15px;
     color: var(--light);
     border-radius: 15px;
 }
 
-.filter-box {
+#content main .filter-box {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -22,14 +31,14 @@
     color: var(--dark);
 }
 
-.input-wrapper {
+#content main .input-wrapper {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
     margin-left: 10px;
 }
 
-.filter {
+#content main .filter {
     width: 160px;
     padding: 10px;
     color: var(--dark);
@@ -38,12 +47,53 @@
     border-radius: 5px;
 }
 
-    .filter.meatEstablishment {
-        width: 250px;
-    }
+#content main .filter.meatEstablishment {
+    width: 250px;
+}
 
-.input-wrapper label {
+#content main .input-wrapper label {
     margin-bottom: 5px;
+}
+
+#content main .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+#content main .dropbtn {
+    min-width: 160px;
+    border: solid 1px var(--dark);
+    border-radius: 5px;
+    justify-content: space-between;
+    background-color: var(--light);
+    color: var(--dark);
+    padding: 11px;
+    cursor: pointer;
+}
+
+#content main .dropdown-content {
+    margin-top: 5px;
+    display: none;
+    position: absolute;
+    background-color: var(--light);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+#content main .dropdown-content label {
+    color: var(--dark);
+    padding: 6px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+#content main .dropdown-content label:hover {
+    background-color: var(--light-blue)
+}
+
+#content main .show {
+    display: block;
 }
 
 /* Filters Ends */
@@ -137,6 +187,7 @@
     flex-grow: 1;
     flex-basis: 500px;
     height: auto;
+    overflow-x: hidden;
 }
 
 /* Area Charts ENDS*/

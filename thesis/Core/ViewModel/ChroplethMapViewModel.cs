@@ -11,5 +11,7 @@
         public List<double> Hog { get; set; }
         public List<double> Sheep { get; set; }
         public List<string> Address { get; set; }
+        public bool MeatSourcesBool { get; set; }
+        public bool MeatDestinationBool { get; set; }
     }
 }

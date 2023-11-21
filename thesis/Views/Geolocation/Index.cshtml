@@ -112,12 +112,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
 
 <script>
-	const selectBtn = document.querySelector(".select-btn"),
-		items = document.querySelectorAll(".item");
-
-	selectBtn.addEventListener("click", () => {
-		selectBtn.classList.toggle("open");
-	});
 
 	// Initialize the Leaflet map
 	var map = L.map('map', {
@@ -131,22 +125,22 @@
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
+	// var locations = [
+	// 	{ type: "MeatDealer", address: "MaaDavao City Slaughterhouse" },
+	// 	{ type: "MeatDealer", address: "MATANAO, LOWER MARBER" },
+	// 	{ type: "MeatDestination", address: " MALALAG, POBLACION" },
+	// 	{ type: "MeatOrigin", address: " SANTA CRUZ, Zone III" },
+	// 	{ type: "Slaughterhouse", address: "Lupon Slaughterhouse, 11,DAVAO ORIENTAL, LUPON, POBLACION" },
+	// 	{ type: "CSW", address: "11, Davao Oriental, LUPON, POBLACION" },
+	// 	{ type: "CSW", address: "11, Davao Oriental, LUPON, POBLACION" },
 
-	var locations = [
-		{ type: "MeatDealer", address: "MaaDavao City Slaughterhouse" },
-		{ type: "MeatDealer", address: "MATANAO, LOWER MARBER" },
-		{ type: "MeatDestination", address: " MALALAG, POBLACION" },
-		{ type: "MeatOrigin", address: " SANTA CRUZ, Zone III" },
-		{ type: "Slaughterhouse", address: "Lupon Slaughterhouse, 11,DAVAO ORIENTAL, LUPON, POBLACION" },
-		{ type: "CSW", address: "11, Davao Oriental, LUPON, POBLACION" },
-		{ type: "CSW", address: "11, Davao Oriental, LUPON, POBLACION" },
+	// 	{ type: "CSW", address: "11, Davao Oriental, LUPON Port" },
+	// 	{ type: "CSW", address: "11, Davao Oriental, LUPON Port" },
+	// 	{ type: "NMISOffice", address: "11,Davao Del Sur, Davao City, Bangkerohan, NMIS RTOC XI" },
+	// 	{ type: "NMISOffice", address: "11,Davao Del Sur, Davao City, Bangkerohan, NMIS RTOC XI" },
 
-		{ type: "CSW", address: "11, Davao Oriental, LUPON Port" },
-		{ type: "CSW", address: "11, Davao Oriental, LUPON Port" },
-		{ type: "NMISOffice", address: "11,Davao Del Sur, Davao City, Bangkerohan, NMIS RTOC XI" },
-		{ type: "NMISOffice", address: "11,Davao Del Sur, Davao City, Bangkerohan, NMIS RTOC XI" },
-
-	];
+	// ];
+	var locations = @Html.Raw(Json.Serialize(Model.GeoDatas));
 
 
 	// Define the icons
@@ -154,7 +148,7 @@
 		MeatDealer: L.icon({
 			iconUrl: '/img/Markers/MeatDealerMarker.png',
 			iconSize: [80, 75],
-			iconAnchor: [-30, 40],
+			iconAnchor: [30, 40],
 			popupAnchor: [0, -40]
 		}),
 		MeatDestination: L.icon({

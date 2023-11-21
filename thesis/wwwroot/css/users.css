@@ -18,6 +18,14 @@
     margin-left: 5%;
     margin-top: 50px;
 }
+.registration .createBtn {
+    border: 1px solid var(--blue);
+    background-color: var(--blue);
+    padding: 10px 15px;
+    color: var(--light);
+    border-radius: 15px;
+}
+
 
 /*Responsive*/
 @media screen and (max-width: 1060px) {
