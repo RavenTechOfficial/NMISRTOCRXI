@@ -191,163 +191,320 @@
 
 else
 {
-	<link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
-	
+	<style data-tag="reset-style-sheet">
+		html {
+			line-height: 1.15;
+		}
 
-	<section id="content">
-		<!-- MAIN STARTS-->
-		<main class="registration">
-			<div class="container">
-				<header>Registration Form</header>
+		body {
+			margin: 0;
+		}
 
-				<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form" enctype="multipart/form-data">
-					<div class="column">
-						<div class="input-box">
-							<label>First Name</label>
-							<input asp-for="Input.firstName" autocomplete="firstname" aria-required="true" type="text" placeholder="Enter your First Name" required />
-							<span asp-validation-for="Input.firstName" class="text-danger"></span>
-						</div>
-						<div class="input-box">
-							<label>Middle Name</label>
-							<input type="text" asp-for="Input.middleName" autocomplete="middlename" aria-required="true" placeholder="Enter your Middle Name" required />
-							<span asp-validation-for="Input.middleName" class="text-danger"></span>
-						</div>
-						<div class="input-box">
-							<label>Last Name</label>
-							<input type="text" asp-for="Input.lastName" autocomplete="lastname" aria-required="true" placeholder="Enter your Last Name" required />
-							<span asp-validation-for="Input.lastName" class="text-danger"></span>
-						</div>
-					</div>
+		* {
+			box-sizing: border-box;
+			border-width: 0;
+			border-style: solid;
+		}
 
-					<div class="input-box address">
-						<label>Address</label>
-						<div class="column">
-							<div class="select-box">
-								<select id="regionSelect" onchange="populateProvinces()">
-									<option hidden>Region</option>
-									<!-- Add region options here -->
-								</select>
+		p, li, ul, pre, div, h1, h2, h3, h4, h5, h6, figure, blockquote, figcaption {
+			margin: 0;
+			padding: 0;
+		}
+
+		button {
+			background-color: transparent;
+		}
+
+		button, input, optgroup, select, textarea {
+			font-family: inherit;
+			font-size: 100%;
+			line-height: 1.15;
+			margin: 0;
+		}
+
+		button, select {
+			text-transform: none;
+		}
+
+		button, [type="button"], [type="reset"], [type="submit"] {
+			-webkit-appearance: button;
+		}
+
+			button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
+				border-style: none;
+				padding: 0;
+			}
+
+			button:-moz-focus, [type="button"]:-moz-focus, [type="reset"]:-moz-focus, [type="submit"]:-moz-focus {
+				outline: 1px dotted ButtonText;
+			}
+
+		a {
+			color: inherit;
+			text-decoration: inherit;
+		}
+
+		input {
+			padding: 2px 4px;
+		}
+
+		img {
+			display: block;
+		}
+
+		html {
+			scroll-behavior: smooth
+		}
+	</style>
+	<style data-tag="default-style-sheet">
+		html {
+			font-family: Poppins;
+			font-size: 16px;
+		}
+
+		body {
+			font-weight: 400;
+			font-style: normal;
+			text-decoration: none;
+			text-transform: none;
+			letter-spacing: normal;
+			line-height: 1.15;
+			color: var(--dl-color-scheme-green100);
+			background-color: var(--dl-color-scheme-yellow20);
+		}
+	</style>
+	<link rel="shortcut icon"
+		  href="~/img/logo1.png"
+		  type="icon/png"
+		  sizes="32x32" />
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+		  data-tag="font" />
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+		  data-tag="font" />
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+		  data-tag="font" />
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&amp;display=swap"
+		  data-tag="font" />
+
+
+	<link rel="stylesheet" href="~/css/styles.css" asp-append-version="true">
+	<div>
+		<link rel="stylesheet" href="~/css/register-page.css" asp-append-version="true">
+
+		<div class="register-page-container">
+			<div class="navbar-container">
+				<a class="register-page-logo" asp-controller="Home" asp-action="Index">
+					<img alt="image"
+						 src="~/img/logo-200h.png"
+						 class="register-page-image" />
+					<span class="brandName">
+						<span class="register-page-text01">NMIS-</span>
+						<span>&nbsp;SMFA</span>
+					</span>
+				</a>
+				<div class="register-page-links">
+					<a class="register-page-home" asp-controller="Home" asp-action="Index">HOME</a>
+					<a class="register-page-articles" href="/Home/Index#articles">ARTICLES</a>
+					<a class="register-page-faqs" href="/Home/Index#FAQs">FAQS</a>
+					<a class="register-page-aboutus"  href="/Home/Index#footer">ABOUT US</a>
+					<a class="button-secondary button" asp-controller="Trace" asp-action="Index">TRACE</a>
+					<a class="button button-primary" asp-area="Identity" asp-page="/Account/Login">LOG IN</a>
+				</div>
+				<div class="register-page-burger-menu navbar-burger-menu">
+					<svg viewBox="0 0 1024 1024" class="register-page-icon">
+						<path d="M128 256h768v86h-768v-86zM128 554v-84h768v84h-768zM128 768v-86h768v86h-768z"></path>
+					</svg>
+				</div>
+			</div>
+			<div class="register-page-container01">
+				<div class="register-page-container02">
+					<img alt="image"
+						 src="~/img/Login Page/login-background1.svg"
+						 class="register-page-image1" />
+					<form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+						<div class="register-page-container03">
+							<div class="register-page-container04">
+								<a href="index.html" class="register-page-navlink">
+									<svg viewBox="0 0 1024 1024" class="register-page-icon02">
+										<path d="M854 470v84h-520l238 240-60 60-342-342 342-342 60 60-238 240h520z"></path>
+									</svg>
+								</a>
+								<div class="register-page-container05">
+									<img alt="image"
+										 src="~/img/logo-200h.png"
+										 class="register-page-image2" />
+									<h1 class="register-page-text03">
+										<span class="register-page-text04">NMIS</span>
+										<span>- SMFA</span>
+									</h1>
+								</div>
 							</div>
-							<div class="select-box">
-								<select id="provinceSelect" onchange="populateCities()">
-									<option hidden>Province</option>
-									<!-- Add province options here -->
-								</select>
+							<div class="register-page-container06">
+								<div class="register-page-fname">
+									<div class="register-page-container07">
+										<svg viewBox="0 0 1024 1024" class="register-page-icon04">
+											<path d="M896 896v-85.333c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464h-341.333c-58.88 0-112.299 23.936-150.869 62.464s-62.464 91.989-62.464 150.869v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667v-85.333c0-35.371 14.293-67.285 37.504-90.496s55.125-37.504 90.496-37.504h341.333c35.371 0 67.285 14.293 90.496 37.504s37.504 55.125 37.504 90.496v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667zM725.333 298.667c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464-112.299 23.936-150.869 62.464-62.464 91.989-62.464 150.869 23.936 112.299 62.464 150.869 91.989 62.464 150.869 62.464 112.299-23.936 150.869-62.464 62.464-91.989 62.464-150.869zM640 298.667c0 35.371-14.293 67.285-37.504 90.496s-55.125 37.504-90.496 37.504-67.285-14.293-90.496-37.504-37.504-55.125-37.504-90.496 14.293-67.285 37.504-90.496 55.125-37.504 90.496-37.504 67.285 14.293 90.496 37.504 37.504 55.125 37.504 90.496z"></path>
+										</svg>
+										<span class="register-page-text06">First Name</span>
+									</div>
+									<input type="text" asp-for="Input.firstName" class="register-page-fname-input input" />
+									<span asp-validation-for="Input.firstName" class="text-danger"></span>
+								</div>
+								<div class="register-page-mname">
+									<div class="register-page-container08">
+										<svg viewBox="0 0 1024 1024" class="register-page-icon06">
+											<path d="M896 896v-85.333c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464h-341.333c-58.88 0-112.299 23.936-150.869 62.464s-62.464 91.989-62.464 150.869v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667v-85.333c0-35.371 14.293-67.285 37.504-90.496s55.125-37.504 90.496-37.504h341.333c35.371 0 67.285 14.293 90.496 37.504s37.504 55.125 37.504 90.496v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667zM725.333 298.667c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464-112.299 23.936-150.869 62.464-62.464 91.989-62.464 150.869 23.936 112.299 62.464 150.869 91.989 62.464 150.869 62.464 112.299-23.936 150.869-62.464 62.464-91.989 62.464-150.869zM640 298.667c0 35.371-14.293 67.285-37.504 90.496s-55.125 37.504-90.496 37.504-67.285-14.293-90.496-37.504-37.504-55.125-37.504-90.496 14.293-67.285 37.504-90.496 55.125-37.504 90.496-37.504 67.285 14.293 90.496 37.504 37.504 55.125 37.504 90.496z"></path>
+										</svg>
+										<span class="register-page-text07">Middle Name</span>
+									</div>
+									<input type="text" asp-for="Input.middleName" class="register-page-mname-input input" />
+									<span asp-validation-for="Input.middleName" class="text-danger"></span>
+								</div>
+								<div class="register-page-lname">
+									<div class="register-page-container09">
+										<svg viewBox="0 0 1024 1024" class="register-page-icon08">
+											<path d="M896 896v-85.333c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464h-341.333c-58.88 0-112.299 23.936-150.869 62.464s-62.464 91.989-62.464 150.869v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667v-85.333c0-35.371 14.293-67.285 37.504-90.496s55.125-37.504 90.496-37.504h341.333c35.371 0 67.285 14.293 90.496 37.504s37.504 55.125 37.504 90.496v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667zM725.333 298.667c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464-112.299 23.936-150.869 62.464-62.464 91.989-62.464 150.869 23.936 112.299 62.464 150.869 91.989 62.464 150.869 62.464 112.299-23.936 150.869-62.464 62.464-91.989 62.464-150.869zM640 298.667c0 35.371-14.293 67.285-37.504 90.496s-55.125 37.504-90.496 37.504-67.285-14.293-90.496-37.504-37.504-55.125-37.504-90.496 14.293-67.285 37.504-90.496 55.125-37.504 90.496-37.504 67.285 14.293 90.496 37.504 37.504 55.125 37.504 90.496z"></path>
+										</svg>
+										<span class="register-page-text08">Last Name</span>
+									</div>
+									<input type="text" asp-for="Input.lastName" class="register-page-lname-input input" />
+									<span asp-validation-for="Input.lastName" class="text-danger"></span>
+								</div>
 							</div>
-						</div>
-						<div class="column">
-							<div class="select-box">
-								<select id="citySelect" onchange="populateBarangays()">
-									<option hidden>City/Municipality</option>
-									<!-- Add city options here -->
-								</select>
+							<div class="register-page-container10">
+								<div class="register-page-email">
+									<div class="register-page-container11">
+										<svg viewBox="0 0 1024 1024" class="register-page-icon10">
+											<path d="M896 896v-85.333c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464h-341.333c-58.88 0-112.299 23.936-150.869 62.464s-62.464 91.989-62.464 150.869v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667v-85.333c0-35.371 14.293-67.285 37.504-90.496s55.125-37.504 90.496-37.504h341.333c35.371 0 67.285 14.293 90.496 37.504s37.504 55.125 37.504 90.496v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667zM725.333 298.667c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464-112.299 23.936-150.869 62.464-62.464 91.989-62.464 150.869 23.936 112.299 62.464 150.869 91.989 62.464 150.869 62.464 112.299-23.936 150.869-62.464 62.464-91.989 62.464-150.869zM640 298.667c0 35.371-14.293 67.285-37.504 90.496s-55.125 37.504-90.496 37.504-67.285-14.293-90.496-37.504-37.504-55.125-37.504-90.496 14.293-67.285 37.504-90.496 55.125-37.504 90.496-37.504 67.285 14.293 90.496 37.504 37.504 55.125 37.504 90.496z"></path>
+										</svg>
+										<span class="register-page-text09">
+											<span class="register-page-text10">Email</span>
+											<br />
+										</span>
+									</div>
+									<input type="email" asp-for="Input.Email" class="register-page-email-input input" />
+									<span asp-validation-for="Input.Email" class="text-danger"></span>
+								</div>
+								<div class="register-page-password">
+									<div class="register-page-container12">
+										<svg viewBox="0 0 1024 1024" class="register-page-icon12">
+											<path d="M704 0c-176.73 0-320 143.268-320 320 0 20.026 1.858 39.616 5.376 58.624l-389.376 389.376v192c0 35.346 28.654 64 64 64h64v-64h128v-128h128v-128h128l83.042-83.042c34.010 12.316 70.696 19.042 108.958 19.042 176.73 0 320-143.268 320-320s-143.27-320-320-320zM799.874 320.126c-53.020 0-96-42.98-96-96s42.98-96 96-96 96 42.98 96 96-42.98 96-96 96z"></path>
+										</svg>
+										<span class="register-page-text12">Password</span>
+									</div>
+									<input type="password" asp-for="Input.Password" class="register-page-pass-input input" />
+									<span asp-validation-for="Input.Password" class="text-danger"></span>
+								</div>
+								<div class="register-page-conpass">
+									<div class="register-page-container13">
+										<svg viewBox="0 0 1024 1024" class="register-page-icon14">
+											<path d="M512 42l384 172v256q0 178-110 325t-274 187q-164-40-274-187t-110-325v-256zM512 512v382q118-38 200-143t98-239h-298zM512 512v-376l-298 132v244h298z"></path>
+										</svg>
+										<span class="register-page-text13">
+											<span>Confirm Pass</span>
+											<br />
+										</span>
+									</div>
+									<input type="password" asp-for="Input.ConfirmPassword"
+										   class="register-page-conpass-input input" />
+									<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+								</div>
 							</div>
-							<div class="select-box">
-								<select id="barangaySelect">
-									<option hidden>Barangay</option>
-									<!-- Add barangay options here -->
-								</select>
-							</div>
-						</div>
-						<input type="hidden" id="addressInput" asp-for="Input.address" />
-						<span asp-validation-for="Input.address" class="text-danger"></span>
-					</div>
+							<div class="register-page-container14">
+								<div class="register-page-container15">
+									<svg viewBox="0 0 1024 1024" class="register-page-icon16">
+										<path d="M512 0c-176.732 0-320 143.268-320 320 0 320 320 704 320 704s320-384 320-704c0-176.732-143.27-320-320-320zM512 512c-106.040 0-192-85.96-192-192s85.96-192 192-192 192 85.96 192 192-85.96 192-192 192z"></path>
+									</svg>
+									<span class="register-page-text16">
+										Address (Region, Province, City/Municipality, Baranggay)
+									</span>
+								</div>
+								<div class="register-page-container16">
+									<select id="regionSelect" class="register-page-region" onchange="populateProvinces()">
+										<option value="" selected="">Region</option>
+									</select>
+									<select id="provinceSelect" class="register-page-province" onchange="populateCities()">
+										<option value="" selected="">Province</option>
+									</select>
+									<select id="citySelect" class="register-page-municipality" onchange="populateBarangays()">
+										<option value="" selected="">Municipality</option>
+									</select>
+									<select id="barangaySelect" class="register-page-barangay" onchange="updateAddress()">
+										<option value="" selected="">Barangay</option>
+									</select>
+									<input type="hidden" asp-for="Input.address" id="addressInput" />
+								</div>
 
-
-
-					<div class="column">
-						<div class="row">
-							<div class="input-box">
-								<label>Phone Number</label>
-								<input type="number" asp-for="Input.contactNo" autocomplete="contactno" aria-required="true" placeholder="Enter phone number" required />
-								<span asp-validation-for="Input.contactNo" class="text-danger"></span>
 							</div>
-							<div class="input-box">
-								<label>Birth Date</label>
-								<input type="date" placeholder="Enter birth date" asp-for="Input.Birthdate" aria-required="true" required />
-								<span asp-validation-for="Input.Birthdate" class="text-danger"></span>
+							<div class="register-page-container17">
+								<button type="submit" class="register-page-registerbttn button button-transparent">
+									Register Now!
+								</button>
 							</div>
-
-							<div class="column">
+							<div class="register-page-container18">
+								<div class="register-page-container19">
+									<svg viewBox="0 0 1024 1024" class="register-page-icon18">
+										<path d="M896 896v-85.333c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464h-341.333c-58.88 0-112.299 23.936-150.869 62.464s-62.464 91.989-62.464 150.869v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667v-85.333c0-35.371 14.293-67.285 37.504-90.496s55.125-37.504 90.496-37.504h341.333c35.371 0 67.285 14.293 90.496 37.504s37.504 55.125 37.504 90.496v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667zM725.333 298.667c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464-112.299 23.936-150.869 62.464-62.464 91.989-62.464 150.869 23.936 112.299 62.464 150.869 91.989 62.464 150.869 62.464 112.299-23.936 150.869-62.464 62.464-91.989 62.464-150.869zM640 298.667c0 35.371-14.293 67.285-37.504 90.496s-55.125 37.504-90.496 37.504-67.285-14.293-90.496-37.504-37.504-55.125-37.504-90.496 14.293-67.285 37.504-90.496 55.125-37.504 90.496-37.504 67.285 14.293 90.496 37.504 37.504 55.125 37.504 90.496z"></path>
+									</svg>
+									<span class="register-page-text17">Sex</span>
+								</div>
+								<div class="register-page-container20">
+									@Html.RadioButtonFor(Model => Model.Input.Sex, "Male", new { name = "radio" })
+									<span class="register-page-text18">Male</span>
+								</div>
+								<div class="register-page-container21">
+									@Html.RadioButtonFor(Model => Model.Input.Sex, "Female", new { id = "radio" })
+									<span class="register-page-text19">Female</span>
+								</div>
 
 								<input asp-for="Input.Roles" type="text" value="MTVUSERS" readonly hidden />
-									
-								@if (User.IsInRole("InspectorAdministrator"))
-								{
-									<div class="input-box roles">
-										<label>Meat Establishment</label>
-										<div class="select-box">
-
-											<select asp-for="Input.MeatEsblishmentId" asp-items="ViewBag.MeatEstablishments"></select>
-											<span asp-validation-for="Input.MeatEsblishmentId" class="text-danger"></span>
-										</div>
-									</div>
-								}
-								<div class="sex-box">
-									<h3>Sex</h3>
-									<div class="sex-option">
-										<div class="sex">
-											@Html.RadioButtonFor(Model => Model.Input.Sex, "Male", new { id = "check-male" })
-											<label for="check-male">Male</label>
-										</div>
-										<div class="sex">
-											@Html.RadioButtonFor(Model => Model.Input.Sex, "Female", new { id = "check-female" })
-											<label for="check-female">Female</label>
-										</div>
-									</div>
+								@*this is hidden -dont touch-*@
+								<select asp-for="Input.MeatEstablishment.Type" hidden>
+									<option>SLH</option>
+									<option>PDP</option>
+									<option>MCP</option>
+									<option>CSW</option>
+								</select>
+								<div class="register-page-container22">
+									<svg viewBox="0 0 1024 1024" class="register-page-icon20">
+										<path d="M896 896v-85.333c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464h-341.333c-58.88 0-112.299 23.936-150.869 62.464s-62.464 91.989-62.464 150.869v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667v-85.333c0-35.371 14.293-67.285 37.504-90.496s55.125-37.504 90.496-37.504h341.333c35.371 0 67.285 14.293 90.496 37.504s37.504 55.125 37.504 90.496v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667zM725.333 298.667c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464-112.299 23.936-150.869 62.464-62.464 91.989-62.464 150.869 23.936 112.299 62.464 150.869 91.989 62.464 150.869 62.464 112.299-23.936 150.869-62.464 62.464-91.989 62.464-150.869zM640 298.667c0 35.371-14.293 67.285-37.504 90.496s-55.125 37.504-90.496 37.504-67.285-14.293-90.496-37.504-37.504-55.125-37.504-90.496 14.293-67.285 37.504-90.496 55.125-37.504 90.496-37.504 67.285 14.293 90.496 37.504 37.504 55.125 37.504 90.496z"></path>
+									</svg>
+									<span class="register-page-text20">Birthdate</span>
+									<input type="date" asp-for="Input.Birthdate" class="register-page-birthdate input" />
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="upload-box">
-								<label>Upload Image for Profile</label>
-								<div class="container">
-									<input type="file" id="file" accept="image/*" asp-for="Input.image" hidden>
+								<div class="register-page-container23">
+									<div class="register-page-container24">
+										<svg viewBox="0 0 1024 1024" class="register-page-icon22">
+											<path d="M896 896v-85.333c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464h-341.333c-58.88 0-112.299 23.936-150.869 62.464s-62.464 91.989-62.464 150.869v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667v-85.333c0-35.371 14.293-67.285 37.504-90.496s55.125-37.504 90.496-37.504h341.333c35.371 0 67.285 14.293 90.496 37.504s37.504 55.125 37.504 90.496v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667zM725.333 298.667c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464-112.299 23.936-150.869 62.464-62.464 91.989-62.464 150.869 23.936 112.299 62.464 150.869 91.989 62.464 150.869 62.464 112.299-23.936 150.869-62.464 62.464-91.989 62.464-150.869zM640 298.667c0 35.371-14.293 67.285-37.504 90.496s-55.125 37.504-90.496 37.504-67.285-14.293-90.496-37.504-37.504-55.125-37.504-90.496 14.293-67.285 37.504-90.496 55.125-37.504 90.496-37.504 67.285 14.293 90.496 37.504 37.504 55.125 37.504 90.496z"></path>
+										</svg>
+										<span class="register-page-text21">Contact Number</span>
+									</div>
+									<input type="text" asp-for="Input.contactNo"
+										   class="register-page-contact-number input" />
+									<span asp-validation-for="Input.contactNo" class="text-danger"></span>
+								</div>
+								<div class="register-page-container25">
+									<div class="register-page-container26">
+										<svg viewBox="0 0 1024 1024" class="register-page-icon24">
+											<path d="M896 896v-85.333c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464h-341.333c-58.88 0-112.299 23.936-150.869 62.464s-62.464 91.989-62.464 150.869v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667v-85.333c0-35.371 14.293-67.285 37.504-90.496s55.125-37.504 90.496-37.504h341.333c35.371 0 67.285 14.293 90.496 37.504s37.504 55.125 37.504 90.496v85.333c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667zM725.333 298.667c0-58.88-23.936-112.299-62.464-150.869s-91.989-62.464-150.869-62.464-112.299 23.936-150.869 62.464-62.464 91.989-62.464 150.869 23.936 112.299 62.464 150.869 91.989 62.464 150.869 62.464 112.299-23.936 150.869-62.464 62.464-91.989 62.464-150.869zM640 298.667c0 35.371-14.293 67.285-37.504 90.496s-55.125 37.504-90.496 37.504-67.285-14.293-90.496-37.504-37.504-55.125-37.504-90.496 14.293-67.285 37.504-90.496 55.125-37.504 90.496-37.504 67.285 14.293 90.496 37.504 37.504 55.125 37.504 90.496z"></path>
+										</svg>
+										<span class="register-page-text22">Upload Picture</span>
+									</div>
+									<input type="file" class="register-page-upload-file input" accept="image/*" asp-for="Input.image">
 									<span asp-validation-for="Input.image" class="text-danger"></span>
-									<div class="img-area" data-img="">
-										<i class='bx bxs-cloud-upload icon'></i>
-										<h3>Upload Image</h3>
-										<p>Image size must be less than <span>5MB</span></p>
-									</div>
-									<button class="select-image" type="button">Select Image</button>
 								</div>
 							</div>
+							<h1 class="register-page-text23">MTV Application Form</h1>
 						</div>
-					</div>
-
-					@*this is hidden -dont touch-*@
-					<select asp-for="Input.MeatEstablishment.Type" hidden>
-						<option>SLH</option>
-						<option>PDP</option>
-						<option>MCP</option>
-						<option>CSW</option>
-					</select>
-
-					<div class="column">
-						<div class="input-box">
-							<label>Email</label>
-							<input type="email" asp-for="Input.Email" autocomplete="username" aria-required="true" placeholder="Put an Email" class="text" required />
-							<span asp-validation-for="Input.Email" class="text-danger"></span>
-						</div>
-						<div class="input-box">
-							<label>Password</label>
-							<input type="password" asp-for="Input.Password" autocomplete="new-password" aria-required="true" placeholder="Put a Password" class="text" required />
-							<span asp-validation-for="Input.Password" class="text-danger"></span>
-						</div>
-						<div class="input-box">
-							<label>Confirm Password</label>
-							<input type="password" asp-for="Input.ConfirmPassword" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" class="text" required />
-							<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-						</div>
-					</div>
-					<button id="registerSubmit" type="submit">Register</button>
-				</form>
+					</form>
+				</div>
 			</div>
-
-		</main>
-		<!-- MAIN ENDS -->
-
-	</section>
+		</div>
+	</div>
 
 }
 <script src="~/js/register.js"></script>

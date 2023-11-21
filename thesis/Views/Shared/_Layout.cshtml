@@ -1,6 +1,7 @@
 ﻿﻿@using Microsoft.AspNetCore.Identity;
 @using thesis.Areas.Identity.Data;
 @inject UserManager<AccountDetails> UserManager
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,6 +48,9 @@
 	<link rel="stylesheet" href="sweetalert2.min.css">
 </head>
 <body>
+	
+
+
 	@if (User.Identity.IsAuthenticated)
 	{
 		@if (User.IsInRole("SuperAdministrator"))

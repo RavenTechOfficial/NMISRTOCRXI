@@ -18,25 +18,26 @@ namespace thesis.Controllers
 		public IActionResult Index()
         {
             var res = _unitOfWork.ChroplethMap.GetChroplethData("Meat Sources");
+			res.MeatSourcesBool = true;
             return View(res);
         }
 		[HttpPost]
-		public IActionResult ActionResult(string selectedOption)
+		public IActionResult ActionResult(ChroplethMapViewModel selectedOption)
 		{
-			ChroplethMapViewModel res;
+			
 			// Process selectedOption
-			if (selectedOption == "Meat Sources")
+			if (selectedOption.MeatSourcesBool)
 			{
-				res = _unitOfWork.ChroplethMap.GetChroplethData("Meat Sources");
+				selectedOption = _unitOfWork.ChroplethMap.GetChroplethData("Meat Sources");
 			}
 			else
 			{
-				res = _unitOfWork.ChroplethMap.GetChroplethData("Meat Distribution");
+				selectedOption = _unitOfWork.ChroplethMap.GetChroplethData("Meat Distribution");
 			}
 
 			// Return appropriate view or redirect
 			
-			return View("Index", res);
+			return View("Index", selectedOption);
 		}
 	}
 }

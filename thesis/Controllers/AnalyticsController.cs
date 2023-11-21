@@ -25,11 +25,13 @@ namespace thesis.Controllers
 
 			List<Species> selectedSpecies = new List<Species>
 			{
-				Species.Cattle
+				Species.Swine
 			};
-
+			
 			var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries("Monthly", selectedSpecies, startDateOfYear, currentDate);
-            return View(analyticsViewModel);
+			analyticsViewModel.SwineBool = true;
+
+			return View(analyticsViewModel);
         }
         [HttpPost]
         public IActionResult actionResult(AnalyticsViewModel analytics)
