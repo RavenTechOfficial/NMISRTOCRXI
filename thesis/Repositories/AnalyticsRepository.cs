@@ -121,8 +121,8 @@ namespace thesis.Repositories
                 analyticObject.Add(new analyticViewModel
                 {
                     datetime = startOfPeriod.AddDays(1),
-                    condemnedValue = monthRangeCondemned,
-                    approvedValue = monthRangeApproved
+                    condemnedValue = Math.Round(monthRangeCondemned, 1),
+                    approvedValue = Math.Round(monthRangeApproved, 1)
                 });
 
             }
@@ -234,22 +234,22 @@ namespace thesis.Repositories
 
             return new AnalyticsViewModel
             {
-                monthlyRangeApproved = monthRangesApproved,
-                monthlyRangeCondemned = monthRangesCondemned,
+                monthlyRangeApproved = monthRangesApproved.Select(x => Math.Round(x, 1)).ToList(),
+                monthlyRangeCondemned = monthRangesCondemned.Select(x => Math.Round(x, 1)).ToList(),
                 monthlyRangeOfHead = monthRangesOfHead,
-                monthlyRangeOfLiveWeight = monthRangesOfLiveWeight,
-                animalTypeRange = animalType,
-                Cattle = cattles,
-                Carabao = carabaos,
-                Swine = swines,
-                Goat = goats,
-                Chicken = chickens,
-                Duck = ducks,
-                Hog = hogs,
-                Sheep = sheeps,
-                Suspect = suspects,
-                Condemned = condemneds,
-                Pass = passes,
+                monthlyRangeOfLiveWeight = monthRangesOfLiveWeight.Select(x => Math.Round(x, 1)).ToList(),
+                animalTypeRange = animalType.Select(x => Math.Round(x, 1)).ToList(),
+                Cattle = cattles.Select(x => Math.Round(x, 1)).ToList(),
+                Carabao = carabaos.Select(x => Math.Round(x, 1)).ToList(),
+                Swine = swines.Select(x => Math.Round(x, 1)).ToList(),
+                Goat = goats.Select(x => Math.Round(x, 1)).ToList(),
+                Chicken = chickens.Select(x => Math.Round(x, 1)).ToList(),
+                Duck = ducks.Select(x => Math.Round(x, 1)).ToList(),
+                Hog = hogs.Select(x => Math.Round(x, 1)).ToList(),
+                Sheep = sheeps.Select(x => Math.Round(x, 1)).ToList(),
+                Suspect = suspects.Select(x => Math.Round(x, 1)).ToList(),
+                Condemned = condemneds.Select(x => Math.Round(x, 1)).ToList(),
+                Pass = passes.Select(x => Math.Round(x, 1)).ToList(),
                 dayMonthYearAbbreviationsArray = timeAbbreviationsArray,
 
                 start = startDate,

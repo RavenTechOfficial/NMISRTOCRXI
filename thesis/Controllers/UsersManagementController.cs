@@ -299,45 +299,43 @@ namespace thesis.Controllers
 				return Problem("your user doesn't exist");
 			}
 
-			if (users != null)
+			string USER_ID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var USER_ = _context.Users.FirstOrDefault(pu => pu.Id == USER_ID);
+			var deletedUserEmail = users.Email;
+
+			if (deletedUserEmail != USER_.Email)
 			{
 				_unitOfWork.UsersManangement.Delete(users);
-				//Notification
-
-				string USER_ID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-				var USER_ = _context.Users.FirstOrDefault(pu => pu.Id == USER_ID);
-				var deletedUserEmail = users.Email;
-				var deletedUserRole = users.Roles;
 
 				if (USER_ != null)
 				{
-					// Construct a success message with the user's name
 					var name = USER_.firstName + " " + USER_.lastName;
 					TempData["success"] = $"User Deleted Successfully by {name}";
 
 					var logEntry = new LogTransaction
 					{
 						LogName = name,
-						LogPurpose = $"Deleted the User [{deletedUserEmail}] Role [{deletedUserRole}]",
+						LogPurpose = $"Deleted the User [{deletedUserEmail}] Role [{users.Roles}]",
 						LogDate = DateTime.Now
 					};
 					_context.Add(logEntry);
 					await _context.SaveChangesAsync();
+
+					_unitOfWork.UsersManangement.Save();
 				}
 				else
 				{
-					// Handle the case where the user is not found
 					TempData["error"] = "Error Found";
 				}
-
-				// Notification End
-
+			}
+			else
+			{
+				TempData["error"] = "You cannot delete your own account";
 			}
 
-
-			_unitOfWork.UsersManangement.Save();
 			return RedirectToAction(nameof(Index));
 		}
+
 
 		public async Task<IActionResult> MeatCheckDelete(string id)
 		{
