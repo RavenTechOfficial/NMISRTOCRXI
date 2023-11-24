@@ -25,11 +25,11 @@ namespace thesis.Controllers
 
 			List<Species> selectedSpecies = new List<Species>
 			{
-				Species.Swine
+				Species.Hog
 			};
 			
 			var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries("Monthly", selectedSpecies, startDateOfYear, currentDate);
-			analyticsViewModel.SwineBool = true;
+			analyticsViewModel.HogBool = true;
 
 			return View(analyticsViewModel);
         }
@@ -45,7 +45,7 @@ namespace thesis.Controllers
 			if (analytics.ChickenBool) selectedSpecies.Add(Species.Chicken);
 			if (analytics.DuckBool) selectedSpecies.Add(Species.Duck);
 			if (analytics.SheepBool) selectedSpecies.Add(Species.Sheep);
-			if (analytics.HorseBool) selectedSpecies.Add(Species.Hog);
+			if (analytics.HogBool) selectedSpecies.Add(Species.Hog);
 
 
 			var analyticsViewModel = _unitOfWork.Analytics.GetTotalOfMeatPerTimeSeries(

@@ -37,7 +37,7 @@ namespace thesis.Core.ViewModel
         public bool ChickenBool { get; set; }
         public bool DuckBool { get; set; }
         public bool SheepBool { get; set; }
-        public bool HorseBool { get; set; }
+        public bool HogBool { get; set; }
         public bool OstrichBool { get; set; }
         public bool CrocodileBool { get; set; }
 

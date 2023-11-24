@@ -290,7 +290,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("MeatInspectionReportId");
 
-                    b.ToTable("ConductOfInspections", (string)null);
+                    b.ToTable("ConductOfInspections");
                 });
 
             modelBuilder.Entity("thesis.Models.DisapprovedApplication", b =>
@@ -308,7 +308,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("MTVInspectionId");
 
-                    b.ToTable("DisapprovedApplications", (string)null);
+                    b.ToTable("DisapprovedApplications");
                 });
 
             modelBuilder.Entity("thesis.Models.Driver", b =>
@@ -358,7 +358,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Drivers", (string)null);
+                    b.ToTable("Drivers");
                 });
 
             modelBuilder.Entity("thesis.Models.Feedback", b =>
@@ -386,7 +386,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Feedbacks", (string)null);
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("thesis.Models.Helper", b =>
@@ -420,7 +420,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Helpers", (string)null);
+                    b.ToTable("Helpers");
                 });
 
             modelBuilder.Entity("thesis.Models.LogTransaction", b =>
@@ -444,7 +444,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LogTransactions", (string)null);
+                    b.ToTable("LogTransactions");
                 });
 
             modelBuilder.Entity("thesis.Models.MTVApplication", b =>
@@ -510,7 +510,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("MTVApplications", (string)null);
+                    b.ToTable("MTVApplications");
                 });
 
             modelBuilder.Entity("thesis.Models.MTVApplicationResult", b =>
@@ -534,7 +534,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("MTVInspectionId");
 
-                    b.ToTable("MTVApplicationResults", (string)null);
+                    b.ToTable("MTVApplicationResults");
                 });
 
             modelBuilder.Entity("thesis.Models.MTVDetails", b =>
@@ -592,7 +592,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MTVDetails", (string)null);
+                    b.ToTable("MTVDetails");
                 });
 
             modelBuilder.Entity("thesis.Models.MTVInspection", b =>
@@ -630,7 +630,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("MTVApplicationId");
 
-                    b.ToTable("MTVInspection", (string)null);
+                    b.ToTable("MTVInspection");
                 });
 
             modelBuilder.Entity("thesis.Models.MTVquiz", b =>
@@ -651,7 +651,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("MTVApplicationId");
 
-                    b.ToTable("MTVquizzes", (string)null);
+                    b.ToTable("MTVquizzes");
                 });
 
             modelBuilder.Entity("thesis.Models.MeatDealers", b =>
@@ -688,7 +688,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("MeatEstablishmentId");
 
-                    b.ToTable("MeatDealers", (string)null);
+                    b.ToTable("MeatDealers");
                 });
 
             modelBuilder.Entity("thesis.Models.MeatEstablishment", b =>
@@ -722,7 +722,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MeatEstablishment", (string)null);
+                    b.ToTable("MeatEstablishment");
                 });
 
             modelBuilder.Entity("thesis.Models.MeatInspectionReport", b =>
@@ -755,7 +755,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("ReceivingReportId");
 
-                    b.ToTable("MeatInspectionReports", (string)null);
+                    b.ToTable("MeatInspectionReports");
                 });
 
             modelBuilder.Entity("thesis.Models.PassedForSlaughter", b =>
@@ -779,7 +779,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("ConductOfInspectionId");
 
-                    b.ToTable("PassedForSlaughters", (string)null);
+                    b.ToTable("PassedForSlaughters");
                 });
 
             modelBuilder.Entity("thesis.Models.Payment", b =>
@@ -812,7 +812,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("MTVApplicationId");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("thesis.Models.PostArticle", b =>
@@ -863,7 +863,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PostArticle", (string)null);
+                    b.ToTable("PostArticle");
                 });
 
             modelBuilder.Entity("thesis.Models.Postmortem", b =>
@@ -902,7 +902,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("PassedForSlaughterId");
 
-                    b.ToTable("Postmortems", (string)null);
+                    b.ToTable("Postmortems");
                 });
 
             modelBuilder.Entity("thesis.Models.QrCode", b =>
@@ -923,7 +923,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("QrCodes", (string)null);
+                    b.ToTable("QrCodes");
                 });
 
             modelBuilder.Entity("thesis.Models.Receiving", b =>
@@ -945,7 +945,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("AccountDetailsId");
 
-                    b.ToTable("Receivings", (string)null);
+                    b.ToTable("Receivings");
                 });
 
             modelBuilder.Entity("thesis.Models.ReceivingReport", b =>
@@ -1004,7 +1004,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("MeatDealersId");
 
-                    b.ToTable("ReceivingReports", (string)null);
+                    b.ToTable("ReceivingReports");
                 });
 
             modelBuilder.Entity("thesis.Models.Result", b =>
@@ -1084,7 +1084,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Results", (string)null);
+                    b.ToTable("Results");
                 });
 
             modelBuilder.Entity("thesis.Models.SummaryAndDistributionOfMIC", b =>
@@ -1116,7 +1116,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("TotalNoFitForHumanConsumptionId");
 
-                    b.ToTable("SummaryAndDistributionOfMICs", (string)null);
+                    b.ToTable("SummaryAndDistributionOfMICs");
                 });
 
             modelBuilder.Entity("thesis.Models.VehicleInfo", b =>
@@ -1154,7 +1154,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VehicleInfos", (string)null);
+                    b.ToTable("VehicleInfos");
                 });
 
             modelBuilder.Entity("thesis.Models.checklist", b =>
@@ -1195,7 +1195,7 @@ namespace thesis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("checklists", (string)null);
+                    b.ToTable("checklists");
                 });
 
             modelBuilder.Entity("thesis.Models.totalNoFitForHumanConsumptions", b =>
@@ -1222,7 +1222,7 @@ namespace thesis.Migrations
 
                     b.HasIndex("PostmortemId");
 
-                    b.ToTable("totalNoFitForHumanConsumptions", (string)null);
+                    b.ToTable("totalNoFitForHumanConsumptions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

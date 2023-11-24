@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace thesis.Migrations
 {
     /// <inheritdoc />
-    public partial class m2m2m : Migration
+    public partial class m1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,13 +89,13 @@ namespace thesis.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HelperFname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HelperMname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HelperLname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HelperFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HelperMname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HelperLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TelNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    birthdate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TelNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    birthdate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
