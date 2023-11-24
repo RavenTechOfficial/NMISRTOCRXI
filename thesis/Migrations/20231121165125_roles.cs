@@ -5,7 +5,7 @@
 namespace thesis.Migrations
 {
     /// <inheritdoc />
-    public partial class m24 : Migration
+    public partial class roles : Migration
     {
         private string SuperAdminRoleId = Guid.NewGuid().ToString();
         private string InspectorAdminRoleId = Guid.NewGuid().ToString();

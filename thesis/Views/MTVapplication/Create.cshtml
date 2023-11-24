@@ -89,18 +89,18 @@
 				<div class="column">
 					<div class="input-box">
 						<label><i class='bx bxs-envelope'></i>Email</label>
-						<input type="email" placeholder="Put an Email" class="text" asp-for="Email" required />
+						<input type="email" placeholder="Put an Email" class="text" asp-for="Email" id="Email" required />
 						<span asp-validation-for="Email" class="text-danger"></span>
 					</div>
 
 					<div class="input-box">
 						<label><i class='bx bxs-phone'></i>Telephone Number</label>
-						<input type="text" placeholder="Enter Telephone Number" asp-for="TelNo" required />
+						<input type="text" placeholder="Enter Telephone Number" asp-for="TelNo" id="TelNo" required />
 						<span asp-validation-for="TelNo" class="text-danger"></span>
 					</div>
 					<div class="input-box">
 						<label><i class='bx bxs-printer'></i>Fax Number</label>
-						<input type="text" asp-for="FaxNo" placeholder="Enter your Fax Number" />
+						<input type="text" asp-for="FaxNo" placeholder="Enter your Fax Number" id="FaxNo" />
 						<span asp-validation-for="FaxNo" class="text-danger"></span>
 					</div>
 				</div>
@@ -410,7 +410,33 @@
 			}
 		});
 	});
+
+	document.getElementById('searchButton').addEventListener('click', function () {
+		var accreditationNumber = document.getElementById('AccreditationNumber').value;
+
+		// AJAX request to the server
+		fetch('/MTVapplication/GenerateResult', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ AccreditionNo: accreditationNumber })
+		})
+			.then(response => response.json())
+			.then(data => {
+				// Update your view with the data received
+				console.log(data);
+				document.getElementById('OwnerFname').value = data.data.ownerFname || '';
+				document.getElementById('OwnerMname').value = data.data.ownerMname || '';
+				document.getElementById('OwnerLname').value = data.data.ownerLname || '';
+				document.getElementById('Email').value = data.data.email || '';
+				document.getElementById('TelNo').value = data.data.telNo || '';
+				document.getElementById('FaxNo').value = data.data.faxNo || '';
+			})
+			.catch(error => console.error('Error:', error));
+	});
+
 </script>
+
+
 
 
 <script>

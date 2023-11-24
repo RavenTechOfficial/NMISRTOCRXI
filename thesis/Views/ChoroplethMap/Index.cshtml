@@ -64,42 +64,42 @@
 
 
 			@* <div class="container species">
-				<div class="select-btn">
-					<span class="btn-text">Select Species</span>
-					<span class="arrow-dwn">
-						<i class='bx bx-caret-down'></i>
-					</span>
-				</div>
-
-				<ul class="list-items">
-					<li class="item" data-type="species">
-						<span class="checkbox">
-							<i class='bx bx-check check-icon'></i>
-						</span>
-						<span class="item-text">Swine</span>
-					</li>
-					<li class="item" data-type="species">
-						<span class="checkbox">
-							<i class='bx bx-check check-icon'></i>
-						</span>
-						<span class="item-text">Chicken</span>
-					</li>
-					<li class="item" data-type="species">
-						<span class="checkbox">
-							<i class='bx bx-check check-icon'></i>
-						</span>
-						<span class="item-text">Cattle</span>
-					</li>
-					<li class="item" data-type="species">
-						<span class="checkbox">
-							<i class='bx bx-check check-icon'></i>
-						</span>
-						<span class="item-text">And So on...</span>
-					</li>
-					<button type="button" class="btn btn-primary">Apply</button>
-				</ul>
+			<div class="select-btn">
+			<span class="btn-text">Select Species</span>
+			<span class="arrow-dwn">
+			<i class='bx bx-caret-down'></i>
+			</span>
 			</div>
- *@
+
+			<ul class="list-items">
+			<li class="item" data-type="species">
+			<span class="checkbox">
+			<i class='bx bx-check check-icon'></i>
+			</span>
+			<span class="item-text">Swine</span>
+			</li>
+			<li class="item" data-type="species">
+			<span class="checkbox">
+			<i class='bx bx-check check-icon'></i>
+			</span>
+			<span class="item-text">Chicken</span>
+			</li>
+			<li class="item" data-type="species">
+			<span class="checkbox">
+			<i class='bx bx-check check-icon'></i>
+			</span>
+			<span class="item-text">Cattle</span>
+			</li>
+			<li class="item" data-type="species">
+			<span class="checkbox">
+			<i class='bx bx-check check-icon'></i>
+			</span>
+			<span class="item-text">And So on...</span>
+			</li>
+			<button type="button" class="btn btn-primary">Apply</button>
+			</ul>
+			</div>
+			*@
 
 		</div>
 
@@ -117,162 +117,154 @@
 <!-- Own JS File -->
 <script src="~/js/ChoroplethMap.js" asp-append-version="true"></script>
 
+
+
 <script>
-	// Initial map setup
-	const map = L.map('map', {
-		zoomControl: false
-	}).setView([7.3042, 125.6853], 8);
-	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    // Initial map setup
+    const map = L.map('map', {
+        zoomControl: false
+    }).setView([7.3042, 125.6853], 8);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    const municipalityData = [
+    @for (int i = 0; i < Model.Address.Count; i++)
+    {
+        var parts = Model.Address[i].Split(new[] { ", " }, StringSplitOptions.None);
+        string desiredAddress = (parts.Length >= 3) ? string.Join(", ", parts[1], parts[2]) : "Invalid Address";
+        @:{ name: "@desiredAddress", specie: "Cattle", value: parseFloat(@Model.Cattle[i]) },
+        @:{ name: "@desiredAddress", specie: "Carabao", value: parseFloat(@Model.Carabao[i]) },
+        @:{ name: "@desiredAddress", specie: "Swine", value: parseFloat(@Model.Swine[i]) },
+        @:{ name: "@desiredAddress", specie: "Goat", value: parseFloat(@Model.Goat[i]) },
+        @:{ name: "@desiredAddress", specie: "Chicken", value: parseFloat(@Model.Chicken[i]) },
+        @:{ name: "@desiredAddress", specie: "Duck", value: parseFloat(@Model.Duck[i]) },
+        @:{ name: "@desiredAddress", specie: "Sheep", value: parseFloat(@Model.Sheep[i]) },
+        @:{ name: "@desiredAddress", specie: "Hog", value: parseFloat(@Model.Hog[i]) },
+    }
+                ];
+
+    // Merge data with GeoJSON
+    function mergeDataWithGeoJSON(geoJSON, data) {
+        geoJSON.features.forEach(feature => {
+            const dataItems = data.filter(item =>
+                item.name.toUpperCase() === (feature.properties.NAME_1 + ', ' + feature.properties.NAME_2).toUpperCase()
+            );
+
+            feature.properties.speciesData = dataItems.reduce((acc, item) => {
+                acc[item.specie] = (acc[item.specie] || 0) + item.value;
+                return acc;
+            }, {});
+
+            feature.properties.totalMeatQuantity = Object.values(feature.properties.speciesData).reduce((sum, qty) => sum + qty, 0);
+        });
+    }
+
+    // Truncate max value for color scaling
+    function truncateMaxValue(num) {
+        num = Math.floor(num);
+        const length = num.toString().length;
+        const divisor = Math.pow(10, length - 1);
+        return Math.floor(num / divisor) * divisor;
+    }
 
 
-	const municipalityData = [
-	@for (int i = 0; i < Model.Address.Count; i++)
-	{
-		var parts = Model.Address[i].Split(new[] { ", " }, StringSplitOptions.None);
-		string desiredAddress = (parts.Length >= 3) ? string.Join(", ", parts[1], parts[2]) : "Invalid Address";
-		@:{ name: "@desiredAddress", specie: "Cattle", value: parseFloat(@Model.Cattle[i]) },
-		@:{ name: "@desiredAddress", specie: "Carabao", value: parseFloat(@Model.Carabao[i]) },
-		@:{ name: "@desiredAddress", specie: "Swine", value: parseFloat(@Model.Swine[i]) },
-		@:{ name: "@desiredAddress", specie: "Goat", value: parseFloat(@Model.Goat[i]) },
-		@:{ name: "@desiredAddress", specie: "Chicken", value: parseFloat(@Model.Chicken[i]) },
-		@:{ name: "@desiredAddress", specie: "Duck", value: parseFloat(@Model.Duck[i]) },
-		@:{ name: "@desiredAddress", specie: "Sheep", value: parseFloat(@Model.Sheep[i]) },
-		@:{ name: "@desiredAddress", specie: "Hog", value: parseFloat(@Model.Hog[i]) },
-	}
-		];
+    function getColor(totalMeatQuantity, maxValue) {
+        const truncatedMax = truncateMaxValue(maxValue);
+        const getThreshold = (percentage) => Math.floor(truncatedMax * (percentage / 100));
 
-	// Aggregating total value per location
-	const locationTotals = municipalityData.reduce((acc, curr) => {
-		const existing = acc.find(item => item.name === curr.name);
-		if (existing) {
-			existing.value += Number(curr.value);
+        if (totalMeatQuantity > getThreshold(100)) return '#800026';
+        if (totalMeatQuantity > getThreshold(85)) return '#BD0026';
+        if (totalMeatQuantity > getThreshold(70)) return '#E31A1C';
+        if (totalMeatQuantity > getThreshold(50)) return '#FC4E2A';
+        if (totalMeatQuantity > getThreshold(30)) return '#FD8D3C';
+        if (totalMeatQuantity > getThreshold(15)) return '#FEB24C';
+        if (totalMeatQuantity > getThreshold(5)) return '#FED976';
+        if (totalMeatQuantity === 0) return 'transparent';
+        return '#FFEDA0';
+    }
 
-		} else {
-			acc.push({ ...curr, value: Number(curr.value) }); // Cast here too
-		}
-		return acc;
-	}, []);
+    // Style feature function
+    function styleFeature(feature) {
+        return {
+            fillColor: getColor(feature.properties.totalMeatQuantity, maxValue),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+        };
+    }
 
+    // Highlight feature on mouseover
+    function highlightFeature(e) {
+        const layer = e.target;
+        layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
 
-	// Getting max value from the aggregated totals
-	const maxValue = Math.max(...locationTotals.map(item => item.value));
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+    }
 
-	function truncateMaxValue(num) {
-		num = Math.floor(num);
-		const length = num.toString().length;
-		const divisor = Math.pow(10, length - 1);
-		return Math.floor(num / divisor) * divisor;
-	}
+    // Reset highlight
+    function resetHighlight(e) {
+        geojsonLayer.resetStyle(e.target);
+    }
 
+    // Add tooltip to each feature
+    function onEachFeature(feature, layer) {
+        let tooltipContent = `<strong>${feature.properties.NAME_1}, ${feature.properties.NAME_2}</strong><br/>Total Meat Qty: ${feature.properties.totalMeatQuantity.toFixed(2)} Kilograms<br/>`;
 
-	function getColor(value, maxValue) {
-		const truncatedMax = truncateMaxValue(maxValue);
-		const getThreshold = (percentage) => {
-			return Math.floor(truncatedMax * (percentage / 100));
-		};
+        Object.entries(feature.properties.speciesData).forEach(([specie, value]) => {
+            tooltipContent += `${specie}: ${value.toFixed(2)} Kilograms<br/>`;
+        });
 
-		if (value > getThreshold(100)) return '#800026';
-		if (value > getThreshold(85)) return '#BD0026';
-		if (value > getThreshold(70)) return '#E31A1C';
-		if (value > getThreshold(50)) return '#FC4E2A';
-		if (value > getThreshold(30)) return '#FD8D3C';
-		if (value > getThreshold(15)) return '#FEB24C';
-		if (value > getThreshold(5)) return '#FED976';
-		if (value === 0) return 'transparent'; // No color for zero
-		if (value === undefined) return 'transparent'; // No color for undefined
-		return '#FFEDA0';
-	}
+        layer.bindTooltip(tooltipContent, {
+            permanent: false,
+            interactive: false
+        });
 
-	function styleFeature(feature) {
-		return {
-			fillColor: getColor(feature.properties.value, maxValue),
-			weight: 2,
-			opacity: 1,
-			color: 'white',
-			dashArray: '3',
-			fillOpacity: 0.7
-		};
-	}
-
-	function highlightFeature(e) {
-		const layer = e.target;
-		layer.setStyle({
-			weight: 5,
-			color: '#666',
-			dashArray: '',
-			fillOpacity: 0.7
-		});
-		layer.openTooltip();
-	}
-
-	function resetHighlight(e) {
-		const layer = e.target;
-		geojsonLayer.resetStyle(layer);
-		layer.closeTooltip();
-	}
-
-	function mergeDataWithGeoJSON(geoJSON, data) {
-		geoJSON.features.forEach(feature => {
-			const dataItems = data.filter(item => item.name.toUpperCase() === feature.properties.NAME_1.toUpperCase() + ", " + feature.properties.NAME_2.toUpperCase());
-			if (dataItems.length > 0) {
-				feature.properties.value = dataItems.reduce((sum, item) => sum + item.value, 0);
-				feature.properties.speciesData = dataItems;
-			}
-		});
-	}
-
-	function onEachFeature(feature, layer) {
-		layer.on({
-			mouseover: highlightFeature,
-			mouseout: resetHighlight
-		});
-
-		let tooltipContent = `<strong>${feature.properties.NAME_1}, ${feature.properties.NAME_2}</strong><br/>Total Meat Qty: ${feature.properties.value !== undefined ? feature.properties.value : 0} Kilograms<br/>`;
-
-		if (feature.properties.speciesData) {
-			feature.properties.speciesData.forEach(item => {
-				tooltipContent += `${item.specie}: ${item.value} Kilograms<br/>`;
-			});
-		}
-
-		layer.bindTooltip(tooltipContent, {
-			permanent: false,
-			interactive: false
-		});
-	}
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight
+        });
+    }
 
 
-	// Fetch data and render on map
-	fetch('https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippines_municipalities.geojson')
-		.then(response => response.json())
-		.then(topojsonData => {
-			const geoJSON = topojson.feature(topojsonData, topojsonData.objects.PHL_adm2);
-			mergeDataWithGeoJSON(geoJSON, municipalityData);
+    // Fetch GeoJSON and render map
+    fetch('https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippines_municipalities.geojson')
+        .then(response => response.json())
+        .then(topojsonData => {
+            const geoJSON = topojson.feature(topojsonData, topojsonData.objects.PHL_adm2);
+            mergeDataWithGeoJSON(geoJSON, municipalityData);
 
-			let maxValue = Math.max(...municipalityData.map(d => d.value));
-			maxValue = truncateMaxValue(maxValue);
+            maxValue = Math.max(...geoJSON.features.map(feature => feature.properties.totalMeatQuantity));
+            maxValue = truncateMaxValue(maxValue);
 
-			geojsonLayer = L.geoJson(geoJSON, {
-				style: feature => styleFeature(feature, maxValue),
-				onEachFeature: onEachFeature
-			}).addTo(map);
+            geojsonLayer = L.geoJson(geoJSON, {
+                style: styleFeature,
+                onEachFeature: onEachFeature
+            }).addTo(map);
 
-			const legend = L.control({ position: 'bottomleft' });
-			legend.onAdd = function (map) {
-				var div = L.DomUtil.create('div', 'info legend');
-				const percentages = [0, 5, 15, 30, 50, 70, 85, 100];
-				const grades = percentages.map(p => Math.floor(maxValue * (p / 100)));
+            const legend = L.control({ position: 'bottomleft' });
+            legend.onAdd = function (map) {
+                var div = L.DomUtil.create('div', 'info legend');
+                const percentages = [0, 5, 15, 30, 50, 70, 85, 100];
+                const grades = percentages.map(p => Math.floor(maxValue * (p / 100)));
 
-				for (let i = 0; i < grades.length; i++) {
-					div.innerHTML +=
-						`<i style="background:${getColor(grades[i] + 1, maxValue)}"></i> ` +
-						`${Math.max(1, grades[i])}${grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : '+'}`;
-				}
+                for (let i = 0; i < grades.length; i++) {
+                    div.innerHTML +=
+                        `<i style="background:${getColor(grades[i] + 1, maxValue)}"></i> ` +
+                        `${Math.max(1, grades[i])}${grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : '+'}`;
+                }
 
-				return div;
-			};
-			legend.addTo(map);
-
-		});
+                return div;
+            };
+            legend.addTo(map);
+        });
 </script>
+
 

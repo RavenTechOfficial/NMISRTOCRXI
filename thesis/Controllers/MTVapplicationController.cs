@@ -301,6 +301,32 @@ namespace thesis.Controllers
 		}
 
 
+        [HttpPost]
+        public IActionResult GenerateResult([FromBody] AccreditionViewModel model)
+        {
+            // Process the data received
+            // For example, querying database or any other logic
 
-	}
+			var mtvapp = _context.MTVApplications
+				.Where(p => p.AccreditionNo == model.AccreditionNo)
+				.FirstOrDefault();
+
+			var mtvappVM = new MtvApplicationViewModel
+			{
+				OwnerFname = mtvapp.OwnerFname,
+				OwnerMname = mtvapp.OwnerMname,
+				OwnerLname = mtvapp.OwnerLname,
+				Email = mtvapp.Email,
+				TelNo = mtvapp.TelNo,
+				FaxNo = mtvapp.FaxNo,
+				Status = mtvapp.Status
+			};
+
+			// Return the result back to the frontend
+			//return View(mtvappVM);
+			return Json(new { result = "Success", data = mtvappVM });
+		}
+
+
+    }
 }
