@@ -1,7 +1,7 @@
 ﻿@using thesis.Areas.Identity.Data;
 @model IEnumerable<AccountDetails>
 <link rel="stylesheet" href="~/css/users.css" asp-append-version="true" />
-
+<partial name="_Notifications" />
 
 @if (User.IsInRole("SuperAdministrator"))
 {

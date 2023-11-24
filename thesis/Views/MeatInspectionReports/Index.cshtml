@@ -1,9 +1,14 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using thesis.Areas.Identity.Data
-@model IEnumerable<thesis.Models.ReceivingReport>
+﻿@using thesis.Core.ViewModel
+@model List<MeatInspectionReportViewModel>
 
-@inject SignInManager<AccountDetails> SignInManager;
-@inject UserManager<AccountDetails> UserManager;
+@inject thesis.Data.thesisContext dbContext
+
+
+@using Microsoft.AspNetCore.Identity;
+@using thesis.Areas.Identity.Data;
+
+@inject SignInManager<AccountDetails> SignInManager
+@inject UserManager<AccountDetails> UserManager
 
 @{
     ViewData["Title"] = "Index";
@@ -84,8 +89,8 @@
 
     #showInspection {
         /*margin-top: 10px;
-            margin-bottom: 0px;
-            margin-left: 10px;*/
+                margin-bottom: 0px;
+                margin-left: 10px;*/
         border: 1px solid var(--btndownload);
         background-color: var(--btndownload);
         padding: 5px 10px;
@@ -149,10 +154,8 @@
                                     <option value="Goat">Goat</option>
                                     <option value="Chicken">Chicken</option>
                                     <option value="Duck">Duck</option>
-                                    <option value="Horse">Horse</option>
+                                    <option value="Hog">Hog</option>
                                     <option value="Sheep">Sheep</option>
-                                    <option value="Ostrich">Ostrich</option>
-                                    <option value="Crocodile">Crocodile</option>
                                 </select>
                             </div>
 
@@ -163,7 +166,7 @@
                         <div class="col-md-6">
                             <div class="input-wrapper">
                                 <label for="filter">Summary</label>
-                                <button id="showInspection" onclick="filterbutton()" class="btn btn-primary" disabled>Show All Inspections</button>
+                                <button id="showInspection" onclick="filterbutton()" class="btn btn-primary">Show All Inspections</button>
                             </div>
                         </div>
                     </div>
@@ -191,15 +194,15 @@
             </thead>
             <tbody>
 
-                @foreach (var inspection in ViewData["meatInspectionReports"] as IEnumerable<thesis.Models.MeatInspectionReport>)
+                @foreach (var inspection in Model)
                 {
                     <tr>
                         <td>@inspection.RepDate</td>
-                        <td>@inspection.VerifiedByPOSMSHead</td>
-                        <td>@inspection.ReceivingReport.AccountDetails.MeatEstablishment.Name</td>
-                        <td>@inspection.ReceivingReport.AccountDetails.MeatEstablishment.LicenseToOperateNumber</td>
-                        <td>@inspection.ReceivingReport.AccountDetails.MeatEstablishment.Address</td>
-                        <td>@inspection.Id</td>
+                        <td>@inspection.VerifiedBy</td>
+                        <td>@inspection.MeatEstablishment</td>
+                        <td>@inspection.LicenseToOperateNumber</td>
+                        <td>@inspection.MeatEstablishmentAddress</td>
+                        <td>@inspection.MeatInspectionReportId</td>
                         <td>@inspection.ReceivingReportId</td>
                     </tr>
                 }
@@ -211,7 +214,7 @@
 
 
         <div class="FirstLayer">
-            <button id="downloadButton" onclick="download()" class="disabled-button" disabled>
+            <button id="downloadButton" onclick="download()" class="button">
                 Download <i class="bx bx-download"></i>
             </button>
         </div>
@@ -239,44 +242,51 @@
                             <th scope="col" aria-hidden="true">Id</th>
                         </tr>
                     </thead>
-                    @{
-                        // Assuming accountId is the specific AccountDetails id you want to filter by
-                        string accountId = UserManager.GetUserId(User);
-                        var filteredModel = Model;
 
-                        if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
-                        {
-                            // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
+                    <tbody>
+                        @{
+                            var filteredModel = Model;
                             var loggedInUser = await UserManager.GetUserAsync(User);
 
-                            // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                            int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
 
-                            // Filter the Model based on the MeatEstablishmentId
-                            filteredModel = Model.Where(item => item.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
-                        }
-                        else if (User.IsInRole("InspectorAdmin"))
-                        {
-                            // No filtering required for InspectorAdmin, so keep the original Model.
-                            filteredModel = Model;
-                        }
-                    }
-                    <tbody>
+                            if (loggedInUser != null)
+                            {
+                                if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
+                                {
+                                    var meatEstablishmentId = loggedInUser.MeatEstablishmentId;
 
+                                    var meatEstablishment = dbContext.MeatEstablishment.FirstOrDefault(m => m.Id == meatEstablishmentId);
+
+                                    if (meatEstablishment != null)
+                                    {
+                                        string meatEstablishmentName = meatEstablishment.Name;
+
+                                        // Filter the Model based on meatEstablishmentName
+                                        filteredModel = filteredModel
+                                        .Where(item => string.Equals(item.MeatEstablishment, meatEstablishmentName, StringComparison.OrdinalIgnoreCase))
+                                        .ToList();
+                                    }
+                                }
+                                else if (User.IsInRole("InspectorAdmin"))
+                                {
+                                    filteredModel = Model;
+                                }
+                            }
+                        }
                         @foreach (var item in filteredModel)
                         {
                             <tr>
-                                <td>@item.RecTime.ToString("yyyy-MM")</td>
+                                <td>@item.DateReceived.ToString("yyyy-MM")</td>
                                 <td>
-                                    <img src="~/img/@(item.Species).png" class="img-large">
-                                    <div>@item.Species</div>
+                                    <img src="~/img/@(item.Specie).png" class="img-large">
+                                    <div>@item.Specie</div>
                                 </td>
                                 <td>@item.NoOfHeads</td>
                                 <td>@item.Origin</td>
-                                <td>@item.AccountDetails.MeatEstablishment.Name</td>
-                                <td>@item.AccountDetails.MeatEstablishment.LicenseToOperateNumber</td>
-                                <td>@item.AccountDetails.MeatEstablishment.Address</td>
-                                <td aria-hidden="true">@item.Id</td>
+                                <td>@item.MeatEstablishment</td>
+                                <td>@item.LicenseToOperateNumber</td>
+                                <td>@item.MeatEstablishmentAddress</td>
+                                <td aria-hidden="true">@item.ReceivingReportId</td>
                             </tr>
                         }
                     </tbody>
@@ -307,39 +317,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @{
-                                    // Assuming accountId is the specific AccountDetails id you want to filter by
-                                    var model = ViewData["ConductOfInspections"] as IEnumerable<thesis.Models.ConductOfInspection>;
-                                    string accountIdd = UserManager.GetUserId(User);
-                                    var filteredModell = model;
-
-                                    if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
-                                    {
-                                        // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
-                                        var loggedInUser = await UserManager.GetUserAsync(User);
-
-                                        // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                                        int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
-
-                                        // Filter the Model based on the MeatEstablishmentId
-                                        filteredModell = model.Where(item => item.MeatInspectionReport.ReceivingReport.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
-                                    }
-                                    else if (User.IsInRole("InspectorAdmin"))
-                                    {
-                                        // No filtering required for InspectorAdmin, so keep the original Model.
-                                        filteredModell = model;
-                                    }
-                                }
-                                @foreach (var inspection in model)
+                                @foreach (var inspection in Model)
                                 {
                                     <tr>
-                                        <td aria-hidden="true">@inspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
-                                        <td>@inspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                        <td aria-hidden="true">@inspection.MeatDealer</td>
+                                        <td>@inspection.Specie</td>
                                         <td>@inspection.Issue</td>
                                         <td>@inspection.NoOfHeads</td>
                                         <td>@inspection.Weight</td>
                                         <td>@inspection.Cause</td>
-                                        <td aria-hidden="true">@inspection.Id</td>
+                                        <td aria-hidden="true">@inspection.AntemortemId</td>
                                         <td aria-hidden="true">@inspection.MeatInspectionReportId</td>
                                     </tr>
                                 }
@@ -358,21 +345,21 @@
                                     <th scope="col">No. of heads</th>
                                     <th scope="col">Weight</th>
                                     <th scope="col" aria-hidden="true">Id</th>
-                                    <th scope="col" aria-hidden="true">ConductOfInpscetionId</th>
+                                    <th scope="col" aria-hidden="true">ConductOfInspectionId</th>
 
                                 </tr>
                             </thead>
                             <tbody>
 
-                                @foreach (var passed in ViewData["PassedForSlaughters"] as IEnumerable<thesis.Models.PassedForSlaughter>)
+                                @foreach (var passed in Model)
                                 {
                                     <tr>
-                                        <td aria-hidden="true">@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
-                                        <td>@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                        <td aria-hidden="true">@passed.MeatDealer</td>
+                                        <td>@passed.Specie</td>
                                         <td>@passed.NoOfHeads</td>
                                         <td>@passed.Weight</td>
-                                        <td aria-hidden="true">@passed.Id</td>
-                                        <td aria-hidden="true">@passed.ConductOfInspectionId</td>
+                                        <td aria-hidden="true">@passed.PassedId</td>
+                                        <td aria-hidden="true">@passed.AntemortemId</td>
                                         <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
                                     </tr>
                                     // Build a unique key for each combination of Issue, Cause, Species, and Meat Dealer
@@ -403,17 +390,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var post in ViewData["postmortem"] as IEnumerable<thesis.Models.Postmortem>)
+                                @foreach (var post in Model)
                                 {
                                     <tr>
-                                        <td aria-hidden="true">@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
-                                        <td>@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                        <td aria-hidden="true">@post.MeatDealer</td>
+                                        <td>@post.Specie</td>
                                         <td>@post.AnimalPart</td>
-                                        <td>@post.Cause</td>
-                                        <td>@post.NoOfHeads</td>
-                                        <td>@post.Weight</td>
-                                        <td aria-hidden="true">@post.Id</td>
-                                        <td aria-hidden="true">@post.PassedForSlaughterId</td>
+                                        <td>@post.piCause</td>
+                                        <td>@post.piNoOfHeads</td>
+                                        <td>@post.piWeight</td>
+                                        <td aria-hidden="true">@post.PostmortemId</td>
+                                        <td aria-hidden="true">@post.PassedId</td>
 
                                         <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
                                     </tr>
@@ -448,14 +435,14 @@
                             </thead>
                             <tbody>
 
-                                @foreach (var total in ViewData["totalNoFitForHumanConsumption"] as IEnumerable<thesis.Models.totalNoFitForHumanConsumptions>)
+                                @foreach (var total in Model)
                                 {
                                     <tr>
 
-                                        <td>@total.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                        <td>@total.Specie</td>
                                         <td>@total.NoOfHeads</td>
-                                        <td>@total.DressedWeight</td>
-                                        <td aria-hidden="true">@total.Id</td>
+                                        <td>@total.tnDressedWeight</td>
+                                        <td aria-hidden="true">@total.TotalNoId</td>
                                         <td aria-hidden="true">@total.PostmortemId</td>
 
                                         <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
@@ -468,7 +455,6 @@
                     </div>
 
                 </div>
-
 
                 <div class="FirstLayer">
                     <div class="applications">
@@ -483,6 +469,7 @@
                                     <th scope="col">Weight (kg.)</th>
                                     <th scope="col">Destination Name</th>
                                     <th scope="col">Destination Address</th>
+                                    <th scope="col">Meat Inspection Certificate Issued (sheets) If any</th>
                                     <th scope="col">Meat Inspection Certificate Cancelled (sheets) If any</th>
                                     <th scope="col" aria-hidden="true">Id</th>
                                     <th scope="col" aria-hidden="true">totalfitId</th>
@@ -492,18 +479,19 @@
 
                             </thead>
                             <tbody>
-                                @foreach (var summary in ViewData["SummaryAndDistributionOfMICs"] as IEnumerable<thesis.Models.SummaryAndDistributionOfMIC>)
+                                @foreach (var summary in Model)
                                 {
                                     <tr>
 
-                                        <td>@summary.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
-                                        <td>@summary.TotalNoFitForHumanConsumption.NoOfHeads</td>
-                                        <td>@summary.TotalNoFitForHumanConsumption.DressedWeight</td>
+                                        <td>@summary.Specie</td>
+                                        <td>@summary.tnNoOfHeads</td>
+                                        <td>@summary.tnDressedWeight</td>
                                         <td>@summary.DestinationName</td>
                                         <td>@summary.DestinationAddress</td>
-                                        @* <td>@summary.CertificateStatus</td> *@
-                                        <td aria-hidden="true">@summary.Id</td>
-                                        <td aria-hidden="true">@summary.TotalNoFitForHumanConsumptionId</td>
+                                        <td>@summary.MICIssued</td>
+                                        <td>@summary.MICCancelled</td>
+                                        <td aria-hidden="true">@summary.SummaryId</td>
+                                        <td aria-hidden="true">@summary.TotalNoId</td>
 
 
                                         <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
@@ -517,118 +505,28 @@
             </div>
         </div>
 
-        </div>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js" defer></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-style/0.8.16/xlsx.full.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-style/0.8.16/xlsx.full.min.js" defer></script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" defer></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/jszip.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx-style.min.js"></script>
-        <script src="xlsx.full.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/jszip.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx-style.min.js" defer></script>
+        <script src="xlsx.full.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" defer></script>
 
 
-        <script src="~/js/meatinspectionindex.js"></script>
 
         <script src="https://code.jquery.com/jquery-3.3.1.js" defer></script>
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" defer></script>
-
-        <script>
-            $(document).ready(function () {
-                var tables = $('#tableOne').DataTable({
-                    paging: true,
-                    lengthChange: true,
-                    pageLength: 30,
-                    lengthMenu: [30, 50, 100],
-                    searching: true,
-                    ordering: true,
-                    responsive: true,
-                });
-
-                var currentDate = new Date();
-                currentDate.setDate(1); // Set the day to the 1st of the current month
-
-                // Format the date as 'YYYY-MM' (year and month)
-                var currentMonth = currentDate.toISOString().slice(0, 7);
-
-                // Set the value of the date input field to the current month
-                $('#dateFilter').val(currentMonth);
-
-                // Add an event listener to the date input field
-                tables.column(0).search(currentMonth).draw();
-                // Add an event listener to the date input field
-                $('#dateFilter').on('change', function () {
-                    tables.column(0).search(this.value).draw();
-                    updateFilter();
-                    tableTwo();
-                    tableThree();
-                    tableFour();
-                    tableFive();
-                    tableSix();
-                });
-
-                $('#meatEstablishmentFilter, #species').on('change', function () {
-                    var selectedMEText = $('#meatEstablishmentFilter').find('option:selected').text();
-                    var selectedSpeciesText = $('#species').find('option:selected').text();
-
-                    if (selectedMEText === "All" || selectedSpeciesText === "--Select--") {
-                        $('#showInspection').prop('disabled', true);
-                        $('#downloadButton').addClass('disabled-button');
-
-                    } else {
-                        $('#showInspection').prop('disabled', false);
-                        $('#downloadButton').removeClass('disabled-button');
-
-                    }
-
-                });
-
-
-                $('#meatEstablishmentFilter').on('change', function () {
-                    var selectedTexts = $(this).find('option:selected').text();
-                    // tables.column(4).search(selectedTexts).draw();
-                    if (selectedTexts === "All") {
-                        // Clear the filter to display all data
-                        tables.column(4).search('').draw();
-                    } else {
-                        tables.column(4).search(selectedTexts).draw();
-                    }
-
-                    updateFilter();
-                    tableTwo();
-                    tableThree();
-                    tableFour();
-                    tableFive();
-                    tableSix();
-                });
-
-                $('#species').on('change', function () {
-                    var selectedText = $(this).find('option:selected').text();
-                    // tables.column(1).search(selectedText).draw();
-                    if (selectedText === "--Select--") {
-                        // Clear the filter to display all data
-                        tables.column(1).search('').draw();
-                    } else {
-                        tables.column(1).search(selectedText).draw();
-                    }
-                    updateFilter();
-                    tableTwo();
-                    tableThree();
-                    tableFour();
-                    tableFive();
-                    tableSix();
-                });
-            });
-        </script>
+        <script src="~/js/meatinspectionindex.js" defer></script>
 
 
     </main>

@@ -239,11 +239,10 @@
                 <table class="table table-bordered table-responsive-sm " id="tableOne">
                     <thead>
                         <tr>
-                            <th scope="col">Date & Time</th>
+                            <th scope="col">Time</th>
                             <th scope="col">Name of Meat Dealer</th>
                             <th scope="col">Species of Food Animals</th>
                             <th scope="col">Total Number of Animals</th>
-                            <th scope="col">Live Weight(Kg.)</th>
 
                             <th scope="col" aria-hidden="true">Id</th>
 
@@ -281,7 +280,6 @@
                                 <td>@item.MeatDealers.FirstName @item.MeatDealers.LastName</td>
                                 <td>@item.Species</td>
                                 <td>@item.NoOfHeads</td>
-                                <td>@item.LiveWeight</td>
                                 <td aria-hidden="true">@item.Id</td>
                             </tr>
                         }
@@ -296,51 +294,26 @@
                 <table class="table table-bordered table-responsive-sm " id="tableTwo">
                     <thead>
                         <tr>
-
+                            <th scope="col">Name of Meat Dealer</th>
                             <th scope="col">Species of Food Animals</th>
                             <th scope="col">Issue</th>
-                            <th scope="col">Cause</th>
                             <th scope="col">No. of heads</th>
-                            <th scope="col">Weight (Kg.)</th>
-
+                            <th scope="col">Weight (kg)</th>
+                            <th scope="col">Cause</th>
                             <th scope="col" aria-hidden="true">Id</th>
                             <th scope="col" aria-hidden="true">MeatInspectionId</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            // Assuming accountId is the specific AccountDetails id you want to filter by
-                            var model = ViewData["ConductOfInspections"] as IEnumerable<thesis.Models.ConductOfInspection>;
-                            string accountIdd = UserManager.GetUserId(User);
-                            var filteredModell = model;
-
-                            if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
-                            {
-                                // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
-                                var loggedInUser = await UserManager.GetUserAsync(User);
-
-                                // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                                int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
-
-                                // Filter the Model based on the MeatEstablishmentId
-                                filteredModell = model.Where(item => item.MeatInspectionReport.ReceivingReport.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
-                            }
-                            else if (User.IsInRole("InspectorAdmin"))
-                            {
-                                // No filtering required for InspectorAdmin, so keep the original Model.
-                                filteredModell = model;
-                            }
-                        }
-                        @foreach (var inspection in model)
+                        @foreach (var inspection in ViewData["ConductOfInspections"] as IEnumerable<thesis.Models.ConductOfInspection>)
                         {
                             <tr>
-
+                                <td>@inspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
                                 <td>@inspection.MeatInspectionReport.ReceivingReport.Species</td>
                                 <td>@inspection.Issue</td>
-                                <td>@inspection.Cause</td>
                                 <td>@inspection.NoOfHeads</td>
                                 <td>@inspection.Weight</td>
-
+                                <td>@inspection.Cause</td>
                                 <td aria-hidden="true">@inspection.Id</td>
                                 <td aria-hidden="true">@inspection.MeatInspectionReportId</td>
                             </tr>
@@ -351,47 +324,23 @@
                 <h5 class="card-title m-b-0">C. Passed for Slaughter</h5>
                 <br />
                 <table class="table table-bordered" id="tableThree">
-
-
                     <thead>
                         <tr>
-
+                            <th scope="col">Name of Meat Dealer</th>
                             <th scope="col">Species of Food Animal</th>
                             <th scope="col">No. of heads</th>
-                            <th scope="col">Weight (Kg.)</th>
+                            <th scope="col">Weight</th>
                             <th scope="col" aria-hidden="true">Id</th>
                             <th scope="col" aria-hidden="true">ConductOfInpscetionId</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            // Assuming accountId is the specific AccountDetails id you want to filter by
-                            var modell = ViewData["PassedForSlaughters"] as IEnumerable<thesis.Models.PassedForSlaughter>;
-                            string accountIddd = UserManager.GetUserId(User);
-                            var filteredModelll = modell;
 
-                            if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
-                            {
-                                // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
-                                var loggedInUser = await UserManager.GetUserAsync(User);
-
-                                // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                                int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
-
-                                // Filter the Model based on the MeatEstablishmentId
-                                filteredModelll = modell.Where(item => item.ConductOfInspection.MeatInspectionReport.ReceivingReport.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
-                            }
-                            else if (User.IsInRole("InspectorAdmin"))
-                            {
-                                // No filtering required for InspectorAdmin, so keep the original Model.
-                                filteredModelll = modell;
-                            }
-                        }
-                        @foreach (var passed in modell)
+                        @foreach (var passed in ViewData["PassedForSlaughters"] as IEnumerable<thesis.Models.PassedForSlaughter>)
                         {
                             <tr>
-
+                                <td>@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
                                 <td>@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
                                 <td>@passed.NoOfHeads</td>
                                 <td>@passed.Weight</td>
@@ -413,10 +362,6 @@
             <div class="applications">
                 <h3 class="card-title m-b-0">II. POSTMORTEM INSPECTION</h3>
                 <br />
-                <div id="imageModal" class="modal">
-                    <span class="close" onclick="closeImageModal()">&times;</span>
-                    <img id="modalImage" class="modal-content">
-                </div>
                 <table class="table table-bordered" id="tableFour">
                     <thead>
                         <tr>
@@ -425,85 +370,25 @@
                             <th scope="col">Animal Part</th>
                             <th scope="col">Cause</th>
                             <th scope="col">No. of heads</th>
-                            <th scope="col">Weight (Kg.)</th>
-                            <th scope="col">Image 1</th>
-                            <th scope="col">Image 2</th>
-                            <th scope="col">Image 3</th>
+                            <th scope="col">Weight (kg)</th>
                             <th scope="col" aria-hidden="true">Id</th>
                             <th scope="col" aria-hidden="true">passedSlaughterId</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            // Assuming accountId is the specific AccountDetails id you want to filter by
-                            var modelll = ViewData["postmortem"] as IEnumerable<thesis.Models.Postmortem>;
-                            string accountIdddd = UserManager.GetUserId(User);
-                            var filteredModellll = modelll;
-
-                            if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
-                            {
-                                // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
-                                var loggedInUser = await UserManager.GetUserAsync(User);
-
-                                // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                                int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
-
-                                // Filter the Model based on the MeatEstablishmentId
-                                filteredModellll = modelll.Where(item => item.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
-                            }
-                            else if (User.IsInRole("InspectorAdmin"))
-                            {
-                                // No filtering required for InspectorAdmin, so keep the original Model.
-                                filteredModellll = modelll;
-                            }
-                        }
-                        @foreach (var post in modelll)
+                        @foreach (var post in ViewData["postmortem"] as IEnumerable<thesis.Models.Postmortem>)
                         {
                             <tr>
-                                <td>@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName @post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.LastName</td>
+                                <td>@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
                                 <td>@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
                                 <td>@post.AnimalPart</td>
                                 <td>@post.Cause</td>
                                 <td>@post.NoOfHeads</td>
                                 <td>@post.Weight</td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(post.Image1))
-                                    {
-
-                                        var imageName1 = post.Image1.Substring(post.Image1.LastIndexOf('\\') + 1);
-                                        var formattedImage1 = $"wwwroot/img/PostmortemImages/{imageName1}";
-
-                                        <a href="javascript:void(0);" onclick="openImageModal('@formattedImage1')">
-                                            View Image 1
-                                        </a>
-                                    }
-                                </td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(post.Image2))
-                                    {
-                                        var imageName2 = post.Image2.Substring(post.Image2.LastIndexOf('\\') + 1);
-                                        var formattedImage2 = $"wwwroot/img/PostmortemImages/{imageName2}";
-
-                                        <a href="javascript:void(0);" onclick="openImageModal('@formattedImage2')">
-                                            View Image 2
-                                        </a>
-                                    }
-                                </td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(post.Image3))
-                                    {
-                                        var imageName3 = post.Image3.Substring(post.Image3.LastIndexOf('\\') + 1);
-                                        var formattedImage3 = $"wwwroot/img/PostmortemImages/{imageName3}";
-                                        <a href="javascript:void(0);" onclick="openImageModal('@formattedImage3')">
-                                            View Image 3
-                                        </a>
-                                    }
-                                </td>
                                 <td aria-hidden="true">@post.Id</td>
                                 <td aria-hidden="true">@post.PassedForSlaughterId</td>
 
                                 <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
-
                             </tr>
 
                         }
@@ -537,30 +422,7 @@
 
                     </thead>
                     <tbody>
-                        @{
-                            // Assuming accountId is the specific AccountDetails id you want to filter by
-                            var modellll = ViewData["totalNoFitForHumanConsumption"] as IEnumerable<thesis.Models.totalNoFitForHumanConsumptions>;
-                            string accountIddddd = UserManager.GetUserId(User);
-                            var filteredModelllll = modellll;
-
-                            if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
-                            {
-                                // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
-                                var loggedInUser = await UserManager.GetUserAsync(User);
-
-                                // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                                int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
-
-                                // Filter the Model based on the MeatEstablishmentId
-                                filteredModelllll = modellll.Where(item => item.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
-                            }
-                            else if (User.IsInRole("InspectorAdmin"))
-                            {
-                                // No filtering required for InspectorAdmin, so keep the original Model.
-                                filteredModelllll = modellll;
-                            }
-                        }
-                        @foreach (var total in modellll)
+                        @foreach (var total in ViewData["totalNoFitForHumanConsumption"] as IEnumerable<thesis.Models.totalNoFitForHumanConsumptions>)
                         {
                             <tr>
 
@@ -591,10 +453,11 @@
                         <tr>
                             <th scope="col">Type of Meat</th>
                             <th scope="col">No. of heads</th>
-                            <th scope="col">Weight (Kg.)</th>
+                            <th scope="col">Weight (kg.)</th>
                             <th scope="col">Destination Name</th>
                             <th scope="col">Destination Address</th>
-                            <th scope="col">Meat Inspection Certificate Status</th>
+                            <th scope="col">Meat Inspection Certificate Issued (sheets) If any</th>
+                            <th scope="col">Meat Inspection Certificate Cancelled (sheets) If any</th>
                             <th scope="col" aria-hidden="true">Id</th>
                             <th scope="col" aria-hidden="true">totalfitId</th>
 
@@ -603,39 +466,16 @@
 
                     </thead>
                     <tbody>
-                        @{
-                            // Assuming accountId is the specific AccountDetails id you want to filter by
-                            var modelllll = ViewData["SummaryAndDistributionOfMICs"] as IEnumerable<thesis.Models.SummaryAndDistributionOfMIC>;
-                            string accountIdddddd = UserManager.GetUserId(User);
-                            var filteredModellllll = modelllll;
-
-                            if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
-                            {
-                                // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
-                                var loggedInUser = await UserManager.GetUserAsync(User);
-
-                                // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                                int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
-
-                                // Filter the Model based on the MeatEstablishmentId
-                                filteredModellllll = modelllll.Where(item => item.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
-                            }
-                            else if (User.IsInRole("InspectorAdmin"))
-                            {
-                                // No filtering required for InspectorAdmin, so keep the original Model.
-                                filteredModellllll = modelllll;
-                            }
-                        }
-                        @foreach (var summary in modelllll)
+                        @foreach (var summary in ViewData["SummaryAndDistributionOfMICs"] as IEnumerable<thesis.Models.SummaryAndDistributionOfMIC>)
                         {
-
                             <tr>
                                 <td>@summary.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
                                 <td>@summary.TotalNoFitForHumanConsumption.NoOfHeads</td>
                                 <td>@summary.TotalNoFitForHumanConsumption.DressedWeight</td>
                                 <td>@summary.DestinationName</td>
                                 <td>@summary.DestinationAddress</td>
-                                @* <td>@summary.CertificateStatus</td> *@
+                                <td>@summary.MICIssued</td>
+                                <td>@summary.MICCancelled</td>
                                 <td aria-hidden="true">@summary.Id</td>
                                 <td aria-hidden="true">@summary.TotalNoFitForHumanConsumptionId</td>
 
@@ -648,9 +488,6 @@
                 </table>
             </div>
         </div>
-        <!-- Add these links to include Lightbox2 CSS and JavaScript files -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
@@ -659,345 +496,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-style/0.8.16/xlsx.full.min.js"></script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-        <script>
-            //gif looping and autoplay
-            var img = document.getElementById('image');
-            img.setAttribute('autoplay', true);
-            img.setAttribute('loop', true);
-        </script>
-
-
-
-        <script>
-            $(document).ready(function () {
-                updateFilter();
-                tableTwo();
-                tableThree();
-                tableFour();
-                tableFive();
-                tableSix();
-
-
-            });
-            function updateFilter() {
-                var selectedReportId = $("#ReceivingReportId").val(); // Get the selected ReceivingReportId from the form
-
-                // Loop through the rows in tableOne and show/hide based on the selected ReportId
-                $('#tableOne tbody tr').each(function () {
-                    var receivingReportId = $(this).find('td:last').text();
-
-                    if (receivingReportId === selectedReportId) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-
-            function tableTwo() {
-
-                var selectedId = $("#Id").val();
-
-                $('#tableTwo tbody tr').each(function () {
-                    var meatInspectionId = $(this).find('td:eq(6)').text(); // Get MeatInspectionId from the 8th column
-
-                    if (meatInspectionId === selectedId) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-            function tableThree() {
-                var ConductOfInpsectionIds = [];
-
-                // Loop through the visible rows in tableOne and store their IDs
-                $('#tableTwo tbody tr:visible').each(function () {
-                    var id = $(this).find('td:eq(5)').text();
-                    ConductOfInpsectionIds.push(id);
-                });
-
-
-
-                $('#tableThree tbody tr').each(function () {
-                    var ConductOfInpsectionId = $(this).find('td:eq(4)').text(); // Get MeatInspectionId from the 8th column
-
-                    if (ConductOfInpsectionIds.includes(ConductOfInpsectionId)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-            var modal = document.getElementById('imageModal');
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            }
-            function openImageModal(imageUrl) {
-                console.log('imageurl', imageUrl)
-                var modal = document.getElementById('imageModal');
-                var modalImg = document.getElementById('modalImage');
-
-                // Check if imageUrl is not null or empty before setting the src attribute
-                if (imageUrl && imageUrl.trim() !== '') {
-                    // Replace unwanted_text if needed before setting the image source
-                    var formattedUrl = imageUrl.replace("wwwroot", "").replace("MeatInspectionReports/DailyIndex/", "");
-                    modalImg.src = formattedUrl;
-                    modal.style.display = 'block';
-                } else {
-                    // If imageUrl is null or empty, do not display anything
-                    modalImg.src = ''; // Clear the image source
-                    modal.style.display = 'none'; // Hide the modal
-                }
-            }
-
-            function closeImageModal() {
-                var modal = document.getElementById('imageModal');
-                modal.style.display = 'none';
-            }
-            function tableFour() {
-                var passedSlaughterIds = [];
-
-                // Loop through the visible rows in tableOne and store their IDs
-                $('#tableThree tbody tr:visible').each(function () {
-                    var id = $(this).find('td:eq(3)').text();
-                    passedSlaughterIds.push(id);
-                });
-
-
-                $('#tableFour tbody tr').each(function () {
-                    var passedSlaughterId = $(this).find('td:eq(10)').text(); // Get MeatInspectionId from the 8th column
-
-                    if (passedSlaughterIds.includes(passedSlaughterId)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-            function tableFive() {
-                var PostmortemIds = [];
-
-                // Loop through the visible rows in tableOne and store their IDs
-                $('#tableFour tbody tr:visible').each(function () {
-                    var id = $(this).find('td:eq(9)').text();
-                    PostmortemIds.push(id);
-                });
-
-
-                $('#tableFive tbody tr').each(function () {
-                    var PostmortemId = $(this).find('td:eq(4)').text(); // Get MeatInspectionId from the 8th column
-
-                    if (PostmortemIds.includes(PostmortemId)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-            function tableSix() {
-                var totalfitIds = [];
-
-                // Loop through the visible rows in tableOne and store their IDs
-                $('#tableFive tbody tr:visible').each(function () {
-                    var id = $(this).find('td:eq(3)').text();
-                    totalfitIds.push(id);
-                });
-
-
-                $('#tableSix tbody tr').each(function () {
-                    var totalfitId = $(this).find('td:eq(7)').text(); // Get MeatInspectionId from the 8th column
-
-                    if (totalfitIds.includes(totalfitId)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
-
-
-            //date
-            function filterDataDate() {
-                var startDate = new Date(document.getElementById("startdate").value);
-                startDate.setHours(0, 0, 0, 0); // Set time to start of the day
-                var endDate = new Date(document.getElementById("enddate").value);
-                endDate.setHours(23, 59, 59, 999); // Set time to end of the day
-
-                var rows = document.querySelectorAll("#tableOne tbody tr");
-
-                rows.forEach(function (row) {
-                    var dateCell = row.querySelector("td:first-child");
-                    var dateString = dateCell.textContent;
-                    var rowDate = new Date(dateString.split(" ")[0]);
-
-                    if (startDate && endDate) {
-                        if (rowDate >= startDate && rowDate <= endDate) {
-                            row.style.display = "";
-                        } else {
-                            row.style.display = "none";
-                        }
-                    }
-                });
-                updateFilter();
-                tableTwo();
-                tableThree();
-                tableFour();
-                tableFive();
-                tableSix();
-            }
-            //species
-
-            function filterDataSpecies() {
-                var selectedSpecies = document.getElementById("species").value;
-                var table = document.getElementById("tableOne");
-                var rows = table.getElementsByTagName("tr");
-
-                for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
-                    var speciesCell = rows[i].cells[2]; // Assuming species is in the third column (index 2)
-
-                    if (selectedSpecies === "All" || speciesCell.innerHTML === selectedSpecies) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
-                    }
-                }
-                updateFilter();
-                tableTwo();
-                tableThree();
-                tableFour();
-                tableFive();
-                tableSix();
-            }
-
-        </script>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/jszip.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx-style.min.js"></script>
-
-
-        <script>
-            function download() {
-                // Initialize the allData array to empty before appending data from each table
-                var allData = [];
-
-                // Function to get visible rows and column titles from a table
-                function getVisibleTableData(tableId, tableTitle) {
-                    var data = [];
-                    var columnTitles = [];
-                    var excludedColumns = [];
-
-                    // Get the column titles from the table's header row and check for aria-hidden
-                    $('#' + tableId + ' thead tr th').each(function (index) {
-                        var isHidden = $(this).attr('aria-hidden');
-                        if (!isHidden || isHidden !== 'true') {
-                            columnTitles.push($(this).text());
-                        } else {
-                            excludedColumns.push(index); // Keep track of excluded columns
-                        }
-                    });
-
-                    // Combine the title and column titles into a single cell
-                    var titleCell = [tableTitle, '', '', '', '', '', ''].join(' ');
-                    data.push([titleCell]); // Title row
-                    data.push(columnTitles); // Column titles row
-
-                    $('#' + tableId + ' tbody tr:visible').each(function () {
-                        var row = [];
-                        $(this).find('td').each(function (index) {
-                            // Check if the column should be included based on the exclusion list
-                            if (excludedColumns.indexOf(index) === -1) {
-                                row.push($(this).text());
-                            }
-                        });
-                        data.push(row);
-                    });
-
-                    data.push(['']); // Empty row after data
-
-                    return data;
-                }
-
-                // Add data from DisplayNameFor and DisplayFor elements
-                allData.push('');
-                allData.push(['DAILY MEAT INSPECTION REPORT', '', '', '', '', '', '']);
-
-                allData.push(['Region:', '', '', '', '', '', '']);
-                allData.push(['Name of Meat Establishment:', '@Model.MeatEstablishment', '', '', '', '', '']);
-                allData.push(['Address:', '@Model.Address', '', '', '', '', '']);
-                allData.push(['License to Operate (LTO) No:', '@Model.LicenseToOperateNumber', '', '', '', '', '']);
-                allData.push(['Date Inspected:', '@Model.RepDate', '', '', '', '', '']);
-
-                // Combine data from all tables into the allData array
-                allData.push('', '');
-                allData.push(['I. Antemortem Inspection', '', '', '', '', '', '']); // Name for Antemortem Inspection
-                allData = allData.concat(getVisibleTableData('tableOne', 'A. Receiving of Food Animals for Slaughter'));
-                allData = allData.concat(getVisibleTableData('tableTwo', 'B. Conduct of Antemortem Inspection'));
-                allData = allData.concat(getVisibleTableData('tableThree', 'C. Passed for Slaughter'));
-                allData = allData.concat(getVisibleTableData('tableFour', 'II. Postmortem Inspection'));
-                allData = allData.concat(getVisibleTableData('tableFive', 'III. Total Number of Food Animals Fit for Human Consumption'));
-                allData = allData.concat(getVisibleTableData('tableSix', 'IV. Summary and Distribution of Meat Inspection Certificate'));
-                allData.push('', '', '');
-
-
-                allData.push(['Prepared by:', '@Model.AccountDetailsId', '', '', '', '', '']);
-                allData.push(['', 'Meat Inspection Officer', '', '', '', '', '']);
-                allData.push('', '');
-                allData.push(['Conforme:', '', '', '', '', '', '']);
-                allData.push(['', 'Authorized Meat Establishment Representative', '', '', '', '', '']);
-                allData.push('', '');
-                allData.push(['Verified by:', '@Model.VerifiedBy', '', '', '', '', '']);
-                allData.push(['', 'POSMS HEAD', '', '', '', '', '']);
-                allData.push('', '');
-                // Create a new workbook with a single sheet
-                var ws = XLSX.utils.aoa_to_sheet(allData);
-
-                var columnWidths = [190, 190, 190, 190, 190, 190, 190, 190];
-
-                // Apply column widths to the worksheet
-                ws['!cols'] = columnWidths.map(function (width) {
-                    return { wpx: width };
-                });
-                // Create a merged cell for "Antemortem Inspection"
-                var mergeTitleRange = { s: { r: 0, c: 0 }, e: { r: 0, c: 6 } };
-                if (!ws['!merges']) ws['!merges'] = [];
-                ws['!merges'].push(mergeTitleRange);
-
-                // Create a new workbook
-                var wb = XLSX.utils.book_new();
-
-                // Add the sheet to the workbook
-                XLSX.utils.book_append_sheet(wb, ws, 'CombinedData');
-
-                // Convert workbook to binary XLSX format
-                var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-
-                // Save the file
-                saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'data.xlsx');
-            }
-
-            // Utility function to convert binary string to ArrayBuffer
-            function s2ab(s) {
-                var buf = new ArrayBuffer(s.length);
-                var view = new Uint8Array(buf);
-                for (var i = 0; i < s.length; i++) {
-                    view[i] = s.charCodeAt(i) & 0xFF;
-                }
-                return buf;
-            }
-
-        </script>
+        <script src="~/js/meatinspectiondailyindex.js" defer></script>
 
 
 
@@ -1005,6 +507,7 @@
 
     </main>
 </section>
+
 
 
 

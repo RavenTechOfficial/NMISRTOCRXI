@@ -1,5 +1,6 @@
 
 $(document).ready(function () {
+
     // Check if tableOne is initially empty
     var isTableOneEmpty = $('#tableOne tbody tr').length === 0;
 
@@ -12,6 +13,61 @@ $(document).ready(function () {
         $('#tableSix').hide(); // Hide tableSix if tableOne is empty
         // Add logic here to hide related rows in tableni and tableSix
     }
+
+    var tables = $('#tableOne').DataTable({
+        paging: true,
+        lengthChange: true,
+        pageLength: 30,
+        lengthMenu: [30, 50, 100],
+        searching: true,
+        ordering: true,
+        responsive: true,
+    });
+
+    var currentDate = new Date();
+    currentDate.setDate(1); // Set the day to the 1st of the current month
+
+    // Format the date as 'YYYY-MM' (year and month)
+    var currentMonth = currentDate.toISOString().slice(0, 7);
+
+    // Set the value of the date input field to the current month
+    $('#dateFilter').val(currentMonth);
+
+    // Add an event listener to the date input field
+    tables.column(0).search(currentMonth).draw();
+    // Add an event listener to the date input field
+    $('#dateFilter').on('change', function () {
+        tables.column(0).search(this.value).draw();
+        updateFilter();
+        tableTwo();
+        tableThree();
+        tableFour();
+        tableFive();
+        tableSix();
+    });
+
+
+    $('#meatEstablishmentFilter').on('change', function () {
+        var selectedTexts = $(this).find('option:selected').text();
+        tables.column(4).search(selectedTexts).draw();
+        updateFilter();
+        tableTwo();
+        tableThree();
+        tableFour();
+        tableFive();
+        tableSix();
+    });
+
+    $('#species').on('change', function () {
+        var selectedText = $(this).find('option:selected').text();
+        tables.column(1).search(selectedText).draw();
+        updateFilter();
+        tableTwo();
+        tableThree();
+        tableFour();
+        tableFive();
+        tableSix();
+    });
 
     // Other code and event listeners...
 });
@@ -133,7 +189,7 @@ function tableSix() {
 
 
     $('#tableSix tbody tr').each(function () {
-        var totalfitId = $(this).find('td:eq(7)').text(); // Get MeatInspectionId from the 8th column
+        var totalfitId = $(this).find('td:eq(8)').text(); // Get MeatInspectionId from the 8th column
 
         if (totalfitIds.includes(totalfitId)) {
             $(this).show();
@@ -173,6 +229,7 @@ function filterbutton() {
     threemerge();
     fourmerge();
     fivemerge();
+
 }
 
 
@@ -318,6 +375,12 @@ function s2ab(s) {
 
 function onemerge() {
     // Initialize an object to store the sums
+    updateFilter();
+    tableTwo();
+    tableThree();
+    tableFour();
+    tableFive();
+    tableSix();
     var sums = {};
 
     // Loop through each row in the table

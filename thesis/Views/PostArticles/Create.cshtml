@@ -14,7 +14,7 @@
 	<!-- MAIN STARTS-->
 	<main class="article">
 		<div class="container">
-			<header>Article Form</header>
+			<header>Create Article</header>
 			<form asp-action="Create" class="form" enctype="multipart/form-data"> 
 				
 				<div class="input-box">
@@ -80,8 +80,6 @@
 				</div>
 				
 				<input asp-for="Date" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" hidden/>
-
-
 
 				<button>Post Article</button>
 			</form>

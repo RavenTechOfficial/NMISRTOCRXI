@@ -257,9 +257,29 @@
         background: var(--blue);
     }
 
-        .article .form button:hover {
-            background: rgb(131, 109, 243);
-        }
+    .article .form button:hover {
+        background: rgb(131, 109, 243);
+    }
+
+    .article .form .actionBtn {
+        height: 55px;
+        width: 100%;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 400;
+        margin-top: 30px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: var(--blue);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align:center;
+    }
+    .article .form actionBtn:hover {
+        background: rgb(131, 109, 243);
+    }
 
 /*Responsive*/
 @media screen and (max-width: 768px) {
