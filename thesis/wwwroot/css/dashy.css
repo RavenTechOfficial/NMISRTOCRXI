@@ -38,11 +38,15 @@
 	#content main .FirstLayer div.applications {
 		max-width: 800px;
 		width: 100%;
+		height: 500px;
+		
 	}
+
 
 	#content main .FirstLayer .applications table {
 		width: 100%;
 		border-collapse: collapse;
+		overflow-y: auto;
 	}
 
 		#content main .FirstLayer .applications table th {

@@ -1,5 +1,167 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<link rel="stylesheet" href="~/css/dashy.css" asp-append-version="true" />
+
+
+<section id="content">
+	<!-- MAIN STARTS-->
+	<main>
+		<div class="container1">
+
+			<div class="FirstLayer">
+				
+
+				<div class="applications">
+					<div class="head">
+						<h3>MTV Applications</h3>
+						@* <i class='bx bx-search' id="search-icon1"></i>
+						<i class='bx bx-filter' id="filter-icon1"></i>
+						<i class='bx bx-refresh' id="refresh-icon1"></i> *@
+					</div>
+					<div class="table-container">
+						<table id="applications-table1">
+							<thead>
+								<tr>
+									<th>Operator Name</th>
+									<th>Application Type</th>
+									<th>Establishment Served</th>
+									<th>Plate Number</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								@* @foreach (var item in Model.MtvApplicants)
+								{
+									<tr data-id="@item.Id">
+										<td>
+											<p>@item.OwnerFname @item.OwnerLname</p>
+										</td>
+										<td>@item.applicationtype</td>
+										<td>@item.Vehicle?.Est</td>
+										<td>@item.Vehicle?.PlateNo</td>
+										<td>
+											<span class="status @GetStatusClass(item.Status)">@item.Status</span>
+										</td>
+									</tr>
+								} *@
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="applications">
+					<div class="head">
+						<h3>MTV QUIZ</h3>
+						@* <i class='bx bx-search' id="search-icon1"></i>
+						<i class='bx bx-filter' id="filter-icon1"></i>
+						<i class='bx bx-refresh' id="refresh-icon1"></i> *@
+					</div>
+					<div class="table-container">
+						<table id="applications-table1">
+							<thead>
+								<tr>
+									<th>Driver Name</th>
+									<th>Helper Name</th>
+									<th>Plate Number</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								@* @foreach (var item in Model.MtvApplicants)
+								{
+								<tr data-id="@item.Id">
+								<td>
+								<p>@item.OwnerFname @item.OwnerLname</p>
+								</td>
+								<td>@item.applicationtype</td>
+								<td>@item.Vehicle?.Est</td>
+								<td>@item.Vehicle?.PlateNo</td>
+								<td>
+								<span class="status @GetStatusClass(item.Status)">@item.Status</span>
+								</td>
+								</tr>
+								} *@
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="applications">
+					<div class="head">
+						<h3>MTV Checklists</h3>
+						@* <i class='bx bx-search' id="search-icon1"></i>
+						<i class='bx bx-filter' id="filter-icon1"></i>
+						<i class='bx bx-refresh' id="refresh-icon1"></i> *@
+					</div>
+					<table id="applications-table1">
+						<thead>
+							<tr>
+								<th>Owner</th>
+								<th>Inspector</th>
+								<th>Accreditation Number</th>
+								<th>Inspection Date</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							@* @foreach (var item in Model.Checklists)
+							{
+
+								<tr>
+									<td>
+										<p>@item.operatorname</p>
+									</td>
+									<td>@item.inspectorname</td>
+									<td>@item.plateno</td>
+									<td>@item.inspectdate</td>
+									<td>@item.status</td>
+								</tr>
+
+							} *@
+						</tbody>
+					</table>
+				</div>
+
+				<div class="applications">
+					<div class="head">
+						<h3>MTV Payment</h3>
+						@* <i class='bx bx-search' id="search-icon1"></i>
+						<i class='bx bx-filter' id="filter-icon1"></i>
+						<i class='bx bx-refresh' id="refresh-icon1"></i> *@
+					</div>
+					<table id="applications-table1">
+						<thead>
+							<tr>
+								<th>SOA</th>
+								<th>Email</th>
+								<th>Date</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+@* 
+							@foreach (var item in Model.Payments)
+							{
+
+								<tr>
+									<td>
+										<p>@item.SOA</p>
+									</td>
+									<td>@item.Email</td>
+									<td>@item.Date</td>
+									<td>@item.MTVApplication.Status</td>
+								</tr>
+
+							} *@
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+
+
+		</div>
+
+	</main>
+</section>

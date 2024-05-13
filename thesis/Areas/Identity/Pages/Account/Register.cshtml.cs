@@ -246,7 +246,7 @@ namespace thesis.Areas.Identity.Pages.Account
 					else
 					{
 						// Handle the case where the user is not found
-						TempData["error"] = "Error Found";
+						TempData["success"] = "Application Successful";
 					}
 
 					// Notification End
