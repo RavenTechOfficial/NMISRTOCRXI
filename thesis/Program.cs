@@ -5,160 +5,99 @@ using thesis.Areas.Identity.Data;
 using thesis.Core.IRepositories;
 using thesis.Data;
 using thesis.Repositories;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Get the connection string from the configuration
 var connectionString = builder.Configuration.GetConnectionString("thesisContextConnection") ?? throw new InvalidOperationException("Connection string 'thesisContextConnection' not found.");
 
+// Configure Entity Framework Core with SQL Server
 builder.Services.AddDbContext<thesisContext>(options =>
-    options.UseSqlServer(connectionString));
+	options.UseSqlServer(connectionString));
 
+// Configure Identity with custom roles
 builder.Services.AddDefaultIdentity<AccountDetails>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<thesisContext>();
+	.AddRoles<IdentityRole>()
+	.AddEntityFrameworkStores<thesisContext>();
 
-// Add services to the container.
+// Add services to the container	
 builder.Services.AddControllersWithViews();
 builder.Services.AddMemoryCache();
 
+// Configure authentication cookie settings
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    // Cookie settings
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Set an appropriate expiration time
-    options.SlidingExpiration = true;
+	options.Cookie.HttpOnly = true;
+	options.ExpireTimeSpan = TimeSpan.FromHours(4); // Set the expiration time for the cookie
+	options.SlidingExpiration = true; // Renew the cookie as long as the user is active
 });
 
+// Configure session settings
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(60); // Set an appropriate timeout value
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
+	options.IdleTimeout = TimeSpan.FromHours(4);
+	options.Cookie.HttpOnly = true;
+	options.Cookie.IsEssential = true;
 });
 
-
-
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//    .AddCookie();
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//    .AddCookie(options =>
-//    {
-//        options.LoginPath = "/Account/Login"; // Set the login path
-//        options.AccessDeniedPath = "/Account/AccessDenied"; // Set the access denied path
-//        options.Events = new CookieAuthenticationEvents
-//        {
-//            OnSigningIn = async context =>
-//            {
-//                var user = context.Principal;
-//                if (user != null && user.Identity != null && user.Identity.IsAuthenticated)
-//                {
-//                    var userManager = context.HttpContext.RequestServices.GetRequiredService<UserManager<AccountDetails>>();
-
-//                    var roles = await userManager.GetRolesAsync(await userManager.GetUserAsync(user));
-
-//                    var redirectPath = string.Empty;
-
-//                    if (roles.Contains("SuperAdministrator"))
-//                    {
-//                        redirectPath = "/Dashboard/Index";
-//                    }
-//                    else if (roles.Contains("InspectorAdministrator"))
-//                    {
-//                        redirectPath = "/MeatEstablishments/Index";
-//                    }
-//                    else if (roles.Contains("MeatInspector") || roles.Contains("MeatEstablishmentRepresentative"))
-//                    {
-//                        redirectPath = "/ReceivingReports/Index";
-//                    }
-//                    else if (roles.Contains("MTVAdministrator"))
-//                    {
-//                        redirectPath = "/MTVdashboard/Index";
-//                    }
-//                    else if (roles.Contains("MtvInspector"))
-//                    {
-//                        redirectPath = "/MtvInspectorDashboard/Index";
-//                    }
-//                    else if (roles.Contains("MtvUsers"))
-//                    {
-//                        redirectPath = "/MTVapplication/Create";
-//                    }
-
-//                    if (!string.IsNullOrEmpty(redirectPath))
-//                    {
-//                        context.Properties.RedirectUri = redirectPath;
-//                    }
-//                }
-//            }
-//        };
-//    });
-
-#region Authorization
-
+// Add custom authorization policies
 AddAuthorizationPolicies();
-AddScoped();
 
-#endregion
+// Add scoped services
+AddScopedServices();
 
 var app = builder.Build();
 
-//if (args.Length == 1 && args[0].ToLower() == "seeddatas")
-//{
-//    Seed3.SeedDatas(app);
-//}
-
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline for production
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+	app.UseExceptionHandler("/Home/Error");
+	app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
 
+app.UseAuthentication();
 app.UseAuthorization();
-app.MapRazorPages();
 
+app.MapRazorPages();
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+	name: "default",
+	pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 
 
-void AddScoped()
+
+void AddScopedServices()
 {
-    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-    builder.Services.AddScoped<IReceivingReportRepository, ReceivingReportRepository>();
-    builder.Services.AddScoped<IMeatInspectionReportRepository, MeatInspectionReportRepository>();
-    builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
-    builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
-    builder.Services.AddScoped<IUsersManangementRepository, UsersManagementRepository>();
-    builder.Services.AddScoped<IGeolocationRepository, GeolocationRepository>();
-    builder.Services.AddScoped<IResultsRepository, ResultsRepository>();
-    builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
-    builder.Services.AddScoped<IChroplethMapRepository, ChroplethMapRepository>();
+	builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+	builder.Services.AddScoped<IReceivingReportRepository, ReceivingReportRepository>();
+	builder.Services.AddScoped<IMeatInspectionReportRepository, MeatInspectionReportRepository>();
+	builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+	builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
+	builder.Services.AddScoped<IUsersManangementRepository, UsersManagementRepository>();
+	builder.Services.AddScoped<IGeolocationRepository, GeolocationRepository>();
+	builder.Services.AddScoped<IResultsRepository, ResultsRepository>();
+	builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+	builder.Services.AddScoped<IChroplethMapRepository, ChroplethMapRepository>();
 }
 
 void AddAuthorizationPolicies()
 {
 
-    builder.Services.AddAuthorization(options =>
-    {
-        options.AddPolicy("RequireAllAdmins", policy =>
-        {
-            policy.RequireRole("SuperAdministrator");
-            policy.RequireRole("InspectorAdministrator");
-            policy.RequireRole("MTVAdministrator");
-        });
-        options.AddPolicy("RequireSuperAdmin", policy => policy.RequireRole("SuperAdministrator"));
-        options.AddPolicy("RequireInspectorAdmin", policy => policy.RequireRole("InspectorAdministrator"));
-        options.AddPolicy("RequireMTVAdmin", policy => policy.RequireRole("MTVAdministrator"));
-        options.AddPolicy("RequireMeatEstablishmentRep", policy => policy.RequireRole("MeatEstablishmentRepresentative"));
-        options.AddPolicy("RequireMeatInspector", policy => policy.RequireRole("MeatInspector"));
-        options.AddPolicy("RequireMtvInspector", policy => policy.RequireRole("MtvInspector"));
-        options.AddPolicy("RequireMtvUsers", policy => policy.RequireRole("MtvUsers"));
-    });
+	builder.Services.AddAuthorization(options =>
+	{
+		options.AddPolicy("RequireSuperAdmin", policy => policy.RequireRole("SuperAdministrator"));
+		options.AddPolicy("RequireInspectorAdmin", policy => policy.RequireRole("InspectorAdministrator"));
+		options.AddPolicy("RequireMTVAdmin", policy => policy.RequireRole("MTVAdministrator"));
+		options.AddPolicy("RequireMeatEstablishmentRep", policy => policy.RequireRole("MeatEstablishmentRepresentative"));
+		options.AddPolicy("RequireMeatInspector", policy => policy.RequireRole("MeatInspector"));
+		options.AddPolicy("RequireMtvInspector", policy => policy.RequireRole("MtvInspector"));
+		options.AddPolicy("RequireMtvUsers", policy => policy.RequireRole("MtvUsers"));
+	});
 }

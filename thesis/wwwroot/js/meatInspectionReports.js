@@ -1,16 +1,32 @@
-//show QR Code in the modal
+
+//View the QR Code in the modal
 const viewButtons = document.querySelectorAll('.view');
 
 viewButtons.forEach(button => {
     button.addEventListener('click', function (e) {
-        const qrdata = "https://localhost:7116/Trace/Result?id=" + button.getAttribute('value');;
+        const qrdata = "https://nmissmfa.site/Trace/Result?id=" + button.getAttribute('value');
         const qrcodeContainer = document.getElementById('qrcode');
-        qrcodeContainer.innerHTML = "";  // Clear previous QR code
-        const qrcode = new QRCode(qrcodeContainer, {
-            text: qrdata,
-            width: 200,
-            height: 200,
+        qrcodeContainer.innerHTML = "";
+
+        const qrCode = new QRCodeStyling({
+            width: 250,
+            height: 250,
+            type: "canvas",
+            data: qrdata,
+            image: "/img/logo-200h.png",
+            dotsOptions: {
+                color: "#000000",
+                type: "rounded"
+            },
+            imageOptions: {
+                crossOrigin: "anonymous",
+                margin: 0.5,
+                imageSize: 0.5
+            },
+            errorCorrectionLevel: "H"
         });
+
+        qrCode.append(qrcodeContainer);
 
         document.getElementById('uniqueId').innerText = "UID: " + button.getAttribute('value');
         $('#viewQr').modal('show');
@@ -19,17 +35,21 @@ viewButtons.forEach(button => {
 
 //Download the QR Code in the modal
 document.getElementById('downloadBtn').addEventListener('click', function () {
-    var imgSrc = document.querySelector('#qrcode img').src;
+    var canvas = document.querySelector('#qrcode canvas');
+    if (!canvas) return;
+
+    var imgSrc = canvas.toDataURL('image/png');
     var uniqueIdText = document.getElementById('uniqueId').textContent;
+
 
     var canvas = document.createElement('canvas');
     var context = canvas.getContext('2d');
     var borderSize = 20;
 
     var qrCodeImage = new Image();
-    qrCodeImage.onload = function () {  // Ensure the image is loaded before drawing on canvas
-        var paddingBelowQR = 30;  // Space for the Unique ID text below the QR code
-        var textHeight = 24;  // Font size for Unique ID
+    qrCodeImage.onload = function () {
+        var paddingBelowQR = 30;
+        var textHeight = 24;
 
         canvas.width = qrCodeImage.width + 2 * borderSize;
         canvas.height = qrCodeImage.height + 2 * borderSize + paddingBelowQR;
@@ -38,7 +58,6 @@ document.getElementById('downloadBtn').addEventListener('click', function () {
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.drawImage(qrCodeImage, borderSize, borderSize);
 
-        // Drawing the Unique ID text
         context.font = textHeight + "px Arial";
         context.fillStyle = "black";
         context.textAlign = "center";
@@ -48,49 +67,80 @@ document.getElementById('downloadBtn').addEventListener('click', function () {
 
         var a = document.createElement('a');
         a.href = modifiedImgSrc;
-        a.download = 'ModifiedQRCode.png';
+        a.download = uniqueIdText + 'QRCode.png';
         a.click();
     };
     qrCodeImage.src = imgSrc;
 });
 
-
-//print QR code
+//Qr Printing
 document.getElementById('printBtn').addEventListener('click', function () {
-    var printWindow = window.open('', '_blank');
+    var numberOfSets = prompt("How many sets of QR codes do you want to print? (3 QR copies per set)");
+    if (numberOfSets === null || numberOfSets <= 0) {
+        alert('Invalid number of sets.');
+        return;
+    }
 
-    var imgSrc = document.querySelector('#qrcode img').src;
+    var numberOfCopies = numberOfSets * 3;
+
+    var printWindow = window.open('', '_blank');
+    if (!printWindow) {
+        alert('Unable to open print window. Please disable popup blockers.');
+        return;
+    }
+
+    var canvas = document.querySelector('#qrcode canvas');
+    if (!canvas) {
+        alert('No canvas element found for QR code.');
+        return;
+    }
+
+    var imgSrc = canvas.toDataURL('image/png');
     var uniqueIdText = document.getElementById('uniqueId').textContent;
 
-    // Create elements
-    var body = printWindow.document.body;
-
-    var style = printWindow.document.createElement('style');
-    style.innerHTML = `
+    var htmlContent = `
+        <html>
+            <head>
+                <title>Print QR Code</title>
+                <style>
                     body {
-                        width: 105mm;
-                        height: 148mm;
-                        margin: 0;
-                        font-family: Arial, sans-serif;
                         text-align: center;
+                        font-family: Arial, sans-serif;
+                        column-count: 3;
+                        column-gap: 20px;
+                        margin: 0;
+                        padding: 10px;
+                    }
+                    .qr-code {
+                        break-inside: avoid-column;
+                        page-break-inside: avoid;
+                        margin-bottom: 20px;
+                        width: 200px;
+                        height: auto;
                     }
                     img {
-                        width: 100%;
+                        width: 200px;
+                        height: 200px;
                     }
-                `;
+                    h3 {
+                        word-wrap: break-word;
+                        font-size: 14px;
+                    }
+                </style>
+            </head>
+            <body onload="window.print(); window.close();">`;
 
-    var img = printWindow.document.createElement('img');
-    img.src = imgSrc;
-    img.alt = "QR Code";
+    for (var i = 0; i < numberOfCopies; i++) {
+        htmlContent += `<div class="qr-code">
+                            <img src="${imgSrc}" alt="QR Code"/>
+                            <h3>${uniqueIdText}</h3>
+                        </div>`;
+    }
 
-    var h3 = printWindow.document.createElement('h3');
-    h3.textContent = uniqueIdText;
+    htmlContent += `</body></html>`;
 
-    // Append elements to the new window's body
-    body.appendChild(style);
-    body.appendChild(img);
-    body.appendChild(h3);
-
-    printWindow.print();
-    printWindow.onfocus = function () { setTimeout(function () { printWindow.close(); }, 500); }; // Close after printing
+    printWindow.document.open();
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
 });
+

@@ -308,6 +308,9 @@ namespace thesis.Controllers
             // For example, querying database or any other logic
 
 			var mtvapp = _context.MTVApplications
+				.Include(p => p.Vehicle)
+				.Include(p => p.Driver)
+				.Include(p => p.Helper)
 				.Where(p => p.AccreditionNo == model.AccreditionNo)
 				.FirstOrDefault();
 
@@ -316,10 +319,37 @@ namespace thesis.Controllers
 				OwnerFname = mtvapp.OwnerFname,
 				OwnerMname = mtvapp.OwnerMname,
 				OwnerLname = mtvapp.OwnerLname,
+				//Address
 				Email = mtvapp.Email,
 				TelNo = mtvapp.TelNo,
 				FaxNo = mtvapp.FaxNo,
-				Status = mtvapp.Status
+				Status = mtvapp.Status,
+				VehicleMaker = mtvapp.Vehicle.VehicleMaker,
+				PlateNo = mtvapp.Vehicle.PlateNo,
+				EngineNo = mtvapp.Vehicle.EngineNo,
+				//LTOCR
+				//LTOOR
+				//EST
+				Destination = mtvapp.Vehicle.Destination,
+
+				HelperFname = mtvapp.Helper.HelperFname,
+				HelperMname = mtvapp.Helper.HelperMname,
+				HelperLname = mtvapp.Helper.HelperLname,
+				HelperEmail = mtvapp.Helper.Email,
+				HelperTelNo = mtvapp.Helper.TelNo,
+
+				DriverFname = mtvapp.Driver.DriverFname,
+				DriverMname = mtvapp.Driver.DriverMname,
+				DriverLname = mtvapp.Driver.DriverLname,
+				DriverEmail = mtvapp.Driver.Email,
+				DriverTelNo = mtvapp.Driver.TelNo,
+				
+				//driveremail
+				//drivertelno
+				
+
+				
+
 			};
 
 			// Return the result back to the frontend

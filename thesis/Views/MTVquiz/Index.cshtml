@@ -85,6 +85,10 @@
         </table>
         <button type="button" class="btn" onclick="tryAgainQuiz()">Try Again </button>
         <button type="button" class="btn" onclick="goToHome()">Home</button>
+        <button type="button" id="paymentButton" class="btn">
+                Payment
+        </button>
+
 
     </div>
         
@@ -98,6 +102,15 @@
     <script src="~/js/question.js" asp-append-version="true"></script>
     <script src="~/js/appquiz.js" asp-append-version="true"></script>
 
+<script type="text/javascript">
+    document.getElementById('paymentButton').addEventListener('click', function () {
+        // Construct the URL for the desired action
+        var url = '@Url.Action("Index", "MTVpayment")';
+
+        // Redirect to the constructed URL
+        window.location.href = url;
+    });
+</script>
 <script>
     function quizResult() {
         resultBox.querySelector(".total-question").innerHTML = quiz.length;
@@ -110,6 +123,14 @@
         resultBox.querySelector(".percentage").innerHTML = percentage.toFixed(2) + "%"; // Fixed the usage of toFixed()
 
         resultBox.querySelector(".total-score").innerHTML = correctAnswers + " / " + quiz.length;
+        //fail
+        if (percentage < 75) {
+            document.getElementById("paymentButton").disabled = true;
+        }
+        //pass
+        if (percentage >= 75) {
+            document.getElementById("paymentButton").disabled = false;
+        }
 
         $.ajax({
             url: "/MTVquiz/SavePercentage",

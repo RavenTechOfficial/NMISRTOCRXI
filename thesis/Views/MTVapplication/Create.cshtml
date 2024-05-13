@@ -113,17 +113,17 @@
 				<div class="column">
 					<div class="input-box">
 						<label><i class='bx bxs-truck'></i>Vehicle Maker</label>
-						<input type="text" placeholder="Enter the Vehicle Maker" asp-for="VehicleMaker" required />
+						<input type="text" placeholder="Enter the Vehicle Maker" asp-for="VehicleMaker" id="VehicleMaker" required />
 						<span asp-validation-for="VehicleMaker" class="text-danger"></span>
 					</div>
 					<div class="input-box">
 						<label><i class='bx bxs-terminal'></i>Plate Number</label>
-						<input type="text" placeholder="Enter the Plate Number" asp-for="PlateNo" required />
+						<input type="text" placeholder="Enter the Plate Number" asp-for="PlateNo" id="PlateNo" required />
 						<span asp-validation-for="PlateNo" class="text-danger"></span>
 					</div>
 					<div class="input-box">
 						<label><i class='bx bxs-cog'></i>Engine Number</label>
-						<input type="text" placeholder="Enter the Engine Number" asp-for="EngineNo" required />
+						<input type="text" placeholder="Enter the Engine Number" asp-for="EngineNo" id="EngineNo" required />
 						<span asp-validation-for="EngineNo" class="text-danger"></span>
 					</div>
 				</div>
@@ -133,7 +133,7 @@
 					<div class="row">
 						<div class="input-box">
 							<label><i class='bx bxs-map'></i>Destination (major markets to be served)</label>
-							<input type="text" placeholder="Enter the Destination" asp-for="Destination" required />
+							<input type="text" placeholder="Enter the Destination" asp-for="Destination" id="Destination" required />
 						</div>
 						<div class="input-box roles">
 							<label><i class='bx bxs-package'></i>Accredited Meat Establishment to be served</label>
@@ -158,7 +158,7 @@
 						<div class="upload-box">
 							<label>Upload Image for LTO Certificate of Registration</label>
 							<div class="container">
-								<input type="file" class="file-input" accept="image/*" asp-for="LTOCR">
+								<input type="file" class="file-input" accept="image/*" asp-for="LTOCR" id="LTOCR">
 								<span asp-validation-for="LTOCR" class="text-danger"></span>
 								<div class="img-area" data-img="">
 									<i class='bx bxs-cloud-upload icon'></i>
@@ -174,7 +174,7 @@
 						<div class="upload-box">
 							<label>Upload Image for LTO Official Receipt</label>
 							<div class="container">
-								<input type="file" class="file-input" accept="image/*" asp-for="LTOOR">
+								<input type="file" class="file-input" accept="image/*" asp-for="LTOOR" id="LTOOR">
 								<span asp-validation-for="LTOOR" class="text-danger"></span>
 								<div class="img-area" data-img="">
 									<i class='bx bxs-cloud-upload icon'></i>
@@ -195,17 +195,17 @@
 				<div class="column">
 					<div class="input-box">
 						<label><i class='bx bxs-user'></i>First Name</label>
-						<input type="text" placeholder="Enter your First Name" asp-for="DriverFname" />
+						<input type="text" placeholder="Enter your First Name" asp-for="DriverFname" id="DriverFname" />
 						<span asp-validation-for="DriverFname" class="text-danger"></span>
 					</div>
 					<div class="input-box">
 						<label>Middle Name </label>
-						<input type="text" placeholder="Enter your Middle Name" asp-for="DriverMname" />
+						<input type="text" placeholder="Enter your Middle Name" asp-for="DriverMname" id="DriverMname" />
 						<span asp-validation-for="DriverMname" class="text-danger"></span>
 					</div>
 					<div class="input-box">
 						<label>Last Name</label>
-						<input type="text" placeholder="Enter your Last Name" asp-for="DriverLname" />
+						<input type="text" placeholder="Enter your Last Name" asp-for="DriverLname" id="DriverLname" />
 						<span asp-validation-for="DriverLname" class="text-danger"></span>
 					</div>
 				</div>
@@ -242,19 +242,19 @@
 					<div class="row">
 						<div class="input-box">
 							<label><i class='bx bxs-phone'></i>Phone Number</label>
-							<input type="number" placeholder="Enter phone number" asp-for="DriverTelNo" />
+							<input type="number" placeholder="Enter phone number" asp-for="DriverTelNo" id="DriverTelNo" />
 							<span asp-validation-for="DriverTelNo" class="text-danger"></span>
 						</div>
 						<div class="input-box">
 							<label><i class='bx bxs-calendar'></i>Birth Date</label>
-							<input type="date" placeholder="Enter birth date" asp-for="Driverbirthdate" />
+							<input type="date" placeholder="Enter birth date" asp-for="Driverbirthdate" id="Driverbirthdate" />
 							<span asp-validation-for="Driverbirthdate" class="text-danger"></span>
 						</div>
 
 						<div class="column">
 							<div class="input-box">
 								<label><i class='bx bxs-envelope'></i>Email</label>
-								<input type="email" placeholder="Put an Email" class="text" asp-for="DriverEmail" />
+								<input type="email" placeholder="Put an Email" class="text" asp-for="DriverEmail" id="DriverEmail" />
 								<span asp-validation-for="DriverEmail" class="text-danger"></span>
 							</div>
 							<div class="sex-box">
@@ -316,17 +316,17 @@
 				<div class="column">
 					<div class="input-box">
 						<label><i class='bx bxs-user'></i>First Name</label>
-						<input type="text" placeholder="Enter your First Name" asp-for="HelperFname" />
+						<input type="text" placeholder="Enter your First Name" asp-for="HelperFname" id="HelperFname" />
 						@* <span asp-validation-for="HelperFname" class="text-danger"></span> *@
 					</div>
 					<div class="input-box">
 						<label>Middle Name</label>
-						<input type="text" placeholder="Enter your Middle Name" asp-for="HelperMname" />
+						<input type="text" placeholder="Enter your Middle Name" asp-for="HelperMname" id="HelperMname" />
 						@* <span asp-validation-for="HelperMname" class="text-danger"></span> *@
 					</div>
 					<div class="input-box">
 						<label>Last Name</label>
-						<input type="text" placeholder="Enter your Last Name" asp-for="HelperLname" />
+						<input type="text" placeholder="Enter your Last Name" asp-for="HelperLname" id="HelperLname" />
 						@* <span asp-validation-for="HelperLname" class="text-danger"></span> *@
 					</div>
 				</div>
@@ -363,18 +363,18 @@
 				<div class="column">
 					<div class="input-box">
 						<label><i class='bx bxs-envelope'></i>Email</label>
-						<input type="email" placeholder="Put an Email" class="text" asp-for="HelperEmail" />
+						<input type="email" placeholder="Put an Email" class="text" asp-for="HelperEmail" id="HelperEmail" />
 						@* <span asp-validation-for="HelperEmail" class="text-danger"></span> *@
 					</div>
 
 					<div class="input-box">
 						<label><i class='bx bxs-phone'></i>Phone Number</label>
-						<input type="number" placeholder="Enter Phone Number" asp-for="HelperTelNo" />
+						<input type="number" placeholder="Enter Phone Number" asp-for="HelperTelNo" id="HelperTelNo" />
 						@* <span asp-validation-for="HelperTelNo" class="text-danger"></span> *@
 					</div>
 					<div class="input-box">
 						<label><i class='bx bxs-calendar'></i>Birth Date</label>
-						<input type="date" placeholder="Enter birth date" asp-for="Helperbirthdate" />
+						<input type="date" placeholder="Enter birth date" asp-for="Helperbirthdate" id="Helperbirthdate" />
 						@* <span asp-validation-for="Helperbirthdate" class="text-danger"></span> *@
 					</div>
 				</div>
@@ -430,6 +430,25 @@
 				document.getElementById('Email').value = data.data.email || '';
 				document.getElementById('TelNo').value = data.data.telNo || '';
 				document.getElementById('FaxNo').value = data.data.faxNo || '';
+				document.getElementById('VehicleMaker').value = data.data.vehicleMaker || '';
+				document.getElementById('PlateNo').value = data.data.plateNo || '';
+				document.getElementById('EngineNo').value = data.data.engineNo || '';
+				document.getElementById('Destination').value = data.data.destination || '';
+
+				document.getElementById('DriverFname').value = data.data.driverFname || '';
+				document.getElementById('DriverMname').value = data.data.driverMname || '';
+				document.getElementById('DriverLname').value = data.data.driverLname || '';
+				document.getElementById('Driverbirthdate').value = data.data.driverbirthdate || '';
+				document.getElementById('DriverEmail').value = data.data.driverEmail || '';
+				document.getElementById('DriverTelNo').value = data.data.driverTelNo || '';
+
+				document.getElementById('HelperFname').value = data.data.helperFname || '';
+				document.getElementById('HelperLname').value = data.data.helperLname || '';
+				document.getElementById('HelperMname').value = data.data.helperMname || '';
+				document.getElementById('HelperTelNo').value = data.data.helperTelNo || '';
+				document.getElementById('HelperEmail').value = data.data.helperEmail || '';
+
+
 			})
 			.catch(error => console.error('Error:', error));
 	});
