@@ -264,7 +264,7 @@ namespace thesis.Repositories
 
 			foreach (var species in speciesList)
 			{
-				var sumForSpecies = _context.ConductOfInspections
+				var sumForSpecies = _context.Antemortems
 					.Include(p => p.MeatInspectionReport)
 					.Include(p => p.MeatInspectionReport.ReceivingReport)
 					.Where(p => p.Issue == issue
@@ -305,7 +305,7 @@ namespace thesis.Repositories
         //from meatINspectionReport to Receiving DATE
         public double StackBarsSpeciesSeries(Species species, DateTime start, DateTime end)
         {
-            var stackchart = _context.totalNoFitForHumanConsumptions
+            var stackchart = _context.TotalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
                 .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date >= start.Date
@@ -371,7 +371,7 @@ namespace thesis.Repositories
             double totalSum = 0;
             foreach(var species in speciesList)
             {
-				var areaChart = _context.totalNoFitForHumanConsumptions
+				var areaChart = _context.TotalNoFitForHumanConsumptions
 				.Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
 				.Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date >= start.Date
 				&& p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date <= end.Date

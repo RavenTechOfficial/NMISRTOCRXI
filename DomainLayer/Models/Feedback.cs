@@ -2,7 +2,7 @@
 
 namespace DomainLayer.Models
 {
-	public class Feedback
+	public class FeedBack
 	{
 		[Key]
 		public int Id { get; set; }

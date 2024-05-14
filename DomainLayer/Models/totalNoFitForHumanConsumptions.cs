@@ -4,7 +4,7 @@ using DomainLayer.Enum;
 
 namespace DomainLayer.Models
 {
-    public class totalNoFitForHumanConsumptions
+    public class TotalNoFitForHumanConsumptions
     {
         [Key]
         public int Id { get; set; }

@@ -10,7 +10,7 @@ namespace DomainLayer.Models
         public int Id { get; set; }
         [ForeignKey("TotalNoFitForHumanConsumption")]
         public int TotalNoFitForHumanConsumptionId { get; set; }
-        public totalNoFitForHumanConsumptions TotalNoFitForHumanConsumption { get; set; }
+        public TotalNoFitForHumanConsumptions TotalNoFitForHumanConsumption { get; set; }
         public string DestinationName { get; set; }
         public string DestinationAddress { get; set; }
         //  public CertificateStatus CertificateStatus { get; set; }

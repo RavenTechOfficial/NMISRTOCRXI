@@ -89,7 +89,7 @@ namespace thesis.Repositories
 
         public double ChroplethValueMeatDealers(Species species, string address)
         {
-            var stackchart = _context.totalNoFitForHumanConsumptions
+            var stackchart = _context.TotalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
                 .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species == species
                 && p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Origin == address)

@@ -4,6 +4,7 @@
     {
         void Save();
         IReceivingReportRepository ReceivingReport { get; }
+        IAccountDetailsRepository AccountDetails { get; }
         IMeatInspectionReportRepository MeatInspectionReport { get; }
         IDashboardRepository Dashboard { get; }
         IAnalyticsRepository Analytics { get; }

@@ -16,11 +16,11 @@ namespace thesis.Repositories
         }
         public FeedbackViewModel GetFeedbacks()
 		{
-            var highlydissatisfied = _context.Feedbacks.Sum(p => p.HighlyDissatisfied);
-            var dissatisfied = _context.Feedbacks.Sum(p => p.Dissatisfied);
-            var neutral = _context.Feedbacks.Sum(p => p.Neutral);
-            var satisfied = _context.Feedbacks.Sum(p => p.Satisfied);
-            var highlysatisfied = _context.Feedbacks.Sum(p => p.HighlySatisfied);
+            var highlydissatisfied = _context.FeedBacks.Sum(p => p.HighlyDissatisfied);
+            var dissatisfied = _context.FeedBacks.Sum(p => p.Dissatisfied);
+            var neutral = _context.FeedBacks.Sum(p => p.Neutral);
+            var satisfied = _context.FeedBacks.Sum(p => p.Satisfied);
+            var highlysatisfied = _context.FeedBacks.Sum(p => p.HighlySatisfied);
 
             return new FeedbackViewModel
             {

@@ -4,7 +4,7 @@ using DomainLayer.Enum;
 
 namespace DomainLayer.Models
 {
-    public class ConductOfInspection
+    public class Antemortem
     {
         [Key]
         public int Id { get; set; }

@@ -3,7 +3,7 @@ using DomainLayer.Enum;
 
 namespace DomainLayer.Models
 {
-	public class checklist
+	public class CheckList
 	{
 		[Key]
 		public int Id { get; set; }

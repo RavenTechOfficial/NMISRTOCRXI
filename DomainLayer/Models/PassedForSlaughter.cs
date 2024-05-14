@@ -11,6 +11,6 @@ namespace DomainLayer.Models
         public double Weight { get; set; }
         [ForeignKey("ConductOfInspection")]
         public int ConductOfInspectionId { get; set; }
-        public ConductOfInspection? ConductOfInspection { get; set; }
+        public Antemortem? ConductOfInspection { get; set; }
     }
 }

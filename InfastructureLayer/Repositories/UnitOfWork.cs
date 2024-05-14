@@ -6,6 +6,7 @@ namespace thesis.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         public AppDbContext _context { get; set; }
+        public IAccountDetailsRepository AccountDetails { get; }
         public IReceivingReportRepository ReceivingReport { get; }
 
         public IMeatInspectionReportRepository MeatInspectionReport { get; }
@@ -35,6 +36,7 @@ namespace thesis.Repositories
         ) 
         {
             ReceivingReport = new ReceivingReportRepository(context);
+            AccountDetails = new AccountDetailsRepository(context);
             MeatInspectionReport = meatInspectionReport;
             Dashboard = dashboard;
             Analytics = analytics;
