@@ -1,0 +1,113 @@
+﻿ @model DomainLayer.Models.PostArticle
+<partial name="_Notifications" />
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+<link rel="stylesheet" href="~/css/post-article.css" asp-append-version="true" />
+<section id="content">
+	<!-- MAIN STARTS-->
+	<main class="article">
+		<div class="container">
+			<header>Article Details</header>
+			<form asp-action="#" class="form" enctype="multipart/form-data">
+				<div class="column">
+					<div class="row">
+						<div class="input-box">
+							<label asp-for="Date">Date</label>
+							<input asp-for="Date" type="date" readonly />
+							<span asp-validation-for="Date" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-box">
+							<label asp-for="Author">Author</label>
+							<input type="text" asp-for="Author" readonly />
+							<span asp-validation-for="Author" class="text-danger"></span>
+						</div>
+					</div>
+				</div>
+				<div class="column">
+					<div class="row">
+						<div class="input-box">
+							<label asp-for="Label">Label</label>
+							<input type="text" asp-for="Label" readonly />
+							<span asp-validation-for="Label" class="text-danger"></span>
+						</div>
+						<div class="input-box">
+							<label asp-for="Title">Title</label>
+							<input type="text" asp-for="Title" readonly />
+							<span asp-validation-for="Title" class="text-danger"></span>
+						</div>
+						<div class="input-box">
+							<label asp-for="Description">Description</label>
+							<textarea rows="4" cols="50" asp-for="Description" readonly></textarea>
+							<span asp-validation-for="Description" class="text-danger"></span>
+						</div>
+					</div>
+					@* <div class="row">
+						<div class="upload-box">
+							<label asp-for="Image">Upload Article's Image</label>
+							<div class="container">
+								<input type="file" id="file" accept="image/*" asp-for="Image" hidden>
+								<div class="img-area" data-img="">
+									<i class='bx bxs-cloud-upload icon'></i>
+									<h3>Upload Image</h3>
+									<p>Image size must be less than <span>5MB</span></p>
+								</div>
+								<button class="select-image" type="button">Select Image</button>
+								<span asp-validation-for="Image" class="text-danger"></span>
+							</div>
+						</div>
+					</div> *@
+				</div>
+
+				<div class="input-box">
+					<label asp-for="Introduction">Introduction</label>
+					<textarea rows="4" cols="50" asp-for="Introduction" readonly></textarea>
+					<span asp-validation-for="Introduction" class="text-danger"></span>
+				</div>
+				<div class="input-box">
+					<label asp-for="Body">Body</label>
+					<textarea rows="4" cols="50" asp-for="Body" readonly></textarea>
+					<span asp-validation-for="Body" class="text-danger"></span>
+				</div>
+				<div class="input-box">
+					<label asp-for="Conclusion">Conclusion</label>
+					<textarea rows="4" cols="50" asp-for="Conclusion" readonly></textarea>
+					<span asp-validation-for="Conclusion" class="text-danger"></span>
+				</div>
+				<div class="input-box">
+					<label asp-for="References">Reference/s</label>
+					<textarea rows="4" cols="50" asp-for="References" readonly></textarea>
+					<span asp-validation-for="References" class="text-danger"></span>
+				</div>
+
+
+
+				<div class="column">
+					<button style="background-color:grey; " asp-action="Index">
+						Go back to the previous page
+					</button>
+					<a class="actionBtn" asp-action="Edit" asp-route-id="@Model?.Id">
+						Go to Edit Page
+					</a>
+				</div>
+
+				
+
+			</form>
+
+		</div>
+	</main>
+</section>
+
+
+
+@* <div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div> *@

@@ -1,0 +1,535 @@
+﻿@using DomainLayer.Models.ViewModels
+@model List<MeatInspectionReportViewModel>
+
+@inject InfastructureLayer.Data.AppDbContext dbContext
+
+
+@using Microsoft.AspNetCore.Identity;
+@using DomainLayer.Models;
+
+@inject SignInManager<AccountDetails> SignInManager
+@inject UserManager<AccountDetails> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+<style>
+    [aria-hidden="true"] {
+        position: absolute;
+        left: -9999px;
+    }
+
+    #content h1 {
+        text-align: center;
+        font-size: 53px;
+        font-weight: 700;
+    }
+
+    #content main .head-title .left1 {
+        margin-top: 2px;
+        margin-left: 2px;
+        margin-bottom: 25px;
+    }
+
+    #content main .column h3 {
+        font-size: 25px;
+        font-weight: 600;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        color: var(--black);
+    }
+
+    #content main .FirstLayer .applications h3 {
+        font-size: 35px;
+        font-weight: 600;
+        margin-top: 5px;
+        /*margin-bottom: 3px;*/
+        /* margin-left: 10px;*/
+        color: var(--black);
+    }
+
+    .filterEst {
+        width: 200px;
+        padding: 10px;
+        color: var(--black);
+        border: 1px solid var(--filterborder);
+        background-color: var(--filterbgcolor);
+        border-radius: 5px;
+    }
+
+    #contentWrapper {
+        max-height: 100%; /* Limit the maximum height to the viewport height */
+        max-width: 100%; /* Limit the maximum width to the viewport width */
+        overflow: hidden; /* Hide overflow to prevent scroll bars */
+        position: relative; /* Needed for absolute positioning of the toggle button */
+    }
+
+    #tableContainer {
+        overflow: auto; /* Enable scrolling for the table container */
+        max-height: calc(100% - 30px); /* Calculate the maximum height minus padding */
+        max-width: 100%; /* Limit the maximum width to the viewport width */
+    }
+
+    #toggleButton {
+        position: absolute;
+        top: 5px; /* Adjust button positioning as needed */
+        right: 5px; /* Adjust button positioning as needed */
+        z-index: 1; /* Ensure the button is above the content */
+    }
+
+    #showInspection {
+        /*margin-top: 10px;
+                margin-bottom: 0px;
+                margin-left: 10px;*/
+        border: 1px solid var(--btndownload);
+        background-color: var(--btndownload);
+        padding: 5px 10px;
+        color: var(--white);
+        border-radius: 7px;
+    }
+
+        #showInspection:hover {
+            background-color: var(--light-green);
+            border: 1px solid var(--light-green);
+        }
+
+    .disabled-button {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+        .disabled-button i {
+            opacity: 0.5;
+        }
+</style>
+
+<section id="content">
+    <main>
+
+        <div class="head-title" id="filter">
+            <div class="column">
+                <h3>Filters:</h3>
+                <div class="form-group">
+                    <div class="row">
+                        @*<div class="col-md-6">*@
+                        @if (User.IsInRole("InspectorAdministrator"))
+                        {
+                            <div class="col-md-6">
+                                <div class="input-wrapper">
+                                    <label>Meat Establishment:</label>
+                                    <select id="meatEstablishmentFilter" asp-items="@ViewBag.MeatEstablishments" class="form-control">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                        }
+                        @*</div>*@
+
+                        <div class="col-md-6">
+                            <div class="input-wrapper">
+                                <label for="dateFilter">Month:</label>
+                                <input type="month" id="dateFilter" class="form-control" />
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="input-wrapper">
+                                <label for="species">Species:</label>
+                                <select id="species" class="form-control">
+                                    <option value="">--Select--</option>
+                                    <option value="Cattle">Cattle</option>
+                                    <option value="Carabao">Carabao</option>
+                                    <option value="Swine">Swine</option>
+                                    <option value="Goat">Goat</option>
+                                    <option value="Chicken">Chicken</option>
+                                    <option value="Duck">Duck</option>
+                                    <option value="Hog">Hog</option>
+                                    <option value="Sheep">Sheep</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="input-wrapper">
+                                <label for="filter">Summary</label>
+                                <button id="showInspection" onclick="filterbutton()" class="btn btn-primary">Show All Inspections</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <table class="table table-bordered table-responsive-sm hidden-table" id="tableni">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">VerifiedByPOSMSHead</th>
+                    <th scope="col">Meat Establishment</th>
+                    <th scope="col">License To Operate Number</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">ReceivingReportId</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var inspection in Model)
+                {
+                    <tr>
+                        <td>@inspection.RepDate</td>
+                        <td>@inspection.VerifiedBy</td>
+                        <td>@inspection.MeatEstablishment</td>
+                        <td>@inspection.LicenseToOperateNumber</td>
+                        <td>@inspection.MeatEstablishmentAddress</td>
+                        <td>@inspection.MeatInspectionReportId</td>
+                        <td>@inspection.ReceivingReportId</td>
+                    </tr>
+                }
+
+            </tbody>
+
+
+        </table>
+
+
+        <div class="FirstLayer">
+            <button id="downloadButton" onclick="download()" class="button">
+                Download <i class="bx bx-download"></i>
+            </button>
+        </div>
+
+        <div class="FirstLayer">
+            <div class="applications">
+                <h1>MONTHLY MEAT INSPECTION REPORT (MMIR)</h1>
+                <hr />
+
+                <h3 class="card-title m-b-0">I. ANTEMORTEM INSPECTION</h3>
+                <br />
+                <h5 class="card-title m-b-0">A. Receiving of Food Animals for Slaughter</h5>
+                <br />
+
+                <table id="tableOne" class="table table-striped table-bordered table-responsive" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">Time</th>
+                            <th scope="col">Species of Food Animals</th>
+                            <th scope="col">Total Number of Animals</th>
+                            <th scope="col">Origin</th>
+                            <th scope="col">Meat Establishment</th>
+                            <th scope="col">License To Operate Number</th>
+                            <th scope="col">Address</th>
+                            <th scope="col" aria-hidden="true">Id</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{
+                            var filteredModel = Model;
+                            var loggedInUser = await UserManager.GetUserAsync(User);
+
+
+                            if (loggedInUser != null)
+                            {
+                                if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
+                                {
+                                    var meatEstablishmentId = loggedInUser.MeatEstablishmentId;
+
+                                    var meatEstablishment = dbContext.MeatEstablishment.FirstOrDefault(m => m.Id == meatEstablishmentId);
+
+                                    if (meatEstablishment != null)
+                                    {
+                                        string meatEstablishmentName = meatEstablishment.Name;
+
+                                        // Filter the Model based on meatEstablishmentName
+                                        filteredModel = filteredModel
+                                        .Where(item => string.Equals(item.MeatEstablishment, meatEstablishmentName, StringComparison.OrdinalIgnoreCase))
+                                        .ToList();
+                                    }
+                                }
+                                else if (User.IsInRole("InspectorAdmin"))
+                                {
+                                    filteredModel = Model;
+                                }
+                            }
+                        }
+                        @foreach (var item in filteredModel)
+                        {
+                            <tr>
+                                <td>@item.DateReceived.ToString("yyyy-MM")</td>
+                                <td>
+                                    <img src="~/img/@(item.Specie).png" class="img-large">
+                                    <div>@item.Specie</div>
+                                </td>
+                                <td>@item.NoOfHeads</td>
+                                <td>@item.Origin</td>
+                                <td>@item.MeatEstablishment</td>
+                                <td>@item.LicenseToOperateNumber</td>
+                                <td>@item.MeatEstablishmentAddress</td>
+                                <td aria-hidden="true">@item.ReceivingReportId</td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+        <br />
+        <div id="contentWrapper">
+            <div id="tableContainer" style="visibility: hidden; width: 0; height: 0;">
+                <div class="FirstLayer">
+                    <div class="applications">
+                        <h5 class="card-title m-b-0">B. Conduct of Antemortem Inspection</h5>
+                        <br />
+                        <table class="table table-bordered table-responsive-sm " id="tableTwo">
+                            <thead>
+                                <tr>
+                                    <th scope="col" aria-hidden="true">Name of Meat Dealer</th>
+                                    <th scope="col">Species of Food Animals</th>
+                                    <th scope="col">Issue</th>
+                                    <th scope="col">No. of heads</th>
+                                    <th scope="col">Weight (kg)</th>
+                                    <th scope="col">Cause</th>
+                                    <th scope="col" aria-hidden="true">Id</th>
+                                    <th scope="col" aria-hidden="true">MeatInspectionId</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var inspection in Model)
+                                {
+                                    <tr>
+                                        <td aria-hidden="true">@inspection.MeatDealer</td>
+                                        <td>@inspection.Specie</td>
+                                        <td>@inspection.Issue</td>
+                                        <td>@inspection.NoOfHeads</td>
+                                        <td>@inspection.Weight</td>
+                                        <td>@inspection.Cause</td>
+                                        <td aria-hidden="true">@inspection.AntemortemId</td>
+                                        <td aria-hidden="true">@inspection.MeatInspectionReportId</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
+                        <br />
+                        <h5 class="card-title m-b-0">C. Passed for Slaughter</h5>
+                        <br />
+                        <table class="table table-bordered" id="tableThree">
+                            <thead>
+                                <tr>
+                                    <th scope="col" aria-hidden="true">Name of Meat Dealer</th>
+                                    <th scope="col">Species of Food Animal</th>
+                                    <th scope="col">No. of heads</th>
+                                    <th scope="col">Weight</th>
+                                    <th scope="col" aria-hidden="true">Id</th>
+                                    <th scope="col" aria-hidden="true">ConductOfInspectionId</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var passed in Model)
+                                {
+                                    <tr>
+                                        <td aria-hidden="true">@passed.MeatDealer</td>
+                                        <td>@passed.Specie</td>
+                                        <td>@passed.NoOfHeads</td>
+                                        <td>@passed.Weight</td>
+                                        <td aria-hidden="true">@passed.PassedId</td>
+                                        <td aria-hidden="true">@passed.AntemortemId</td>
+                                        <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
+                                    </tr>
+                                    // Build a unique key for each combination of Issue, Cause, Species, and Meat Dealer
+
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="FirstLayer">
+                    <div class="applications">
+                        <h3 class="card-title m-b-0">II. POSTMORTEM INSPECTION</h3>
+                        <br />
+                        <table class="table table-bordered" id="tableFour">
+                            <thead>
+                                <tr>
+                                    <th scope="col" aria-hidden="true">Name of Meat Dealer></th>
+                                    <th scope="col">Type of Meat</th>
+                                    <th scope="col">Animal Part</th>
+                                    <th scope="col">Cause</th>
+                                    <th scope="col">No. of heads</th>
+                                    <th scope="col">Weight (kg)</th>
+                                    <th scope="col" aria-hidden="true">Id</th>
+                                    <th scope="col" aria-hidden="true">passedSlaughterId</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var post in Model)
+                                {
+                                    <tr>
+                                        <td aria-hidden="true">@post.MeatDealer</td>
+                                        <td>@post.Specie</td>
+                                        <td>@post.AnimalPart</td>
+                                        <td>@post.piCause</td>
+                                        <td>@post.piNoOfHeads</td>
+                                        <td>@post.piWeight</td>
+                                        <td aria-hidden="true">@post.PostmortemId</td>
+                                        <td aria-hidden="true">@post.PassedId</td>
+
+                                        <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
+                                    </tr>
+
+                                }
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                </div>
+
+
+                <div class="FirstLayer">
+                    <div class="applications">
+
+                        <h3 class="card-title m-b-0">III. TOTAL NUMBER OF FOOD ANIMALS FIT FOR HUMAN CONSUMPTION</h3>
+                        <br />
+                        <table class="table table-bordered" id="tableFive">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Species of Food Animals</th>
+                                    <th scope="col">Total Number of Animals</th>
+                                    <th scope="col">Total Dressed Weight</th>
+                                    <th scope="col" aria-hidden="true">Id</th>
+                                    <th scope="col" aria-hidden="true">PostmortemId</th>
+
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+
+                                @foreach (var total in Model)
+                                {
+                                    <tr>
+
+                                        <td>@total.Specie</td>
+                                        <td>@total.NoOfHeads</td>
+                                        <td>@total.tnDressedWeight</td>
+                                        <td aria-hidden="true">@total.TotalNoId</td>
+                                        <td aria-hidden="true">@total.PostmortemId</td>
+
+                                        <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
+                                    </tr>
+
+                                }
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="FirstLayer">
+                    <div class="applications">
+
+                        <h3 class="card-title m-b-0">IV. SUMMARY AND DISTRIBUTION OF MEAT INSPECTION CERTIFICATE</h3>
+                        <br />
+                        <table class="table table-bordered" id="tableSix">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Type of Meat</th>
+                                    <th scope="col">No. of heads</th>
+                                    <th scope="col">Weight (kg.)</th>
+                                    <th scope="col">Destination Name</th>
+                                    <th scope="col">Destination Address</th>
+                                    <th scope="col">Meat Inspection Certificate Issued (sheets) If any</th>
+                                    <th scope="col">Meat Inspection Certificate Cancelled (sheets) If any</th>
+                                    <th scope="col" aria-hidden="true">Id</th>
+                                    <th scope="col" aria-hidden="true">totalfitId</th>
+
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @foreach (var summary in Model)
+                                {
+                                    <tr>
+
+                                        <td>@summary.Specie</td>
+                                        <td>@summary.tnNoOfHeads</td>
+                                        <td>@summary.tnDressedWeight</td>
+                                        <td>@summary.DestinationName</td>
+                                        <td>@summary.DestinationAddress</td>
+                                        <td>@summary.MICIssued</td>
+                                        <td>@summary.MICCancelled</td>
+                                        <td aria-hidden="true">@summary.SummaryId</td>
+                                        <td aria-hidden="true">@summary.TotalNoId</td>
+
+
+                                        <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js" defer></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-style/0.8.16/xlsx.full.min.js" defer></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" defer></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/jszip.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx-style.min.js" defer></script>
+        <script src="xlsx.full.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" defer></script>
+
+
+
+        <script src="https://code.jquery.com/jquery-3.3.1.js" defer></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" defer></script>
+        <script src="~/js/meatinspectionindex.js" defer></script>
+
+
+    </main>
+</section>
+
+

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<DomainLayer.Models.PostArticle>
+<partial name ="_Notifications"/>
+
+<link rel="stylesheet" href="~/css/users.css" asp-append-version="true" />
+
+
+
+@if (User.IsInRole("SuperAdministrator"))
+{
+	<section id="content">
+
+		
+
+		<!-- MAIN STARTS-->
+		<main class="registration">
+			<div class="head-title">
+				<div class="left">
+					<h1>Articles Section</h1>
+				</div>
+			</div>
+				
+			<div class="table-container">
+				<div style="margin-bottom: 25px;">
+					<a asp-controller="PostArticles" asp-action="Create" class="createBtn">
+						<i class="bi bi-plus-circle"></i> Create Article
+					</a>
+				</div>
+				<table id="admin-accounts" class="table table-striped" style="width:100%">
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Author</th>
+							<th>Label</th>
+							<th>Title</th>
+							<th>Options</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var item in Model)
+						{
+							<tr>
+								<th>@item.Date.ToString("MM/dd/yyyy")</th>
+								<td>@item.Author</td>
+								<td>@item.Label</td>
+								<td>@item.Title</td>
+								<td class="d-flex flex-nowrap">
+									<a type="button" class="btn btn-primary py-1 font-weight-light" asp-action="Details" asp-route-id="@item.Id">View</a>
+									<a type="button" class="btn btn-warning  mx-1 py-1 font-weight-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+									<a type="button" class="btn btn-danger py-1 font-weight-light" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+								</td>
+							</tr>
+						}
+
+					</tbody>
+
+				</table>
+			</div>
+
+
+		</main>
+		<!-- MAIN ENDS -->
+
+	</section>
+}
+
+
+<script src="~/js/users.js" asp-append-version="true"></script>

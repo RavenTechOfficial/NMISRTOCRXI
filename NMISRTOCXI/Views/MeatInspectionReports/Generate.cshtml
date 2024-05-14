@@ -1,0 +1,215 @@
+﻿@*@model IEnumerable<DomainLayer.Models.MeatInspectionReport>
+*@
+@*@model IEnumerable<DomainLayer.Models.ViewModels.MeatInspectionReportViewModel>*@
+@{
+    ViewData["Title"] = "Index";
+}
+@model IEnumerable<Result>
+
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
+<section id="content">
+
+
+    <!-- MAIN STARTS-->
+    <main>
+        <div class="FirstLayer">
+
+            <div class="applications">
+                <h1>Generate QR Code</h1>
+                @*<p>
+                <a asp-action="Create">Create New</a>
+                </p>*@
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                QR options
+                            </th>
+                            <th>
+                                UID
+                            </th>
+                            <th>
+                                Receiving Time
+                            </th>
+                            <th>
+                                Species
+                            </th>
+                            <th>
+                                Live Weight
+                            </th>
+                            <th>
+                                Meat Dealer
+                            </th>
+                            @*<th>
+                            Issue
+                            </th>
+                            <th>
+                            No. of Heads (Antemortem Inspection)
+                            </th>
+                            <th>
+                            Weight (Antemortem Inspection)
+                            </th>
+                            <th>
+                            Cause (Antemortem Inspection)
+                            </th>
+                            <th>
+                            No. of Heads (Passed for Slaughter)
+                            </th>
+                            <th>
+                            Weight (Passed for Slaughter Slaughter)
+                            </th>
+                            <th>
+                            Animal Part
+                            </th>
+                            <th>
+                            Postmortem Cause
+                            </th>
+                            <th>
+                            Postmortem Weight
+                            </th>
+                            <th>
+                            No. of Heads (Postmortem Inspection)
+                            </th>
+                            <th>
+                            Condemned Meat Image 1
+                            </th>
+                            <th>
+                            Condemned Meat Image 2
+                            </th>
+                            <th>
+                            Condemned Meat Image 3
+                            </th>*@
+                            <th>
+                                No. of Heads Fit for Human Consumption
+                            </th>
+                            <th>
+                                Dressed Weight Fit for Human Consumption
+                            </th>
+                            <th>
+                                Destination Name
+                            </th>
+                            <th>
+                                Destination Address
+                            </th>
+                            @*<th>
+                            Certificate Status
+                            </th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="d-flex flex-nowrap">
+
+                                    <a class="btn btn-primary py-1 font-weight-light view" value="@item.uid">Show</a>
+                                    <a id="download" class="btn btn-success  mx-1 py-1 font-weight-light">Download</a>
+                                    <a class="btn btn-warning ms-1 py-1 font-weight-light print" value="@item.uid">Print</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.uid)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RecTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Species)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LiveWeight)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MeatDealer)
+                                </td>
+                                @*<td>
+                            @Html.DisplayFor(modelItem => item.Issue)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.NoOfHeads)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Weight)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Cause)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.NoOfHeadsPassed)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.WeightPassed)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.AnimalPart)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.PostmortemCause)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.PostmortemWeight)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.PostmortemNoOfHeads)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Image1)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Image2)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Image3)
+                            </td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FitforConNoOfHeads)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DressedWeight)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DestinationName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DestinationAddress)
+                                </td>
+                                @* <td>
+                            @Html.DisplayFor(modelItem => item.CertificateStatus)
+                            </td>*@
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+
+        @*Modals*@
+        <div class="modal fade" id="viewQr" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">QR Code</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div id="qrcode"></div>
+                        <h3 id="uniqueId" style="margin-top: 10px;"></h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="downloadBtn" class="btn btn-primary">Download</button>
+                        <button type="button" id="printBtn" class="btn btn-warning" data-dismiss="modal">Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="~/js/meatInspectionReports.js" asp-append-version="true"></script>
+
+
+    </main>
+</section>

@@ -1,0 +1,616 @@
+﻿@using DomainLayer.Models.ViewModels;
+@using DomainLayer.Enum;
+@model DashboardViewModel
+<partial name="_Notifications" />
+
+<link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+@functions {
+    private string GetStatusClass(string status)
+    {
+        switch (status?.ToLower())
+        {
+
+            case "payment":
+                return "payment";
+            case "process":
+                return "process";
+            case "pending":
+                return "pending";
+            case "completed":
+                return "completed";
+            default:
+                return string.Empty; // or return a default class
+        }
+    }
+}
+<section id="content">
+    <!-- MAIN STARTS-->
+    <main>
+        <div class="head-title">
+            <div class="left">
+                <h1>Dashboard</h1>
+            </div>
+        </div>
+
+        <ul class="box-info">
+            <li>
+                <i class='bx bxs-report'></i>
+                <span class="text">
+                    <h3>@Model.TotalWeightModel.DailyWeight Kg.</h3>
+                    <p>Total Meat Qty Today</p>
+                </span>
+            </li>
+            <li>
+                <i class='bx bxs-report'></i>
+                <span class="text">
+                    <h3>@Model.TotalWeightModel.WeeklyWeight Kg.</h3>
+                    <p>Total Meat Qty Past 7 days</p>
+                </span>
+            </li>
+            <li>
+                <i class='bx bxs-report'></i>
+                <span class="text">
+                    <h3>@Model.TotalWeightModel.MonthlyWeight Kg.</h3>
+                    <p>Total Meat Qty This Month</p>
+                </span>
+            </li>
+            <li>
+                <i class='bx bxs-report'></i>
+                <span class="text">
+                    <h3>@Model.TotalWeightModel.YearlyWeight Kg.</h3>
+                    <p>Total Meat Qty This Year</p>
+                </span>
+            </li>
+        </ul>
+
+
+        <div class="FirstLayer">
+
+            <div class="supply-chart charts-card">
+                <div class="head">
+                    <h3>Meat Quantity Produced This Year</h3>
+                </div>
+                <div id="area-chart"></div>
+            </div>
+
+            <div class="applications">
+                <div class="head">
+                    <h3>MTV Application Status</h3>
+                    <i class='bx bx-search'></i>
+                    <i class='bx bx-filter'></i>
+                </div>
+                <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Applicant Name</th>
+                            <th>Application Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model.AccountDetails)
+                        {
+                            <tr>
+                                <td>
+                                    <p>@item.OwnerFname @item.OwnerLname</p>
+                                </td>
+                                <td>@item.applicationtype</td>
+                                    <td>
+                                        <span class="status @GetStatusClass(item.Status)">@item.Status</span>
+                                    </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts">
+           
+            <div class="supply-chart charts-card unique-chart">
+                <div class="head">
+                    <h3>Total Fit for Human Consumption</h3>
+                </div>
+                <div id="fit-chart"></div>
+
+            </div>
+
+            <div class="users-chart charts-card">
+                <div class="head">
+                    <h3>User Feedbacks</h3>
+                </div>
+                <div class="feedback-stats">
+                    <div class="chart-container">
+                        <canvas class="my-chart"></canvas>
+                    </div>
+
+                    <div class="details">
+                        <ul></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- MAIN ENDS -->
+
+</section>
+
+
+
+<script>
+
+
+    // BAR CHART with darkmode
+    // let barChart;
+
+    // let computedStyle = getComputedStyle(document.documentElement);
+    // let labelColorDark = computedStyle.getPropertyValue('--dark').trim();
+    // let labelColorLight = computedStyle.getPropertyValue('--light').trim();
+
+    // if (currentMode === 'dark') {
+    //     document.body.classList.add('dark');
+    //     switchMode.checked = true;
+    //     renderBarChart(labelColorLight, 'dark');
+    // } else {
+    //     document.body.classList.remove('dark');
+    //     switchMode.checked = false;
+    //     renderBarChart(labelColorDark, 'light');
+    // }
+
+    // switchMode.addEventListener('change', function () {
+    //     if (barChart) {
+    //         barChart.destroy();
+    //     }
+
+    //     if (this.checked) {
+    //         document.body.classList.add('dark');
+    //         localStorage.setItem('mode', 'dark');
+    //         renderBarChart(labelColorLight, 'dark');
+    //     } else {
+    //         document.body.classList.remove('dark');
+    //         localStorage.setItem('mode', 'light'); 
+    //         renderBarChart(labelColorDark, 'light');
+    //     }
+    // });
+    // function renderBarChart(labelColor, tooltipTheme) {
+    //     let barChartOptions = {
+    //         series: [
+    //             {
+    //                 name: 'Suspect/Hold',
+    //                 data: [@string.Join(",", Model.TotalWeightModel.Suspect)]
+    //             },
+    //             {
+    //                 name: 'Condemned',
+    //                 data: [@string.Join(",", Model.TotalWeightModel.Condemned)]
+    //             },
+    //             {
+    //                 name: 'Passed for Slaughter',
+    //                 data: [@string.Join(",", Model.TotalWeightModel.Pass)]
+    //             }
+    //         ],
+    //         chart: {
+    //             type: 'bar',
+    //             height: 350,
+    //             toolbar: {
+    //                 show: false,
+    //             },
+    //         },
+    //         colors: [
+    //             '#2962ff',
+    //             '#d50000',
+    //             '#2e7d32',
+    //         ],
+    //         plotOptions: {
+    //             bar: {
+    //                 horizontal: false,
+    //                 columnWidth: '55%',
+    //                 endingShape: 'rounded',
+    //             },
+    //         },
+    //         dataLabels: {
+    //             enabled: false
+    //         },
+    //         stroke: {
+    //             show: true,
+    //             width: 2,
+    //             colors: ['transparent']
+    //         },
+    //         xaxis: {
+    //             categories: @Html.Raw(Json.Serialize(Model.TotalWeightModel.monthAbbreviationsArray)),
+    //             labels: {
+    //                 style: {
+    //                     colors: labelColor,
+    //                 },
+    //             },
+    //         },
+    //         yaxis: {
+    //             title: {
+    //                 text: 'Number of Heads',
+    //                 style: {
+    //                     color: labelColor,
+    //                 },
+    //             },
+    //             labels: {
+    //                 style: {
+    //                     colors: labelColor,
+    //                 },
+    //             },
+    //         },
+    //         fill: {
+    //             opacity: 1
+    //         },
+    //         grid: {
+    //             borderColor: "#55596e",
+    //             yaxis: {
+    //                 lines: {
+    //                     show: true,
+    //                 },
+    //             },
+    //             xaxis: {
+    //                 lines: {
+    //                     show: true,
+    //                 },
+    //             },
+    //         },
+    //         legend: {
+    //             labels: {
+    //                 colors: labelColor,
+    //             },
+    //             show: true,
+    //             position: "bottom",
+    //         },
+    //         tooltip: {
+    //             y: {
+    //                 formatter: function (val) {
+    //                     return val + ' Heads'
+    //                 }
+    //             },
+    //             theme: tooltipTheme,
+    //         }
+    //     };
+
+    //     barChart = new ApexCharts(document.querySelector("#bar-chart"), barChartOptions);
+    //     barChart.render();
+    // }
+
+    let computedStyle = getComputedStyle(document.documentElement);
+    let labelColorDark = computedStyle.getPropertyValue('--dark').trim();
+    let labelColorLight = computedStyle.getPropertyValue('--light').trim();
+
+
+
+    //Area chart JS with darkmode
+    let areaChart;
+    let labelColor = localStorage.getItem('labelColor') || labelColorDark;
+
+    renderChart(labelColor, labelColor);
+
+    switchMode.addEventListener('change', function () {
+        if (areaChart) {
+            areaChart.destroy();
+        }
+
+        if (this.checked) {
+            document.body.classList.add('dark');
+            labelColor = labelColorLight;
+            localStorage.setItem('labelColor', labelColorLight);
+            renderChart(labelColor, "#f5f7ff");
+        } else {
+            document.body.classList.remove('dark');
+            labelColor = labelColorDark;
+            localStorage.setItem('labelColor', labelColorDark);
+            renderChart(labelColor, labelColorDark);
+        }
+    });
+
+    function renderChart(labelColor, titleColor) {
+        let areaChartOptions = {
+            series: [{
+                name: "Approved Meat",
+                data: [@string.Join(",", Model.TotalWeightModel.monthlyRangeApproved)],
+            }, {
+                name: "Condemned Meat",
+                data: [@string.Join(",", Model.TotalWeightModel.monthlyRangeCondemned)],
+            }],
+            chart: {
+                type: "area",
+                background: "transparent",
+                height: 350,
+                stacked: false,
+                toolbar: {
+                    show: false,
+                },
+            },
+            colors: ["#00ab57", "#d50000"],
+            xaxis: {
+                categories: @Html.Raw(Json.Serialize(Model.TotalWeightModel.monthAbbreviationsArray)),
+                labels: {
+                    style: {
+                        colors: labelColor,
+                    },
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            fill: {
+                gradient: {
+                    opacityFrom: 0.4,
+                    opacityTo: 0.1,
+                    shadeIntensity: 1,
+                    stops: [0, 100],
+                    type: "vertical",
+                },
+                type: "gradient",
+            },
+            grid: {
+                borderColor: "#55596e",
+                yaxis: {
+                    lines: {
+                        show: true,
+                    },
+                },
+                xaxis: {
+                    lines: {
+                        show: true,
+                    },
+                },
+            },
+            legend: {
+                labels: {
+                    colors: labelColor,
+                },
+                show: true,
+                position: "bottom",
+            },
+            markers: {
+                size: 6,
+                strokeColors: "#1b2635",
+                strokeWidth: 3,
+            },
+            stroke: {
+                curve: "smooth",
+            },
+            yaxis: [
+                {
+                    title: {
+                        text: "Approved Meat",
+                        style: {
+                            color: titleColor,
+                        },
+                    },
+                    labels: {
+                        style: {
+                            colors: [labelColor],
+                        },
+                    },
+                },
+                {
+                    opposite: true,
+                    title: {
+                        text: "Condemned Meat",
+                        style: {
+                            color: titleColor,
+                        },
+                    },
+                    labels: {
+                        style: {
+                            colors: [labelColor],
+                        },
+                    },
+                },
+            ],
+            tooltip: {
+                shared: true,
+                intersect: false,
+                theme: "dark",
+            }
+        };
+
+        areaChart = new ApexCharts(document.querySelector("#area-chart"), areaChartOptions);
+        areaChart.render();
+    }
+
+    // Fit For Human Consumption
+    // var fitchartoptions = {
+    //     series: [{
+    //         name: 'Cattle',
+    //         data: [string.Join(",", Model.Cattle)]
+    //     }, {
+    //         name: 'Carabao',
+    //         data: [string.Join(",", Model.Carabao)]
+    //     }, {
+    //         name: 'Swine',
+    //         data: [string.Join(",", Model.Swine)]
+    //     }, {
+    //         name: 'Goat',
+    //         data: [string.Join(",", Model.Goat)]
+    //     }, {
+    //         name: 'Chicken',
+    //         data: [string.Join(",", Model.Chicken)]
+    //     }, {
+    //         name: 'Duck',
+    //         data: [string.Join(",", Model.Duck)]
+    //     }, {
+    //         name: 'Horse',
+    //         data: [string.Join(",", Model.Horse)]
+    //     }, {
+    //         name: 'Sheep',
+    //         data: [string.Join(",", Model.Sheep)]
+    //     }, {
+    //         name: 'Ostrich',
+    //         data: [string.Join(",", Model.Ostrich)]
+    //     }, {
+    //         name: 'Crocodile',
+    //         data: [string.Join(",", Model.Crocodile)]
+    //     }],
+
+    var fitchartoptions = {
+        series: [{
+            name: 'Cattle',
+            data: [@string.Join(",", Model.TotalWeightModel.Cattle)]
+        }, {
+            name: 'Carabao',
+            data: [@string.Join(",", Model.TotalWeightModel.Carabao)]
+        }, {
+            name: 'Swine',
+            data: [@string.Join(",", Model.TotalWeightModel.Swine)]
+        }, {
+            name: 'Goat',
+            data: [@string.Join(",", Model.TotalWeightModel.Goat)]
+        }, {
+            name: 'Chicken',
+            data: [@string.Join(",", Model.TotalWeightModel.Chicken)]
+        }, {
+            name: 'Duck',
+            data: [@string.Join(",", Model.TotalWeightModel.Duck)]
+        }, {
+            name: 'Hog',
+            data: [@string.Join(",", Model.TotalWeightModel.Hog)]
+        }, {
+            name: 'Sheep',
+            data: [@string.Join(",", Model.TotalWeightModel.Sheep)]
+        }],
+
+        chart: {
+            type: 'bar',
+            height: 350,
+            stacked: true,
+            stackType: '100%',
+            toolbar: {
+                show: true,
+                offsetX: 0,
+                offsetY: -30,
+                tools: {
+                    download: true,
+                    selection: true,
+                    zoom: true,
+                    zoomin: true,
+                    zoomout: true,
+                    pan: true,
+                    reset: true | '<img src="/static/icons/reset.png" width="20">',
+                    customIcons: []
+                },
+                export: {
+                    csv: {
+                        filename: 'Receiving Analytics',
+                        columnDelimiter: ',',
+                        headerCategory: 'Date',
+                        headerValue: 'value',
+                        dateFormatter(timestamp) {
+                            return new Date(timestamp).toDateString()
+                        }
+                    },
+                    svg: {
+                        filename: 'Receiving Analytics',
+                    },
+                    png: {
+                        filename: 'Receiving Analytics',
+                    }
+                },
+                autoSelected: 'zoom'
+            },
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+            },
+        },
+        stroke: {
+            width: 1,
+            colors: ['#fff']
+        },
+
+        xaxis: {
+            categories: @Html.Raw(Json.Serialize(Model.TotalWeightModel.monthAbbreviationsArray)),
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return val + "Kilograms"
+                },
+            },
+        },
+        fill: {
+            opacity: 1
+
+        },
+        legend: {
+            color: 'dark',
+            position: 'top',
+            horizontalAlign: 'center',
+            offsetX: 40,
+            itemMargin: {
+                horizontal: 7,
+            },
+            labels: {
+                colors: ['dark'] // Change this to the color you want
+            }
+        }
+    };
+
+    var fitchart = new ApexCharts(document.querySelector("#fit-chart"), fitchartoptions);
+    fitchart.render();
+
+
+    //doughnut Chart JS
+    
+    const chartData = {
+        labels: ["Highly Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Highly Dissatisfied"],
+        data: [
+            @Model.Feedbacks.HighlySatisfied,
+            @Model.Feedbacks.Satisfied,
+            @Model.Feedbacks.Neutral,
+            @Model.Feedbacks.Dissatisfied,
+            @Model.Feedbacks.HighlyDissatisfied
+        ],
+    };
+
+    const myChart = document.querySelector(".my-chart");
+    const ul = document.querySelector(".feedback-stats .details ul");
+
+    new Chart(myChart, {
+        type: "doughnut",
+        data: {
+            labels: chartData.labels,
+            datasets: [
+                {
+                    label: "   Total Feedbacks",
+                    data: chartData.data,
+                },
+            ],
+        },
+        options: {
+            borderWidth: 4,
+            borderRadius: 2,
+            hoverBorderWidth: 0,
+            plugins: {
+                legend: {
+                    display: false,
+                },
+            },
+        },
+    });
+
+    const populateUl = () => {
+        const totalVotes = chartData.data.reduce((acc, curr) => acc + curr, 0);
+
+        chartData.labels.forEach((l, i) => {
+            const percentage = (chartData.data[i] / totalVotes) * 100;
+
+            let li = document.createElement("li");
+            li.innerHTML = `${l}: <span class='percentage'>${percentage.toFixed(2)}%</span>`;
+            ul.appendChild(li);
+        });
+    };
+
+    populateUl();
+
+
+
+
+
+
+</script>

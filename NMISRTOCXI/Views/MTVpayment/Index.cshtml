@@ -1,0 +1,53 @@
+﻿@using DomainLayer.Models.ViewModels;
+@model MtvPaymentViewModel
+
+<link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+
+<section id="content">
+	<main class="registration">
+
+		<div class="container">
+			<header>Payment Form</header>
+			<form asp-action="Create" class="form" enctype="multipart/form-data">
+
+				<div class="column">
+					<div class="row">
+						<div class="input-box">
+							<label><i class='bx bxs-credit-card'></i>Statement of Account</label>
+							<input type="text" placeholder="Enter SoA" asp-for="SOA" />
+						</div>
+						<div class="input-box">
+							<label><i class='bx bxs-calendar'></i>Date of Payment</label>
+							<input type="date" placeholder="Enter birth date" asp-for="Date" />
+						</div>
+
+						<div class="column">
+							<div class="input-box">
+								<label><i class='bx bxs-envelope'></i>Email</label>
+								<input type="email" placeholder="Put an Email" class="text" asp-for="Email" />
+							</div>
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="upload-box">
+							<label>Upload Image of Payment Receipt</label>
+							<div class="container">
+								<input type="file" id="file" accept="image/*" asp-for="PaymentReceipt" hidden>
+								<div class="img-area" data-img="">
+									<i class='bx bxs-cloud-upload icon'></i>
+									<h3>Upload Image</h3>
+									<p>Image size must be less than <span>5MB</span></p>
+								</div>
+								<button class="select-image" type="button">Select Image</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<button type="submit">Submit</button>
+			</form>
+		</div>
+		<script src="~/js/payment.js" asp-append-version="true"></script>
+	</main>
+</section>

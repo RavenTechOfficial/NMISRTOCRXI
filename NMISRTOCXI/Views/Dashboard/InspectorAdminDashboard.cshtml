@@ -1,0 +1,207 @@
+﻿@using DomainLayer.Models.ViewModels;
+@using DomainLayer.Enum;
+@model DashboardViewModel
+
+<link rel="stylesheet" href="~/css/meatcheckdashboard.css" asp-append-version="true" />
+
+<section id="content">
+    <!-- MAIN STARTS-->
+    <main>
+        <div class="head-title">
+            <div class="left">
+                <h1>Dashboard</h1>
+            </div>
+        </div>
+
+        <ul class="box-info">
+            <li>
+                <i class='bx bxs-report'></i>
+                <span class="text">
+                    <h3>@Model.TotalWeightModel.DailyWeight Kg.</h3>
+                    <p>Total Meat Qty Inspected Today</p>
+                </span>
+            </li>
+            @*  <li>
+            <i class='bx bxs-report'></i>
+            <span class="text">
+            <h3>@Model.TotalWeightModel.WeeklyWeight Kg.</h3>
+            <p>Total Meat Qty Past 7 days</p>
+            </span>
+            </li> *@
+            <li>
+                <i class='bx bxs-report'></i>
+                <span class="text">
+                    <h3>@Model.TotalWeightModel.MonthlyWeight Kg.</h3>
+                    <p>Total Meat Qty Inspected This Month</p>
+                </span>
+            </li>
+            <li>
+                <i class='bx bxs-report'></i>
+                <span class="text">
+                    <h3>@Model.TotalWeightModel.YearlyWeight Kg.</h3>
+                    <p>Total Meat Qty Inspected This Year</p>
+                </span>
+            </li>
+        </ul>
+
+        <div class="charts">
+            <div class="supply-chart charts-card">
+                <div class="head">
+                    <h3>Meat Quantity Produced This Year</h3>
+                </div>
+                <div id="area-chart"></div>
+            </div>
+            @*<canvas id="myChart" width="400" height="400"></canvas>*@
+        </div>
+    </main>
+    <!-- MAIN ENDS -->
+
+</section>
+
+
+
+<script>
+
+
+
+
+    //Area chart JS with darkmode
+    let areaChart;
+    let labelColor = localStorage.getItem('labelColor') || labelColorDark;
+
+    renderChart(labelColor, labelColor);
+
+    switchMode.addEventListener('change', function () {
+        if (areaChart) {
+            areaChart.destroy();
+        }
+
+        if (this.checked) {
+            document.body.classList.add('dark');
+            labelColor = labelColorLight;
+            localStorage.setItem('labelColor', labelColorLight);
+            renderChart(labelColor, "#f5f7ff");
+        } else {
+            document.body.classList.remove('dark');
+            labelColor = labelColorDark;
+            localStorage.setItem('labelColor', labelColorDark);
+            renderChart(labelColor, labelColorDark);
+        }
+    });
+
+    function renderChart(labelColor, titleColor) {
+        let areaChartOptions = {
+            series: [{
+                name: "Approved Meat",
+                data: [@string.Join(",", Model.TotalWeightModel.monthlyRangeApproved)],
+            }, {
+                name: "Condemned Meat",
+                data: [@string.Join(",", Model.TotalWeightModel.monthlyRangeCondemned)],
+            }],
+            chart: {
+                type: "area",
+                background: "transparent",
+                height: 350,
+                stacked: false,
+                toolbar: {
+                    show: false,
+                },
+            },
+            colors: ["#00ab57", "#d50000"],
+            xaxis: {
+                categories: @Html.Raw(Json.Serialize(Model.TotalWeightModel.monthAbbreviationsArray)),
+                labels: {
+                    style: {
+                        colors: labelColor,
+                    },
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            fill: {
+                gradient: {
+                    opacityFrom: 0.4,
+                    opacityTo: 0.1,
+                    shadeIntensity: 1,
+                    stops: [0, 100],
+                    type: "vertical",
+                },
+                type: "gradient",
+            },
+            grid: {
+                borderColor: "#55596e",
+                yaxis: {
+                    lines: {
+                        show: true,
+                    },
+                },
+                xaxis: {
+                    lines: {
+                        show: true,
+                    },
+                },
+            },
+            legend: {
+                labels: {
+                    colors: labelColor,
+                },
+                show: true,
+                position: "bottom",
+            },
+            markers: {
+                size: 6,
+                strokeColors: "#1b2635",
+                strokeWidth: 3,
+            },
+            stroke: {
+                curve: "smooth",
+            },
+            yaxis: [
+                {
+                    title: {
+                        text: "Approved Meat",
+                        style: {
+                            color: titleColor,
+                        },
+                    },
+                    labels: {
+                        style: {
+                            colors: [labelColor],
+                        },
+                    },
+                },
+                {
+                    opposite: true,
+                    title: {
+                        text: "Condemned Meat",
+                        style: {
+                            color: titleColor,
+                        },
+                    },
+                    labels: {
+                        style: {
+                            colors: [labelColor],
+                        },
+                    },
+                },
+            ],
+            tooltip: {
+                shared: true,
+                intersect: false,
+                theme: "dark",
+            }
+        };
+
+        areaChart = new ApexCharts(document.querySelector("#area-chart"), areaChartOptions);
+        areaChart.render();
+    }
+
+
+
+
+
+
+
+
+</script>

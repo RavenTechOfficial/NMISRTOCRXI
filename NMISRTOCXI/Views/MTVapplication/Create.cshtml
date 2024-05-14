@@ -1,0 +1,629 @@
+﻿@using DomainLayer.Models.ViewModels;
+@model MtvApplicationViewModel
+
+
+
+<link rel="stylesheet" href="~/css/reg1.css" asp-append-version="true" />
+
+
+<section id="content">
+
+
+	<!-- MAIN STARTS-->
+	<main class="registration">
+		<form id="yourFormId" asp-action="Create" enctype="multipart/form-data" class="form" method="post">
+			<!-- Owner -->
+			<div class="container">
+				<header>Personal Information</header>
+				<div class="column">
+					<div class="input-box roles">
+						<label><i class='bx bxs-bulb'></i>Type of Application</label>
+						<div class="select-box">
+							<select id="applicationType" asp-for="applicationtype">
+								<option hidden>Select Type</option>
+								<option value="NewApplication">New Application</option>
+								<option value="Renewal">Renewal</option>
+							</select>
+							<span asp-validation-for="applicationtype" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="input-box">
+						<label><i class='bx bxs-user'></i>Accreditation Number</label>
+						<div class="input-container">
+							<input asp-for="AccreditionNo" type="text" id="AccreditationNumber" placeholder="Enter Accreditation Number" required readonly />
+							<button type="button" class="btn" id="searchButton">Search</button>
+						</div>
+					</div>
+					@* <li>
+						<button type="button" class="btn btn-default" id="searchButton">Search</button>
+					</li> *@
+					
+				</div>
+				<div class="column">
+					<div class="input-box">
+						<label><i class='bx bxs-user'></i>Registered Owner</label>
+						<input type="text" placeholder="Enter your First Name" asp-for="OwnerFname" id="OwnerFname" required />
+						<span asp-validation-for="OwnerFname" class="text-danger"></span>
+					</div>
+					<div class="input-box">
+						<label> </label>
+						<input type="text" placeholder="Enter your Middle Name" asp-for="OwnerMname" id="OwnerMname" required />
+						<span asp-validation-for="OwnerMname" class="text-danger"></span>
+					</div>
+					<div class="input-box">
+						<label> </label>
+						<input type="text" placeholder="Enter your Last Name" asp-for="OwnerLname" id="OwnerLname" required />
+						<span asp-validation-for="OwnerLname" class="text-danger"></span>
+					</div>
+				</div>
+
+				<div class="input-box address">
+					<label><i class='bx bxs-map'></i>Address</label>
+					<div class="column">
+						<div class="select-box">
+							<select class="selecting1" id="regionSelectOwner" onchange="populateProvinces()">
+								<option hidden>Region</option>
+							</select>
+						</div>
+						<div class="select-box">
+							<select class="selecting1" id="provinceSelectOwner" onchange="populateCities()">
+								<option hidden>Province</option>
+							</select>
+						</div>
+					</div>
+					<div class="column">
+						<div class="select-box">
+							<select class="selecting1" id="citySelectOwner" onchange="populateBarangays()">
+								<option hidden>City/Municipality</option>
+							</select>
+						</div>
+						<div class="select-box">
+							<select class="selecting1" id="barangaySelectOwner">
+								<option hidden>Barangay</option>
+							</select>
+						</div>
+					</div>
+					<input type="hidden" id="addressInputOwner" asp-for="Address" />
+				</div>
+
+				<div class="column">
+					<div class="input-box">
+						<label><i class='bx bxs-envelope'></i>Email</label>
+						<input type="email" placeholder="Put an Email" class="text" asp-for="Email" id="Email" required />
+						<span asp-validation-for="Email" class="text-danger"></span>
+					</div>
+
+					<div class="input-box">
+						<label><i class='bx bxs-phone'></i>Telephone Number</label>
+						<input type="text" placeholder="Enter Telephone Number" asp-for="TelNo" id="TelNo" required />
+						<span asp-validation-for="TelNo" class="text-danger"></span>
+					</div>
+					<div class="input-box">
+						<label><i class='bx bxs-printer'></i>Fax Number</label>
+						<input type="text" asp-for="FaxNo" placeholder="Enter your Fax Number" id="FaxNo" />
+						<span asp-validation-for="FaxNo" class="text-danger"></span>
+					</div>
+				</div>
+				@*<button>Submit</button>*@
+			</div>
+
+			<!-- Meat Vehicle Info -->
+			<div class="container">
+				<header>Vehicle Information</header>
+				<div class="column">
+					<div class="input-box">
+						<label><i class='bx bxs-truck'></i>Vehicle Maker</label>
+						<input type="text" placeholder="Enter the Vehicle Maker" asp-for="VehicleMaker" id="VehicleMaker" required />
+						<span asp-validation-for="VehicleMaker" class="text-danger"></span>
+					</div>
+					<div class="input-box">
+						<label><i class='bx bxs-terminal'></i>Plate Number</label>
+						<input type="text" placeholder="Enter the Plate Number" asp-for="PlateNo" id="PlateNo" required />
+						<span asp-validation-for="PlateNo" class="text-danger"></span>
+					</div>
+					<div class="input-box">
+						<label><i class='bx bxs-cog'></i>Engine Number</label>
+						<input type="text" placeholder="Enter the Engine Number" asp-for="EngineNo" id="EngineNo" required />
+						<span asp-validation-for="EngineNo" class="text-danger"></span>
+					</div>
+				</div>
+
+
+				<div class="column">
+					<div class="row">
+						<div class="input-box">
+							<label><i class='bx bxs-map'></i>Destination (major markets to be served)</label>
+							<input type="text" placeholder="Enter the Destination" asp-for="Destination" id="Destination" required />
+						</div>
+						<div class="input-box roles">
+							<label><i class='bx bxs-package'></i>Accredited Meat Establishment to be served</label>
+							<div class="select-box">
+								<select asp-for="Est">
+									<option hidden>Select Meat Establishment</option>
+									<option value="SLH">Slaughter House</option>
+									<option value="PDP">Poultry Dressing Plant</option>
+									<option value="MCP">Meat Cutting Plant</option>
+									<option value="CSW">Cold Storage Warehouse</option>
+								</select>
+								<span asp-validation-for="Est" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="input-box">
+							<input type="text" value="Pending" asp-for="Status" hidden />
+							@*<span asp-validation-for="PlateNo" class="text-danger"></span>*@
+						</div>
+					</div>
+					<div class="row">
+						@*here*@
+						<div class="upload-box">
+							<label>Upload Image for LTO Certificate of Registration</label>
+							<div class="container">
+								<input type="file" class="file-input" accept="image/*" asp-for="LTOCR" id="LTOCR">
+								<span asp-validation-for="LTOCR" class="text-danger"></span>
+								<div class="img-area" data-img="">
+									<i class='bx bxs-cloud-upload icon'></i>
+									<h3>Upload Image</h3>
+									<p>Image size must be less than <span>5MB</span></p>
+								</div>
+								<button class="select-image" type="button">Select Image</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						@*here*@
+						<div class="upload-box">
+							<label>Upload Image for LTO Official Receipt</label>
+							<div class="container">
+								<input type="file" class="file-input" accept="image/*" asp-for="LTOOR" id="LTOOR">
+								<span asp-validation-for="LTOOR" class="text-danger"></span>
+								<div class="img-area" data-img="">
+									<i class='bx bxs-cloud-upload icon'></i>
+									<h3>Upload Image</h3>
+									<p>Image size must be less than <span>5MB</span></p>
+								</div>
+								<button class="select-image" type="button">Select Image</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				@*<button>Submit</button>*@
+			</div>
+
+			<!-- Driver  -->
+			<div class="container">
+				<header>Driver Information</header>
+				<div class="column">
+					<div class="input-box">
+						<label><i class='bx bxs-user'></i>First Name</label>
+						<input type="text" placeholder="Enter your First Name" asp-for="DriverFname" id="DriverFname" />
+						<span asp-validation-for="DriverFname" class="text-danger"></span>
+					</div>
+					<div class="input-box">
+						<label>Middle Name </label>
+						<input type="text" placeholder="Enter your Middle Name" asp-for="DriverMname" id="DriverMname" />
+						<span asp-validation-for="DriverMname" class="text-danger"></span>
+					</div>
+					<div class="input-box">
+						<label>Last Name</label>
+						<input type="text" placeholder="Enter your Last Name" asp-for="DriverLname" id="DriverLname" />
+						<span asp-validation-for="DriverLname" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="input-box address">
+					<label><i class='bx bxs-map'></i>Address</label>
+					<div class="column">
+						<div class="select-box">
+							<select class="selecting1" id="regionSelectDriver" onchange="populateProvinces()">
+								<option hidden>Region</option>
+							</select>
+						</div>
+						<div class="select-box">
+							<select class="selecting1" id="provinceSelectDriver" onchange="populateCities()">
+								<option hidden>Province</option>
+							</select>
+						</div>
+					</div>
+					<div class="column">
+						<div class="select-box">
+							<select class="selecting1" id="citySelectDriver" onchange="populateBarangays()">
+								<option hidden>City/Municipality</option>
+							</select>
+						</div>
+						<div class="select-box">
+							<select class="selecting1" id="barangaySelectDriver">
+								<option hidden>Barangay</option>
+							</select>
+						</div>
+					</div>
+					<input type="hidden" id="addressInputDriver" asp-for="DriverAddress" />
+				</div>
+
+				<div class="column">
+					<div class="row">
+						<div class="input-box">
+							<label><i class='bx bxs-phone'></i>Phone Number</label>
+							<input type="number" placeholder="Enter phone number" asp-for="DriverTelNo" id="DriverTelNo" />
+							<span asp-validation-for="DriverTelNo" class="text-danger"></span>
+						</div>
+						<div class="input-box">
+							<label><i class='bx bxs-calendar'></i>Birth Date</label>
+							<input type="date" placeholder="Enter birth date" asp-for="Driverbirthdate" id="Driverbirthdate" />
+							<span asp-validation-for="Driverbirthdate" class="text-danger"></span>
+						</div>
+
+						<div class="column">
+							<div class="input-box">
+								<label><i class='bx bxs-envelope'></i>Email</label>
+								<input type="email" placeholder="Put an Email" class="text" asp-for="DriverEmail" id="DriverEmail" />
+								<span asp-validation-for="DriverEmail" class="text-danger"></span>
+							</div>
+							<div class="sex-box">
+								<p>Sex</p>
+								<div class="sex-option">
+									<div class="sex">
+										@Html.RadioButtonFor(Model => Model.gender, "Male", new { id = "check-male" })
+										<label for="check-male">Male</label>
+									</div>
+									<div class="sex">
+										@Html.RadioButtonFor(Model => Model.gender, "Female", new { id = "check-female" })
+										<label for="check-female">Female</label>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="upload-box">
+							<label>Upload Image of Driver's License (front)</label>
+							<div class="container">
+								@*here*@
+								<input type="file" class="file-input" accept="image/*" asp-for="LicenseFront">
+								<span asp-validation-for="LicenseFront" class="text-danger"></span>
+								<div class="img-area" data-img="">
+									<i class='bx bxs-cloud-upload icon'></i>
+									<h3>Upload Image</h3>
+									<p>Image size must be less than <span>5MB</span></p>
+								</div>
+								<button class="select-image" type="button">Select Image</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="upload-box">
+							<label>Upload Image of Driver's License (back)</label>
+							<div class="container">
+								@*here*@
+								<input type="file" class="file-input" accept="image/*" asp-for="LicenseBack">
+								<span asp-validation-for="LicenseBack" class="text-danger"></span>
+								<div class="img-area" data-img="">
+									<i class='bx bxs-cloud-upload icon'></i>
+									<h3>Upload Image</h3>
+									<p>Image size must be less than <span>5MB</span></p>
+								</div>
+								<button class="select-image" type="button">Select Image</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				@*<button>Submit</button>*@
+			</div>
+
+			<!-- Helper -->
+			<div class="container">
+				<header>Helper Information</header>
+				<div class="column">
+					<div class="input-box">
+						<label><i class='bx bxs-user'></i>First Name</label>
+						<input type="text" placeholder="Enter your First Name" asp-for="HelperFname" id="HelperFname" />
+						@* <span asp-validation-for="HelperFname" class="text-danger"></span> *@
+					</div>
+					<div class="input-box">
+						<label>Middle Name</label>
+						<input type="text" placeholder="Enter your Middle Name" asp-for="HelperMname" id="HelperMname" />
+						@* <span asp-validation-for="HelperMname" class="text-danger"></span> *@
+					</div>
+					<div class="input-box">
+						<label>Last Name</label>
+						<input type="text" placeholder="Enter your Last Name" asp-for="HelperLname" id="HelperLname" />
+						@* <span asp-validation-for="HelperLname" class="text-danger"></span> *@
+					</div>
+				</div>
+
+				<div class="input-box address">
+					<label><i class='bx bxs-map'></i>Address</label>
+					<div class="column">
+						<div class="select-box">
+							<select class="selecting1" id="regionSelectHelper" onchange="populateProvinces()">
+								<option hidden>Region</option>
+							</select>
+						</div>
+						<div class="select-box">
+							<select class="selecting1" id="provinceSelectHelper" onchange="populateCities()">
+								<option hidden>Province</option>
+							</select>
+						</div>
+					</div>
+					<div class="column">
+						<div class="select-box">
+							<select class="selecting1" id="citySelectHelper" onchange="populateBarangays()">
+								<option hidden>City/Municipality</option>
+							</select>
+						</div>
+						<div class="select-box">
+							<select class="selecting1" id="barangaySelectHelper">
+								<option hidden>Barangay</option>
+							</select>
+						</div>
+					</div>
+					@* <input type="hidden" id="addressInputHelper" asp-for="HelperAddress" /> *@
+				</div>
+
+				<div class="column">
+					<div class="input-box">
+						<label><i class='bx bxs-envelope'></i>Email</label>
+						<input type="email" placeholder="Put an Email" class="text" asp-for="HelperEmail" id="HelperEmail" />
+						@* <span asp-validation-for="HelperEmail" class="text-danger"></span> *@
+					</div>
+
+					<div class="input-box">
+						<label><i class='bx bxs-phone'></i>Phone Number</label>
+						<input type="number" placeholder="Enter Phone Number" asp-for="HelperTelNo" id="HelperTelNo" />
+						@* <span asp-validation-for="HelperTelNo" class="text-danger"></span> *@
+					</div>
+					<div class="input-box">
+						<label><i class='bx bxs-calendar'></i>Birth Date</label>
+						<input type="date" placeholder="Enter birth date" asp-for="Helperbirthdate" id="Helperbirthdate" />
+						@* <span asp-validation-for="Helperbirthdate" class="text-danger"></span> *@
+					</div>
+				</div>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+		<script src="~/js/mtvregister1.js" asp-append-version="true"></script>
+	</main>
+	
+	<!-- MAIN ENDS -->
+
+</section>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#applicationType').change(function () {
+			var selectedValue = $(this).val();
+
+			if (selectedValue === 'Renewal') {
+				$('#AccreditationNumber').removeAttr('readonly');
+				$('#AccreditationNumber').val(''); 
+			} else if (selectedValue === 'NewApplication') {
+				$('#AccreditationNumber').attr('readonly', true);
+
+				$.post('/MTVapplication/GenerateRandomNumber', function (data) {
+					$('#AccreditationNumber').val(data);
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+					alert('Error occurred: ' + textStatus);
+				});
+			}
+		});
+	});
+
+	document.getElementById('searchButton').addEventListener('click', function () {
+		var accreditationNumber = document.getElementById('AccreditationNumber').value;
+
+		// AJAX request to the server
+		fetch('/MTVapplication/GenerateResult', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ AccreditionNo: accreditationNumber })
+		})
+			.then(response => response.json())
+			.then(data => {
+				// Update your view with the data received
+				console.log(data);
+				document.getElementById('OwnerFname').value = data.data.ownerFname || '';
+				document.getElementById('OwnerMname').value = data.data.ownerMname || '';
+				document.getElementById('OwnerLname').value = data.data.ownerLname || '';
+				document.getElementById('Email').value = data.data.email || '';
+				document.getElementById('TelNo').value = data.data.telNo || '';
+				document.getElementById('FaxNo').value = data.data.faxNo || '';
+				document.getElementById('VehicleMaker').value = data.data.vehicleMaker || '';
+				document.getElementById('PlateNo').value = data.data.plateNo || '';
+				document.getElementById('EngineNo').value = data.data.engineNo || '';
+				document.getElementById('Destination').value = data.data.destination || '';
+
+				document.getElementById('DriverFname').value = data.data.driverFname || '';
+				document.getElementById('DriverMname').value = data.data.driverMname || '';
+				document.getElementById('DriverLname').value = data.data.driverLname || '';
+				document.getElementById('Driverbirthdate').value = data.data.driverbirthdate || '';
+				document.getElementById('DriverEmail').value = data.data.driverEmail || '';
+				document.getElementById('DriverTelNo').value = data.data.driverTelNo || '';
+
+				document.getElementById('HelperFname').value = data.data.helperFname || '';
+				document.getElementById('HelperLname').value = data.data.helperLname || '';
+				document.getElementById('HelperMname').value = data.data.helperMname || '';
+				document.getElementById('HelperTelNo').value = data.data.helperTelNo || '';
+				document.getElementById('HelperEmail').value = data.data.helperEmail || '';
+
+
+			})
+			.catch(error => console.error('Error:', error));
+	});
+
+</script>
+
+
+
+
+<script>
+	fetch('@Url.Content("https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
+		.then(response => response.json())
+		.then(data => {
+			const sets = ['Owner', 'Driver', 'Helper'];
+
+			// Define the desired order of regions
+			const regionOrder = [
+				{ regionCode: "NCR", regionName: "National Capital Region" },
+				{ regionCode: "CAR", regionName: "Cordillera Administrative Region" },
+				{ regionCode: "01", regionName: "Region I" },
+				{ regionCode: "02", regionName: "Region II" },
+				{ regionCode: "03", regionName: "Region III" },
+				{ regionCode: "4A", regionName: "Region IV-A" },
+				{ regionCode: "4B", regionName: "Region IV-B" },
+				{ regionCode: "05", regionName: "Region V" },
+				{ regionCode: "06", regionName: "Region VI" },
+				{ regionCode: "07", regionName: "Region VII" },
+				{ regionCode: "08", regionName: "Region VIII" },
+				{ regionCode: "09", regionName: "Region IX" },
+				{ regionCode: "10", regionName: "Region X" },
+				{ regionCode: "11", regionName: "Region XI" },
+				{ regionCode: "12", regionName: "Region XII" },
+				{ regionCode: "13", regionName: "Region XIII" },
+				{ regionCode: "BARMM", regionName: "Bangsamoro Autonomous Region in Muslim Mindanao" }
+			];
+
+			sets.forEach(set => {
+				const regionSelect = document.getElementById(`regionSelect${set}`);
+				regionOrder.forEach(region => {
+					const option = document.createElement('option');
+					option.value = region.regionCode;
+					option.textContent = region.regionName;
+					regionSelect.appendChild(option);
+				});
+
+				regionSelect.addEventListener('change', () => populateProvinces(set));
+				document.getElementById(`provinceSelect${set}`).addEventListener('change', () => populateCities(set));
+				document.getElementById(`citySelect${set}`).addEventListener('change', () => populateBarangays(set));
+			});
+
+			function populateProvinces(set) {
+				const selectedRegion = document.getElementById(`regionSelect${set}`).value;
+				const provinceSelect = document.getElementById(`provinceSelect${set}`);
+				provinceSelect.innerHTML = "<option hidden>Select Province</option>";
+				document.getElementById(`citySelect${set}`).innerHTML = "<option hidden>Select City/Municipality</option>";
+				document.getElementById(`barangaySelect${set}`).innerHTML = "<option hidden>Select Barangay</option>";
+
+				if (selectedRegion !== "") {
+					const regionData = data[selectedRegion];
+					const provinceList = regionData.province_list;
+
+					for (const [provinceCode, province] of Object.entries(provinceList)) {
+						const option = document.createElement('option');
+						option.value = provinceCode;
+						option.textContent = provinceCode;
+						provinceSelect.appendChild(option);
+					}
+				}
+			}
+
+			function populateCities(set) {
+				const selectedRegion = document.getElementById(`regionSelect${set}`).value;
+				const selectedProvince = document.getElementById(`provinceSelect${set}`).value;
+				const citySelect = document.getElementById(`citySelect${set}`);
+				citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
+				document.getElementById(`barangaySelect${set}`).innerHTML = "<option hidden>Select Barangay</option>";
+
+				if (selectedRegion !== "" && selectedProvince !== "") {
+					const regionData = data[selectedRegion];
+					const provinceData = regionData.province_list[selectedProvince];
+					const municipalityList = provinceData.municipality_list;
+
+					for (const [municipalityCode, municipality] of Object.entries(municipalityList)) {
+						const option = document.createElement('option');
+						option.value = municipalityCode;
+						option.textContent = municipalityCode;
+						citySelect.appendChild(option);
+					}
+				}
+			}
+
+			function populateBarangays(set) {
+				const selectedRegion = document.getElementById(`regionSelect${set}`).value;
+				const selectedProvince = document.getElementById(`provinceSelect${set}`).value;
+				const selectedCity = document.getElementById(`citySelect${set}`).value;
+				const barangaySelect = document.getElementById(`barangaySelect${set}`);
+				barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+
+				if (selectedRegion !== "" && selectedProvince !== "" && selectedCity !== "") {
+					const regionData = data[selectedRegion];
+					const provinceData = regionData.province_list[selectedProvince];
+					const municipalityData = provinceData.municipality_list[selectedCity];
+					const barangayList = municipalityData.barangay_list;
+
+					for (const barangay of barangayList) {
+						const option = document.createElement('option');
+						option.value = barangay;
+						option.textContent = barangay;
+						barangaySelect.appendChild(option);
+					}
+				}
+			}
+
+			// Initialize variables to store addresses
+			let ownerAddress = '';
+			let driverAddress = '';
+			let helperAddress = '';
+
+			function updateAddressForSet(set) {
+				const city = document.getElementById(`citySelect${set}`).value;
+				const barangay = document.getElementById(`barangaySelect${set}`).value;
+
+				const completeAddress = `${city}, ${barangay}`;
+
+				// Update the corresponding address variable
+				if (set === 'Owner') {
+					ownerAddress = completeAddress;
+				} else if (set === 'Driver') {
+					driverAddress = completeAddress;
+				} else if (set === 'Helper') {
+					helperAddress = completeAddress;
+				}
+
+				// Update the hidden input field
+				const addressInput = document.getElementById(`addressInput${set}`);
+				addressInput.value = completeAddress;
+			}
+
+			// Set up event listeners for each address input set
+			function setUpAddressInputSetListeners(set) {
+				const citySelect = document.getElementById(`citySelect${set}`);
+				const barangaySelect = document.getElementById(`barangaySelect${set}`);
+
+				citySelect.addEventListener('change', function () {
+					updateAddressForSet(set);
+				});
+
+				barangaySelect.addEventListener('change', function () {
+					updateAddressForSet(set);
+				});
+			}
+
+			// Call the event listener setup function for each address input set
+			setUpAddressInputSetListeners('Owner');
+			setUpAddressInputSetListeners('Driver');
+			setUpAddressInputSetListeners('Helper');
+
+
+			addressInputOwner.value = ownerAddress;
+			addressInputDriver.value = driverAddress;
+			addressInputHelper.value = helperAddress;
+
+
+		
+
+		})
+		.catch(error => console.error('Error fetching JSON:', error));
+
+		
+</script>
+
+@* 
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+ *@

@@ -1,0 +1,353 @@
+﻿@model IEnumerable<DomainLayer.Models.Result>
+
+<script src="~/js/qrScript.js" asp-append-version="true"></script>
+
+<style data-tag="reset-style-sheet">
+    html {
+        line-height: 1.15;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    * {
+        box-sizing: border-box;
+        border-width: 0;
+        border-style: solid;
+    }
+
+    p, li, ul, pre, div, h1, h2, h3, h4, h5, h6, figure, blockquote, figcaption {
+        margin: 0;
+        padding: 0;
+    }
+
+    button {
+        background-color: transparent;
+    }
+
+    button, input, optgroup, select, textarea {
+        font-family: inherit;
+        font-size: 100%;
+        line-height: 1.15;
+        margin: 0;
+    }
+
+    button, select {
+        text-transform: none;
+    }
+
+    button, [type="button"], [type="reset"], [type="submit"] {
+        -webkit-appearance: button;
+    }
+
+        button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
+            border-style: none;
+            padding: 0;
+        }
+
+        button:-moz-focus, [type="button"]:-moz-focus, [type="reset"]:-moz-focus, [type="submit"]:-moz-focus {
+            outline: 1px dotted ButtonText;
+        }
+
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+
+    input {
+        padding: 2px 4px;
+    }
+
+    img {
+        display: block;
+    }
+
+    html {
+        scroll-behavior: smooth
+    }
+</style>
+<style data-tag="default-style-sheet">
+    html {
+        font-family: Poppins;
+        font-size: 16px;
+    }
+
+    body {
+        font-weight: 400;
+        font-style: normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-scheme-green100);
+        background-color: var(--dl-color-scheme-yellow20);
+    }
+</style>
+<link rel="shortcut icon"
+      href="public/logo1.png"
+      type="icon/png"
+      sizes="32x32" />
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font" />
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font" />
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font" />
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&amp;display=swap"
+      data-tag="font" />
+
+<link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+
+
+
+<div>
+    <link rel="stylesheet" href="~/css/trace-page.css" asp-append-version="true" />
+
+    <div class="trace-page-container">
+        <div class="navbar-container">
+            <a class="trace-page-logo" asp-controller="Home" asp-action="Index">
+                <img alt="image"
+                     src="~/img/logo-200h.png"
+                     class="trace-page-image" />
+                <span class="brandName">
+                    <span class="trace-page-text01">NMIS-</span>
+                    <span>&nbsp;SMFA</span>
+                </span>
+            </a>
+            <div class="trace-page-links">
+
+
+                <a class="trace-page-text03" asp-controller="Home" asp-action="Index">HOME</a>
+                <a class="trace-page-text05" href="/Home/Index#articles">ARTICLES</a>
+                <a class="trace-page-text04" href="/Home/Index#FAQs">FAQS</a>
+                <a class="trace-page-text06" href="/Home/Index#footer">ABOUT US</a>
+                <a class="button-secondary button" asp-controller="Trace" asp-action="Index">TRACE</a>
+                <a class="button button-primary" asp-area="Identity" asp-page="/Account/Login">LOG IN</a>
+            </div>
+            <button class="trace-page-burger-menu navbar-burger-menu">
+                <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg viewBox="0 0 1024 1024" class="trace-page-icon">
+                        <path d="M128 256h768v86h-768v-86zM128 554v-84h768v84h-768zM128 768v-86h768v86h-768z"></path>
+                    </svg>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" asp-controller="Home" asp-action="Index">HOME</a>
+                        <a class="dropdown-item" href="/Home/Index#articles">ARTICLES</a>
+                        <a class="dropdown-item" href="/Home/Index#FAQs">FAQS</a>
+                        <a class="dropdown-item" href="/Home/Index#footer">About Us</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-controller="Trace" asp-action="Index">TRACE</a>
+                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">LOG IN</a>
+                    </div>
+                </a>
+            </button>
+        </div>
+        <div class="trace-page-section section-container">
+            <div class="trace-page-hero">
+                <img alt="image"
+                     src="~/img/tracepage-700h.png"
+                     class="trace-page-image1" />
+                <div class="trace-page-container1">
+                    <div class="trace-page-container2">
+                        <h1 class="trace-page-text07">Trace Now! using Meat UID</h1>
+                        <h2 class="trace-page-text08">
+                            Magnificent things are very simple.
+                        </h2>
+                        <div class="trace-page-btn-group">
+                            <form asp-action="Result" method="get">
+                                <input type="text"
+                                       placeholder="UID #"
+                                       class="trace-page-textinput input"
+                                       name="id" /> <!-- Match the parameter name in the controller -->
+                                <button type="submit" class="trace-page-button2 button">
+                                    Trace
+                                </button>
+                            </form>
+
+                        </div>
+                        <span class="trace-page-text09">
+                            <span>
+                                <span>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Sed non volutpat turpis.
+                                </span>
+                                <span></span>
+                            </span>
+                            <span>
+                                <span>
+                                    Mauris luctus rutrum mi ut rhoncus. Integer in dignissim
+                                    tortor. Lorem
+                                </span>
+                                <span></span>
+                            </span>
+                            <span>
+                                <span>
+                                    ipsum dolor sit amet, consectetur adipiscing elit.
+                                </span>
+                                <span></span>
+                            </span>
+                            <br />
+                            <span></span>
+                            <br />
+                            <span>
+                                <span>
+                                    Mauris luctus rutrum mi ut rhoncus. Integer in dignissim
+                                    tortor.
+                                </span>
+                                <span></span>
+                            </span>
+                        </span>
+                        <div class="trace-page-container3">
+                            <span class="trace-page-text23">
+                                <br />
+                                <span>Scan your Meat QR Code Now!</span>
+                                <br />
+                                <br />
+                            </span>
+                            <button type="button" class="trace-page-button3 button">
+                                <span>
+                                    <span id="useCameraBtn">QR Scan</span>
+                                    <br />
+                                    <br />
+                                </span>
+                            </button>
+                            <button type="button" class="trace-page-button4 button">
+                                <span>
+                                    <span id="uploadBtn" class="trace-page-text33">Upload QR</span>
+                                    <br />
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <img alt="image"
+                 src="~/img/pig.svg"
+                 class="trace-page-image2" />
+
+            <img alt="image"
+                 src="~/img/chick.svg"
+                 class="trace-page-image3" />
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cameraModal" tabindex="-1" role="dialog" aria-labelledby="cameraModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cameraModalTitle">Scan QR Thru Camera</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+
+                    <div id="reader"></div>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="uploadQrModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalTitle">Scan QR Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div style="text-align: center;" class="container">
+
+                    <input type="file" id="file" accept="image/*" hidden>
+                    <div class="img-area" data-img="">
+                        <i class='bx bx-qr-scan icon'></i>
+                        <h3>Upload QR Code</h3>
+                    </div>
+
+                    <button id="upload" class="select-image mt-2">Select Image</button>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="scan" class="btn btn-primary" type="button">Trace</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    window.onload = () => {
+        const runAllScripts = () => {
+            initializeAllAccordions()
+        }
+
+        const listenForUrlChanges = () => {
+            let url = location.href
+            document.body.addEventListener(
+                'click',
+                () => {
+                    requestAnimationFrame(() => {
+                        if (url !== location.href) {
+                            runAllScripts()
+                            url = location.href
+                        }
+                    })
+                },
+                true
+            )
+        }
+
+        const initializeAllAccordions = () => {
+            const allAccordions = document.querySelectorAll('[data-role="Accordion"]');
+
+            allAccordions.forEach((accordion) => {
+                const accordionHeader = accordion.querySelector('[data-type="accordion-header"]')
+                const accordionContent = accordion.querySelector('[data-type="accordion-content"]')
+
+                accordionHeader.addEventListener('click', () => {
+                    if (accordionContent.style.maxHeight) {
+                        accordionContent.style.maxHeight = ''
+                    } else {
+                        accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`
+                    }
+                })
+            })
+        }
+
+        listenForUrlChanges()
+        runAllScripts()
+    }
+</script>
+
+
+<script src="~/js/trace.js" asp-append-version="true"></script>

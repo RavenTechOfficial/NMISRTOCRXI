@@ -1,0 +1,266 @@
+﻿@using DomainLayer.Models.ViewModels;
+@model GeolocationViewModel
+
+<!-- Boxicons -->
+@*<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>*@
+
+<!-- fontawesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+<!-- leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+	  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+	  crossorigin="" />
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+		integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+		crossorigin=""></script>
+
+<link rel="stylesheet" href="~/css/geolocation.css" asp-append-version="true" />
+
+<!-- Leaflet Search Bar -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+<section id="content">
+
+
+	<!-- MAIN STARTS-->
+	<main class="geolocation">
+		<div class="geo-filter">
+
+
+			<form class="search-form">
+				<div class="search">
+
+					<input type="text" class="form-control Search-Input" placeholder="Search Location..." autocomplete="off">
+					<div class="suggestions" style="display: none;">
+						<!-- Suggestions will be populated here -->
+					</div>
+					<button class="btn btn-primary Search">Search <i class='bx bx-search'></i></button>
+				</div>
+			</form>
+			<div class="container">
+				<form method="post" action="/Geolocation/ProcessData">
+					<div class="select-btn">
+						<span class="btn-text">Show Locations of...</span>
+						<span class="arrow-dwn">
+							<i class='bx bx-caret-down'></i>
+						</span>
+					</div>
+					<ul class="list-items">
+						<li class="item">
+							<span>
+								@Html.CheckBoxFor(model => model.SlaughterHouses, new { @class = "checkbox" })
+							</span>
+							<span class="item-text">SlaughterHouses</span>
+						</li>
+						<li class="item">
+							<span>
+								@Html.CheckBoxFor(model => model.PoultryDressingPlants, new { @class = "checkbox" })
+							</span>
+							<span class="item-text">PoultryDressingPlants</span>
+						</li>
+						<li class="item">
+							<span>
+								@Html.CheckBoxFor(model => model.MeatCuttingPlants, new { @class = "checkbox" })
+							</span>
+							<span class="item-text">MeatCuttingPlants</span>
+						</li>
+						<li class="item">
+							<span>
+								@Html.CheckBoxFor(model => model.ColdStorageWarehouse, new { @class = "checkbox" })
+							</span>
+							<span class="item-text">Cold Storage Warehouse</span>
+						</li>
+						<li class="item">
+							<span>
+								@Html.CheckBoxFor(model => model.MeatDealers, new { @class = "checkbox" })
+							</span>
+							<span class="item-text">Meat Dealers</span>
+						</li>
+						<li class="item">
+							<span>
+								@Html.CheckBoxFor(model => model.MeatDestinations, new { @class = "checkbox" })
+							</span>
+							<span class="item-text">Meat Destinations</span>
+						</li>
+						@* <li class="item">
+							<span>
+								@Html.CheckBoxFor(model => model.NMISRTOCXI, new { @class = "checkbox" })
+							</span>
+							<span class="item-text">NMIS RTOC XI</span>
+						</li> *@
+						<button type="submit" class="btn btn-primary">Apply</button>
+					</ul>
+				</form>
+
+			</div>
+
+
+		</div>
+
+
+		<div id="map"></div>
+	</main>
+	<!-- MAIN ENDS -->
+
+</section>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+
+<script>
+
+	// Initialize the Leaflet map
+	var map = L.map('map', {
+		center: [7.1907, 125.4553],
+		zoom: 9,
+		zoomControl: false
+	});
+
+	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+
+	// var locations = [
+	// 	{ type: "MeatDealer", address: "MaaDavao City Slaughterhouse" },
+	// 	{ type: "MeatDealer", address: "MATANAO, LOWER MARBER" },
+	// 	{ type: "MeatDestination", address: " MALALAG, POBLACION" },
+	// 	{ type: "MeatOrigin", address: " SANTA CRUZ, Zone III" },
+	// 	{ type: "Slaughterhouse", address: "Lupon Slaughterhouse, 11,DAVAO ORIENTAL, LUPON, POBLACION" },
+	// 	{ type: "CSW", address: "11, Davao Oriental, LUPON, POBLACION" },
+	// 	{ type: "CSW", address: "11, Davao Oriental, LUPON, POBLACION" },
+
+	// 	{ type: "CSW", address: "11, Davao Oriental, LUPON Port" },
+	// 	{ type: "CSW", address: "11, Davao Oriental, LUPON Port" },
+	// 	{ type: "NMISOffice", address: "11,Davao Del Sur, Davao City, Bangkerohan, NMIS RTOC XI" },
+	// 	{ type: "NMISOffice", address: "11,Davao Del Sur, Davao City, Bangkerohan, NMIS RTOC XI" },
+
+	// ];
+	var locations = @Html.Raw(Json.Serialize(Model.GeoDatas));
+
+
+	// Define the icons
+	var icons = {
+		MeatDealer: L.icon({
+			iconUrl: '/img/Markers/MeatDealerMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		MeatDestination: L.icon({
+			iconUrl: '/img/Markers/meatDestinationMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		MeatOrigin: L.icon({
+			iconUrl: '/img/Markers/meatOriginMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		Slaughterhouse: L.icon({
+			iconUrl: '/img/Markers/slaughterhouseMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		PDP: L.icon({
+			iconUrl: '/img/Markers/pdpMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		CSW: L.icon({
+			iconUrl: '/img/Markers/cswMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		MCP: L.icon({
+			iconUrl: '/img/Markers/McpMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		}),
+		NMISOffice: L.icon({
+			iconUrl: '/img/Markers/nmisOfficeMarker.png',
+			iconSize: [80, 75],
+			iconAnchor: [30, 40],
+			popupAnchor: [0, -40]
+		})
+	};
+
+	var markers = L.markerClusterGroup();
+
+
+	function fetchGeolocation(address) {
+		return new Promise((resolve, reject) => {
+			var apiKey = 'hYMy6xfMTFlvLlwrgU9UGgyRezH8czpA7kHsRMk9CmMcRus7FTgJTchhVV55mEer';
+			var url = `https://api.distancematrix.ai/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+
+			fetch(url)
+				.then(response => response.json())
+				.then(data => {
+					console.log('DistanceMatrix.ai response:', data);
+
+					if (data.status === 'OK' && data.result && data.result.length > 0) {
+						var lat = data.result[0].geometry.location.lat;
+						var lon = data.result[0].geometry.location.lng;
+						resolve([lat, lon]);
+					} else {
+						console.error('No results found:', data);
+						reject('Location not found: ' + (data.error_message || 'No results'));
+					}
+				})
+				.catch(error => {
+					console.error('Geocoding error:', error);
+					reject('Geocoding error: ' + error.message);
+				});
+		});
+	}
+
+	// Process each location
+	var locationMarkers = {};
+
+	locations.forEach(function (location) {
+		fetchGeolocation(location.address)
+			.then(latLng => {
+				var locationKey = location.type + "|" + location.address;
+
+				if (!locationMarkers[locationKey]) {
+					locationMarkers[locationKey] = {
+						count: 0,
+						marker: null
+					};
+				}
+
+				locationMarkers[locationKey].count++;
+
+				var icon = icons[location.type];
+				if (icon) {
+					if (locationMarkers[locationKey].marker) {
+						markers.removeLayer(locationMarkers[locationKey].marker);
+					}
+
+					var markerInstance = L.marker(latLng, { icon: icon });
+					markers.addLayer(markerInstance);
+
+					locationMarkers[locationKey].marker = markerInstance;
+
+					var tooltipText = "<b>" + location.address + "</b> - " + location.type + "<br/>Count: " + locationMarkers[locationKey].count;
+					markerInstance.bindTooltip(tooltipText, { permanent: false, direction: 'top' });
+				}
+			})
+			.catch(error => console.error('Geolocation error:', error));
+	});
+
+	map.addLayer(markers);
+
+</script>
+<script src="~/js/geolocation.js" asp-append-version="true"></script>
+

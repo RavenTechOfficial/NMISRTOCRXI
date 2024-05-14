@@ -1,0 +1,100 @@
+﻿@using DomainLayer.Models.ViewModels;
+@model AccountUserViewModel
+
+<link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
+<style>
+	#content .FirstLayer .applications h3 {
+		font-size: 40px;
+		font-weight: 600;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		margin-left: 5px;
+		color: var(--black);
+	}
+</style>
+<section id="content">
+	<!-- MAIN STARTS-->
+	<main class="registration">
+		<a style="color:var(--green7); margin-left: 5px;" asp-action="IndexInspectorAdmin">Back to List</a>
+		<div class="FirstLayer">
+			<div class="applications">
+				<h3>Edit | User Information</h3>
+				<hr />
+				<form asp-action="MeatCheckEdit" class="form">
+					<div class="column">
+						<div class="input-box">
+							<label asp-for="firstName">First Name:</label>
+							<input type="text" asp-for="firstName" required />
+							<span asp-validation-for="firstName"></span>
+						</div>
+						<div class="input-box">
+							<label asp-for="middleName">Middle Name:</label>
+							<input type="text" asp-for="middleName" required />
+							<span asp-validation-for="middleName"></span>
+						</div>
+						<div class="input-box">
+							<label asp-for="lastName">Last Name:</label>
+							<input type="text" asp-for="lastName" required />
+							<span asp-validation-for="lastName"></span>
+						</div>
+					</div>
+
+					<div class="column">
+						<div class="input-box">
+							<label asp-for="contactNo">Contact No.:</label>
+							<input type="number" asp-for="contactNo" required />
+							<span asp-validation-for="contactNo"></span>
+						</div>
+
+						<div class="input-box">
+							<label asp-for="birthdate">Birth Date:</label>
+							<input type="date" asp-for="birthdate" required />
+							<span asp-validation-for="birthdate"></span>
+						</div>
+
+						<div class="row">
+							<div class="sex-box">
+								<p>Sex</p>
+								<div class="sex-option" style="margin-top: 15px; margin-left: 10px; font-size: 20px;">
+									<div class="sex">
+										@Html.RadioButtonFor(Model => Model.sex, "Male", new { id = "check-male" })
+										<label for="check-male">Male</label>
+									</div>
+									<div class="sex">
+										@Html.RadioButtonFor(Model => Model.sex, "Female", new { id = "check-female" })
+										<label for="check-female">Female</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					@*<div class="column">
+
+					</div>*@
+
+					<div class="column">
+
+						<button type="submit" value="Save">Save</button>
+					</div>
+
+				</form>
+			</div>
+
+
+		</div>
+
+
+
+
+	</main>
+	<!-- MAIN ENDS -->
+
+</section>
+
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
+

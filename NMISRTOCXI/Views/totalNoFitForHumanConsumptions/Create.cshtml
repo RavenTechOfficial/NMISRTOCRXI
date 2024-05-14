@@ -1,0 +1,67 @@
+﻿@using DomainLayer.Enum;
+@model DomainLayer.Models.totalNoFitForHumanConsumptions
+
+<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
+@{
+    ViewData["Title"] = "Create";
+}
+<section id="content">
+
+
+    <!-- MAIN STARTS-->
+    <main>
+
+        <div class="FirstLayer">
+
+            <div class="applications">
+                @*<h1>Create</h1>*@
+
+                <h1>Total No. Fit For Human Consumptions</h1>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="form-group">
+                                <label asp-for="NoOfHeads" class="control-label">No. Of Heads:</label>
+                                <input asp-for="NoOfHeads" class="form-control" value="@ViewData["NoOfHeadsPassed"]" readonly />
+                                <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="DressedWeight" class="control-label">Dressed Weight:</label>
+                                <input asp-for="DressedWeight" class="form-control" value="@ViewData["WeightPassed"]" readonly />
+                                <span asp-validation-for="DressedWeight" class="text-danger"></span>
+                            </div>
+                            <div class="form-group" style="display: none">
+                                <label asp-for="PostmortemId" class="control-label"></label>
+                                <select asp-for="PostmortemId" class="form-control" asp-items="ViewBag.PostmortemId">
+                                </select>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+                </div>
+
+                @section Scripts {
+                    @{
+                        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                    }
+                }
+                <br />
+                @* <a class="btn btn-primary" asp-controller="SummaryAndDistributionOfMICs" asp-action="Create">Next</a>*@
+
+            </div>
+
+        </div>
+
+    </main>
+    <!-- MAIN ENDS -->
+</section>

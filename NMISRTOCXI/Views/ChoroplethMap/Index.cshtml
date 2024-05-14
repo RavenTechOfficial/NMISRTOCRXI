@@ -1,0 +1,270 @@
+﻿@using DomainLayer.Models.ViewModels;
+@model ChroplethMapViewModel
+
+<!-- leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+	  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+	  crossorigin="" />
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+		integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+		crossorigin=""></script>
+
+<link rel="stylesheet" href="~/css/ChoroplethMap.css" asp-append-version="true" />
+
+<!-- Leaflet Search Bar -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+<!-- CONTENT STARTS-->
+<section id="content">
+
+
+	<!-- MAIN STARTS-->
+	<main class="geolocation">
+		<div class="geo-filter">
+
+			<form class="search-form">
+				<div class="search">
+
+					<input type="text" class="form-control Search-Input" placeholder="Search Location..." autocomplete="off">
+					<div class="suggestions" style="display: none;">
+						<!-- Suggestions will be populated here -->
+					</div>
+					<button class="btn btn-primary Search">Search <i class='bx bx-search'></i></button>
+				</div>
+			</form>
+
+			<div class="container heatmap">
+				<div class="select-btn">
+					<span class="btn-text">Show Heatmap of...</span>
+					<span class="arrow-dwn">
+						<i class='bx bx-caret-down'></i>
+					</span>
+				</div>
+
+				<ul class="list-items">
+					<form method="post" action="/ChoroplethMap/ActionResult">
+					<li class="item" data-type="heatmap">
+						<label>
+								@Html.CheckBoxFor(model => model.MeatSourcesBool, new { @class = "single-checkbox", @id = "meatSources" })
+							<span class="item-text ms-1">Meat Sources (Weight)</span>
+						</label>
+					</li>
+					<li class="item" data-type="heatmap">
+						<label>
+								@Html.CheckBoxFor(model => model.MeatDestinationBool, new { @class = "single-checkbox", @id = "meatDistribution" })
+							<span class="item-text ms-1">Meat Distribution (Weight)</span>
+						</label>
+					</li>
+					<button type="submit" class="btn btn-primary">Apply</button>
+					</form>
+				</ul>
+			</div>
+
+
+			@* <div class="container species">
+			<div class="select-btn">
+			<span class="btn-text">Select Species</span>
+			<span class="arrow-dwn">
+			<i class='bx bx-caret-down'></i>
+			</span>
+			</div>
+
+			<ul class="list-items">
+			<li class="item" data-type="species">
+			<span class="checkbox">
+			<i class='bx bx-check check-icon'></i>
+			</span>
+			<span class="item-text">Swine</span>
+			</li>
+			<li class="item" data-type="species">
+			<span class="checkbox">
+			<i class='bx bx-check check-icon'></i>
+			</span>
+			<span class="item-text">Chicken</span>
+			</li>
+			<li class="item" data-type="species">
+			<span class="checkbox">
+			<i class='bx bx-check check-icon'></i>
+			</span>
+			<span class="item-text">Cattle</span>
+			</li>
+			<li class="item" data-type="species">
+			<span class="checkbox">
+			<i class='bx bx-check check-icon'></i>
+			</span>
+			<span class="item-text">And So on...</span>
+			</li>
+			<button type="button" class="btn btn-primary">Apply</button>
+			</ul>
+			</div>
+			*@
+
+		</div>
+
+
+		<div id="map"></div>
+	</main>
+	<!-- MAIN ENDS -->
+
+</section>
+<!-- CONTENT ENDS-->
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js" asp-append-version="true"></script>
+<!-- Own JS File -->
+<script src="~/js/ChoroplethMap.js" asp-append-version="true"></script>
+
+
+
+<script>
+    // Initial map setup
+    const map = L.map('map', {
+        zoomControl: false
+    }).setView([7.3042, 125.6853], 8);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    const municipalityData = [
+    @for (int i = 0; i < Model.Address.Count; i++)
+    {
+        var parts = Model.Address[i].Split(new[] { ", " }, StringSplitOptions.None);
+        string desiredAddress = (parts.Length >= 3) ? string.Join(", ", parts[1], parts[2]) : "Invalid Address";
+        @:{ name: "@desiredAddress", specie: "Cattle", value: parseFloat(@Model.Cattle[i]) },
+        @:{ name: "@desiredAddress", specie: "Carabao", value: parseFloat(@Model.Carabao[i]) },
+        @:{ name: "@desiredAddress", specie: "Swine", value: parseFloat(@Model.Swine[i]) },
+        @:{ name: "@desiredAddress", specie: "Goat", value: parseFloat(@Model.Goat[i]) },
+        @:{ name: "@desiredAddress", specie: "Chicken", value: parseFloat(@Model.Chicken[i]) },
+        @:{ name: "@desiredAddress", specie: "Duck", value: parseFloat(@Model.Duck[i]) },
+        @:{ name: "@desiredAddress", specie: "Sheep", value: parseFloat(@Model.Sheep[i]) },
+        @:{ name: "@desiredAddress", specie: "Hog", value: parseFloat(@Model.Hog[i]) },
+    }
+                ];
+
+    // Merge data with GeoJSON
+    function mergeDataWithGeoJSON(geoJSON, data) {
+        geoJSON.features.forEach(feature => {
+            const dataItems = data.filter(item =>
+                item.name.toUpperCase() === (feature.properties.NAME_1 + ', ' + feature.properties.NAME_2).toUpperCase()
+            );
+
+            feature.properties.speciesData = dataItems.reduce((acc, item) => {
+                acc[item.specie] = (acc[item.specie] || 0) + item.value;
+                return acc;
+            }, {});
+
+            feature.properties.totalMeatQuantity = Object.values(feature.properties.speciesData).reduce((sum, qty) => sum + qty, 0);
+        });
+    }
+
+    // Truncate max value for color scaling
+    function truncateMaxValue(num) {
+        num = Math.floor(num);
+        const length = num.toString().length;
+        const divisor = Math.pow(10, length - 1);
+        return Math.floor(num / divisor) * divisor;
+    }
+
+
+    function getColor(totalMeatQuantity, maxValue) {
+        const truncatedMax = truncateMaxValue(maxValue);
+        const getThreshold = (percentage) => Math.floor(truncatedMax * (percentage / 100));
+
+        if (totalMeatQuantity > getThreshold(100)) return '#800026';
+        if (totalMeatQuantity > getThreshold(85)) return '#BD0026';
+        if (totalMeatQuantity > getThreshold(70)) return '#E31A1C';
+        if (totalMeatQuantity > getThreshold(50)) return '#FC4E2A';
+        if (totalMeatQuantity > getThreshold(30)) return '#FD8D3C';
+        if (totalMeatQuantity > getThreshold(15)) return '#FEB24C';
+        if (totalMeatQuantity > getThreshold(5)) return '#FED976';
+        if (totalMeatQuantity === 0) return 'transparent';
+        return '#FFEDA0';
+    }
+
+    // Style feature function
+    function styleFeature(feature) {
+        return {
+            fillColor: getColor(feature.properties.totalMeatQuantity, maxValue),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+        };
+    }
+
+    // Highlight feature on mouseover
+    function highlightFeature(e) {
+        const layer = e.target;
+        layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+    }
+
+    // Reset highlight
+    function resetHighlight(e) {
+        geojsonLayer.resetStyle(e.target);
+    }
+
+    // Add tooltip to each feature
+    function onEachFeature(feature, layer) {
+        let tooltipContent = `<strong>${feature.properties.NAME_1}, ${feature.properties.NAME_2}</strong><br/>Total Meat Qty: ${feature.properties.totalMeatQuantity.toFixed(2)} Kilograms<br/>`;
+
+        Object.entries(feature.properties.speciesData).forEach(([specie, value]) => {
+            tooltipContent += `${specie}: ${value.toFixed(2)} Kilograms<br/>`;
+        });
+
+        layer.bindTooltip(tooltipContent, {
+            permanent: false,
+            interactive: false
+        });
+
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight
+        });
+    }
+
+
+    // Fetch GeoJSON and render map
+    fetch('https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippines_municipalities.geojson')
+        .then(response => response.json())
+        .then(topojsonData => {
+            const geoJSON = topojson.feature(topojsonData, topojsonData.objects.PHL_adm2);
+            mergeDataWithGeoJSON(geoJSON, municipalityData);
+
+            maxValue = Math.max(...geoJSON.features.map(feature => feature.properties.totalMeatQuantity));
+            maxValue = truncateMaxValue(maxValue);
+
+            geojsonLayer = L.geoJson(geoJSON, {
+                style: styleFeature,
+                onEachFeature: onEachFeature
+            }).addTo(map);
+
+            const legend = L.control({ position: 'bottomleft' });
+            legend.onAdd = function (map) {
+                var div = L.DomUtil.create('div', 'info legend');
+                const percentages = [0, 5, 15, 30, 50, 70, 85, 100];
+                const grades = percentages.map(p => Math.floor(maxValue * (p / 100)));
+
+                for (let i = 0; i < grades.length; i++) {
+                    div.innerHTML +=
+                        `<i style="background:${getColor(grades[i] + 1, maxValue)}"></i> ` +
+                        `${Math.max(1, grades[i])}${grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : '+'}`;
+                }
+
+                return div;
+            };
+            legend.addTo(map);
+        });
+</script>
+
+

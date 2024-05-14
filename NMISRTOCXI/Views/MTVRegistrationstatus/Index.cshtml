@@ -1,0 +1,490 @@
+﻿@using DomainLayer.Models.ViewModels;
+@model MtvRegistrationStatusViewModel
+
+
+<link rel="stylesheet" href="~/css/dashy.css" asp-append-version="true" />
+@functions {
+	private string GetStatusClass(string status)
+	{
+		switch (status?.ToLower())
+		{
+			
+			case "payment":
+				return "payment";
+			case "process":
+				return "process";
+			case "pending":
+				return "pending";
+			case "completed":
+				return "completed";
+			default:
+				return string.Empty; // or return a default class
+		}
+	}
+}
+
+
+<section id="content">
+	<!-- MAIN STARTS-->
+	<main class="registration">
+
+
+		<div class="FirstLayer">
+
+				<div class="applications">
+					<div class="head">
+						<h3>Pending MTV Applications</h3>
+						<i class='bx bx-search' id="search-icon1"></i>
+						<i class='bx bx-filter' id="filter-icon1"></i>
+						<i class='bx bx-refresh' id="refresh-icon1"></i>
+					</div>
+					<div class="table-container">
+					<table id="applications-table1">
+						<thead>
+							<tr>
+								<th>Operator Name</th>
+								<th>Application Type</th>
+								<th>Establishment Served</th>
+								<th>Plate Number</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model.MtvApplicants)
+							{
+								<tr data-id="@item.Id" >
+									<td>
+										<p>@item.OwnerFname @item.OwnerLname</p>
+									</td>
+									<td>@item.applicationtype</td>
+									<td>@item.Vehicle?.Est</td>
+									<td>@item.Vehicle?.PlateNo</td>
+									<td>
+										<span class="status @GetStatusClass(item.Status)">@item.Status</span>
+									</td>
+								</tr>
+							}
+
+						</tbody>
+					</table>
+					</div>
+				</div>
+
+		</div>
+
+		@*modal*@
+		<div class="modal" id="myModal">
+			<div class="modal-content" id="">
+				<button class="exit-button" onclick="closeModal()">&times;</button>
+				<h2>Approval of Application</h2>
+				<form asp-action="ProcessApprovement" method="post" class="form">
+					<div class="column">
+						<div class="input-box">
+							<label>Name of Operator (Name that will appear on the Certificate)</label>
+							<input id="operatorName" type="text" placeholder="Operator Name" asp-for="checklists.operatorname" required readonly />
+						</div>
+						<div class="input-box">
+							<label>Meat Establishment Served</label>
+							<input id="meatEstablishment" type="text" placeholder="Meat Establishment" asp-for="checklists.estserved" required readonly />
+						</div>
+					</div>
+					<div class="column">
+						<div class="input-box">
+							<label>Plate No.</label>
+							<input id="plateNumber" type="text" placeholder="Plate Number" asp-for="checklists.plateno" required readonly />
+						</div>
+					</div>
+					
+
+
+					<div class="row">
+						<div class="column">
+							<div class="sex-box">
+								<p>Tick “YES” if compliant; Tick “NO” if non-compliant</p>
+
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes" name="y" checked />
+										<label for="check-yes">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no" name="y" />
+										<label for="check-no">No</label>
+									</div>
+									<label>1. Enclosed</label>
+								</div>
+								<div class="sex-option">
+
+									<div class="sex">
+										<input type="radio" id="check-yes1" name="y1" checked />
+										<label for="check-yes1">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no1" name="y1" />
+										<label for="check-no1">No</label>
+									</div>
+									<label>2. Insulated</label>
+								</div>
+								<div class="sex-option">
+
+									<div class="sex">
+										<input type="radio" id="check-yes2" name="y2" checked />
+										<label for="check-yes2">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no2" name="y2" />
+										<label for="check-no2">No</label>
+									</div>
+									<label>3. Temperature-Controlled; Able to maintain the following temperature:</label>
+									<label class="marg">&nbsp; 0-4˚C (Chilled Meat) &lt;18˚C (Frozen Meat)</label>
+								</div>
+								<div class="sex-option">
+
+									<div class="sex">
+										<input type="radio" id="check-yes3" name="y3" checked />
+										<label for="check-yes3">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no3" name="y3" />
+										<label for="check-no3">No</label>
+									</div>
+									<label>4. Plastic curtains installed are of approved material</label>
+								</div>
+								<div class="sex-option">
+
+									<div class="sex">
+										<input type="radio" id="check-yes4" name="y4" checked />
+										<label for="check-yes4">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no4" name="y4" />
+										<label for="check-no4">No</label>
+									</div>
+									<label>5. Plastic curtains not torn, damaged, discolored, or dirty</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes5" name="y5" checked />
+										<label for="check-yes5">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no5" name="y5" />
+										<label for="check-no5">No</label>
+									</div>
+									<label>6. Plastic curtains installed correctly (100% overlap)</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes6" name="y6" checked />
+										<label for="check-yes6">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no6" name="y6" />
+										<label for="check-no6">No</label>
+									</div>
+									<label>7. Plastic curtain to-floor distance of 1cm</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes7" name="y7" checked />
+										<label for="check-yes7">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no7" name="y7" />
+										<label for="check-no7">No</label>
+									</div>
+									<label>8. With Plastic floor matting (Except if transporting meat/carcasses in a hanging position)</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes8" name="y8" checked />
+										<label for="check-yes8">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no8" name="y8" />
+										<label for="check-no8">No</label>
+									</div>
+									<label>9. Interior of the MTV is clean and sanitized; No rust and discoloration</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes9" name="y9" checked />
+										<label for="check-yes9">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no9" name="y9" />
+										<label for="check-no9">No</label>
+									</div>
+									<label>10. With overhead carcass hanger (for MTV servicing slaughterhouses)</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes10" name="y10" checked />
+										<label for="check-yes10">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no10" name="y10" />
+										<label for="check-no10">No</label>
+									</div>
+									<label>11. No porous materials such as wood or fabric</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes11" name="y11" checked />
+										<label for="check-yes11">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no11" name="y11" />
+										<label for="check-no11">No</label>
+									</div>
+									<label>12. No hazardous materials such as spare tires, tools, etc.</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes12" name="y12" checked />
+										<label for="check-yes12">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no12" name="y12" />
+										<label for="check-no12">No</label>
+									</div>
+									<label>13. MTV Registration No. is printed on both sides (Renewal)</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes13" name="y13" checked />
+										<label for="check-yes13">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no13" name="y13" />
+										<label for="check-no13">No</label>
+									</div>
+									<label>14. Documentary Requirements</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes14" name="y14" checked />
+										<label for="check-yes14">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no14" name="y14" />
+										<label for="check-no14">No</label>
+									</div>
+									<label class="label1">  Previous MTV Certificate of Registration</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes15" name="y15" checked />
+										<label for="check-yes15">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no15" name="y15" />
+										<label for="check-no25">No</label>
+									</div>
+									<label class="label1">LTO Official Receipt</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes16" name="y16" checked />
+										<label for="check-yes16">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no16" name="y16" />
+										<label for="check-no16">No</label>
+									</div>
+									<label class="label1">LTO Certificate of Registration</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes17" name="y17" checked />
+										<label for="check-yes17">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no17" name="y17" />
+										<label for="check-no17">No</label>
+									</div>
+									<label class="label1">Deed of Sale</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes18" name="y18" checked />
+										<label for="check-yes18">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no18" name="y18" />
+										<label for="check-no18">No</label>
+									</div>
+									<label class="label1">Driver's License</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes19" name="y19" checked />
+										<label for="check-yes19">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no19" name="y19" />
+										<label for="check-no19">No</label>
+									</div>
+									<label class="label1">Certificate of Attendance (Driver and Helper)</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes20" name="y20" checked />
+										<label for="check-yes20">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no20" name="y20" />
+										<label for="check-no20">No</label>
+									</div>
+									<label class="label1">Back to Back Valid Health Card (Driver and Helper)</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes21" name="y21" checked />
+										<label for="check-yes21">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no21" name="y21" />
+										<label for="check-no21">No</label>
+									</div>
+									<label>15. MTV Picture</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes22" name="y22" checked />
+										<label for="check-yes22">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no22" name="y22" />
+										<label for="check-no22">No</label>
+									</div>
+									<label class="label1">Front</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes23" name="y23" checked />
+										<label for="check-yes23">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no23" name="y23" />
+										<label for="check-no23">No</label>
+									</div>
+									<label class="label1">Side</label>
+								</div>
+								<div class="sex-option">
+									<div class="sex">
+										<input type="radio" id="check-yes24" name="y24" checked />
+										<label for="check-yes24">Yes</label>
+									</div>
+									<div class="sex">
+										<input type="radio" id="check-no24" name="y24" />
+										<label for="check-no24">No</label>
+									</div>
+									<label class="label1">Back</label>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="column">
+						<div class="input-box">
+							<label>Inspected by</label>
+							<input type="text" asp-for="checklists.inspectorname" placeholder="MTV Inspector Name" required />
+						</div>
+						<div class="input-box">
+							<label>Date of Inspection</label>
+							<input type="date" id="dateInput" asp-for="checklists.inspectdate" placeholder="date of inspection" required readonly/>
+						</div>
+						<div class="input-box">
+							<label>Time of Inspection</label>
+							<input type="input" id="timeInput" placeholder="time of inspection" asp-for="checklists.inspecttime" required readonly/>
+						</div>
+					</div>
+					<input type="hidden" name="vehicleId" value="" /> 
+
+					<div class="modal-buttons">
+						<button type="submit" name="action" value="approve" id="approveBtn">Approve Vehicle</button>
+						<button type="submit" name="action" value="disapprove" id="disapproveBtn">Disapprove Application</button>
+					</div>
+			</form >
+
+				<form asp-action="PaymentForm" method="post" class="form">
+					<!-- ... other form inputs ... -->
+					<!-- Hidden input for vehicleId -->
+					<input type="hidden" name="vehicleId" value="" />
+
+					<!-- Check Payment Details button -->
+					<div class="modal-buttons">
+						<button type="submit">Check Payment Details</button>
+					</div>
+				</form>
+						
+					
+				
+			</div>
+		</div>
+		
+		
+		@*<div class="payment-modal-container">
+			<form action="#" class="form">
+
+				<div class="modal" id="paymentModal">
+
+					<div class="modal-content">
+						<button class="exit-button" onclick="closePaymentModal()">&times;</button>
+						
+						<header>Payment Form</header>
+						<div class="column">
+							<div class="row">
+								<div class="input-box">
+									<label><i class='bx bxs-credit-card'></i>Statement of Account</label>
+									<input type="text" placeholder="Enter SoA" readonly />
+								</div>
+								<div class="input-box">
+									<label><i class='bx bxs-calendar'></i>Date of Payment</label>
+									<input type="date" placeholder="Enter birth date" readonly />
+								</div>
+
+								<div class="column">
+									<div class="input-box">
+										<label><i class='bx bxs-envelope'></i>Email</label>
+										<input type="email" placeholder="Put an Email" class="text" readonly />
+									</div>
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="upload-box">
+									<label>Upload Image of Payment Receipt</label>
+									<div class="container">
+										<input type="file" id="file" accept="image/*" hidden>
+										<div class="img-area" data-img="">
+											<i class='bx bxs-cloud-upload icon'></i>
+											<h3 hidden>Upload Image</h3>
+											<p hidden>Image size must be less than <span>5MB</span></p>
+										</div>
+										<button class="select-image" type="button">Select Image</button>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="modal-buttons">
+							<button id="approveBtn1">Approve Payment</button>
+							<button id="disapproveBtn1">Disapprove Payment</button>
+						</div>
+					</div>
+
+				</div>
+
+				
+			</form>
+		</div>*@
+		
+		<script src="~/js/checklists.js" asp-append-version="true"></script>
+
+	</main>
+	<!-- MAIN ENDS -->
+
+</section>

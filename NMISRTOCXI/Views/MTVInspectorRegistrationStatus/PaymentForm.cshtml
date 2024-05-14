@@ -1,0 +1,61 @@
+﻿@using DomainLayer.Models.ViewModels;
+@model PaymentwPlateNoViewModel
+<link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+
+@{
+	string filename = ViewBag.FileName;
+}
+
+<section id="content">
+	<main class="registration">
+
+		<div class="container">
+			<header>Payment Form</header>
+			<form class="form" asp-action="CompleteApprovement" method="post" enctype="multipart/form-data">
+				<input type="hidden" asp-for="MTVApplication.Id" />
+				<input type="hidden" asp-for="PlateNo" />
+				<div class="column">
+					<div class="row">
+						<div class="input-box">
+							<label><i class='bx bxs-credit-card'></i>Statement of Account</label>
+							<input type="text" asp-for="SOA" placeholder="Enter SoA" readonly />
+						</div>
+						<div class="input-box">
+							<label><i class='bx bxs-calendar'></i>Date of Payment</label>
+							<input type="date" asp-for="Date" placeholder="Enter birth date" readonly />
+						</div>
+
+						<div class="column">
+							<div class="input-box">
+								<label><i class='bx bxs-envelope'></i>Email</label>
+								<input type="email" placeholder="Put an Email" asp-for="Email" class="text" readonly />
+							</div>
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="upload-box">
+							<label>Profile Picture</label>
+							<div class="container">
+								<img src="~/img/MTV/@filename" alt="karlo" class="img-area" style="height: 300px;">
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-buttons">
+					<div class="column">
+						<button type="submit" name="action" value="approve" id="approveBtn1">Approve Payment</button>
+						<button type="submit" name="action" value="disapprove" id="disapproveBtn1">Disapprove Payment</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</main>
+</section>
+
+<script src="~/js/checklists.js" asp-append-version="true"></script>
+
+
+
