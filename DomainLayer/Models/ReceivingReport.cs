@@ -8,7 +8,7 @@ namespace DomainLayer.Models
     public class ReceivingReport
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime RecTime { get; set; }
         public int BatchCode { get; set; }
         public Species Species { get; set; }
@@ -17,16 +17,21 @@ namespace DomainLayer.Models
         public double LiveWeight { get; set; }
         [ForeignKey("MeatDealers")]
         public int? MeatDealersId { get; set; }
-        public MeatDealers? MeatDealers { get; set; }
+        public virtual MeatDealers? MeatDealers { get; set; }
         public string Origin { get; set; }
         public string ShippingDoc { get; set; }
         public int HoldingPenNo { get; set; }
         public string ReceivingBy { get; set; }
         [ForeignKey("AccountDetails")]
-        public string? AccountDetailsId { get; set; }
-        public AccountDetails? AccountDetails { get; set; }
+        public string? ProcessedById { get; set; }
+        public virtual AccountDetails? ProcessedBy { get; set; }
         public InspectionStatus? InspectionStatus { get; set; }
 
-
-    }
+        public MeatInspectionReport? MeatInspectionReport { get; set; }
+        public IEnumerable<Antemortem>? Antemortems { get; set; }
+        public IEnumerable<PassedForSlaughter>? PassedForSlaughter { get; set; }
+        public IEnumerable<Postmortem>? Postmortems { get; set; }
+        public IEnumerable<TotalNoFitForHumanConsumptions>? TotalNoFitForHumanConsumptions { get; set; }
+		public SummaryAndDistributionOfMIC? SummaryAndDistributionOfMIC { get; set; }
+	}
 }
