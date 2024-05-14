@@ -4,7 +4,6 @@ namespace ServiceLayer.Services.IRepositories
 {
     public interface IReceivingReportRepository
     {
-        Task<ICollection<ReceivingReport>> GetAllRReportsAsync();
-        int GetTotalOfHeads();
+        void Update(ReceivingReport receivingReport);
     }
 }

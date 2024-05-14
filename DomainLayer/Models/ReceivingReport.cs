@@ -27,5 +27,6 @@ namespace DomainLayer.Models
         public AccountDetails? AccountDetails { get; set; }
         public InspectionStatus? InspectionStatus { get; set; }
 
+
     }
 }

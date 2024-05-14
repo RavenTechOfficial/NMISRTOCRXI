@@ -2,29 +2,21 @@
 using ServiceLayer.Services.IRepositories;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
+using InfastructureLayer.Repositories;
 
 namespace thesis.Repositories
 {
-    public class ReceivingReportRepository : IReceivingReportRepository
+    public class ReceivingReportRepository : Repository<ReceivingReport>, IReceivingReportRepository
     {
         private readonly AppDbContext _context;
 
-        public ReceivingReportRepository(AppDbContext context)
+        public ReceivingReportRepository(AppDbContext context) : base(context) 
         {
             _context = context;
         }
-        public async Task<ICollection<ReceivingReport>> GetAllRReportsAsync()
+        public void Update(ReceivingReport receivingReport)
         {
-            //return await _context.receivingReports
-            //    .Include(r  => r.receivingReportMeatEstablishments)
-            //    .Include(r => r.Receiving)
-            //    .ToListAsync();
-            throw new NotImplementedException();
-        }
-        public int GetTotalOfHeads()
-        {
-            //return _context.receivingReports.Sum(r => r.NoOfHeads);
-            throw new NotImplementedException();
+            _context.Update(receivingReport);
         }
     }
 }

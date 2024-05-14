@@ -2,6 +2,7 @@
 {
     public interface IUnitOfWork
     {
+        void Save();
         IReceivingReportRepository ReceivingReport { get; }
         IMeatInspectionReportRepository MeatInspectionReport { get; }
         IDashboardRepository Dashboard { get; }

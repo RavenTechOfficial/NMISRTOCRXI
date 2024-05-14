@@ -1,9 +1,11 @@
-﻿using ServiceLayer.Services.IRepositories;
+﻿using InfastructureLayer.Data;
+using ServiceLayer.Services.IRepositories;
 
 namespace thesis.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
+        public AppDbContext _context { get; set; }
         public IReceivingReportRepository ReceivingReport { get; }
 
         public IMeatInspectionReportRepository MeatInspectionReport { get; }
@@ -21,8 +23,7 @@ namespace thesis.Repositories
 
         public IChroplethMapRepository ChroplethMap { get; }
 
-        public UnitOfWork(
-            IReceivingReportRepository receivingReport,
+        public UnitOfWork(AppDbContext context,
             IMeatInspectionReportRepository meatInspectionReport,
             IDashboardRepository dashboard,
             IAnalyticsRepository analytics,
@@ -33,7 +34,7 @@ namespace thesis.Repositories
             IChroplethMapRepository chroplethMap
         ) 
         {
-            ReceivingReport = receivingReport;
+            ReceivingReport = new ReceivingReportRepository(context);
             MeatInspectionReport = meatInspectionReport;
             Dashboard = dashboard;
             Analytics = analytics;
@@ -43,6 +44,11 @@ namespace thesis.Repositories
             Feedback = feedback;
             ChroplethMap = chroplethMap;
             
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }
