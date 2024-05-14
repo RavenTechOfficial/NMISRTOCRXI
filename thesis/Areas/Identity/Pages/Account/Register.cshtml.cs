@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using DomainLayer.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -24,10 +25,10 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
-using thesis.Areas.Identity.Data;
+using DomainLayer.Models;
 using thesis.Data;
-using thesis.Data.Enum;
-using thesis.Models;
+using DomainLayer.Enum;
+using DomainLayer.Models;
 
 namespace thesis.Areas.Identity.Pages.Account
 {

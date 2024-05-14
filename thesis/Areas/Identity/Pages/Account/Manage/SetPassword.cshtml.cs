@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using thesis.Areas.Identity.Data;
+using DomainLayer.Models;
 
 namespace thesis.Areas.Identity.Pages.Account.Manage
 {

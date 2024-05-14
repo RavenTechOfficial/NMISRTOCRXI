@@ -263,7 +263,7 @@ namespace thesis.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("thesis.Models.ConductOfInspection", b =>
+            modelBuilder.Entity("DomainLayer.Models.ConductOfInspection", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -293,7 +293,7 @@ namespace thesis.Migrations
                     b.ToTable("ConductOfInspections");
                 });
 
-            modelBuilder.Entity("thesis.Models.DisapprovedApplication", b =>
+            modelBuilder.Entity("DomainLayer.Models.DisapprovedApplication", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -311,7 +311,7 @@ namespace thesis.Migrations
                     b.ToTable("DisapprovedApplications");
                 });
 
-            modelBuilder.Entity("thesis.Models.Driver", b =>
+            modelBuilder.Entity("DomainLayer.Models.Driver", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -361,7 +361,7 @@ namespace thesis.Migrations
                     b.ToTable("Drivers");
                 });
 
-            modelBuilder.Entity("thesis.Models.Feedback", b =>
+            modelBuilder.Entity("DomainLayer.Models.Feedback", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -389,7 +389,7 @@ namespace thesis.Migrations
                     b.ToTable("Feedbacks");
                 });
 
-            modelBuilder.Entity("thesis.Models.Helper", b =>
+            modelBuilder.Entity("DomainLayer.Models.Helper", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -423,7 +423,7 @@ namespace thesis.Migrations
                     b.ToTable("Helpers");
                 });
 
-            modelBuilder.Entity("thesis.Models.LogTransaction", b =>
+            modelBuilder.Entity("DomainLayer.Models.LogTransaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -447,7 +447,7 @@ namespace thesis.Migrations
                     b.ToTable("LogTransactions");
                 });
 
-            modelBuilder.Entity("thesis.Models.MTVApplication", b =>
+            modelBuilder.Entity("DomainLayer.Models.MTVApplication", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -513,7 +513,7 @@ namespace thesis.Migrations
                     b.ToTable("MTVApplications");
                 });
 
-            modelBuilder.Entity("thesis.Models.MTVApplicationResult", b =>
+            modelBuilder.Entity("DomainLayer.Models.MTVApplicationResult", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -537,7 +537,7 @@ namespace thesis.Migrations
                     b.ToTable("MTVApplicationResults");
                 });
 
-            modelBuilder.Entity("thesis.Models.MTVDetails", b =>
+            modelBuilder.Entity("DomainLayer.Models.MTVDetails", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -595,7 +595,7 @@ namespace thesis.Migrations
                     b.ToTable("MTVDetails");
                 });
 
-            modelBuilder.Entity("thesis.Models.MTVInspection", b =>
+            modelBuilder.Entity("DomainLayer.Models.MTVInspection", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -633,7 +633,7 @@ namespace thesis.Migrations
                     b.ToTable("MTVInspection");
                 });
 
-            modelBuilder.Entity("thesis.Models.MTVquiz", b =>
+            modelBuilder.Entity("DomainLayer.Models.MTVquiz", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -654,7 +654,7 @@ namespace thesis.Migrations
                     b.ToTable("MTVquizzes");
                 });
 
-            modelBuilder.Entity("thesis.Models.MeatDealers", b =>
+            modelBuilder.Entity("DomainLayer.Models.MeatDealers", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -691,7 +691,7 @@ namespace thesis.Migrations
                     b.ToTable("MeatDealers");
                 });
 
-            modelBuilder.Entity("thesis.Models.MeatEstablishment", b =>
+            modelBuilder.Entity("DomainLayer.Models.MeatEstablishment", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -725,7 +725,7 @@ namespace thesis.Migrations
                     b.ToTable("MeatEstablishment");
                 });
 
-            modelBuilder.Entity("thesis.Models.MeatInspectionReport", b =>
+            modelBuilder.Entity("DomainLayer.Models.MeatInspectionReport", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -758,7 +758,7 @@ namespace thesis.Migrations
                     b.ToTable("MeatInspectionReports");
                 });
 
-            modelBuilder.Entity("thesis.Models.PassedForSlaughter", b =>
+            modelBuilder.Entity("DomainLayer.Models.PassedForSlaughter", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -782,7 +782,7 @@ namespace thesis.Migrations
                     b.ToTable("PassedForSlaughters");
                 });
 
-            modelBuilder.Entity("thesis.Models.Payment", b =>
+            modelBuilder.Entity("DomainLayer.Models.Payment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -815,7 +815,7 @@ namespace thesis.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("thesis.Models.PostArticle", b =>
+            modelBuilder.Entity("DomainLayer.Models.PostArticle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -866,7 +866,7 @@ namespace thesis.Migrations
                     b.ToTable("PostArticle");
                 });
 
-            modelBuilder.Entity("thesis.Models.Postmortem", b =>
+            modelBuilder.Entity("DomainLayer.Models.Postmortem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -905,7 +905,7 @@ namespace thesis.Migrations
                     b.ToTable("Postmortems");
                 });
 
-            modelBuilder.Entity("thesis.Models.QrCode", b =>
+            modelBuilder.Entity("DomainLayer.Models.QrCode", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -926,7 +926,7 @@ namespace thesis.Migrations
                     b.ToTable("QrCodes");
                 });
 
-            modelBuilder.Entity("thesis.Models.Receiving", b =>
+            modelBuilder.Entity("DomainLayer.Models.Receiving", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -948,7 +948,7 @@ namespace thesis.Migrations
                     b.ToTable("Receivings");
                 });
 
-            modelBuilder.Entity("thesis.Models.ReceivingReport", b =>
+            modelBuilder.Entity("DomainLayer.Models.ReceivingReport", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1007,7 +1007,7 @@ namespace thesis.Migrations
                     b.ToTable("ReceivingReports");
                 });
 
-            modelBuilder.Entity("thesis.Models.Result", b =>
+            modelBuilder.Entity("DomainLayer.Models.Result", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1087,7 +1087,7 @@ namespace thesis.Migrations
                     b.ToTable("Results");
                 });
 
-            modelBuilder.Entity("thesis.Models.SummaryAndDistributionOfMIC", b =>
+            modelBuilder.Entity("DomainLayer.Models.SummaryAndDistributionOfMIC", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1119,7 +1119,7 @@ namespace thesis.Migrations
                     b.ToTable("SummaryAndDistributionOfMICs");
                 });
 
-            modelBuilder.Entity("thesis.Models.VehicleInfo", b =>
+            modelBuilder.Entity("DomainLayer.Models.VehicleInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1157,7 +1157,7 @@ namespace thesis.Migrations
                     b.ToTable("VehicleInfos");
                 });
 
-            modelBuilder.Entity("thesis.Models.checklist", b =>
+            modelBuilder.Entity("DomainLayer.Models.checklist", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1198,7 +1198,7 @@ namespace thesis.Migrations
                     b.ToTable("checklists");
                 });
 
-            modelBuilder.Entity("thesis.Models.totalNoFitForHumanConsumptions", b =>
+            modelBuilder.Entity("DomainLayer.Models.totalNoFitForHumanConsumptions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1278,16 +1278,16 @@ namespace thesis.Migrations
 
             modelBuilder.Entity("thesis.Areas.Identity.Data.AccountDetails", b =>
                 {
-                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
+                    b.HasOne("DomainLayer.Models.MeatEstablishment", "MeatEstablishment")
                         .WithMany()
                         .HasForeignKey("MeatEstablishmentId");
 
                     b.Navigation("MeatEstablishment");
                 });
 
-            modelBuilder.Entity("thesis.Models.ConductOfInspection", b =>
+            modelBuilder.Entity("DomainLayer.Models.ConductOfInspection", b =>
                 {
-                    b.HasOne("thesis.Models.MeatInspectionReport", "MeatInspectionReport")
+                    b.HasOne("DomainLayer.Models.MeatInspectionReport", "MeatInspectionReport")
                         .WithMany()
                         .HasForeignKey("MeatInspectionReportId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1296,9 +1296,9 @@ namespace thesis.Migrations
                     b.Navigation("MeatInspectionReport");
                 });
 
-            modelBuilder.Entity("thesis.Models.DisapprovedApplication", b =>
+            modelBuilder.Entity("DomainLayer.Models.DisapprovedApplication", b =>
                 {
-                    b.HasOne("thesis.Models.MTVInspection", "MTVInspection")
+                    b.HasOne("DomainLayer.Models.MTVInspection", "MTVInspection")
                         .WithMany()
                         .HasForeignKey("MTVInspectionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1307,17 +1307,17 @@ namespace thesis.Migrations
                     b.Navigation("MTVInspection");
                 });
 
-            modelBuilder.Entity("thesis.Models.MTVApplication", b =>
+            modelBuilder.Entity("DomainLayer.Models.MTVApplication", b =>
                 {
-                    b.HasOne("thesis.Models.Driver", "Driver")
+                    b.HasOne("DomainLayer.Models.Driver", "Driver")
                         .WithMany()
                         .HasForeignKey("DriverId");
 
-                    b.HasOne("thesis.Models.Helper", "Helper")
+                    b.HasOne("DomainLayer.Models.Helper", "Helper")
                         .WithMany()
                         .HasForeignKey("HelperId");
 
-                    b.HasOne("thesis.Models.VehicleInfo", "Vehicle")
+                    b.HasOne("DomainLayer.Models.VehicleInfo", "Vehicle")
                         .WithMany()
                         .HasForeignKey("VehicleId");
 
@@ -1328,9 +1328,9 @@ namespace thesis.Migrations
                     b.Navigation("Vehicle");
                 });
 
-            modelBuilder.Entity("thesis.Models.MTVApplicationResult", b =>
+            modelBuilder.Entity("DomainLayer.Models.MTVApplicationResult", b =>
                 {
-                    b.HasOne("thesis.Models.MTVInspection", "MTVInspection")
+                    b.HasOne("DomainLayer.Models.MTVInspection", "MTVInspection")
                         .WithMany()
                         .HasForeignKey("MTVInspectionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1339,9 +1339,9 @@ namespace thesis.Migrations
                     b.Navigation("MTVInspection");
                 });
 
-            modelBuilder.Entity("thesis.Models.MTVInspection", b =>
+            modelBuilder.Entity("DomainLayer.Models.MTVInspection", b =>
                 {
-                    b.HasOne("thesis.Models.MTVApplication", "MTVApplication")
+                    b.HasOne("DomainLayer.Models.MTVApplication", "MTVApplication")
                         .WithMany()
                         .HasForeignKey("MTVApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1350,9 +1350,9 @@ namespace thesis.Migrations
                     b.Navigation("MTVApplication");
                 });
 
-            modelBuilder.Entity("thesis.Models.MTVquiz", b =>
+            modelBuilder.Entity("DomainLayer.Models.MTVquiz", b =>
                 {
-                    b.HasOne("thesis.Models.MTVApplication", "MTVApplication")
+                    b.HasOne("DomainLayer.Models.MTVApplication", "MTVApplication")
                         .WithMany()
                         .HasForeignKey("MTVApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1361,9 +1361,9 @@ namespace thesis.Migrations
                     b.Navigation("MTVApplication");
                 });
 
-            modelBuilder.Entity("thesis.Models.MeatDealers", b =>
+            modelBuilder.Entity("DomainLayer.Models.MeatDealers", b =>
                 {
-                    b.HasOne("thesis.Models.MeatEstablishment", "MeatEstablishment")
+                    b.HasOne("DomainLayer.Models.MeatEstablishment", "MeatEstablishment")
                         .WithMany()
                         .HasForeignKey("MeatEstablishmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1372,13 +1372,13 @@ namespace thesis.Migrations
                     b.Navigation("MeatEstablishment");
                 });
 
-            modelBuilder.Entity("thesis.Models.MeatInspectionReport", b =>
+            modelBuilder.Entity("DomainLayer.Models.MeatInspectionReport", b =>
                 {
                     b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
                         .WithMany()
                         .HasForeignKey("AccountDetailsId");
 
-                    b.HasOne("thesis.Models.ReceivingReport", "ReceivingReport")
+                    b.HasOne("DomainLayer.Models.ReceivingReport", "ReceivingReport")
                         .WithMany()
                         .HasForeignKey("ReceivingReportId");
 
@@ -1387,9 +1387,9 @@ namespace thesis.Migrations
                     b.Navigation("ReceivingReport");
                 });
 
-            modelBuilder.Entity("thesis.Models.PassedForSlaughter", b =>
+            modelBuilder.Entity("DomainLayer.Models.PassedForSlaughter", b =>
                 {
-                    b.HasOne("thesis.Models.ConductOfInspection", "ConductOfInspection")
+                    b.HasOne("DomainLayer.Models.ConductOfInspection", "ConductOfInspection")
                         .WithMany()
                         .HasForeignKey("ConductOfInspectionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1398,9 +1398,9 @@ namespace thesis.Migrations
                     b.Navigation("ConductOfInspection");
                 });
 
-            modelBuilder.Entity("thesis.Models.Payment", b =>
+            modelBuilder.Entity("DomainLayer.Models.Payment", b =>
                 {
-                    b.HasOne("thesis.Models.MTVApplication", "MTVApplication")
+                    b.HasOne("DomainLayer.Models.MTVApplication", "MTVApplication")
                         .WithMany()
                         .HasForeignKey("MTVApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1409,9 +1409,9 @@ namespace thesis.Migrations
                     b.Navigation("MTVApplication");
                 });
 
-            modelBuilder.Entity("thesis.Models.Postmortem", b =>
+            modelBuilder.Entity("DomainLayer.Models.Postmortem", b =>
                 {
-                    b.HasOne("thesis.Models.PassedForSlaughter", "PassedForSlaughter")
+                    b.HasOne("DomainLayer.Models.PassedForSlaughter", "PassedForSlaughter")
                         .WithMany()
                         .HasForeignKey("PassedForSlaughterId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1420,7 +1420,7 @@ namespace thesis.Migrations
                     b.Navigation("PassedForSlaughter");
                 });
 
-            modelBuilder.Entity("thesis.Models.Receiving", b =>
+            modelBuilder.Entity("DomainLayer.Models.Receiving", b =>
                 {
                     b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
                         .WithMany()
@@ -1431,13 +1431,13 @@ namespace thesis.Migrations
                     b.Navigation("AccountDetails");
                 });
 
-            modelBuilder.Entity("thesis.Models.ReceivingReport", b =>
+            modelBuilder.Entity("DomainLayer.Models.ReceivingReport", b =>
                 {
                     b.HasOne("thesis.Areas.Identity.Data.AccountDetails", "AccountDetails")
                         .WithMany()
                         .HasForeignKey("AccountDetailsId");
 
-                    b.HasOne("thesis.Models.MeatDealers", "MeatDealers")
+                    b.HasOne("DomainLayer.Models.MeatDealers", "MeatDealers")
                         .WithMany()
                         .HasForeignKey("MeatDealersId");
 
@@ -1446,9 +1446,9 @@ namespace thesis.Migrations
                     b.Navigation("MeatDealers");
                 });
 
-            modelBuilder.Entity("thesis.Models.SummaryAndDistributionOfMIC", b =>
+            modelBuilder.Entity("DomainLayer.Models.SummaryAndDistributionOfMIC", b =>
                 {
-                    b.HasOne("thesis.Models.totalNoFitForHumanConsumptions", "TotalNoFitForHumanConsumption")
+                    b.HasOne("DomainLayer.Models.totalNoFitForHumanConsumptions", "TotalNoFitForHumanConsumption")
                         .WithMany()
                         .HasForeignKey("TotalNoFitForHumanConsumptionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1457,9 +1457,9 @@ namespace thesis.Migrations
                     b.Navigation("TotalNoFitForHumanConsumption");
                 });
 
-            modelBuilder.Entity("thesis.Models.totalNoFitForHumanConsumptions", b =>
+            modelBuilder.Entity("DomainLayer.Models.totalNoFitForHumanConsumptions", b =>
                 {
-                    b.HasOne("thesis.Models.Postmortem", "Postmortem")
+                    b.HasOne("DomainLayer.Models.Postmortem", "Postmortem")
                         .WithMany()
                         .HasForeignKey("PostmortemId")
                         .OnDelete(DeleteBehavior.Cascade)

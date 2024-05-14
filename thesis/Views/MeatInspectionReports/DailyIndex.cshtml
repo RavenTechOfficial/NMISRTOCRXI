@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using thesis.Areas.Identity.Data
-@using thesis.Core.ViewModel
+@using DomainLayer.Models.ViewModels
 @using System.IO;
 @model MeatInspectionReportViewModel
 
@@ -121,7 +121,7 @@
 
             <tbody>
 
-                @foreach (var inspection in ViewData["meatInspectionReports"] as IEnumerable<thesis.Models.MeatInspectionReport>)
+                @foreach (var inspection in ViewData["meatInspectionReports"] as IEnumerable<DomainLayer.Models.MeatInspectionReport>)
                 {
                     <tr>
                         <td>@inspection.RepDate</td>
@@ -250,7 +250,7 @@
                     </thead>
                     @{
                         // Assuming accountId is the specific AccountDetails id you want to filter by
-                        var model1 = ViewData["ReceivingReports"] as IEnumerable<thesis.Models.ReceivingReport>;
+                        var model1 = ViewData["ReceivingReports"] as IEnumerable<DomainLayer.Models.ReceivingReport>;
                         string accountId = UserManager.GetUserId(User);
                         var filteredModel = model1;
 
@@ -305,7 +305,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var inspection in ViewData["ConductOfInspections"] as IEnumerable<thesis.Models.ConductOfInspection>)
+                        @foreach (var inspection in ViewData["ConductOfInspections"] as IEnumerable<DomainLayer.Models.ConductOfInspection>)
                         {
                             <tr>
                                 <td>@inspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
@@ -337,7 +337,7 @@
                     </thead>
                     <tbody>
 
-                        @foreach (var passed in ViewData["PassedForSlaughters"] as IEnumerable<thesis.Models.PassedForSlaughter>)
+                        @foreach (var passed in ViewData["PassedForSlaughters"] as IEnumerable<DomainLayer.Models.PassedForSlaughter>)
                         {
                             <tr>
                                 <td>@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
@@ -376,7 +376,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var post in ViewData["postmortem"] as IEnumerable<thesis.Models.Postmortem>)
+                        @foreach (var post in ViewData["postmortem"] as IEnumerable<DomainLayer.Models.Postmortem>)
                         {
                             <tr>
                                 <td>@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
@@ -422,7 +422,7 @@
 
                     </thead>
                     <tbody>
-                        @foreach (var total in ViewData["totalNoFitForHumanConsumption"] as IEnumerable<thesis.Models.totalNoFitForHumanConsumptions>)
+                        @foreach (var total in ViewData["totalNoFitForHumanConsumption"] as IEnumerable<DomainLayer.Models.totalNoFitForHumanConsumptions>)
                         {
                             <tr>
 
@@ -466,7 +466,7 @@
 
                     </thead>
                     <tbody>
-                        @foreach (var summary in ViewData["SummaryAndDistributionOfMICs"] as IEnumerable<thesis.Models.SummaryAndDistributionOfMIC>)
+                        @foreach (var summary in ViewData["SummaryAndDistributionOfMICs"] as IEnumerable<DomainLayer.Models.SummaryAndDistributionOfMIC>)
                         {
                             <tr>
                                 <td>@summary.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>

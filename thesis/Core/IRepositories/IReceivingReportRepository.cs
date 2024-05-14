@@ -1,4 +1,4 @@
-﻿using thesis.Models;
+﻿using DomainLayer.Models;
 
 namespace thesis.Core.IRepositories
 {

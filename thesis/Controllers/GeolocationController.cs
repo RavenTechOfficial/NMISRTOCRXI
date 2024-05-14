@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using thesis.Core.IRepositories;
-using thesis.Core.ViewModel;
-using thesis.Data.Enum;
+using DomainLayer.Models.ViewModels;
+using DomainLayer.Enum;
 
 namespace thesis.Controllers
 {

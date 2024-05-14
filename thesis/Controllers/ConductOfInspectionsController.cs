@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using thesis.Core.ViewModel;
+using DomainLayer.Models.ViewModels;
 using thesis.Data;
-using thesis.Data.Enum;
-using thesis.Models;
+using DomainLayer.Enum;
+using DomainLayer.Models;
 
 namespace thesis.Controllers
 {

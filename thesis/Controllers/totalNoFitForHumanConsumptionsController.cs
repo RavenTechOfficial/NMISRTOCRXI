@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using thesis.Data;
-using thesis.Models;
+using DomainLayer.Models;
 
 namespace thesis.Controllers
 {

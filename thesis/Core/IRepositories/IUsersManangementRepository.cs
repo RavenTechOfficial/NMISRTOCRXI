@@ -1,9 +1,9 @@
-﻿using thesis.Areas.Identity.Data;
-using thesis.Core.ViewModel;
+﻿using DomainLayer.Models;
+using DomainLayer.Models.ViewModels;
 
 namespace thesis.Core.IRepositories
 {
-	public interface IUsersManangementRepository
+    public interface IUsersManangementRepository
 	{
 		Task<IEnumerable<AccountDetails>> GetAllUsersAsync();
 		Task<AccountDetails> GetAccountDetails(string accountId);

@@ -5,11 +5,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DomainLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using thesis.Areas.Identity.Data;
 
 namespace thesis.Areas.Identity.Pages.Account.Manage
 {

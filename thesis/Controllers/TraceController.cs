@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using thesis.Core.IRepositories;
-using thesis.Core.ViewModel;
+using DomainLayer.Models.ViewModels;
 using thesis.Data;
-using thesis.Models;
+using DomainLayer.Models;
 
 namespace thesis.Controllers
 {

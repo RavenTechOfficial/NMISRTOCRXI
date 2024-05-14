@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using thesis.Areas.Identity.Data;
+using DomainLayer.Models;
 using thesis.Core.IRepositories;
-using thesis.Core.ViewModel;
+using DomainLayer.Models.ViewModels;
 using thesis.Data;
 
 namespace thesis.Repositories

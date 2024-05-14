@@ -1,6 +1,6 @@
-﻿using thesis.Core.ViewModel;
-using thesis.Data.Enum;
-using thesis.Models;
+﻿using DomainLayer.Models.ViewModels;
+using DomainLayer.Enum;
+using DomainLayer.Models;
 using thesis.Repositories;
 
 namespace thesis.Core.IRepositories

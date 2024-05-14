@@ -1,5 +1,5 @@
-﻿//using thesis.Data.Enum;
-//using thesis.Models;
+﻿//using DomainLayer.Enum;
+//using DomainLayer.Models;
 
 //namespace thesis.Data
 //{

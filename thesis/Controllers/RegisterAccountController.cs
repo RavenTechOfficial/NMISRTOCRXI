@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DomainLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using thesis.Areas.Identity.Data;
-using thesis.Core.ViewModel;
 using thesis.Data;
-using thesis.Models;
 
 namespace thesis.Controllers
 {

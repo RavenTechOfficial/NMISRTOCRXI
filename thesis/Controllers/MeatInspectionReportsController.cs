@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using thesis.Core.ViewModel;
+using DomainLayer.Models.ViewModels;
 using thesis.Data;
-using thesis.Models;
+using DomainLayer.Models;
 //using OfficeOpenXml;
 //using OfficeOpenXml.Style;
-using System.IO;
 using System.Data;
 using Microsoft.AspNetCore.Identity;
-using thesis.Areas.Identity.Data;
+using DomainLayer.Models;
 
 namespace thesis.Controllers
 {

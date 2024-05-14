@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DomainLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -7,16 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
-using thesis.Areas.Identity.Data;
 using thesis.Core.IRepositories;
-using thesis.Core.ViewModel;
+using DomainLayer.Models.ViewModels;
 using thesis.Data;
-using thesis.Data.Enum;
-using thesis.Models;
+using DomainLayer.Enum;
+using DomainLayer.Models;
 
 namespace thesis.Controllers
 {
-	public class UsersManagementController : Controller
+    public class UsersManagementController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly thesisContext _context;
@@ -27,7 +27,7 @@ namespace thesis.Controllers
 			IUnitOfWork unitOfWork,
 			thesisContext context,
 			UserManager<AccountDetails> userManager,
-			IEmailSender emailSender)
+            IEmailSender emailSender)
 		{
 			_unitOfWork = unitOfWork;
 			_context = context;

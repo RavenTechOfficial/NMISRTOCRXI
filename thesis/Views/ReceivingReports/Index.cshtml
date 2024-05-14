@@ -1,7 +1,7 @@
-﻿@using thesis.Data.Enum;
-@model IEnumerable<thesis.Models.ReceivingReport>
+﻿@using DomainLayer.Enum;
+@model IEnumerable<DomainLayer.Models.ReceivingReport>
 @using Microsoft.AspNetCore.Identity;
-@using thesis.Areas.Identity.Data;
+@using DomainLayer.Models;
 
 @inject SignInManager<AccountDetails> SignInManager
 @inject UserManager<AccountDetails> UserManager

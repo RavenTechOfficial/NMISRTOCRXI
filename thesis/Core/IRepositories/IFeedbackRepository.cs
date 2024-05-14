@@ -1,5 +1,5 @@
-﻿using thesis.Core.ViewModel;
-using thesis.Models;
+﻿using DomainLayer.Models.ViewModels;
+using DomainLayer.Models;
 
 namespace thesis.Core.IRepositories
 {

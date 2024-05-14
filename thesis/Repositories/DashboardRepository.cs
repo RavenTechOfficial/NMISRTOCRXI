@@ -1,10 +1,10 @@
 ﻿using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using thesis.Core.IRepositories;
-using thesis.Core.ViewModel;
+using DomainLayer.Models.ViewModels;
 using thesis.Data;
-using thesis.Data.Enum;
-using thesis.Models;
+using DomainLayer.Enum;
+using DomainLayer.Models;
 
 namespace thesis.Repositories
 {

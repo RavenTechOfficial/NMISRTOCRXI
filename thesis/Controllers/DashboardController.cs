@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using thesis.Core.IRepositories;
-using thesis.Core.ViewModel;
+using DomainLayer.Models.ViewModels;
 using thesis.Data;
-using thesis.Data.Enum;
+using DomainLayer.Enum;
 
 namespace thesis.Controllers
 {

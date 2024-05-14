@@ -1,4 +1,4 @@
-﻿@using thesis.Core.ViewModel;
+﻿@using DomainLayer.Models.ViewModels;
 @model MtvDashboardViewModel
 
 <link rel="stylesheet" href="~/css/dashy.css" asp-append-version="true" />
@@ -34,7 +34,7 @@
 
 							@foreach (var item in Model.AccountDetails)
 							{
-								if (item.Roles == thesis.Data.Enum.Roles.MTVADMIN || item.Roles == thesis.Data.Enum.Roles.MTVINSPECTOR || item.Roles == thesis.Data.Enum.Roles.MTVUSERS)
+								if (item.Roles == DomainLayer.Enum.Roles.MTVADMIN || item.Roles == DomainLayer.Enum.Roles.MTVINSPECTOR || item.Roles == DomainLayer.Enum.Roles.MTVUSERS)
 								{
 									<tr>
 										<td>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using thesis.Core.IRepositories;
 using thesis.Data;
-using thesis.Models;
+using DomainLayer.Models;
 
 namespace thesis.Repositories
 {

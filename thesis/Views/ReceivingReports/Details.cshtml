@@ -1,4 +1,4 @@
-﻿@model thesis.Models.ReceivingReport
+﻿@model DomainLayer.Models.ReceivingReport
 
 @{
     ViewData["Title"] = "Details";
@@ -113,7 +113,7 @@
                             @Html.DisplayFor(model => model.AccountDetails.lastName)
                         </dd>
                     </dl>
-                    @if (Model.InspectionStatus == thesis.Data.Enum.InspectionStatus.Pending)
+                    @if (Model.InspectionStatus == DomainLayer.Enum.InspectionStatus.Pending)
                     {
                         <div>
                             <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>

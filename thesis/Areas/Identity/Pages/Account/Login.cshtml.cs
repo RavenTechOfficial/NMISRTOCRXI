@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using thesis.Areas.Identity.Data;
+using DomainLayer.Models;
 using System.Security.Claims;
 
 namespace thesis.Areas.Identity.Pages.Account

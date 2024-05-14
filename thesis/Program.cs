@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using thesis.Areas.Identity.Data;
+using DomainLayer.Models;
 using thesis.Core.IRepositories;
 using thesis.Data;
 using thesis.Repositories;

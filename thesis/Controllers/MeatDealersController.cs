@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using DomainLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using thesis.Areas.Identity.Data;
-using thesis.Core.ViewModel;
 using thesis.Data;
-using thesis.Models;
+using DomainLayer.Models;
 
 
 namespace thesis.Controllers
 {
-	//[Authorize(Policy = "RequireInspectorAdmin")]
-	public class MeatDealersController : Controller
+    //[Authorize(Policy = "RequireInspectorAdmin")]
+    public class MeatDealersController : Controller
 	{
 		private readonly thesisContext _context;
 		private readonly UserManager<AccountDetails> _userManager; // Add the type argument 'AccountDetails'

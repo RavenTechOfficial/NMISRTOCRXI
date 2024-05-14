@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using thesis.Areas.Identity.Data;
-using thesis.Models;
+using DomainLayer.Models;
+using DomainLayer.Models;
 
 namespace thesis.Data;
 
@@ -42,5 +42,5 @@ public class thesisContext : IdentityDbContext<AccountDetails>
     {
         base.OnModelCreating(modelBuilder);
     }
-	public DbSet<thesis.Models.PostArticle>? PostArticle { get; set; }
+	public DbSet<DomainLayer.Models.PostArticle>? PostArticle { get; set; }
 }

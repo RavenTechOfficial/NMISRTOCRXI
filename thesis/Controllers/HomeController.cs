@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using thesis.Data;
-using thesis.Models;
+using DomainLayer.Models;
 
 namespace thesis.Controllers
 {

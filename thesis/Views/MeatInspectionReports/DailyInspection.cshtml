@@ -1,11 +1,11 @@
-﻿@using thesis.Core.ViewModel
+﻿@using DomainLayer.Models.ViewModels
 @model List<MeatInspectionReportViewModel>
 
 @inject thesis.Data.thesisContext dbContext
 
 
 @using Microsoft.AspNetCore.Identity;
-@using thesis.Areas.Identity.Data;
+@using DomainLayer.Models;
 
 @inject SignInManager<AccountDetails> SignInManager
 @inject UserManager<AccountDetails> UserManager

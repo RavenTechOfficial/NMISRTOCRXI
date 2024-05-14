@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DomainLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
-using thesis.Areas.Identity.Data;
-using thesis.Core.ViewModel;
+using DomainLayer.Models.ViewModels;
 using thesis.Data;
-using thesis.Data.Enum;
-using thesis.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using DomainLayer.Models;
 
 
 
