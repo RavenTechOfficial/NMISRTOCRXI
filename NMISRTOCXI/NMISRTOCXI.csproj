@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Core\Dto\**" />
+    <Compile Remove="Core\**" />
     <Compile Remove="Views\Amirs\**" />
-    <Content Remove="Core\Dto\**" />
+    <Content Remove="Core\**" />
     <Content Remove="Views\Amirs\**" />
-    <EmbeddedResource Remove="Core\Dto\**" />
+    <EmbeddedResource Remove="Core\**" />
     <EmbeddedResource Remove="Views\Amirs\**" />
-    <None Remove="Core\Dto\**" />
+    <None Remove="Core\**" />
     <None Remove="Views\Amirs\**" />
   </ItemGroup>
 
@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\" />
     <Folder Include="wwwroot\img\MTV\" />
     <Folder Include="wwwroot\img\condemnedMeat\" />
     <Folder Include="wwwroot\img\PostmortemImages\" />
