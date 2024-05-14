@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Enum;
 using DomainLayer.Models;
 
@@ -8,9 +8,9 @@ namespace thesis.Controllers
 {
 	public class MTVquizController : Controller
 	{
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 
-		public MTVquizController(thesisContext context)
+		public MTVquizController(AppDbContext context)
         {
 			_context = context;
 		}

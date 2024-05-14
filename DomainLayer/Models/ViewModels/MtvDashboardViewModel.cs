@@ -1,10 +1,6 @@
-﻿using DomainLayer.Models;
-using DomainLayer.Models;
-using DomainLayer.Models;
-
-namespace DomainLayer.Models.ViewModels
+﻿namespace DomainLayer.Models.ViewModels
 {
-	public class MtvDashboardViewModel
+    public class MtvDashboardViewModel
 	{
 		public IEnumerable<AccountDetails> AccountDetails { get; set; }
 		public IEnumerable<checklist> Checklists { get; set; }

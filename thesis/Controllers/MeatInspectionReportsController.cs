@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 //using OfficeOpenXml;
 //using OfficeOpenXml.Style;
@@ -16,10 +16,10 @@ namespace thesis.Controllers
 
     public class MeatInspectionReportsController : Controller
     {
-        private readonly thesisContext _context;
+        private readonly AppDbContext _context;
         private readonly UserManager<AccountDetails> _userManager;
 
-        public MeatInspectionReportsController(thesisContext context, UserManager<AccountDetails> userManager)
+        public MeatInspectionReportsController(AppDbContext context, UserManager<AccountDetails> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -28,8 +28,8 @@ namespace thesis.Controllers
         // GET: MeatInspectionReports
         //public async Task<IActionResult> Index()
         //{
-        //    var thesisContext = _context.MeatInspectionReports.Include(m => m.ReceivingReport);
-        //    return View(await thesisContext.ToListAsync());
+        //    var AppDbContext = _context.MeatInspectionReports.Include(m => m.ReceivingReport);
+        //    return View(await AppDbContext.ToListAsync());
         //}
         public async Task<IActionResult> Index(int? meatEstablishmentId)
         {
@@ -187,7 +187,7 @@ namespace thesis.Controllers
             ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
 
 
-            var thesisContext = _context.ReceivingReports
+            var AppDbContext = _context.ReceivingReports
                .Include(r => r.AccountDetails)
                .Include(r => r.MeatDealers);
 
@@ -368,7 +368,7 @@ namespace thesis.Controllers
         {
             if (_context.MeatInspectionReports == null)
             {
-                return Problem("Entity set 'thesisContext.MeatInspectionReports'  is null.");
+                return Problem("Entity set 'AppDbContext.MeatInspectionReports'  is null.");
             }
             var meatInspectionReport = await _context.MeatInspectionReports.FindAsync(id);
             if (meatInspectionReport != null)

@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Enum;
 using DomainLayer.Models;
 
@@ -11,9 +10,9 @@ namespace thesis.Controllers
 {
 	public class ConductOfInspectionsController : Controller
 	{
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 
-		public ConductOfInspectionsController(thesisContext context)
+		public ConductOfInspectionsController(AppDbContext context)
 		{
 			_context = context;
 		}
@@ -194,7 +193,7 @@ namespace thesis.Controllers
 		{
 			if (_context.ConductOfInspections == null)
 			{
-				return Problem("Entity set 'thesisContext.ConductOfInspections'  is null.");
+				return Problem("Entity set 'AppDbContext.ConductOfInspections'  is null.");
 			}
 			var conductOfInspection = await _context.ConductOfInspections.FindAsync(id);
 			if (conductOfInspection != null)

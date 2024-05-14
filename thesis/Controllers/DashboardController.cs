@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using thesis.Core.IRepositories;
+using ServiceLayer.Services.IRepositories;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Enum;
 
 namespace thesis.Controllers
@@ -10,9 +10,9 @@ namespace thesis.Controllers
     public class DashboardController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 
-		public DashboardController(IUnitOfWork unitOfWork, thesisContext context)
+		public DashboardController(IUnitOfWork unitOfWork, AppDbContext context)
         {
             _unitOfWork = unitOfWork;
 			_context = context;

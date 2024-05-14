@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 
 namespace thesis.Controllers
 {
 	public class MTVInspectorDashboard : Controller
 	{
-		private readonly thesisContext _context;
-		public MTVInspectorDashboard(thesisContext context)
+		private readonly AppDbContext _context;
+		public MTVInspectorDashboard(AppDbContext context)
         {
 			_context = context;
 		}

@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Core\Dto\**" />
+    <Compile Remove="Views\Amirs\**" />
+    <Content Remove="Core\Dto\**" />
+    <Content Remove="Views\Amirs\**" />
+    <EmbeddedResource Remove="Core\Dto\**" />
+    <EmbeddedResource Remove="Views\Amirs\**" />
+    <None Remove="Core\Dto\**" />
+    <None Remove="Views\Amirs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\checklists.js" />
+    <Content Remove="wwwroot\js\question.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\view.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\checklists.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\question.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
+    <Folder Include="wwwroot\img\MTV\" />
+    <Folder Include="wwwroot\img\condemnedMeat\" />
+    <Folder Include="wwwroot\img\PostmortemImages\" />
+    <Folder Include="wwwroot\img\uploaded\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\checklists.js" />
+    <None Include="wwwroot\js\question.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Core" Version="1.39.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DomainLayer\DomainLayer.csproj" />
+    <ProjectReference Include="..\InfastructureLayer\InfastructureLayer.csproj" />
+  </ItemGroup>
+
+</Project>

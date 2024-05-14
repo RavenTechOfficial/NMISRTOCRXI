@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 
 namespace thesis.Controllers
@@ -14,9 +14,9 @@ namespace thesis.Controllers
 	[Authorize(Policy = "RequireInspectorAdmin")]
 	public class ReceivingsController : Controller
     {
-        private readonly thesisContext _context;
+        private readonly AppDbContext _context;
 
-        public ReceivingsController(thesisContext context)
+        public ReceivingsController(AppDbContext context)
         {
             _context = context;
         }
@@ -24,8 +24,8 @@ namespace thesis.Controllers
         // GET: Receivings
         public async Task<IActionResult> Index()
         {
-            var thesisContext = _context.Receivings.Include(r => r.AccountDetails);
-            return View(await thesisContext.ToListAsync());
+            var AppDbContext = _context.Receivings.Include(r => r.AccountDetails);
+            return View(await AppDbContext.ToListAsync());
         }
 
         // GET: Receivings/Details/5
@@ -150,7 +150,7 @@ namespace thesis.Controllers
         {
             if (_context.Receivings == null)
             {
-                return Problem("Entity set 'thesisContext.Receivings'  is null.");
+                return Problem("Entity set 'AppDbContext.Receivings'  is null.");
             }
             var receiving = await _context.Receivings.FindAsync(id);
             if (receiving != null)

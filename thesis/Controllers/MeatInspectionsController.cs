@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
+using DomainLayer.Enum;
 
 
 
@@ -13,10 +14,10 @@ namespace thesis.Controllers
 {
     public class MeatInspectionsController : Controller
     {
-        private readonly thesisContext _context;
+        private readonly AppDbContext _context;
         private readonly UserManager<AccountDetails> _userManager;
 
-        public MeatInspectionsController(thesisContext context, UserManager<AccountDetails> userManager)
+        public MeatInspectionsController(AppDbContext context, UserManager<AccountDetails> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -420,8 +421,8 @@ namespace thesis.Controllers
                 MeatInspectionReportId = meatInsId,
                 NoOfHeads = conductHead,
                 Weight = conductWeight,
-                Issue = (Data.Enum.Issue)issue,
-                Cause = (Data.Enum.Cause)cause,
+                Issue = (Issue)issue,
+                Cause = (Cause)cause,
             };
 
             _context.Add(result);
@@ -467,18 +468,18 @@ namespace thesis.Controllers
             var existingAntemortem = _context.ConductOfInspections.Find(anteRowId);
 
 
-            existingAntemortem.Issue = (Data.Enum.Issue)issue;
+            existingAntemortem.Issue = (Issue)issue;
             existingAntemortem.NoOfHeads = conductHead;
             existingAntemortem.Weight = conductWeight;
-            existingAntemortem.Cause = (Data.Enum.Cause)cause;
+            existingAntemortem.Cause = (Cause)cause;
 
 
 
             // Save the changes to the database
             _context.SaveChanges();
 
-            var enumIssue = (Data.Enum.Issue)issue;
-            var enumCause = (Data.Enum.Cause)cause;
+            var enumIssue = (Issue)issue;
+            var enumCause = (Cause)cause;
 
             var totalNoOfHeads = _context.ConductOfInspections
                 .Where(c => c.MeatInspectionReportId == meatInsId)
@@ -615,8 +616,8 @@ namespace thesis.Controllers
             var result = new Postmortem
             {
                 PassedForSlaughterId = passedId,
-                AnimalPart = (Data.Enum.AnimalPart)postPart,
-                Cause = (Data.Enum.Cause)postCause,
+                AnimalPart = (AnimalPart)postPart,
+                Cause = (Cause)postCause,
                 Weight = postWeight,
                 NoOfHeads = postHead,
                 //Image1 = null,
@@ -803,10 +804,10 @@ namespace thesis.Controllers
             var existingAntemortem = _context.Postmortems.Find(postRowId);
 
 
-            existingAntemortem.AnimalPart = (Data.Enum.AnimalPart)postPart;
+            existingAntemortem.AnimalPart = (AnimalPart)postPart;
             existingAntemortem.NoOfHeads = postHead;
             existingAntemortem.Weight = postWeight;
-            existingAntemortem.Cause = (Data.Enum.Cause)postCause;
+            existingAntemortem.Cause = (Cause)postCause;
             existingAntemortem.Image1 = uploadresponse.image1;
             existingAntemortem.Image2 = uploadresponse.image2;
             existingAntemortem.Image3 = uploadresponse.image3;
@@ -814,8 +815,8 @@ namespace thesis.Controllers
             // Save the changes to the database
             _context.SaveChanges();
 
-            var enumPart = (Data.Enum.AnimalPart)postPart;
-            var enumCause = (Data.Enum.Cause)postCause;
+            var enumPart = (AnimalPart)postPart;
+            var enumCause = (Cause)postCause;
 
             var totalNoOfHeads = _context.Postmortems
                 .Where(c => c.PassedForSlaughterId == passedId)
@@ -884,7 +885,7 @@ namespace thesis.Controllers
                 TotalNoFitForHumanConsumptionId = totalId,
                 DestinationName = destinationName,
                 DestinationAddress = destinationAddress,
-                //CertificateStatus = (Data.Enum.CertificateStatus)certStatus,
+                //CertificateStatus = (CertificateStatus)certStatus,
                 MICIssued = micIssued,
                 MICCancelled = micCancelled,
             };
@@ -919,7 +920,7 @@ namespace thesis.Controllers
                 TotalNoFitForHumanConsumptionId = PassedId,
                 DestinationName = NameVal,
                 DestinationAddress = AddVal,
-                //CertificateStatus = (Data.Enum.CertificateStatus)CertStat,
+                //CertificateStatus = (CertificateStatus)CertStat,
                 MICIssued = micIssued,
                 MICCancelled = micCancelled,
             };
@@ -989,7 +990,7 @@ namespace thesis.Controllers
             if (receivingReportToUpdate != null)
             {
                 // Update the specific column value
-                receivingReportToUpdate.InspectionStatus = Data.Enum.InspectionStatus.Done;
+                receivingReportToUpdate.InspectionStatus = InspectionStatus.Done;
 
                 // Save the changes to the database
                 _context.SaveChanges();

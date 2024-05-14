@@ -9,17 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 
 namespace thesis.Controllers
 {
 	public class PostArticlesController : Controller
 	{
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 		private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public PostArticlesController(thesisContext context, IWebHostEnvironment webHostEnvironment)
+		public PostArticlesController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
 		{
 			_context = context;
 			_webHostEnvironment = webHostEnvironment;
@@ -31,7 +31,7 @@ namespace thesis.Controllers
 		{
 			return _context.PostArticles != null ?
 						View(await _context.PostArticles.ToListAsync()) :
-						Problem("Entity set 'thesisContext.PostArticles'  is null.");
+						Problem("Entity set 'AppDbContext.PostArticles'  is null.");
 		}
 
 		// GET: PostArticles/Details/5
@@ -238,7 +238,7 @@ namespace thesis.Controllers
 		{
 			if (_context.PostArticles == null)
 			{
-				return Problem("Entity set 'thesisContext.PostArticles'  is null.");
+				return Problem("Entity set 'AppDbContext.PostArticles'  is null.");
 			}
 			var postArticle = await _context.PostArticles.FindAsync(id);
 

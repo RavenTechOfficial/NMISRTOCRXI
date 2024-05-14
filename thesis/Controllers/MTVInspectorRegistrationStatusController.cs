@@ -2,16 +2,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 
 namespace thesis.Controllers
 {
 	public class MTVInspectorRegistrationStatusController : Controller
 	{
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 
-        public MTVInspectorRegistrationStatusController(thesisContext context)
+        public MTVInspectorRegistrationStatusController(AppDbContext context)
         {
 			_context = context;
 		}

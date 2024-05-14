@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models;
-using thesis.Core.IRepositories;
-using thesis.Data;
+using ServiceLayer.Services.IRepositories;
+using InfastructureLayer.Data;
 using thesis.Repositories;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,13 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("thesisContextConnection") ?? throw new InvalidOperationException("Connection string 'thesisContextConnection' not found.");
 
 // Configure Entity Framework Core with SQL Server
-builder.Services.AddDbContext<thesisContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseSqlServer(connectionString));
 
 // Configure Identity with custom roles
-builder.Services.AddDefaultIdentity<AccountDetails>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentityCore<AccountDetails>(options => options.SignIn.RequireConfirmedAccount = true)
 	.AddRoles<IdentityRole>()
-	.AddEntityFrameworkStores<thesisContext>();
+	.AddEntityFrameworkStores<AppDbContext>();
 
 // Add services to the container	
 builder.Services.AddControllersWithViews();
@@ -29,7 +27,7 @@ builder.Services.AddMemoryCache();
 builder.Services.ConfigureApplicationCookie(options =>
 {
 	options.Cookie.HttpOnly = true;
-	options.ExpireTimeSpan = TimeSpan.FromHours(4); // Set the expiration time for the cookie
+	options.ExpireTimeSpan = TimeSpan.FromDays(1); // Set the expiration time for the cookie
 	options.SlidingExpiration = true; // Renew the cookie as long as the user is active
 });
 
@@ -40,6 +38,8 @@ builder.Services.AddSession(options =>
 	options.Cookie.HttpOnly = true;
 	options.Cookie.IsEssential = true;
 });
+
+builder.Services.AddRazorPages();
 
 // Add custom authorization policies
 AddAuthorizationPolicies();

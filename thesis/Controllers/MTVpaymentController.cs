@@ -2,17 +2,17 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 
 namespace thesis.Controllers
 {
 	public class MTVpaymentController : Controller
 	{
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 		private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public MTVpaymentController(thesisContext context, IWebHostEnvironment webHostEnvironment)
+		public MTVpaymentController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
 		{
 			_context = context;
 			_webHostEnvironment = webHostEnvironment;

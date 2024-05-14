@@ -1,21 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using DomainLayer.Enum;
-using DomainLayer.Models;
+﻿using DomainLayer.Enum;
 
 namespace DomainLayer.Models.ViewModels
 {
-	public class ConductOfInspectionViewModel
+    public class ConductOfInspectionViewModel
 	{
-		public IEnumerable<DomainLayer.Models.ConductOfInspection> ConductOfInspections { get; set; }
-		public DomainLayer.Models.ConductOfInspection SingleConductOfInspection { get; set; }
-		public IEnumerable<DomainLayer.Models.Postmortem> Postmortems { get; set; }
-		public DomainLayer.Models.Postmortem SinglePostmortem { get; set; }
-		public DomainLayer.Models.PassedForSlaughter SinglePassedForSlaughter { get; set; }
-		public DomainLayer.Models.totalNoFitForHumanConsumptions SingleTotalFit { get; set; }
+		public IEnumerable<ConductOfInspection> ConductOfInspections { get; set; }
+        public ConductOfInspection SingleConductOfInspection { get; set; }
+		public IEnumerable<Postmortem> Postmortems { get; set; }
+		public Postmortem SinglePostmortem { get; set; }
+		public PassedForSlaughter SinglePassedForSlaughter { get; set; }
+		public totalNoFitForHumanConsumptions SingleTotalFit { get; set; }
 
 
-		public IEnumerable<DomainLayer.Models.SummaryAndDistributionOfMIC> Summary { get; set; }
-		public DomainLayer.Models.SummaryAndDistributionOfMIC SingleSummary { get; set; }
+		public IEnumerable<SummaryAndDistributionOfMIC> Summary { get; set; }
+		public SummaryAndDistributionOfMIC SingleSummary { get; set; }
 
 
 		public Issue Issue { get; set; }

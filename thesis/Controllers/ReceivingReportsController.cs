@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Enum;
 using DomainLayer.Models;
 
@@ -13,11 +13,11 @@ namespace thesis.Controllers
 	{
 
 
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 		private readonly UserManager<AccountDetails> _userManager;
 
 
-		public ReceivingReportsController(thesisContext context, UserManager<AccountDetails> userManager)
+		public ReceivingReportsController(AppDbContext context, UserManager<AccountDetails> userManager)
 		{
 			_context = context;
 			_userManager = userManager;
@@ -43,17 +43,17 @@ namespace thesis.Controllers
 			ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
 
 			//var statusFilter = _context.ReceivingReports
-			//         .Where(me => me.InspectionStatus == Data.Enum.InspectionStatus.Done)
+			//         .Where(me => me.InspectionStatus == InspectionStatus.Done)
 			//         .ToList();
 			//         ViewData["statusFilter"] = new SelectList(statusFilter, "Id", "InspectionStatus");
 
-			var thesisContext = _context.ReceivingReports
+			var AppDbContext = _context.ReceivingReports
 				.Include(r => r.AccountDetails)
 				.Include(r => r.MeatDealers);
 
 
 
-			return View(await thesisContext.ToListAsync());
+			return View(await AppDbContext.ToListAsync());
 		}
 
 
@@ -237,7 +237,7 @@ namespace thesis.Controllers
 		{
 			if (_context.ReceivingReports == null)
 			{
-				return Problem("Entity set 'thesisContext.ReceivingReports'  is null.");
+				return Problem("Entity set 'AppDbContext.ReceivingReports'  is null.");
 			}
 			var receivingReport = await _context.ReceivingReports.FindAsync(id);
 			if (receivingReport != null)

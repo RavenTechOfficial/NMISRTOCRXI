@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using thesis.Data;
+using InfastructureLayer.Data;
 
 namespace thesis.Controllers
 {
@@ -10,11 +10,11 @@ namespace thesis.Controllers
     {
         private readonly UserManager<AccountDetails> _userManager;
         private readonly SignInManager<AccountDetails> _signInManager;
-        private readonly thesisContext _context;
+        private readonly AppDbContext _context;
 
         public RegisterAccountController(UserManager<AccountDetails> userManager,
             SignInManager<AccountDetails> signInManager,
-            thesisContext context)
+            AppDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;

@@ -7,17 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 
 namespace thesis.Controllers
 {
 	public class PostmortemsController : Controller
 	{
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PostmortemsController(thesisContext context, IWebHostEnvironment webHostEnvironment)
+        public PostmortemsController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
 		{
 			_context = context;
             _webHostEnvironment = webHostEnvironment;
@@ -43,11 +43,11 @@ namespace thesis.Controllers
 			return View("Index", viewModel.Postmortem);
 
 			//ViewBag.MyVariable = myVariable;
-			//var thesisContext = _context.Postmortems
+			//var AppDbContext = _context.Postmortems
 			//    .Include(c => c.PassedForSlaughter)
 			//   .Where(c => c.PassedForSlaughterId == myVariable)
 			//   .ToListAsync();
-			////var thesisContext = _context.Postmortems.Include(p => p.PassedForSlaughter);
+			////var AppDbContext = _context.Postmortems.Include(p => p.PassedForSlaughter);
 
 			//return View();
 		}
@@ -248,7 +248,7 @@ namespace thesis.Controllers
 		{
 			if (_context.Postmortems == null)
 			{
-				return Problem("Entity set 'thesisContext.Postmortems'  is null.");
+				return Problem("Entity set 'AppDbContext.Postmortems'  is null.");
 			}
 			var postmortem = await _context.Postmortems.FindAsync(id);
 			if (postmortem != null)

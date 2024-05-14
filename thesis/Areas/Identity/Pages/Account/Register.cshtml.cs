@@ -3,37 +3,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using DomainLayer.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Logging;
-using DomainLayer.Models;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Enum;
-using DomainLayer.Models;
 
 namespace thesis.Areas.Identity.Pages.Account
 {
 
-	public class RegisterModel : PageModel
+    public class RegisterModel : PageModel
 	{
 		private readonly SignInManager<AccountDetails> _signInManager;
 		private readonly UserManager<AccountDetails> _userManager;
@@ -42,7 +30,7 @@ namespace thesis.Areas.Identity.Pages.Account
 		private readonly ILogger<RegisterModel> _logger;
 		private readonly IEmailSender _emailSender;
 		private readonly IWebHostEnvironment _hostEnvironment;
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 
 		public RegisterModel(
 			UserManager<AccountDetails> userManager,
@@ -51,7 +39,7 @@ namespace thesis.Areas.Identity.Pages.Account
 			ILogger<RegisterModel> logger,
 			IEmailSender emailSender,
 			IWebHostEnvironment hostEnvironment,
-			thesisContext context)
+			AppDbContext context)
 		{
 			_userManager = userManager;
 			_userStore = userStore;

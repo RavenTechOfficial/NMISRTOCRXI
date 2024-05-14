@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using thesis.Core.IRepositories;
+using ServiceLayer.Services.IRepositories;
 using DomainLayer.Models.ViewModels;
 using thesis.Repositories;
 

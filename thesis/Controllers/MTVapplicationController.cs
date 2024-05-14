@@ -8,17 +8,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 
 namespace thesis.Controllers
 {
     public class MTVapplicationController : Controller
     {
-        private readonly thesisContext _context;
+        private readonly AppDbContext _context;
 		private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public MTVapplicationController(thesisContext context, IWebHostEnvironment webHostEnvironment)
+		public MTVapplicationController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
 		{
             _context = context;
 			_webHostEnvironment = webHostEnvironment;
@@ -31,7 +31,7 @@ namespace thesis.Controllers
         {
               return _context.MTVApplications != null ? 
                           View(await _context.MTVApplications.ToListAsync()) :
-                          Problem("Entity set 'thesisContext.MTVApplications'  is null.");
+                          Problem("Entity set 'AppDbContext.MTVApplications'  is null.");
         }
 
 		// GET: MTVapplication/Details/5
@@ -270,7 +270,7 @@ namespace thesis.Controllers
         {
             if (_context.MTVApplications == null)
             {
-                return Problem("Entity set 'thesisContext.MTVApplications'  is null.");
+                return Problem("Entity set 'AppDbContext.MTVApplications'  is null.");
             }
             var mTVApplication = await _context.MTVApplications.FindAsync(id);
             if (mTVApplication != null)

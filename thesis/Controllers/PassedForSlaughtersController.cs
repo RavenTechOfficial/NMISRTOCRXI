@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 
 namespace thesis.Controllers
 {
 	public class PassedForSlaughtersController : Controller
 	{
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 
-		public PassedForSlaughtersController(thesisContext context)
+		public PassedForSlaughtersController(AppDbContext context)
 		{
 			_context = context;
 		}
@@ -22,8 +22,8 @@ namespace thesis.Controllers
 		// GET: PassedForSlaughters
 		public async Task<IActionResult> Index()
 		{
-			var thesisContext = _context.PassedForSlaughters.Include(p => p.ConductOfInspection);
-			return View(await thesisContext.ToListAsync());
+			var AppDbContext = _context.PassedForSlaughters.Include(p => p.ConductOfInspection);
+			return View(await AppDbContext.ToListAsync());
 		}
 
 		// GET: PassedForSlaughters/Details/5
@@ -278,7 +278,7 @@ namespace thesis.Controllers
 		{
 			if (_context.PassedForSlaughters == null)
 			{
-				return Problem("Entity set 'thesisContext.PassedForSlaughters'  is null.");
+				return Problem("Entity set 'AppDbContext.PassedForSlaughters'  is null.");
 			}
 			var passedForSlaughter = await _context.PassedForSlaughters.FindAsync(id);
 			if (passedForSlaughter != null)

@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 
 namespace thesis.Controllers
 {
 	public class totalNoFitForHumanConsumptionsController : Controller
 	{
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 
-		public totalNoFitForHumanConsumptionsController(thesisContext context)
+		public totalNoFitForHumanConsumptionsController(AppDbContext context)
 		{
 			_context = context;
 		}
@@ -22,8 +22,8 @@ namespace thesis.Controllers
 		// GET: totalNoFitForHumanConsumptions
 		public async Task<IActionResult> Index()
 		{
-			var thesisContext = _context.totalNoFitForHumanConsumptions.Include(t => t.Postmortem);
-			return View(await thesisContext.ToListAsync());
+			var AppDbContext = _context.totalNoFitForHumanConsumptions.Include(t => t.Postmortem);
+			return View(await AppDbContext.ToListAsync());
 		}
 
 		// GET: totalNoFitForHumanConsumptions/Details/5
@@ -199,7 +199,7 @@ namespace thesis.Controllers
 		{
 			if (_context.totalNoFitForHumanConsumptions == null)
 			{
-				return Problem("Entity set 'thesisContext.totalNoFitForHumanConsumptions'  is null.");
+				return Problem("Entity set 'AppDbContext.totalNoFitForHumanConsumptions'  is null.");
 			}
 			var totalNoFitForHumanConsumptions = await _context.totalNoFitForHumanConsumptions.FindAsync(id);
 			if (totalNoFitForHumanConsumptions != null)

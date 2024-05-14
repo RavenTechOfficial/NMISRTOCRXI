@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using thesis.Data;
-using DomainLayer.Models;
+using InfastructureLayer.Data;
 
 
 namespace thesis.Controllers
@@ -12,9 +11,9 @@ namespace thesis.Controllers
     //[Authorize(Policy = "RequireInspectorAdmin")]
     public class MeatDealersController : Controller
 	{
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 		private readonly UserManager<AccountDetails> _userManager; // Add the type argument 'AccountDetails'
-		public MeatDealersController(thesisContext context, UserManager<AccountDetails> userManager)
+		public MeatDealersController(AppDbContext context, UserManager<AccountDetails> userManager)
 		{
 			_context = context;
 			_userManager = userManager;
@@ -25,8 +24,8 @@ namespace thesis.Controllers
 		{
 			ViewBag.AlertMessage = TempData["AlertMessage"] as string;
 			ViewBag.AlertMessagee = TempData["AlertMessagee"] as string;
-			var thesisContext = _context.MeatDealers.Include(m => m.MeatEstablishment);
-			return View(await thesisContext.ToListAsync());
+			var AppDbContext = _context.MeatDealers.Include(m => m.MeatEstablishment);
+			return View(await AppDbContext.ToListAsync());
 		}
 
 		// GET: MeatDealers/Details/5
@@ -171,7 +170,7 @@ namespace thesis.Controllers
 		{
 			if (_context.MeatDealers == null)
 			{
-				return Problem("Entity set 'thesisContext.MeatDealers'  is null.");
+				return Problem("Entity set 'AppDbContext.MeatDealers'  is null.");
 			}
 			var meatDealers = await _context.MeatDealers.FindAsync(id);
 			if (meatDealers != null)

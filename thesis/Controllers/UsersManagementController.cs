@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
-using thesis.Core.IRepositories;
+using ServiceLayer.Services.IRepositories;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Enum;
 using DomainLayer.Models;
 
@@ -19,13 +19,13 @@ namespace thesis.Controllers
     public class UsersManagementController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 		private readonly UserManager<AccountDetails> _userManager;
 		private readonly IEmailSender _emailSender;
 
 		public UsersManagementController(
 			IUnitOfWork unitOfWork,
-			thesisContext context,
+			AppDbContext context,
 			UserManager<AccountDetails> userManager,
             IEmailSender emailSender)
 		{

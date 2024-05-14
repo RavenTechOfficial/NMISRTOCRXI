@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using thesis.Data;
+using InfastructureLayer.Data;
 
 namespace thesis.Controllers
 {
     public class ArticlesController : Controller
     {
-        private readonly thesisContext _context;
+        private readonly AppDbContext _context;
 
-        public ArticlesController(thesisContext context)
+        public ArticlesController(AppDbContext context)
         {
             _context = context;
         }

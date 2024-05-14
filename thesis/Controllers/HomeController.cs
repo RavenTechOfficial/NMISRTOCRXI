@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 
 namespace thesis.Controllers
@@ -8,9 +8,9 @@ namespace thesis.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 
-		public HomeController(ILogger<HomeController> logger, thesisContext context)
+		public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
             _logger = logger;
 			_context = context;

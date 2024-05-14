@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models.ViewModels;
-using thesis.Data;
+using InfastructureLayer.Data;
 using DomainLayer.Models;
 
 namespace thesis.Controllers
@@ -10,9 +10,9 @@ namespace thesis.Controllers
 	[Authorize(Policy = "RequireInspectorAdmin")]
 	public class MeatEstablishmentsController : Controller
 	{
-		private readonly thesisContext _context;
+		private readonly AppDbContext _context;
 
-		public MeatEstablishmentsController(thesisContext context)
+		public MeatEstablishmentsController(AppDbContext context)
 		{
 			_context = context;
 		}

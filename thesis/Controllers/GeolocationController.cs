@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using thesis.Core.IRepositories;
+using ServiceLayer.Services.IRepositories;
 using DomainLayer.Models.ViewModels;
 using DomainLayer.Enum;
 
