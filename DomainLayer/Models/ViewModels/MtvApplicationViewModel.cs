@@ -50,7 +50,7 @@ namespace DomainLayer.Models.ViewModels
 		public string DriverAddress { get; set; }
 		public string DriverEmail { get; set; }
 		public string DriverTelNo { get; set; }
-		public gender gender { get; set; }
+		public Gender gender { get; set; }
 		public DateTime Driverbirthdate { get; set; }
 	}
 }

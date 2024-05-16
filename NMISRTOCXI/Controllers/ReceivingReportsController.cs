@@ -49,7 +49,7 @@ namespace thesis.Controllers
 
 			var AppDbContext = _context.ReceivingReports
 				.Include(r => r.AccountDetails)
-				.Include(r => r.MeatDealers);
+				.Include(r => r.MeatDealer);
 
 
 
@@ -67,7 +67,7 @@ namespace thesis.Controllers
 
 			var receivingReport = await _context.ReceivingReports
 				.Include(r => r.AccountDetails)
-				.Include(r => r.MeatDealers)
+				.Include(r => r.MeatDealer)
 				.FirstOrDefaultAsync(m => m.Id == id);
 			if (receivingReport == null)
 			{
@@ -106,7 +106,7 @@ namespace thesis.Controllers
 
 			foreach (var user in userList)
 			{
-				var concatenatedValue = $"{user.firstName} {user.lastName}";
+				var concatenatedValue = $"{user.firstName} {user.LastName}";
 				var selectListItem = new SelectListItem
 				{
 					Value = user.Id.ToString(),
@@ -134,7 +134,7 @@ namespace thesis.Controllers
 				TempData["AlertMessage"] = "Transaction Success";
 				return RedirectToAction(nameof(Index));
 			}
-			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
+			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.ProcessedById);
 			ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
 			return View(receivingReport);
 		}
@@ -152,7 +152,7 @@ namespace thesis.Controllers
 			{
 				return NotFound();
 			}
-			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
+			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.ProcessedById);
 			//  ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
 			var meatDealersList = _context.MeatDealers.ToList();
 			var concatenatedList = new List<SelectListItem>();
@@ -205,7 +205,7 @@ namespace thesis.Controllers
 			}
 
 			TempData["AlertMessage"] = "Transaction Success";
-			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
+			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.ProcessedById);
 			ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
 			return View(receivingReport);
 		}
@@ -220,7 +220,7 @@ namespace thesis.Controllers
 
 			var receivingReport = await _context.ReceivingReports
 				.Include(r => r.AccountDetails)
-				.Include(r => r.MeatDealers)
+				.Include(r => r.MeatDealer)
 				.FirstOrDefaultAsync(m => m.Id == id);
 			if (receivingReport == null)
 			{

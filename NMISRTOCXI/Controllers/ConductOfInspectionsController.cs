@@ -65,8 +65,8 @@ namespace thesis.Controllers
 
 
 			var viewModel = new ConductOfInspectionViewModel();
-			viewModel.ConductOfInspections = new List<ConductOfInspection>(); // Initialize the list
-			viewModel.SingleConductOfInspection = new ConductOfInspection();
+			viewModel.ConductOfInspections = new List<Antemortem>(); // Initialize the list
+			viewModel.SingleConductOfInspection = new Antemortem();
 
 			//ViewData["MeatInspectionReportsId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id");
 			int latestMeatInspectionReportsId = _context.MeatInspectionReports
@@ -88,7 +88,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,Issue,NoOfHeads,Weight,Cause,MeatInspectionReportId")] ConductOfInspection conductOfInspection)
+		public async Task<IActionResult> Create([Bind("Id,Issue,NoOfHeads,Weight,Cause,MeatInspectionReportId")] Antemortem conductOfInspection)
 		{
 			if (ModelState.IsValid)
 			{
@@ -105,7 +105,7 @@ namespace thesis.Controllers
 			// If there are validation errors, re-populate the ViewModel and return to the Create view.
 			var viewModel = new ConductOfInspectionViewModel();
 			viewModel.ConductOfInspections = await _context.ConductOfInspections.Include(c => c.MeatInspectionReport).ToListAsync();
-			viewModel.SingleConductOfInspection = new ConductOfInspection();
+			viewModel.SingleConductOfInspection = new Antemortem();
 			viewModel.Issue = (Issue)conductOfInspection.Issue; // Initialize the Issue property
 
 			ViewData["MeatInspectionReportId"] = new SelectList(_context.MeatInspectionReports, "Id", "Id", conductOfInspection.MeatInspectionReportId);
@@ -134,7 +134,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,Issue,NoOfHeads,Weight,Cause,MeatInspectionReportsId")] ConductOfInspection conductOfInspection)
+		public async Task<IActionResult> Edit(int id, [Bind("Id,Issue,NoOfHeads,Weight,Cause,MeatInspectionReportsId")] Antemortem conductOfInspection)
 		{
 			if (id != conductOfInspection.Id)
 			{

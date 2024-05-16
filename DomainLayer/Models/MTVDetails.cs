@@ -5,7 +5,7 @@ namespace DomainLayer.Models
     public class MTVDetails
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public int ControlNo { get; set; }
         public string ApplicantType { get; set; }
         public string RegisteredOwner { get; set; }

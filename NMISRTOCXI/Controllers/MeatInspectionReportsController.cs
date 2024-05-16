@@ -134,7 +134,7 @@ namespace thesis.Controllers
                                    MeatDealer = md.FirstName + " " + md.LastName,
                                    MeatEstablishment = me.Name,
                                    DateInspected = mir.RepDate,
-                                   MeatInspector = au.firstName + " " + au.lastName,
+                                   MeatInspector = au.firstName + " " + au.LastName,
                                    VerifiedBy = mir.VerifiedByPOSMSHead,
                                    UID = mir.UID,
                                })
@@ -170,7 +170,7 @@ namespace thesis.Controllers
                   (user, report) => new SelectListItem
                   {
                       Value = user.Id.ToString(),
-                      Text = $"{user.firstName} {user.lastName}"
+                      Text = $"{user.firstName} {user.LastName}"
                   })
               .ToList();
 
@@ -189,7 +189,7 @@ namespace thesis.Controllers
 
             var AppDbContext = _context.ReceivingReports
                .Include(r => r.AccountDetails)
-               .Include(r => r.MeatDealers);
+               .Include(r => r.MeatDealer);
 
 
 
@@ -215,9 +215,9 @@ namespace thesis.Controllers
                 Id = meatInspectionReport.Id,
                 RepDate = meatInspectionReport.RepDate,
                 AccountDetailsId = meatInspectionReport.AccountDetailsId,
-                Address = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Address,
-                LicenseToOperateNumber = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.LicenseToOperateNumber,
-                MeatEstablishment = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Name,
+                Address = meatInspectionReport.ReceivingReport.MeatDealer.MeatEstablishment.Address,
+                LicenseToOperateNumber = meatInspectionReport.ReceivingReport.MeatDealer.MeatEstablishment.LicenseToOperateNumber,
+                MeatEstablishment = meatInspectionReport.ReceivingReport.MeatDealer.MeatEstablishment.Name,
                 VerifiedBy = meatInspectionReport.VerifiedByPOSMSHead,
                 Specie = meatInspectionReport.ReceivingReport.Species,
                 UID = meatInspectionReport.UID,
@@ -285,7 +285,7 @@ namespace thesis.Controllers
                   (user, report) => new SelectListItem
                   {
                       Value = user.Id.ToString(),
-                      Text = $"{user.firstName} {user.lastName}"
+                      Text = $"{user.firstName} {user.LastName}"
                   })
               .ToList();
 
@@ -334,7 +334,7 @@ namespace thesis.Controllers
                   (user, report) => new SelectListItem
                   {
                       Value = user.Id.ToString(),
-                      Text = $"{user.firstName} {user.lastName}"
+                      Text = $"{user.firstName} {user.LastName}"
                   })
               .ToList();
 

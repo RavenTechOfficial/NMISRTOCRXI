@@ -5,7 +5,7 @@ namespace DomainLayer.Models
     public class Payment
     {
 		[Key]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 		public string PaymentReceipt { get; set; }
 		public DateTime Date { get; set; }
 		public string Email { get; set; }

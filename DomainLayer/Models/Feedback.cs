@@ -5,7 +5,7 @@ namespace DomainLayer.Models
 	public class Feedback
 	{
 		[Key]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 		public int HighlySatisfied { get; set; }
 		public int Satisfied { get; set; }
 		public int Neutral { get; set; }

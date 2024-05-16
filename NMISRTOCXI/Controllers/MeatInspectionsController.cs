@@ -33,10 +33,10 @@ namespace thesis.Controllers
                     (rr, md) => new MeatInspectionViewModel
                     {
                         ReceivingId = rr.Id,
-                        RecTime = rr.RecTime,
+                        RecTime = rr.ReceivedDate,
                         Species = rr.Species,
                         LiveWeight = rr.LiveWeight,
-                        ReceivingNoOfHeads = rr.NoOfHeads,
+                        ReceivingNoOfHeads = rr.NumberOfHeads,
                         MeatDealer = md.FirstName + " " + md.LastName
                     })
                 .ToList();
@@ -416,7 +416,7 @@ namespace thesis.Controllers
         {
 
 
-            var result = new ConductOfInspection
+            var result = new Antemortem
             {
                 MeatInspectionReportId = meatInsId,
                 NoOfHeads = conductHead,
@@ -553,7 +553,7 @@ namespace thesis.Controllers
             var result = new PassedForSlaughter
             {
                 ConductOfInspectionId = firstConductId,
-                NoOfHeads = passedHead,
+                NumberOfHeads = passedHead,
                 Weight = passedWeight,
             };
 
@@ -854,10 +854,10 @@ namespace thesis.Controllers
                              .Select(c => c.Id)
                              .FirstOrDefault();
 
-            var result = new totalNoFitForHumanConsumptions
+            var result = new TotalNoFitForHumanConsumptions
             {
                 PostmortemId = firstPostId,
-                NoOfHeads = totalHead,
+                NumberOfHeads = totalHead,
                 DressedWeight = totalWeight,
             };
 

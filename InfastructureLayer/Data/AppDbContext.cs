@@ -10,9 +10,9 @@ public class AppDbContext : IdentityDbContext<AccountDetails>
         : base(options)
     {
     }
-    public DbSet<ConductOfInspection> ConductOfInspections { get; set; }
+    public DbSet<Antemortem> ConductOfInspections { get; set; }
     public DbSet<DisapprovedApplication> DisapprovedApplications { get; set; }
-    public DbSet<MeatDealers> MeatDealers { get; set; }
+    public DbSet<MeatDealer> MeatDealers { get; set; }
     public DbSet<MeatEstablishment> MeatEstablishment { get; set; }
     public DbSet<MeatInspectionReport> MeatInspectionReports { get; set; }
     public DbSet<MTVApplication> MTVApplications { get; set; }
@@ -25,11 +25,11 @@ public class AppDbContext : IdentityDbContext<AccountDetails>
     public DbSet<Receiving> Receivings{ get; set; }
     public DbSet<ReceivingReport> ReceivingReports { get; set; }
     public DbSet<SummaryAndDistributionOfMIC> SummaryAndDistributionOfMICs { get; set; }
-    public DbSet<totalNoFitForHumanConsumptions> totalNoFitForHumanConsumptions { get; set; }
+    public DbSet<TotalNoFitForHumanConsumptions> totalNoFitForHumanConsumptions { get; set; }
     public DbSet<Driver> Drivers { get; set; }
 	public DbSet<Helper> Helpers { get; set; }
 	public DbSet<MTVquiz> MTVquizzes { get; set; }
-	public DbSet<checklist> checklists { get; set; }
+	public DbSet<CheckList> checklists { get; set; }
 	public DbSet<VehicleInfo> VehicleInfos { get; set; }
 	public DbSet<QrCode> QrCodes { get; set; }
 	public DbSet<Result> Results { get; set; }

@@ -18,12 +18,12 @@ namespace thesis.Controllers
 		[Authorize(Policy = "RequireMTVAdmin")]
 		public async Task<IActionResult> IndexAsync()
 		{
-			var mtvApplications = await _context.MTVApplications.Include(ve => ve.Vehicle).ToListAsync();
+			var mtvApplications = await _context.MTVApplications.Include(ve => ve.VehicleInfo).ToListAsync();
 
 			var mtvRegistrationViewModel = new MtvRegistrationStatusViewModel
 			{
 				MtvApplicants = mtvApplications,
-				checklists = new checklist()
+				checklists = new CheckList()
 			};
 
 
@@ -39,7 +39,7 @@ namespace thesis.Controllers
 
 			MTVApplication vehicle = await _context.MTVApplications.FindAsync(vehicleId);
 
-			var mtvApplications = await _context.MTVApplications.Include(ve => ve.Vehicle).ToListAsync();
+			var mtvApplications = await _context.MTVApplications.Include(ve => ve.VehicleInfo).ToListAsync();
 
 
 
@@ -60,18 +60,18 @@ namespace thesis.Controllers
 					return BadRequest();
 			}
 
-			checklist existingChecklist = await _context.checklists
-				.FirstOrDefaultAsync(c => c.plateno == checks.checklists.plateno);
+			CheckList existingChecklist = await _context.checklists
+				.FirstOrDefaultAsync(c => c.PlateNo == checks.checklists.PlateNo);
 
-			var checklists = new checklist
+			var checklists = new CheckList
 			{
-				operatorname = checks.checklists.operatorname,
-				estserved = checks.checklists.estserved,
-				plateno = checks.checklists.plateno,
-				inspectorname = checks.checklists.inspectorname,
-				inspectdate = checks.checklists.inspectdate,
-				inspecttime = checks.checklists.inspecttime,
-				status = vehicle.Status
+				OperatorName = checks.checklists.OperatorName,
+				EstServed = checks.checklists.EstServed,
+				PlateNo = checks.checklists.PlateNo,
+				InspectorName = checks.checklists.InspectorName,
+				InspectionDate = checks.checklists.InspectionDate,
+				InspectionTime = checks.checklists.InspectionTime,
+				Status = vehicle.Status
 			};
 
 			if (existingChecklist == null)
@@ -80,10 +80,10 @@ namespace thesis.Controllers
 			}
 			else
 			{
-				existingChecklist.inspectorname = checks.checklists.inspectorname;
-				existingChecklist.inspectdate = checks.checklists.inspectdate;
-				existingChecklist.inspecttime = checks.checklists.inspecttime;
-				existingChecklist.status = vehicle.Status;
+				existingChecklist.InspectorName = checks.checklists.InspectorName;
+				existingChecklist.InspectionDate = checks.checklists.InspectionDate;
+				existingChecklist.InspectionTime = checks.checklists.InspectionTime;
+				existingChecklist.Status = vehicle.Status;
 				_context.Update(existingChecklist);
 			}
 
@@ -105,7 +105,7 @@ namespace thesis.Controllers
 
 			Payment payment = _context.Payments
 				.Include(p => p.MTVApplication)
-				.Include(p => p.MTVApplication.Vehicle)
+				.Include(p => p.MTVApplication.VehicleInfo)
 				.Where(p => p.MTVApplication.Id == vehicleId)
 				.FirstOrDefault();
 
@@ -116,7 +116,7 @@ namespace thesis.Controllers
 				Email = payment.Email,
 				SOA = payment.SOA,
 				MTVApplication = payment.MTVApplication,
-				PlateNo = payment.MTVApplication.Vehicle.PlateNo
+				PlateNo = payment.MTVApplication.VehicleInfo.PlateNo
 			};
 
 			string filename = Path.GetFileName(payment.PaymentReceipt);
@@ -133,8 +133,8 @@ namespace thesis.Controllers
 		{
 			
 			MTVApplication vehicle = await _context.MTVApplications.FindAsync(payment.MTVApplication.Id);
-			checklist checks = _context.checklists
-				.Where(p => p.plateno == payment.PlateNo)
+			CheckList checks = _context.checklists
+				.Where(p => p.PlateNo == payment.PlateNo)
 				.FirstOrDefault();
 
 			if (vehicle == null)
@@ -146,11 +146,11 @@ namespace thesis.Controllers
 			{
 				case "approve":
 					vehicle.Status = "completed";
-					checks.status = "completed";
+					checks.Status = "completed";
 					break;
 				case "disapprove":
 					vehicle.Status = "payment";
-					checks.status = "payment";
+					checks.Status = "payment";
 					break;
 				default:
 					return BadRequest();

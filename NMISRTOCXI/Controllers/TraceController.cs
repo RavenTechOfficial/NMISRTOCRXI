@@ -47,7 +47,7 @@ namespace thesis.Controllers
             }
             var meatInspectionReport = await _context.MeatInspectionReports
                 .Include(m => m.ReceivingReport)
-                    .ThenInclude(rr => rr.MeatDealers)
+                    .ThenInclude(rr => rr.MeatDealer)
                     .ThenInclude(md => md.MeatEstablishment)
           
                 .FirstOrDefaultAsync(m => m.UID == id);
@@ -75,7 +75,7 @@ namespace thesis.Controllers
 				   .FirstOrDefaultAsync();
 
 
-			List<MeatDealers> meatDealers = new List<MeatDealers>();
+			List<MeatDealer> meatDealers = new List<MeatDealer>();
             if (meatEstablishmentId.HasValue)
             {
                 meatDealers = await _context.MeatDealers

@@ -144,32 +144,32 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            @if (item.Type != null && item.Name != null && item.Address != null && item.LicenseToOperateNumber != null)
+                            @if (item.EstablishmentType != null && item.Name != null && item.Address != null && item.LicenseToOperateNumber != null)
                             {
                                 <tr class="filter-item">
                                     @* <td>
                             @Html.DisplayFor(modelItem => item.Type)
                             </td>*@
                                     <td>
-                                        @if (item.Type == EstablishmentType.SLH)
+                                        @if (item.EstablishmentType == EstablishmentType.SLH)
                                         {
                                             @Html.Raw("Slaughter House")
                                         }
-                                        else if (item.Type == EstablishmentType.PDP)
+                                        else if (item.EstablishmentType == EstablishmentType.PDP)
                                         {
                                             @Html.Raw("Poultry Dressing Plant")
                                         }
-                                        else if (item.Type == EstablishmentType.MCP)
+                                        else if (item.EstablishmentType == EstablishmentType.MCP)
                                         {
                                             @Html.Raw("Meat Cutting Plant")
                                         }
-                                        else if (item.Type == EstablishmentType.CSW)
+                                        else if (item.EstablishmentType == EstablishmentType.CSW)
                                         {
                                             @Html.Raw("Cold Storage Warehouse")
                                         }
                                         else
                                         {
-                                            @Html.DisplayFor(modelItem => item.Type)
+                                            @Html.DisplayFor(modelItem => item.EstablishmentType)
                                         }
                                     </td>
 
@@ -185,11 +185,9 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.LicenseToOperateNumber)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Lat)
+                                    <tdLatitude                                        @Html.DisplayFor(modelItem => item.Lat)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Long)
+                                    <tdLonggitude                                       @Html.DisplayFor(modelItem => item.Long)
                                     </td>
                                     <td>
                                         <div class="btn-group">

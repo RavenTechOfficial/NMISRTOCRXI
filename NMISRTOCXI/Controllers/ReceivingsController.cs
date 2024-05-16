@@ -24,7 +24,7 @@ namespace thesis.Controllers
         // GET: Receivings
         public async Task<IActionResult> Index()
         {
-            var AppDbContext = _context.Receivings.Include(r => r.AccountDetails);
+            var AppDbContext = _context.Receivings.Include(r => r.ReceivedBy);
             return View(await AppDbContext.ToListAsync());
         }
 
@@ -37,7 +37,7 @@ namespace thesis.Controllers
             }
 
             var receiving = await _context.Receivings
-                .Include(r => r.AccountDetails)
+                .Include(r => r.ReceivedBy)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (receiving == null)
             {
@@ -67,7 +67,7 @@ namespace thesis.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receiving.AccountDetailsId);
+            ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receiving.ReceivedById);
             return View(receiving);
         }
 
@@ -84,7 +84,7 @@ namespace thesis.Controllers
             {
                 return NotFound();
             }
-            ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receiving.AccountDetailsId);
+            ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receiving.ReceivedById);
             return View(receiving);
         }
 
@@ -120,7 +120,7 @@ namespace thesis.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receiving.AccountDetailsId);
+            ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receiving.ReceivedById);
             return View(receiving);
         }
 
@@ -133,7 +133,7 @@ namespace thesis.Controllers
             }
 
             var receiving = await _context.Receivings
-                .Include(r => r.AccountDetails)
+                .Include(r => r.ReceivedBy)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (receiving == null)
             {

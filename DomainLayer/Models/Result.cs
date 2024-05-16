@@ -4,7 +4,7 @@ namespace DomainLayer.Models
 {
     public class Result
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime RecTime { get; set; }
         public Species? Species { get; set; }
         public int? LiveWeight { get; set; }

@@ -6,7 +6,7 @@ namespace DomainLayer.Models
 	public class VehicleInfo
 	{
 		[Key]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 		public string VehicleMaker { get; set; }
 		public string PlateNo { get; set; }
 		public string EngineNo { get; set; }

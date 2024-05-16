@@ -129,16 +129,16 @@ namespace thesis.Controllers
 			var mtv = new MTVApplication
 			{
 				applicationtype = mTVApplicationVM.applicationtype,
-				AccreditionNo = mTVApplicationVM.AccreditionNo,
-				OwnerFname = mTVApplicationVM.OwnerFname,
-				OwnerMname = mTVApplicationVM.OwnerMname,
-				OwnerLname = mTVApplicationVM.OwnerLname,
+				AccreditationNo = mTVApplicationVM.AccreditionNo,
+				OwnerFirstName = mTVApplicationVM.OwnerFname,
+				OwnerMiddleName = mTVApplicationVM.OwnerMname,
+				OwnerLastName = mTVApplicationVM.OwnerLname,
 				Address = mTVApplicationVM.Address,
 				Email = mTVApplicationVM.Email,
-				TelNo = mTVApplicationVM.TelNo,
+				ContactNo = mTVApplicationVM.TelNo,
 				FaxNo = mTVApplicationVM.FaxNo,
                 Status = mTVApplicationVM.Status,
-				Vehicle = new VehicleInfo
+				VehicleInfo = new VehicleInfo
 				{
 					VehicleMaker = mTVApplicationVM.VehicleMaker,
 					PlateNo = mTVApplicationVM.PlateNo,
@@ -150,26 +150,26 @@ namespace thesis.Controllers
 				},
 				Helper = new Helper
 				{
-					HelperFname = mTVApplicationVM.HelperFname,
-					HelperMname = mTVApplicationVM.HelperMname,
-					HelperLname = mTVApplicationVM.HelperLname,
+					FirstName = mTVApplicationVM.HelperFname,
+					MiddleName = mTVApplicationVM.HelperMname,
+					LastName = mTVApplicationVM.HelperLname,
 					Address = mTVApplicationVM.HelperAddress,
 					Email = mTVApplicationVM.HelperEmail,
-					TelNo = mTVApplicationVM.HelperTelNo,
-					birthdate = mTVApplicationVM.Helperbirthdate
+					ContactNo = mTVApplicationVM.HelperTelNo,
+					BirthDate = mTVApplicationVM.Helperbirthdate
 				},
 				Driver = new Driver
 				{
-					DriverFname = mTVApplicationVM.DriverFname,
-					DriverMname = mTVApplicationVM.DriverMname,
-					DriverLname = mTVApplicationVM.DriverLname,
+					FirstName = mTVApplicationVM.DriverFname,
+					MiddleName = mTVApplicationVM.DriverMname,
+					LastName = mTVApplicationVM.DriverLname,
 					LicenseFront = imageLicenseFront,
 					LicenseBack = imageLicenseBack,
 					Address = mTVApplicationVM.DriverAddress,
 					Email = mTVApplicationVM.DriverEmail,
-					TelNo = mTVApplicationVM.DriverTelNo,
-					gender = mTVApplicationVM.gender,
-					birthdate = mTVApplicationVM.Driverbirthdate
+					ContactNo = mTVApplicationVM.DriverTelNo,
+					Gender = mTVApplicationVM.gender,
+					BirthDate = mTVApplicationVM.Driverbirthdate
 				}
 
 			};
@@ -308,41 +308,41 @@ namespace thesis.Controllers
             // For example, querying database or any other logic
 
 			var mtvapp = _context.MTVApplications
-				.Include(p => p.Vehicle)
+				.Include(p => p.VehicleInfo)
 				.Include(p => p.Driver)
 				.Include(p => p.Helper)
-				.Where(p => p.AccreditionNo == model.AccreditionNo)
+				.Where(p => p.AccreditationNo == model.AccreditionNo)
 				.FirstOrDefault();
 
 			var mtvappVM = new MtvApplicationViewModel
 			{
-				OwnerFname = mtvapp.OwnerFname,
-				OwnerMname = mtvapp.OwnerMname,
-				OwnerLname = mtvapp.OwnerLname,
+				OwnerFname = mtvapp.OwnerFirstName,
+				OwnerMname = mtvapp.OwnerMiddleName,
+				OwnerLname = mtvapp.OwnerLastName,
 				//Address
 				Email = mtvapp.Email,
-				TelNo = mtvapp.TelNo,
+				TelNo = mtvapp.ContactNo,
 				FaxNo = mtvapp.FaxNo,
 				Status = mtvapp.Status,
-				VehicleMaker = mtvapp.Vehicle.VehicleMaker,
-				PlateNo = mtvapp.Vehicle.PlateNo,
-				EngineNo = mtvapp.Vehicle.EngineNo,
+				VehicleMaker = mtvapp.VehicleInfo.VehicleMaker,
+				PlateNo = mtvapp.VehicleInfo.PlateNo,
+				EngineNo = mtvapp.VehicleInfo.EngineNo,
 				//LTOCR
 				//LTOOR
 				//EST
-				Destination = mtvapp.Vehicle.Destination,
+				Destination = mtvapp.VehicleInfo.Destination,
 
-				HelperFname = mtvapp.Helper.HelperFname,
-				HelperMname = mtvapp.Helper.HelperMname,
-				HelperLname = mtvapp.Helper.HelperLname,
+				HelperFname = mtvapp.Helper.FirstName,
+				HelperMname = mtvapp.Helper.MiddleName,
+				HelperLname = mtvapp.Helper.LastName,
 				HelperEmail = mtvapp.Helper.Email,
-				HelperTelNo = mtvapp.Helper.TelNo,
+				HelperTelNo = mtvapp.Helper.ContactNo,
 
-				DriverFname = mtvapp.Driver.DriverFname,
-				DriverMname = mtvapp.Driver.DriverMname,
-				DriverLname = mtvapp.Driver.DriverLname,
+				DriverFname = mtvapp.Driver.FirstName,
+				DriverMname = mtvapp.Driver.MiddleName,
+				DriverLname = mtvapp.Driver.LastName,
 				DriverEmail = mtvapp.Driver.Email,
-				DriverTelNo = mtvapp.Driver.TelNo,
+				DriverTelNo = mtvapp.Driver.ContactNo,
 				
 				//driveremail
 				//drivertelno

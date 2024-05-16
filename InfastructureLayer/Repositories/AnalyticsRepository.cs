@@ -336,9 +336,9 @@ namespace thesis.Repositories
             foreach ( var species in speciesList)
             {
 				var hbarchart = _context.ReceivingReports
-				.Where(p => p.RecTime >= start.Date && p.RecTime <= end.Date
+				.Where(p => p.ReceivedDate >= start.Date && p.ReceivedDate <= end.Date
 				&& p.Species == species)
-				.Sum(p => p.NoOfHeads);
+				.Sum(p => p.NumberOfHeads);
 
                 totalSum += hbarchart;
 
@@ -354,7 +354,7 @@ namespace thesis.Repositories
             foreach(var species in speciesList)
             {
 				var vbarchart = _context.ReceivingReports
-				.Where(p => p.RecTime >= start.Date && p.RecTime <= end.Date
+				.Where(p => p.ReceivedDate >= start.Date && p.ReceivedDate <= end.Date
 				&& p.Species == species)
 				.Sum(p => p.LiveWeight);
 

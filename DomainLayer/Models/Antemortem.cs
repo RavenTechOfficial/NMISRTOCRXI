@@ -4,16 +4,16 @@ using DomainLayer.Enum;
 
 namespace DomainLayer.Models
 {
-    public class ConductOfInspection
+    public class Antemortem
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Issue Issue { get; set; }
         public int NoOfHeads { get; set; }
         public double Weight { get; set; }
         public Cause Cause { get; set; }
-        [ForeignKey("MeatInspectionReport")]
-        public int MeatInspectionReportId { get; set; }
-        public MeatInspectionReport? MeatInspectionReport { get; set; }
+        [ForeignKey("ReceivingReport")]
+        public Guid ReceivingReportId { get; set; }
+        public virtual ReceivingReport? ReceivingReport { get; set; }
     }
 }

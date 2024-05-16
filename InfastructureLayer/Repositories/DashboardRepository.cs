@@ -44,7 +44,7 @@ namespace thesis.Repositories
 			this.hogs = new List<double>();
 			this.sheeps = new List<double>();
 		}
-        public async Task<ICollection<totalNoFitForHumanConsumptions>> GetTotalNoFitForHumanConsumptions()
+        public async Task<ICollection<TotalNoFitForHumanConsumptions>> GetTotalNoFitForHumanConsumptions()
         {
             throw new NotImplementedException();
         }

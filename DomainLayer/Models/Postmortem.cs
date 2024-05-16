@@ -7,10 +7,7 @@ namespace DomainLayer.Models
     public class Postmortem
     {
         [Key]
-        public int Id { get; set; }
-        [ForeignKey("PassedForSlaughter")]
-        public int PassedForSlaughterId { get; set; }
-        public PassedForSlaughter? PassedForSlaughter { get; set; }
+        public Guid Id { get; set; }
         public AnimalPart AnimalPart { get; set; }
         public Cause Cause { get; set; }
         public double Weight { get; set; }
@@ -18,5 +15,8 @@ namespace DomainLayer.Models
         public string? Image1 { get; set; } // Nullable string property
         public string? Image2 { get; set; } // Nullable string property
         public string? Image3 { get; set; } // Nullable string property
-    }
+		[ForeignKey("ReceivingReport")]
+		public Guid ReceivingReportId { get; set; }
+		public virtual ReceivingReport? ReceivingReport { get; set; }
+	}
 }

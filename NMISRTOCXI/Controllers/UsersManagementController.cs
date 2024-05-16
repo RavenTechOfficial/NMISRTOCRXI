@@ -52,8 +52,8 @@ namespace thesis.Controllers
 					{
 						Id = user.Id,
 						firstName = user.firstName,
-						lastName = user.lastName,
-						middleName = user.middleName,
+						lastName = user.LastName,
+						middleName = user.MiddleName,
 						address = user.address,
 						contactNo = user.contactNo,
 						email = user.Email,
@@ -88,7 +88,7 @@ namespace thesis.Controllers
 			{
 				return NotFound();
 			}
-			string filename = Path.GetFileName(users.image);
+			string filename = Path.GetFileName(users.ImageUrl);
 			ViewBag.filename = filename;
 
 			return View(users);
@@ -106,7 +106,7 @@ namespace thesis.Controllers
 			{
 				return NotFound();
 			}
-			string filename = Path.GetFileName(users.image);
+			string filename = Path.GetFileName(users.ImageUrl);
 			ViewBag.filename = filename;
 
 			return View(users);
@@ -119,11 +119,11 @@ namespace thesis.Controllers
 			var accountVm = new AccountUserViewModel
 			{
 				firstName = users.firstName,
-				lastName = users.lastName,
-				middleName = users.middleName,
+				lastName = users.LastName,
+				middleName = users.MiddleName,
 				contactNo = users.contactNo,
-				birthdate = users.birthdate,
-				sex = users.sex,
+				birthdate = users.BirthDate,
+				sex = users.Gender,
 			};
 			return View(accountVm);
 		}
@@ -135,11 +135,11 @@ namespace thesis.Controllers
 			var accountVm = new AccountUserViewModel
 			{
 				firstName = users.firstName,
-				lastName = users.lastName,
-				middleName = users.middleName,
+				lastName = users.LastName,
+				middleName = users.MiddleName,
 				contactNo = users.contactNo,
-				birthdate = users.birthdate,
-				sex = users.sex,
+				birthdate = users.BirthDate,
+				sex = users.Gender,
 			};
 			return View(accountVm);
 		}
@@ -227,7 +227,7 @@ namespace thesis.Controllers
 					if (USER_ != null)
 					{
 						// Construct a success message with the user's name
-						var name = USER_.firstName + " " + USER_.lastName;
+						var name = USER_.firstName + " " + USER_.LastName;
 						TempData["info"] = $"User Edited Successfully by {name}";
 
 						var logEntry = new LogTransaction
@@ -284,7 +284,7 @@ namespace thesis.Controllers
 			{
 				return NotFound();
 			}
-			string filename = Path.GetFileName(users.image);
+			string filename = Path.GetFileName(users.ImageUrl);
 			ViewBag.filename = filename;
 
 			return View(users);
@@ -309,7 +309,7 @@ namespace thesis.Controllers
 
 				if (USER_ != null)
 				{
-					var name = USER_.firstName + " " + USER_.lastName;
+					var name = USER_.firstName + " " + USER_.LastName;
 					TempData["success"] = $"User Deleted Successfully by {name}";
 
 					var logEntry = new LogTransaction
@@ -350,7 +350,7 @@ namespace thesis.Controllers
 			{
 				return NotFound();
 			}
-			string filename = Path.GetFileName(users.image);
+			string filename = Path.GetFileName(users.ImageUrl);
 			ViewBag.filename = filename;
 
 			return View(users);

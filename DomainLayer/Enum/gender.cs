@@ -1,6 +1,6 @@
 ﻿namespace DomainLayer.Enum
 {
-	public enum gender
+	public enum Gender
 	{
 		Male,
 		Female

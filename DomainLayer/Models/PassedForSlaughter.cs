@@ -6,11 +6,11 @@ namespace DomainLayer.Models
     public class PassedForSlaughter
     {
         [Key]
-        public int Id { get; set; }
-        public int NoOfHeads { get; set; }
+        public Guid Id { get; set; }
+        public int NumberOfHeads { get; set; }
         public double Weight { get; set; }
-        [ForeignKey("ConductOfInspection")]
-        public int ConductOfInspectionId { get; set; }
-        public ConductOfInspection? ConductOfInspection { get; set; }
-    }
+		[ForeignKey("ReceivingReport")]
+		public Guid ReceivingReportId { get; set; }
+		public virtual ReceivingReport? ReceivingReport { get; set; }
+	}
 }

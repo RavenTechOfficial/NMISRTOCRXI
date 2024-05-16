@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.RecDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AccountDetails)
+                @Html.DisplayNameFor(model => model.ReceivedBy)
             </th>
             <th></th>
         </tr>
@@ -28,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.RecDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AccountDetails.Id)
+                @Html.DisplayFor(modelItem => item.ReceivedBy.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

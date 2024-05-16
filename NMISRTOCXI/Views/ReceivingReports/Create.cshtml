@@ -91,9 +91,9 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <div class="input-box">
-                            <label asp-for="RecTime" class="control-label">Date & Time:</label>
-                            <input asp-for="RecTime" class="form-control" id="recTimeInput" />
-                            <span asp-validation-for="RecTime" class="text-danger"></span>
+                            <label asp-for="ReceivedDate" class="control-label">Date & Time:</label>
+                            <input asp-for="ReceivedDate" class="form-control" id="recTimeInput" />
+                            <span asp-validation-for="ReceivedDate" class="text-danger"></span>
                         </div>
                         <div class="input-box">
                             <label asp-for="BatchCode" class="control-label">Batch Code:</label>
@@ -122,9 +122,9 @@
                     </div>
                     <div class="column">
                         <div class="input-box">
-                            <label asp-for="NoOfHeads" class="control-label">No. Of Heads:</label>
-                            <input asp-for="NoOfHeads" class="form-control" />
-                            <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+                            <label asp-for="NumberOfHeads" class="control-label">No. Of Heads:</label>
+                            <input asp-for="NumberOfHeads" class="form-control" />
+                            <span asp-validation-for="NumberOfHeads" class="text-danger"></span>
                         </div>
                         <div class="input-box">
                             <label asp-for="LiveWeight" class="control-label">Live Weight:</label>
@@ -198,7 +198,7 @@
 
 
                     <div class="input-box">
-                        <label asp-for="ShippingDoc" class="control-label">Shipping Documents:</label>
+             ShippingDocuments<label asp-for="ShippingDoc" class="control-label">Shipping Documents:</label>
                         <div class="checkbox-list">
                             <div class="checkbox-row">
                                 <label>
@@ -227,7 +227,7 @@
                         </div>
                         @*     <input asp-for="ShippingDoc" id="selectedShippingDocs" readonly>
                         <span asp-validation-for="ShippingDoc" class="text-danger"></span> *@
-                        <input asp-for="ShippingDoc" type="text" id="result" readonly>
+             ShippingDocuments<input asp-for="ShippingDoc" type="text" id="result" readonly>
                     </div>
 
                     <script>
@@ -259,8 +259,8 @@
                     </div>
                     <div class="column">
                         <div class="input-box" style="display: none;">
-                            <label asp-for="AccountDetailsId" class="control-label"></label>
-                            <input id="accountDetailsInput" asp-for="AccountDetailsId" class="form-control" />
+     ProcessedById       <label asp-for="AccountDetailsId" class="control-label"></label>
+                            <iProcessedByIdDetailsInput" asp-for="AccountDetailsId" class="form-control" />
                         </div>
                     </div>
                     <div class="input-box">

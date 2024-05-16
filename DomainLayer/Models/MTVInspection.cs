@@ -5,7 +5,7 @@ namespace DomainLayer.Models
     public class MTVInspection
     {
         [Key]
-        public int Id { get; set; } 
+        public Guid Id { get; set; } 
         public MTVApplication MTVApplication { get; set; }
         public string Enclosed { get; set; }
         public string Insulated { get; set; }

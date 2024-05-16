@@ -6,8 +6,8 @@ namespace DomainLayer.Models
 	public class MTVquiz
 	{
 		[Key]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 		public MTVApplication MTVApplication { get; set; }
-		public passorfail passorfail { get; set; }
+		public PassOrFail passorfail { get; set; }
 	}
 }

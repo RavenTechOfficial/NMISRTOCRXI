@@ -4,16 +4,16 @@ using DomainLayer.Enum;
 
 namespace DomainLayer.Models
 {
-    public class totalNoFitForHumanConsumptions
+    public class TotalNoFitForHumanConsumptions
     {
         [Key]
         public int Id { get; set; }
         public Species Species { get; set; }
-        public int NoOfHeads { get; set; }
+        public int NumberOfHeads { get; set; }
         public double DressedWeight { get; set; }
-        [ForeignKey("PostmortemId")]
-        public int PostmortemId { get; set; }
-        public Postmortem? Postmortem { get; set; }
+		[ForeignKey("ReceivingReport")]
+		public Guid ReceivingReportId { get; set; }
+		public virtual ReceivingReport? ReceivingReport { get; set; }
 
-    }
+	}
 }

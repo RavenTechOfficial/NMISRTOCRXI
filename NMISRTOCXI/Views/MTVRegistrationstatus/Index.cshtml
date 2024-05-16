@@ -54,11 +54,11 @@
 							{
 								<tr data-id="@item.Id" >
 									<td>
-										<p>@item.OwnerFname @item.OwnerLname</p>
+										<p>@item.OwnerFirstName @iOwnerLastNamename</p>
 									</td>
 									<td>@item.applicationtype</td>
-									<td>@item.Vehicle?.Est</td>
-									<td>@item.Vehicle?.PlateNo</td>
+									<tdVehicleInfoVehicle?.Est</td>
+									<tdVehicleInfoVehicle?.PlateNo</td>
 									<td>
 										<span class="status @GetStatusClass(item.Status)">@item.Status</span>
 									</td>
@@ -81,17 +81,17 @@
 					<div class="column">
 						<div class="input-box">
 							<label>Name of Operator (Name that will appear on the Certificate)</label>
-							<input id="operatorName" type="text" placeholder="Operator Name" asp-for="checklists.operatorname" required readonly />
+							<input id="operatorName" type="text" placeholder="Operator Name" asp-for="checklists.OperatorName" required readonly />
 						</div>
 						<div class="input-box">
 							<label>Meat Establishment Served</label>
-							<input id="meatEstablishment" type="text" placeholder="Meat Establishment" asp-for="checklists.estserved" required readonly />
+							<input id="meatEstablishment" type="text" placeholder="Meat Establishment" asp-for="checklists.EstServed" required readonly />
 						</div>
 					</div>
 					<div class="column">
 						<div class="input-box">
 							<label>Plate No.</label>
-							<input id="plateNumber" type="text" placeholder="Plate Number" asp-for="checklists.plateno" required readonly />
+							<input id="plateNumber" type="text" placeholder="Plate Number" asp-for="checklists.PlateNo" required readonly />
 						</div>
 					</div>
 					
@@ -390,15 +390,15 @@
 					<div class="column">
 						<div class="input-box">
 							<label>Inspected by</label>
-							<input type="text" asp-for="checklists.inspectorname" placeholder="MTV Inspector Name" required />
+							<input type="text" asp-for="checklists.InspectorName" placeholder="MTV Inspector Name" required />
 						</div>
 						<div class="input-box">
 							<label>Date of Inspection</label>
-							<input type="date" id="dateInput" asp-for="checklists.inspectdate" placeholder="date of inspection" required readonly/>
+							<input type="date" id="dateInput" asp-for="checklists.InspectDate" placeholder="date of inspection" required readonly/>
 						</div>
 						<div class="input-box">
 							<label>Time of Inspection</label>
-							<input type="input" id="timeInput" placeholder="time of inspection" asp-for="checklists.inspecttime" required readonly/>
+							<input type="input" id="timeInput" placeholder="time of inspection" asp-for="checklists.InspectTime" required readonly/>
 						</div>
 					</div>
 					<input type="hidden" name="vehicleId" value="" /> 

@@ -107,7 +107,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] totalNoFitForHumanConsumptions totalNoFitForHumanConsumptions)
+		public async Task<IActionResult> Create([Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] TotalNoFitForHumanConsumptions totalNoFitForHumanConsumptions)
 		{
 			if (ModelState.IsValid)
 			{
@@ -142,7 +142,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] totalNoFitForHumanConsumptions totalNoFitForHumanConsumptions)
+		public async Task<IActionResult> Edit(int id, [Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] TotalNoFitForHumanConsumptions totalNoFitForHumanConsumptions)
 		{
 			if (id != totalNoFitForHumanConsumptions.Id)
 			{

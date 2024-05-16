@@ -162,7 +162,7 @@ namespace thesis.Areas.Identity.Pages.Account
 				{
 					var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(Input.image.FileName)}";
 					var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/uploaded", uniqueFileName);
-					user.image = filePath;
+					user.ImageUrl = filePath;
 
 					using (var fileStream = new FileStream(filePath, FileMode.Create))
 					{
@@ -171,12 +171,12 @@ namespace thesis.Areas.Identity.Pages.Account
 				}
 
 				user.firstName = Input.firstName;
-				user.lastName = Input.lastName;
-				user.middleName = Input.middleName;
+				user.LastName = Input.lastName;
+				user.MiddleName = Input.middleName;
 				user.contactNo = Input.contactNo;
 				user.address = Input.address;
-				user.sex = Input.Sex;
-				user.birthdate = Input.Birthdate;
+				user.Gender = Input.Sex;
+				user.BirthDate = Input.Birthdate;
 
 				user.Roles = Input.Roles;
 				user.MeatEstablishmentId = Input.MeatEsblishmentId;
@@ -185,7 +185,7 @@ namespace thesis.Areas.Identity.Pages.Account
 				{
 					user.MeatEstablishment = new MeatEstablishment
 					{
-						Type = Input.MeatEstablishment.Type ?? new EstablishmentType()
+						EstablishmentType = Input.MeatEstablishment.EstablishmentType ?? new EstablishmentType()
 					};
 				}
 
@@ -219,7 +219,7 @@ namespace thesis.Areas.Identity.Pages.Account
 					if (USER_ != null)
 					{
 						// Construct a success message with the user's name
-						var name = USER_.firstName + " " + USER_.lastName;
+						var name = USER_.firstName + " " + USER_.LastName;
 						TempData["success"] = $"Admin Successfully Added by {name}";
 
 
