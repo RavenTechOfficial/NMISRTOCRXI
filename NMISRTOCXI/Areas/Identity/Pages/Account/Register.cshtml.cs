@@ -145,7 +145,7 @@ namespace thesis.Areas.Identity.Pages.Account
 		{
 			ReturnUrl = returnUrl;
 			ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-			var meatEstablishments = _context.MeatEstablishment
+			var meatEstablishments = _context.MeatEstablishments
 				.Where(me => me.Address != null)
 				.ToList();
 			ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");

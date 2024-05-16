@@ -45,7 +45,7 @@ namespace thesis.Controllers
 		{
 			var userList = _context.Users
 				.Join(
-					_context.MeatEstablishment,
+					_context.MeatEstablishments,
 					user => user.MeatEstablishmentId,
 					meatEstablishment => meatEstablishment.Id,
 					(user, meatEstablishment) => new UserManagementInspectorAdminViewModel

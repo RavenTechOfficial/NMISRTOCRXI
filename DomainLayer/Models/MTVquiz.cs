@@ -3,7 +3,7 @@ using DomainLayer.Enum;
 
 namespace DomainLayer.Models
 {
-	public class MTVquiz
+	public class MTVQuiz
 	{
 		[Key]
 		public Guid Id { get; set; }

@@ -61,7 +61,7 @@ namespace thesis.Repositories
             var weeklyWeight = InspectionWithinDataRange(startDateOfWeek);
             var monthlyWeight = InspectionWithinDataRange(startDateOfMonth);
             var yearlyWeight = InspectionWithinDataRange(startDateOfYear);
-            var totalWeight= _context.totalNoFitForHumanConsumptions
+            var totalWeight= _context.TotalNoFitForHumanConsumptions
                 .Sum(p => p.DressedWeight);
 
 
@@ -147,7 +147,7 @@ namespace thesis.Repositories
 
         private double StackBarsSpeciesSeries(Species species, DateTime start, DateTime end)
         {
-            var stackchart = _context.totalNoFitForHumanConsumptions
+            var stackchart = _context.TotalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
                 .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date >= start.Date
                 && p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date <= end.Date
@@ -183,7 +183,7 @@ namespace thesis.Repositories
 		//na change
 		private double AreaChartTimeSeriesRangeApproved(DateTime start, DateTime end)
         {
-			var areaChart = _context.totalNoFitForHumanConsumptions
+			var areaChart = _context.TotalNoFitForHumanConsumptions
 				.Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
 				.Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date >= start.Date
 				&& p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date <= end.Date)
@@ -206,7 +206,7 @@ namespace thesis.Repositories
 		//na change
 		private double InspectionWithinDataRange(DateTime dates)
         {
-            var inspectionWithinDataRange = _context.totalNoFitForHumanConsumptions
+            var inspectionWithinDataRange = _context.TotalNoFitForHumanConsumptions
                 .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport)
                 .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.RepDate.Date >= dates.Date)
                 .Sum(p => p.DressedWeight);
@@ -216,7 +216,7 @@ namespace thesis.Repositories
 		//na change
 		private int InspectionDate(DateTime dates, Issue issue)
         {
-            var conduct = _context.ConductOfInspections
+            var conduct = _context.Antemortems
                 .Include(p => p.MeatInspectionReport.ReceivingReport)
                 .Where(p => p.MeatInspectionReport.RepDate.Date >= dates.Date && p.Issue == issue)
                 .Sum(p => p.NoOfHeads);

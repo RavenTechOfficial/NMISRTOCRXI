@@ -28,5 +28,11 @@ namespace DomainLayer.Models
         public InspectionStatus? InspectionStatus { get; set; }
 
 
+        public MeatInspectionReport MeatInspectionReports { get; set; }
+        public IEnumerable<Antemortem> Antemortems { get; set; }
+		public IEnumerable<PassedForSlaughter> PassedForSlaughters { get; set; }
+		public IEnumerable<Postmortem> Postmortems { get; set; }
+		public IEnumerable<TotalNoFitForHumanConsumption> TotalNoFitForHumanConsumptions { get; set; } 
+        public SummaryAndDistributionOfMIC SummaryAndDistributionOfMICs { get; set; } 
     }
 }

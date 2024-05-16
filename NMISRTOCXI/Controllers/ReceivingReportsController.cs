@@ -37,7 +37,7 @@ namespace thesis.Controllers
 				meatDealers = meatDealers.Where(dealer => dealer.MeatEstablishmentId == meatEstablishmentId.Value).ToList();
 			}
 
-			var meatEstablishments = _context.MeatEstablishment
+			var meatEstablishments = _context.MeatEstablishments
 			.Where(me => me.Name != null)
 			.ToList();
 			ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
@@ -262,7 +262,7 @@ namespace thesis.Controllers
 			var result = new MeatInspectionReport
 			{
 				ReceivingReportId = Id,
-				RepDate = DateTime.Now,
+				ReportDate = DateTime.Now,
 			};
 
 			_context.Add(result);

@@ -64,7 +64,7 @@ namespace thesis.Controllers
 
             // Get ConductOfInspectionId using MeatInspectionReportId
             int? conductOfInspectionId = meatInspectionReportId.HasValue
-                ? _context.ConductOfInspections
+                ? _context.Antemortems
                     .Where(coi => coi.MeatInspectionReportId == meatInspectionReportId.Value)
                     .Select(coi => (int?)coi.Id)
                     .FirstOrDefault()
@@ -88,7 +88,7 @@ namespace thesis.Controllers
 
             // Get TotalNoFitForHumanConsumptionId using PostmortemId
             int? totalNoFitForHumanConsumptionId = postmortemId.HasValue
-                ? _context.totalNoFitForHumanConsumptions
+                ? _context.TotalNoFitForHumanConsumptions
                     .Where(tnfhc => tnfhc.PostmortemId == postmortemId.Value)
                     .Select(tnfhc => (int?)tnfhc.Id)
                     .FirstOrDefault()
@@ -114,7 +114,7 @@ namespace thesis.Controllers
         [HttpGet]
         public JsonResult GetAnteTableData(int MeatInspectionId)
         {
-            var data = _context.ConductOfInspections
+            var data = _context.Antemortems
                              .Where(c => c.MeatInspectionReportId == MeatInspectionId)
                              .Select(c => new {
                                  Issue = c.Issue.ToString(),
@@ -125,11 +125,11 @@ namespace thesis.Controllers
                              })
                              .ToList();
 
-            var totalNoOfHeads = _context.ConductOfInspections
+            var totalNoOfHeads = _context.Antemortems
                                    .Where(c => c.MeatInspectionReportId == MeatInspectionId)
                                    .Sum(c => c.NoOfHeads);
 
-            var totalWeight = _context.ConductOfInspections
+            var totalWeight = _context.Antemortems
                                 .Where(c => c.MeatInspectionReportId == MeatInspectionId)
                                 .Sum(c => c.Weight);
 
@@ -221,7 +221,7 @@ namespace thesis.Controllers
              .Select(mir => mir.Id)
              .FirstOrDefault();
 
-            var antemortemCount = await _context.ConductOfInspections
+            var antemortemCount = await _context.Antemortems
                 .Where(mir => mir.MeatInspectionReportId == resultId)
                 .CountAsync();
 
@@ -229,7 +229,7 @@ namespace thesis.Controllers
             if (antemortemCount > 0)
             {
 
-                var result = _context.ConductOfInspections
+                var result = _context.Antemortems
                     .Join(
                         _context.MeatInspectionReports,
                         coi => coi.MeatInspectionReportId,
@@ -251,7 +251,7 @@ namespace thesis.Controllers
                     )
                     .ToList();
 
-                var antemortemInspectionData = _context.ConductOfInspections.Where(item => item.MeatInspectionReportId == resultId).ToList();
+                var antemortemInspectionData = _context.Antemortems.Where(item => item.MeatInspectionReportId == resultId).ToList();
                 meatInspectionViewModel.AntemortemInspectionData = antemortemInspectionData;
 
             }
@@ -265,7 +265,7 @@ namespace thesis.Controllers
                     (rr, mir) => mir
                 )
                 .Join(
-                    _context.ConductOfInspections,
+                    _context.Antemortems,
                     mir => mir.Id,
                     coi => coi.MeatInspectionReportId,
                     (mir, coi) => coi
@@ -293,7 +293,7 @@ namespace thesis.Controllers
                     (rr, mir) => mir
                 )
                 .Join(
-                    _context.ConductOfInspections,
+                    _context.Antemortems,
                     mir => mir.Id,
                     coi => coi.MeatInspectionReportId,
                     (mir, coi) => coi
@@ -323,7 +323,7 @@ namespace thesis.Controllers
                        (rr, mir) => mir
                    )
                    .Join(
-                       _context.ConductOfInspections,
+                       _context.Antemortems,
                        mir => mir.Id,
                        coi => coi.MeatInspectionReportId,
                        (mir, coi) => coi
@@ -391,8 +391,8 @@ namespace thesis.Controllers
             var result = new MeatInspectionReport
             {
                 ReceivingReportId = receivingId,
-                RepDate = dateInspected,
-                AccountDetailsId = loggedInUserId,
+                ReportDate = dateInspected,
+                InspectedById = loggedInUserId,
                 UID = randomUID,
 
             };
@@ -428,11 +428,11 @@ namespace thesis.Controllers
             _context.Add(result);
             _context.SaveChanges();
 
-            var totalNoOfHeads = _context.ConductOfInspections
+            var totalNoOfHeads = _context.Antemortems
                 .Where(c => c.MeatInspectionReportId == meatInsId)
                 .Sum(c => c.NoOfHeads);
 
-            var totalWeight = _context.ConductOfInspections
+            var totalWeight = _context.Antemortems
                 .Where(c => c.MeatInspectionReportId == meatInsId)
                 .Sum(c => c.Weight);
 
@@ -465,7 +465,7 @@ namespace thesis.Controllers
         public IActionResult AntemortemRowEdit(int meatInsId, int anteRowId, int conductHead, double conductWeight, int issue, int cause)
         {
 
-            var existingAntemortem = _context.ConductOfInspections.Find(anteRowId);
+            var existingAntemortem = _context.Antemortems.Find(anteRowId);
 
 
             existingAntemortem.Issue = (Issue)issue;
@@ -481,11 +481,11 @@ namespace thesis.Controllers
             var enumIssue = (Issue)issue;
             var enumCause = (Cause)cause;
 
-            var totalNoOfHeads = _context.ConductOfInspections
+            var totalNoOfHeads = _context.Antemortems
                 .Where(c => c.MeatInspectionReportId == meatInsId)
                 .Sum(c => c.NoOfHeads);
 
-            var totalWeight = _context.ConductOfInspections
+            var totalWeight = _context.Antemortems
                 .Where(c => c.MeatInspectionReportId == meatInsId)
                 .Sum(c => c.Weight);
 
@@ -509,23 +509,23 @@ namespace thesis.Controllers
         public IActionResult AntemortemDelete(int meatInsId, int anteRowId)
         {
 
-            var entityToDelete = _context.ConductOfInspections.Find(anteRowId);
+            var entityToDelete = _context.Antemortems.Find(anteRowId);
 
 
-            _context.ConductOfInspections.Remove(entityToDelete);
+            _context.Antemortems.Remove(entityToDelete);
             _context.SaveChanges();
 
-            var firstConductId = _context.ConductOfInspections
+            var firstConductId = _context.Antemortems
                              .Where(c => c.MeatInspectionReportId == meatInsId)
                              .OrderBy(c => c.Id)
                              .Select(c => c.Id)
                              .FirstOrDefault();
 
-            var totalNoOfHeads = _context.ConductOfInspections
+            var totalNoOfHeads = _context.Antemortems
                 .Where(c => c.MeatInspectionReportId == meatInsId)
                 .Sum(c => c.NoOfHeads);
 
-            var totalWeight = _context.ConductOfInspections
+            var totalWeight = _context.Antemortems
                 .Where(c => c.MeatInspectionReportId == meatInsId)
                 .Sum(c => c.Weight);
 
@@ -544,7 +544,7 @@ namespace thesis.Controllers
         [HttpPost]
         public IActionResult AddPostmortem(int passedHead, double passedWeight, int meatInsId)
         {
-            var firstConductId = _context.ConductOfInspections
+            var firstConductId = _context.Antemortems
                              .Where(c => c.MeatInspectionReportId == meatInsId)
                              .OrderBy(c => c.Id)
                              .Select(c => c.Id)
@@ -932,10 +932,10 @@ namespace thesis.Controllers
                                            where rr.Id == ReceivingId
                                            join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
                                            join mir in _context.MeatInspectionReports on rr.Id equals mir.ReceivingReportId
-                                           join coi in _context.ConductOfInspections on mir.Id equals coi.MeatInspectionReportId
+                                           join coi in _context.Antemortems on mir.Id equals coi.MeatInspectionReportId
                                            join pfs in _context.PassedForSlaughters on coi.Id equals pfs.ConductOfInspectionId
                                            join pm in _context.Postmortems on pfs.Id equals pm.PassedForSlaughterId
-                                           join tnfhc in _context.totalNoFitForHumanConsumptions on pm.Id equals tnfhc.PostmortemId
+                                           join tnfhc in _context.TotalNoFitForHumanConsumptions on pm.Id equals tnfhc.PostmortemId
                                            join sadmic in _context.SummaryAndDistributionOfMICs on tnfhc.Id equals sadmic.TotalNoFitForHumanConsumptionId
                                            select new MeatInspectionViewModel
                                            {
@@ -980,7 +980,7 @@ namespace thesis.Controllers
             viewModel.MICIssued = meatInspectionViewModel.MICIssued;
             viewModel.MICCancelled = meatInspectionViewModel.MICCancelled;
 
-            var antemortemInspectionData = _context.ConductOfInspections.Where(item => item.MeatInspectionReportId == MeatInsId).ToList();
+            var antemortemInspectionData = _context.Antemortems.Where(item => item.MeatInspectionReportId == MeatInsId).ToList();
             viewModel.AntemortemInspectionData = antemortemInspectionData;
 
             var postmortemInspectionData = _context.Postmortems.Where(item => item.PassedForSlaughterId == meatInspectionViewModel.Passed).ToList();

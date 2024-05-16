@@ -17,7 +17,7 @@ namespace thesis.Controllers
 		public async Task<IActionResult> IndexAsync()
 		{
 			var users = await _context.Users.ToListAsync();
-			var checklist = await _context.checklists.ToListAsync();
+			var checklist = await _context.CheckLists.ToListAsync();
 			var payment = await _context.Payments.Include(p => p.MTVApplication).ToListAsync();
 
 			var mtvdashboardViewModel = new MtvDashboardViewModel

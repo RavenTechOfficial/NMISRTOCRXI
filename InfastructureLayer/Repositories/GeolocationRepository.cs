@@ -140,7 +140,7 @@ namespace thesis.Repositories
 
         public List<string> MeatEstType(EstablishmentType establishmentType)
         {
-            var meatEst = _context.MeatEstablishment.Where(p => p.EstablishmentType == establishmentType).Select(p => p.Address).ToList();
+            var meatEst = _context.MeatEstablishments.Where(p => p.EstablishmentType == establishmentType).Select(p => p.Address).ToList();
             return meatEst;
         }
     }

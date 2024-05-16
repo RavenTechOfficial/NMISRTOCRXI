@@ -66,7 +66,7 @@ namespace thesis.Controllers
 	           .Where(p => p.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.UID == id) // Use the 'id' parameter to filter
 	           .FirstOrDefaultAsync();
 
-			var totalfit = await _context.totalNoFitForHumanConsumptions
+			var totalfit = await _context.TotalNoFitForHumanConsumptions
 				.Include(p => p.Postmortem)
 				   .ThenInclude(p => p.PassedForSlaughter)
 				   .ThenInclude(p => p.ConductOfInspection)

@@ -60,7 +60,7 @@ namespace thesis.Controllers
 					return BadRequest();
 			}
 
-			CheckList existingChecklist = await _context.checklists
+			CheckList existingChecklist = await _context.CheckLists
 				.FirstOrDefaultAsync(c => c.PlateNo == checks.checklists.PlateNo);
 
 			var checklists = new CheckList
@@ -133,7 +133,7 @@ namespace thesis.Controllers
 		{
 			
 			MTVApplication vehicle = await _context.MTVApplications.FindAsync(payment.MTVApplication.Id);
-			CheckList checks = _context.checklists
+			CheckList checks = _context.CheckLists
 				.Where(p => p.PlateNo == payment.PlateNo)
 				.FirstOrDefault();
 

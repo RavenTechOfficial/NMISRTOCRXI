@@ -53,7 +53,7 @@ namespace thesis.Controllers
 			int mostRecentId = (int)meatInspectionReportId;
 
 			// Execute the first SQL query and retrieve the results
-			var firstQueryResult = _context.ConductOfInspections
+			var firstQueryResult = _context.Antemortems
 				.Where(ci => ci.MeatInspectionReportId == mostRecentId)
 				.GroupBy(ci => ci.MeatInspectionReportId)
 				.Select(g => new
@@ -70,7 +70,7 @@ namespace thesis.Controllers
 				.Join(_context.ReceivingReports, mir => mir.ReceivingReportId, rr => rr.Id, (mir, rr) => new
 				{
 					ReceivingNoOfHeads = rr.NoOfHeads,
-					InspectionNoOfHeads = _context.ConductOfInspections
+					InspectionNoOfHeads = _context.Antemortems
 						.Where(ci => ci.MeatInspectionReportId == mostRecentId)
 						.Sum(ci => ci.NoOfHeads),
 					TotalNoOfHeads = firstQueryResult.TotalNoOfHeads
@@ -89,7 +89,7 @@ namespace thesis.Controllers
 				.Join(_context.ReceivingReports, mir => mir.ReceivingReportId, rr => rr.Id, (mir, rr) => new
 				{
 					ReceivingLiveWeight = rr.LiveWeight,
-					InspectionWeight = _context.ConductOfInspections
+					InspectionWeight = _context.Antemortems
 						.Where(ci => ci.MeatInspectionReportId == mostRecentId)
 						.Sum(ci => ci.Weight),
 					TotalWeight = firstQueryResult.TotalWeight
@@ -110,11 +110,11 @@ namespace thesis.Controllers
 			ViewData["InspectionWeight"] = thirdQueryResult?.InspectionWeight;
 			ViewData["PassedForSlaughterWeight"] = thirdQueryResult?.PassedForSlaughterWeight;
 
-			int mostRecentId1 = _context.ConductOfInspections
+			int mostRecentId1 = _context.Antemortems
 					.OrderByDescending(c => c.Id)
 					.Select(c => c.Id)
 					.FirstOrDefault();
-			ViewData["ConductOfInspectionId"] = new SelectList(_context.ConductOfInspections, "Id", "Id", mostRecentId1);
+			ViewData["ConductOfInspectionId"] = new SelectList(_context.Antemortems, "Id", "Id", mostRecentId1);
 			return View();
 		}
 		//public IActionResult Create()
@@ -195,7 +195,7 @@ namespace thesis.Controllers
 				//   return RedirectToAction(nameof(Index));
 				return RedirectToAction("Create", "Postmortems");
 			}
-			ViewData["ConductOfInspectionId"] = new SelectList(_context.ConductOfInspections, "Id", "Id", passedForSlaughter.ConductOfInspectionId);
+			ViewData["ConductOfInspectionId"] = new SelectList(_context.Antemortems, "Id", "Id", passedForSlaughter.ConductOfInspectionId);
 			return View(passedForSlaughter);
 		}
 
@@ -212,7 +212,7 @@ namespace thesis.Controllers
 			{
 				return NotFound();
 			}
-			ViewData["ConductOfInspectionId"] = new SelectList(_context.ConductOfInspections, "Id", "Id", passedForSlaughter.ConductOfInspectionId);
+			ViewData["ConductOfInspectionId"] = new SelectList(_context.Antemortems, "Id", "Id", passedForSlaughter.ConductOfInspectionId);
 			return View(passedForSlaughter);
 		}
 
@@ -248,7 +248,7 @@ namespace thesis.Controllers
 				}
 				return RedirectToAction(nameof(Index));
 			}
-			ViewData["ConductOfInspectionId"] = new SelectList(_context.ConductOfInspections, "Id", "Id", passedForSlaughter.ConductOfInspectionId);
+			ViewData["ConductOfInspectionId"] = new SelectList(_context.Antemortems, "Id", "Id", passedForSlaughter.ConductOfInspectionId);
 			return View(passedForSlaughter);
 		}
 

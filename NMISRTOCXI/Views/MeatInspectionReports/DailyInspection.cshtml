@@ -119,7 +119,7 @@
                                 {
                                     var meatEstablishmentId = loggedInUser.MeatEstablishmentId;
 
-                                    var meatEstablishment = dbContext.MeatEstablishment.FirstOrDefault(m => m.Id == meatEstablishmentId);
+                                    var meatEstablishment = dbContext.MeatEstablishments.FirstOrDefault(m => m.Id == meatEstablishmentId);
 
                                     if (meatEstablishment != null)
                                     {

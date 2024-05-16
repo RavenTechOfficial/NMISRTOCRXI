@@ -27,7 +27,7 @@ namespace thesis.Controllers
 			var viewModel = new ConductOfInspectionViewModel();
 
 			// Filter the ConductOfInspections based on the provided MeatInspectionReportId
-			viewModel.ConductOfInspections = await _context.ConductOfInspections
+			viewModel.ConductOfInspections = await _context.Antemortems
 				.Include(c => c.MeatInspectionReport)
 				.Where(c => c.MeatInspectionReportId == myVariable)
 				.ToListAsync();
@@ -41,12 +41,12 @@ namespace thesis.Controllers
 		// GET: ConductOfInspections/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
-			if (id == null || _context.ConductOfInspections == null)
+			if (id == null || _context.Antemortems == null)
 			{
 				return NotFound();
 			}
 
-			var conductOfInspection = await _context.ConductOfInspections
+			var conductOfInspection = await _context.Antemortems
 				.Include(c => c.MeatInspectionReport)
 				.FirstOrDefaultAsync(m => m.Id == id);
 			if (conductOfInspection == null)
@@ -104,7 +104,7 @@ namespace thesis.Controllers
 
 			// If there are validation errors, re-populate the ViewModel and return to the Create view.
 			var viewModel = new ConductOfInspectionViewModel();
-			viewModel.ConductOfInspections = await _context.ConductOfInspections.Include(c => c.MeatInspectionReport).ToListAsync();
+			viewModel.ConductOfInspections = await _context.Antemortems.Include(c => c.MeatInspectionReport).ToListAsync();
 			viewModel.SingleConductOfInspection = new Antemortem();
 			viewModel.Issue = (Issue)conductOfInspection.Issue; // Initialize the Issue property
 
@@ -115,12 +115,12 @@ namespace thesis.Controllers
 		// GET: ConductOfInspections/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
-			if (id == null || _context.ConductOfInspections == null)
+			if (id == null || _context.Antemortems == null)
 			{
 				return NotFound();
 			}
 
-			var conductOfInspection = await _context.ConductOfInspections.FindAsync(id);
+			var conductOfInspection = await _context.Antemortems.FindAsync(id);
 			if (conductOfInspection == null)
 			{
 				return NotFound();
@@ -170,12 +170,12 @@ namespace thesis.Controllers
 		// GET: ConductOfInspections/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
-			if (id == null || _context.ConductOfInspections == null)
+			if (id == null || _context.Antemortems == null)
 			{
 				return NotFound();
 			}
 
-			var conductOfInspection = await _context.ConductOfInspections
+			var conductOfInspection = await _context.Antemortems
 				.Include(c => c.MeatInspectionReport)
 				.FirstOrDefaultAsync(m => m.Id == id);
 			if (conductOfInspection == null)
@@ -191,14 +191,14 @@ namespace thesis.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			if (_context.ConductOfInspections == null)
+			if (_context.Antemortems == null)
 			{
 				return Problem("Entity set 'AppDbContext.ConductOfInspections'  is null.");
 			}
-			var conductOfInspection = await _context.ConductOfInspections.FindAsync(id);
+			var conductOfInspection = await _context.Antemortems.FindAsync(id);
 			if (conductOfInspection != null)
 			{
-				_context.ConductOfInspections.Remove(conductOfInspection);
+				_context.Antemortems.Remove(conductOfInspection);
 			}
 
 			await _context.SaveChangesAsync();
@@ -208,7 +208,7 @@ namespace thesis.Controllers
 
 		private bool ConductOfInspectionExists(int id)
 		{
-			return (_context.ConductOfInspections?.Any(e => e.Id == id)).GetValueOrDefault();
+			return (_context.Antemortems?.Any(e => e.Id == id)).GetValueOrDefault();
 		}
 
 		// [HttpPost]

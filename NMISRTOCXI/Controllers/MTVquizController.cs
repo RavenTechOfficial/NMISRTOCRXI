@@ -29,7 +29,7 @@ namespace thesis.Controllers
 
 			var ifpercentage = (percentage < 75) ? PassOrFail.Fail : PassOrFail.Pass;
 
-			var res = new MTVquiz
+			var res = new MTVQuiz
 			{
 				MTVApplication = application,
 				passorfail = ifpercentage,

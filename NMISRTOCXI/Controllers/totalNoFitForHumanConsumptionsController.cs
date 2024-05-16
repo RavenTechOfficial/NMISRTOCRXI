@@ -22,19 +22,19 @@ namespace thesis.Controllers
 		// GET: totalNoFitForHumanConsumptions
 		public async Task<IActionResult> Index()
 		{
-			var AppDbContext = _context.totalNoFitForHumanConsumptions.Include(t => t.Postmortem);
+			var AppDbContext = _context.TotalNoFitForHumanConsumptions.Include(t => t.Postmortem);
 			return View(await AppDbContext.ToListAsync());
 		}
 
 		// GET: totalNoFitForHumanConsumptions/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
-			if (id == null || _context.totalNoFitForHumanConsumptions == null)
+			if (id == null || _context.TotalNoFitForHumanConsumptions == null)
 			{
 				return NotFound();
 			}
 
-			var totalNoFitForHumanConsumptions = await _context.totalNoFitForHumanConsumptions
+			var totalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions
 				.Include(t => t.Postmortem)
 				.FirstOrDefaultAsync(m => m.Id == id);
 			if (totalNoFitForHumanConsumptions == null)
@@ -123,12 +123,12 @@ namespace thesis.Controllers
 		// GET: totalNoFitForHumanConsumptions/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
-			if (id == null || _context.totalNoFitForHumanConsumptions == null)
+			if (id == null || _context.TotalNoFitForHumanConsumptions == null)
 			{
 				return NotFound();
 			}
 
-			var totalNoFitForHumanConsumptions = await _context.totalNoFitForHumanConsumptions.FindAsync(id);
+			var totalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions.FindAsync(id);
 			if (totalNoFitForHumanConsumptions == null)
 			{
 				return NotFound();
@@ -176,12 +176,12 @@ namespace thesis.Controllers
 		// GET: totalNoFitForHumanConsumptions/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
-			if (id == null || _context.totalNoFitForHumanConsumptions == null)
+			if (id == null || _context.TotalNoFitForHumanConsumptions == null)
 			{
 				return NotFound();
 			}
 
-			var totalNoFitForHumanConsumptions = await _context.totalNoFitForHumanConsumptions
+			var totalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions
 				.Include(t => t.Postmortem)
 				.FirstOrDefaultAsync(m => m.Id == id);
 			if (totalNoFitForHumanConsumptions == null)
@@ -197,14 +197,14 @@ namespace thesis.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			if (_context.totalNoFitForHumanConsumptions == null)
+			if (_context.TotalNoFitForHumanConsumptions == null)
 			{
 				return Problem("Entity set 'AppDbContext.totalNoFitForHumanConsumptions'  is null.");
 			}
-			var totalNoFitForHumanConsumptions = await _context.totalNoFitForHumanConsumptions.FindAsync(id);
+			var totalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions.FindAsync(id);
 			if (totalNoFitForHumanConsumptions != null)
 			{
-				_context.totalNoFitForHumanConsumptions.Remove(totalNoFitForHumanConsumptions);
+				_context.TotalNoFitForHumanConsumptions.Remove(totalNoFitForHumanConsumptions);
 			}
 
 			await _context.SaveChangesAsync();
@@ -213,7 +213,7 @@ namespace thesis.Controllers
 
 		private bool totalNoFitForHumanConsumptionsExists(int id)
 		{
-			return (_context.totalNoFitForHumanConsumptions?.Any(e => e.Id == id)).GetValueOrDefault();
+			return (_context.TotalNoFitForHumanConsumptions?.Any(e => e.Id == id)).GetValueOrDefault();
 		}
 	}
 }

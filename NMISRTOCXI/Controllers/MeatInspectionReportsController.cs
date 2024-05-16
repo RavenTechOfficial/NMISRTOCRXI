@@ -33,7 +33,7 @@ namespace thesis.Controllers
         //}
         public async Task<IActionResult> Index(int? meatEstablishmentId)
         {
-            var meatEstablishments = _context.MeatEstablishment
+            var meatEstablishments = _context.MeatEstablishments
                 .Where(me => me.Name != null)
                 .ToList();
             ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
@@ -51,14 +51,14 @@ namespace thesis.Controllers
         {
             var monthlyreportsInfo = (from mir in _context.MeatInspectionReports
                                       join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
-                                      join ai in _context.ConductOfInspections on mir.Id equals ai.MeatInspectionReportId
+                                      join ai in _context.Antemortems on mir.Id equals ai.MeatInspectionReportId
                                       join ps in _context.PassedForSlaughters on ai.Id equals ps.ConductOfInspectionId
                                       join pi in _context.Postmortems on ps.Id equals pi.PassedForSlaughterId
-                                      join tn in _context.totalNoFitForHumanConsumptions on pi.Id equals tn.PostmortemId
+                                      join tn in _context.TotalNoFitForHumanConsumptions on pi.Id equals tn.PostmortemId
                                       join sd in _context.SummaryAndDistributionOfMICs on tn.Id equals sd.TotalNoFitForHumanConsumptionId
                                       join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
                                       join au in _context.Users on mir.AccountDetailsId equals au.Id
-                                      join me in _context.MeatEstablishment on md.MeatEstablishmentId equals me.Id
+                                      join me in _context.MeatEstablishments on md.MeatEstablishmentId equals me.Id
                                       select new MeatInspectionReportViewModel
                                       {
                                           MeatInspectionReportId = mir.Id,
@@ -106,7 +106,7 @@ namespace thesis.Controllers
         }
         public async Task<IActionResult> DailyInspection()
         {
-            var meatEstablishments = _context.MeatEstablishment
+            var meatEstablishments = _context.MeatEstablishments
                 .Where(me => me.Name != null)
                 .ToList();
             ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
@@ -125,7 +125,7 @@ namespace thesis.Controllers
                                join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
                                join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
                                join au in _context.Users on mir.AccountDetailsId equals au.Id
-                               join me in _context.MeatEstablishment on md.MeatEstablishmentId equals me.Id
+                               join me in _context.MeatEstablishments on md.MeatEstablishmentId equals me.Id
                                select new MeatInspectionReportViewModel
                                {
                                    MeatInspectionReportId = mir.Id,
@@ -146,12 +146,12 @@ namespace thesis.Controllers
         public async Task<IActionResult> DailyIndex(int? id, int? meatEstablishmentId)
         {
             var receivingReports = _context.ReceivingReports.ToList();
-            var conductOfInspections = _context.ConductOfInspections.ToList();
+            var conductOfInspections = _context.Antemortems.ToList();
             var passedForSlaughters = _context.PassedForSlaughters.ToList();
             var meatDealers = _context.MeatDealers.ToList();
             var meatInspectionReports = _context.MeatInspectionReports.ToList();
             var postmortem = _context.Postmortems.ToList();
-            var totalNoFitForHumanConsumption = _context.totalNoFitForHumanConsumptions.ToList();
+            var totalNoFitForHumanConsumption = _context.TotalNoFitForHumanConsumptions.ToList();
             var SummaryAndDistributionOfMICs = _context.SummaryAndDistributionOfMICs.ToList();
 
             ViewData["ReceivingReports"] = receivingReports;
@@ -166,7 +166,7 @@ namespace thesis.Controllers
               .Join(
                   _context.MeatInspectionReports,
                   user => user.Id,
-                  report => report.AccountDetailsId,
+                  report => report.InspectedById,
                   (user, report) => new SelectListItem
                   {
                       Value = user.Id.ToString(),
@@ -181,7 +181,7 @@ namespace thesis.Controllers
                 meatDealers = meatDealers.Where(dealer => dealer.MeatEstablishmentId == meatEstablishmentId.Value).ToList();
             }
 
-            var meatEstablishments = _context.MeatEstablishment
+            var meatEstablishments = _context.MeatEstablishments
             .Where(me => me.Name != null)
             .ToList();
             ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
@@ -213,8 +213,8 @@ namespace thesis.Controllers
             var viewModel = new MeatInspectionReportViewModel
             {
                 Id = meatInspectionReport.Id,
-                RepDate = meatInspectionReport.RepDate,
-                AccountDetailsId = meatInspectionReport.AccountDetailsId,
+                RepDate = meatInspectionReport.ReportDate,
+                AccountDetailsId = meatInspectionReport.InspectedById,
                 Address = meatInspectionReport.ReceivingReport.MeatDealer.MeatEstablishment.Address,
                 LicenseToOperateNumber = meatInspectionReport.ReceivingReport.MeatDealer.MeatEstablishment.LicenseToOperateNumber,
                 MeatEstablishment = meatInspectionReport.ReceivingReport.MeatDealer.MeatEstablishment.Name,
@@ -281,7 +281,7 @@ namespace thesis.Controllers
               .Join(
                   _context.MeatInspectionReports,
                   user => user.Id,
-                  report => report.AccountDetailsId,
+                  report => report.InspectedById,
                   (user, report) => new SelectListItem
                   {
                       Value = user.Id.ToString(),
@@ -330,7 +330,7 @@ namespace thesis.Controllers
               .Join(
                   _context.MeatInspectionReports,
                   user => user.Id,
-                  report => report.AccountDetailsId,
+                  report => report.InspectedById,
                   (user, report) => new SelectListItem
                   {
                       Value = user.Id.ToString(),

@@ -22,19 +22,19 @@ namespace thesis.Controllers
 		{
 			ViewBag.AlertMessage = TempData["AlertMessage"] as string;
 			ViewBag.AlertMessagee = TempData["AlertMessagee"] as string;
-			var meatEstablishments = await _context.MeatEstablishment.ToListAsync();
+			var meatEstablishments = await _context.MeatEstablishments.ToListAsync();
 			return View(meatEstablishments);
 		}
 
 		// GET: MeatEstablishments/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
-			if (id == null || _context.MeatEstablishment == null)
+			if (id == null || _context.MeatEstablishments == null)
 			{
 				return NotFound();
 			}
 
-			var meatEstablishment = await _context.MeatEstablishment
+			var meatEstablishment = await _context.MeatEstablishments
 				.FirstOrDefaultAsync(m => m.Id == id);
 			if (meatEstablishment == null)
 			{
@@ -51,7 +51,7 @@ namespace thesis.Controllers
 		{
 			var viewModel = new MeatEstablishmentViewModel
 			{
-				MeatEstablishments = _context.MeatEstablishment.ToList()
+				MeatEstablishments = _context.MeatEstablishments.ToList()
 			};
 			return View(viewModel);
 		}
@@ -84,7 +84,7 @@ namespace thesis.Controllers
 				return NotFound();
 			}
 
-			var meatEstablishment = await _context.MeatEstablishment.FindAsync(id);
+			var meatEstablishment = await _context.MeatEstablishments.FindAsync(id);
 			if (meatEstablishment == null)
 			{
 				return NotFound();
@@ -138,7 +138,7 @@ namespace thesis.Controllers
 				return NotFound();
 			}
 
-			var meatEstablishment = await _context.MeatEstablishment
+			var meatEstablishment = await _context.MeatEstablishments
 				.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (meatEstablishment == null)
@@ -154,14 +154,14 @@ namespace thesis.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int? id)
 		{
-			var meatEstablishment = await _context.MeatEstablishment.FindAsync(id);
+			var meatEstablishment = await _context.MeatEstablishments.FindAsync(id);
 
 			if (meatEstablishment == null)
 			{
 				return NotFound();
 			}
 
-			_context.MeatEstablishment.Remove(meatEstablishment);
+			_context.MeatEstablishments.Remove(meatEstablishment);
 			await _context.SaveChangesAsync();
 			TempData["AlertMessage"] = "Transaction Success";
 
@@ -170,7 +170,7 @@ namespace thesis.Controllers
 
 		private bool MeatEstablishmentExists(int id)
 		{
-			return _context.MeatEstablishment.Any(e => e.Id == id);
+			return _context.MeatEstablishments.Any(e => e.Id == id);
 		}
 	}
 }

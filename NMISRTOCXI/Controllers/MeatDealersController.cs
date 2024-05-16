@@ -56,7 +56,7 @@ namespace thesis.Controllers
 				return BadRequest("User is not associated with any MeatEstablishment.");
 			}
 
-			var meatEstablishmentsQuery = from meatEstablishment in _context.MeatEstablishment
+			var meatEstablishmentsQuery = from meatEstablishment in _context.MeatEstablishments
 										  where meatEstablishment.Id == currentUser.MeatEstablishmentId
 										  select new
 										  {
@@ -85,7 +85,7 @@ namespace thesis.Controllers
 
 				return RedirectToAction(nameof(Index));
 			}
-			ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishment, "Id", "Name", meatDealers.MeatEstablishmentId);
+			ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishments, "Id", "Name", meatDealers.MeatEstablishmentId);
 			return View(meatDealers);
 		}
 
@@ -102,7 +102,7 @@ namespace thesis.Controllers
 			{
 				return NotFound();
 			}
-			ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishment, "Id", "Id", meatDealers.MeatEstablishmentId);
+			ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishments, "Id", "Id", meatDealers.MeatEstablishmentId);
 			return View(meatDealers);
 		}
 
@@ -140,7 +140,7 @@ namespace thesis.Controllers
 
 				return RedirectToAction(nameof(Index));
 			}
-			ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishment, "Id", "Id", meatDealers.MeatEstablishmentId);
+			ViewData["MeatEstablishmentId"] = new SelectList(_context.MeatEstablishments, "Id", "Id", meatDealers.MeatEstablishmentId);
 			return View(meatDealers);
 		}
 
