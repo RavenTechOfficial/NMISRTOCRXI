@@ -14,10 +14,10 @@ namespace thesis.Controllers
 
 
 		private readonly AppDbContext _context;
-		private readonly UserManager<AccountDetails> _userManager;
+		private readonly UserManager<AccountDetail> _userManager;
 
 
-		public ReceivingReportsController(AppDbContext context, UserManager<AccountDetails> userManager)
+		public ReceivingReportsController(AppDbContext context, UserManager<AccountDetail> userManager)
 		{
 			_context = context;
 			_userManager = userManager;
@@ -125,7 +125,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId,InspectionStatus")] ReceivingReport receivingReport)
+		public async Task<IActionResult> Create([Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId,InspectionStatus")] MeatInspectionReceivingReport receivingReport)
 		{
 			if (ModelState.IsValid) //not not
 			{
@@ -176,7 +176,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId,InspectionStatus")] ReceivingReport receivingReport)
+		public async Task<IActionResult> Edit(int id, [Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId,InspectionStatus")] MeatInspectionReceivingReport receivingReport)
 		{
 			if (id != receivingReport.Id)
 			{

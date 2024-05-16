@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models;
 using ServiceLayer.Services.IRepositories;
 using InfastructureLayer.Data;
-using thesis.Repositories;
+using InfastructureLayer.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseSqlServer(connectionString));
 
 // Configure Identity with custom roles
-builder.Services.AddIdentityCore<AccountDetails>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentityCore<AccountDetail>(options => options.SignIn.RequireConfirmedAccount = true)
 	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<AppDbContext>();
 

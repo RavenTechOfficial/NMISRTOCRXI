@@ -6,13 +6,13 @@ namespace DomainLayer.Models.ViewModels
 {
 	public class PostmortemViewModel
 	{
-		public IEnumerable<DomainLayer.Models.Postmortem> Postmortem { get; set; }
-		public DomainLayer.Models.Postmortem SinglePostmortem { get; set; }
+		public IEnumerable<DomainLayer.Models.MeatInspectionPostmortem> Postmortem { get; set; }
+		public DomainLayer.Models.MeatInspectionPostmortem SinglePostmortem { get; set; }
 
 
 		public int Id { get; set; }
 		public int PassedForSlaughterId { get; set; }
-		public PassedForSlaughter PassedForSlaughter { get; set; }
+		public MeatInspectionPassedForSlaughter PassedForSlaughter { get; set; }
 		public AnimalPart AnimalPart { get; set; }
 		public Cause Cause { get; set; }
 		public int Weight { get; set; }

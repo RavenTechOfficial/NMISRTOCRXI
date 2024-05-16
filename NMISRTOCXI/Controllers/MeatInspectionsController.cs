@@ -15,9 +15,9 @@ namespace thesis.Controllers
     public class MeatInspectionsController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly UserManager<AccountDetails> _userManager;
+        private readonly UserManager<AccountDetail> _userManager;
 
-        public MeatInspectionsController(AppDbContext context, UserManager<AccountDetails> userManager)
+        public MeatInspectionsController(AppDbContext context, UserManager<AccountDetail> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -416,7 +416,7 @@ namespace thesis.Controllers
         {
 
 
-            var result = new Antemortem
+            var result = new MeatInspectionAntemortem
             {
                 MeatInspectionReportId = meatInsId,
                 NoOfHeads = conductHead,
@@ -550,7 +550,7 @@ namespace thesis.Controllers
                              .Select(c => c.Id)
                              .FirstOrDefault();
 
-            var result = new PassedForSlaughter
+            var result = new MeatInspectionPassedForSlaughter
             {
                 ConductOfInspectionId = firstConductId,
                 NumberOfHeads = passedHead,
@@ -613,7 +613,7 @@ namespace thesis.Controllers
         public IActionResult AddPostmortemRow(int passedId, int postPart, int postCause, double postWeight, int postHead, List<IFormFile> images)
         {
 
-            var result = new Postmortem
+            var result = new MeatInspectionPostmortem
             {
                 PassedForSlaughterId = passedId,
                 AnimalPart = (AnimalPart)postPart,
@@ -880,7 +880,7 @@ namespace thesis.Controllers
         public IActionResult AddSummary(int totalId, string destinationName, string destinationAddress, int micIssued, int micCancelled)
         {
 
-            var result = new SummaryAndDistributionOfMIC
+            var result = new MeatInspectionSummaryAndDistributionOfMIC
             {
                 TotalNoFitForHumanConsumptionId = totalId,
                 DestinationName = destinationName,
@@ -915,7 +915,7 @@ namespace thesis.Controllers
                 .Where(mir => mir.ReceivingReportId == ReceivingId)
                 .Count();
 
-            var result = new SummaryAndDistributionOfMIC
+            var result = new MeatInspectionSummaryAndDistributionOfMIC
             {
                 TotalNoFitForHumanConsumptionId = PassedId,
                 DestinationName = NameVal,

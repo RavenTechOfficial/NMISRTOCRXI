@@ -16,10 +16,10 @@ namespace thesis.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterConfirmationModel : PageModel
     {
-        private readonly UserManager<AccountDetails> _userManager;
+        private readonly UserManager<AccountDetail> _userManager;
         private readonly IEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<AccountDetails> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<AccountDetail> userManager, IEmailSender sender)
         {
             _userManager = userManager;
             _sender = sender;

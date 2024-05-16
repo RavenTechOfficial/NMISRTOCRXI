@@ -3,16 +3,21 @@ using ServiceLayer.Services.IRepositories;
 using DomainLayer.Models.ViewModels;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
+using InfastructureLayer.Repositories;
 
-namespace thesis.Repositories
+namespace InfastructureLayer.Repositories
 {
-	public class FeedbackRepository : IFeedbackRepository
+	public class FeedbackRepository : Repository<Feedback>, IFeedbackRepository
 	{
         private readonly AppDbContext _context;
 
-        public FeedbackRepository(AppDbContext context)
+        public FeedbackRepository(AppDbContext context) : base(context) 
         {
             _context = context;
+        }
+        public void Update(Feedback entity)
+        {
+            _context.Update(entity);
         }
         public FeedbackViewModel GetFeedbacks()
 		{

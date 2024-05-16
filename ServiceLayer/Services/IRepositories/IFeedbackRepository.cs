@@ -3,8 +3,9 @@ using DomainLayer.Models;
 
 namespace ServiceLayer.Services.IRepositories
 {
-	public interface IFeedbackRepository
+	public interface IFeedbackRepository : IRepository<Feedback>
 	{
+		void Update(Feedback feedback);	
 		FeedbackViewModel GetFeedbacks();
 	}
 }

@@ -11,10 +11,10 @@ namespace thesis.Areas.Identity.Pages.Account
 {
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<AccountDetails> _signInManager;
+        private readonly SignInManager<AccountDetail> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
-        public LogoutModel(SignInManager<AccountDetails> signInManager, ILogger<LogoutModel> logger)
+        public LogoutModel(SignInManager<AccountDetail> signInManager, ILogger<LogoutModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;

@@ -2,9 +2,8 @@
 
 namespace ServiceLayer.Services.IRepositories
 {
-    public interface IMeatInspectionReportRepository
-    {
-        Task<ICollection<MeatInspectionReport>> GetAllMeatInspectionReports();
-
-    }
+	public interface IMeatInspectionReportRepository : IRepository<MeatInspectionReport>
+	{
+		void Update(MeatInspectionReport entity);
+	}
 }

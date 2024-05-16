@@ -12,11 +12,11 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {
-        private readonly UserManager<AccountDetails> _userManager;
+        private readonly UserManager<AccountDetail> _userManager;
         private readonly ILogger<DownloadPersonalDataModel> _logger;
 
         public DownloadPersonalDataModel(
-            UserManager<AccountDetails> userManager,
+            UserManager<AccountDetail> userManager,
             ILogger<DownloadPersonalDataModel> logger)
         {
             _userManager = userManager;
@@ -40,7 +40,7 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
 
             // Only include personal data for download
             var personalData = new Dictionary<string, string>();
-            var personalDataProps = typeof(AccountDetails).GetProperties().Where(
+            var personalDataProps = typeof(AccountDetail).GetProperties().Where(
                             prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
             {

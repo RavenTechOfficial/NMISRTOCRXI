@@ -8,12 +8,12 @@ namespace thesis.Controllers
 {
     public class RegisterAccountController : Controller
     {
-        private readonly UserManager<AccountDetails> _userManager;
-        private readonly SignInManager<AccountDetails> _signInManager;
+        private readonly UserManager<AccountDetail> _userManager;
+        private readonly SignInManager<AccountDetail> _signInManager;
         private readonly AppDbContext _context;
 
-        public RegisterAccountController(UserManager<AccountDetails> userManager,
-            SignInManager<AccountDetails> signInManager,
+        public RegisterAccountController(UserManager<AccountDetail> userManager,
+            SignInManager<AccountDetail> signInManager,
             AppDbContext context)
         {
             _userManager = userManager;

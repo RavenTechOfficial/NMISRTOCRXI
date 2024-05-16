@@ -12,13 +12,13 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
 {
     public class DeletePersonalDataModel : PageModel
     {
-        private readonly UserManager<AccountDetails> _userManager;
-        private readonly SignInManager<AccountDetails> _signInManager;
+        private readonly UserManager<AccountDetail> _userManager;
+        private readonly SignInManager<AccountDetail> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
         public DeletePersonalDataModel(
-            UserManager<AccountDetails> userManager,
-            SignInManager<AccountDetails> signInManager,
+            UserManager<AccountDetail> userManager,
+            SignInManager<AccountDetail> signInManager,
             ILogger<DeletePersonalDataModel> logger)
         {
             _userManager = userManager;

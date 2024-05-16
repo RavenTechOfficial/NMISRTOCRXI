@@ -12,11 +12,11 @@ namespace DomainLayer.Models
         public string? VerifiedByPOSMSHead { get; set; }
         [ForeignKey("ReceivingReport")]
         public Guid? ReceivingReportId { get; set; }
-        public ReceivingReport? ReceivingReport { get; set; }
+        public virtual MeatInspectionReceivingReport? ReceivingReport { get; set; }
 
         [ForeignKey("AccountDetails")]
         public string? InspectedById { get; set; }
-        public AccountDetails? InspectedBy { get; set; }
+        public virtual AccountDetail? InspectedBy { get; set; }
 
     }
 }

@@ -5,7 +5,7 @@ namespace DomainLayer.Models.ViewModels
     public class MeatInspectionReportViewModel
     {
         public List<MeatInspectionReport> MeatInspectionData { get; set; }
-        public List<ReceivingReport> ReceivingReportData { get; set; }
+        public List<MeatInspectionReceivingReport> ReceivingReportData { get; set; }
 
         public DomainLayer.Models.MeatInspectionReport MeatInspectionReports { get; set; }
 
@@ -28,7 +28,7 @@ namespace DomainLayer.Models.ViewModels
         public int PostmortemId { get; set; }
         public int TotalNoId { get; set; }
         public int SummaryId { get; set; }
-        public ReceivingReport? ReceivingReport { get; set; }
+        public MeatInspectionReceivingReport? ReceivingReport { get; set; }
         public string? Name { get; set; }
         public string? Address { get; set; }
         public string? LicenseToOperateNumber { get; set; }

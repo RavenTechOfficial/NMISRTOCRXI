@@ -19,8 +19,17 @@ namespace DomainLayer.Models
 		public string ContactNo { get; set; }
 		public string FaxNo { get; set; }
 		public string Status { get; set; }
-		public VehicleInfo? VehicleInfo { get; set; }
-		public Helper? Helper { get; set; }
+		[ForeignKey("VehicleInfo")]
+		public Guid? VehicleInfoId { get; set; }
+		public virtual VehicleInfo? VehicleInfo { get; set; }
+		[ForeignKey("Helper")]
+		public Guid? HelperId { get; set; }
+		public virtual Helper? Helper { get; set; }
+		[ForeignKey("Driver")]
+		public virtual Guid? DriverId { get; set; }
 		public Driver? Driver { get; set; }
+		public DateTime ReceivedDate { get; set; }
+		public DateTime ProcessedDate { get; set; }
+		public ApplicationStatus ApplicationStatus { get; set; }
 	}
 }

@@ -40,7 +40,7 @@ namespace thesis.Controllers
 
 			var latestMtv = _context.MTVApplications.OrderBy(p => p.Id).LastOrDefault();
 
-			var mtv = new Payment
+			var mtv = new MTVPayment
 			{
 				PaymentReceipt = imageLicenseBack,
 				SOA = mtvPaymentVM.SOA,

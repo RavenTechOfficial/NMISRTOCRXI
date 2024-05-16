@@ -1,10 +1,10 @@
 ﻿@using DomainLayer.Enum;
-@model IEnumerable<DomainLayer.Models.ReceivingReport>
+@model IEnumerable<DomainLayer.Models.MeatInspectionReceivingReport>
 @using Microsoft.AspNetCore.Identity;
 @using DomainLayer.Models;
 
-@inject SignInManager<AccountDetails> SignInManager
-@inject UserManager<AccountDetails> UserManager
+@inject SignInManager<AccountDetail> SignInManager
+@inject UserManager<AccountDetail> UserManager
 
 @{
     ViewData["Title"] = "Index";

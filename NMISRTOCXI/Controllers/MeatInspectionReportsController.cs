@@ -17,9 +17,9 @@ namespace thesis.Controllers
     public class MeatInspectionReportsController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly UserManager<AccountDetails> _userManager;
+        private readonly UserManager<AccountDetail> _userManager;
 
-        public MeatInspectionReportsController(AppDbContext context, UserManager<AccountDetails> userManager)
+        public MeatInspectionReportsController(AppDbContext context, UserManager<AccountDetail> userManager)
         {
             _context = context;
             _userManager = userManager;

@@ -23,19 +23,19 @@ namespace thesis.Areas.Identity.Pages.Account
 
     public class RegisterModel : PageModel
 	{
-		private readonly SignInManager<AccountDetails> _signInManager;
-		private readonly UserManager<AccountDetails> _userManager;
-		private readonly IUserStore<AccountDetails> _userStore;
-		private readonly IUserEmailStore<AccountDetails> _emailStore;
+		private readonly SignInManager<AccountDetail> _signInManager;
+		private readonly UserManager<AccountDetail> _userManager;
+		private readonly IUserStore<AccountDetail> _userStore;
+		private readonly IUserEmailStore<AccountDetail> _emailStore;
 		private readonly ILogger<RegisterModel> _logger;
 		private readonly IEmailSender _emailSender;
 		private readonly IWebHostEnvironment _hostEnvironment;
 		private readonly AppDbContext _context;
 
 		public RegisterModel(
-			UserManager<AccountDetails> userManager,
-			IUserStore<AccountDetails> userStore,
-			SignInManager<AccountDetails> signInManager,
+			UserManager<AccountDetail> userManager,
+			IUserStore<AccountDetail> userStore,
+			SignInManager<AccountDetail> signInManager,
 			ILogger<RegisterModel> logger,
 			IEmailSender emailSender,
 			IWebHostEnvironment hostEnvironment,
@@ -261,26 +261,26 @@ namespace thesis.Areas.Identity.Pages.Account
 			// If we got this far, something failed, redisplay form
 			return Page();
 		}
-		private AccountDetails CreateUser()
+		private AccountDetail CreateUser()
 		{
 			try
 			{
-				return Activator.CreateInstance<AccountDetails>();
+				return Activator.CreateInstance<AccountDetail>();
 			}
 			catch
 			{
-				throw new InvalidOperationException($"Can't create an instance of '{nameof(AccountDetails)}'. " +
-					$"Ensure that '{nameof(AccountDetails)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+				throw new InvalidOperationException($"Can't create an instance of '{nameof(AccountDetail)}'. " +
+					$"Ensure that '{nameof(AccountDetail)}' is not an abstract class and has a parameterless constructor, or alternatively " +
 					$"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
 			}
 		}
-		private IUserEmailStore<AccountDetails> GetEmailStore()
+		private IUserEmailStore<AccountDetail> GetEmailStore()
 		{
 			if (!_userManager.SupportsUserEmail)
 			{
 				throw new NotSupportedException("The default UI requires a user store with email support.");
 			}
-			return (IUserEmailStore<AccountDetails>)_userStore;
+			return (IUserEmailStore<AccountDetail>)_userStore;
 		}
 	}
 }

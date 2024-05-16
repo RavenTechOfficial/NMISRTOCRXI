@@ -20,13 +20,13 @@ namespace thesis.Controllers
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly AppDbContext _context;
-		private readonly UserManager<AccountDetails> _userManager;
+		private readonly UserManager<AccountDetail> _userManager;
 		private readonly IEmailSender _emailSender;
 
 		public UsersManagementController(
 			IUnitOfWork unitOfWork,
 			AppDbContext context,
-			UserManager<AccountDetails> userManager,
+			UserManager<AccountDetail> userManager,
             IEmailSender emailSender)
 		{
 			_unitOfWork = unitOfWork;

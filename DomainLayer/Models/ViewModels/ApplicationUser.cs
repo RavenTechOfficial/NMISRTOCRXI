@@ -5,7 +5,7 @@ namespace DomainLayer.Models.ViewModels
 {
     public class ApplicationUser
     {
-        public AccountDetails User { get; set; }
+        public AccountDetail User { get; set; }
         public IEnumerable<IdentityRole> Roles { get; set; }
     }
 }

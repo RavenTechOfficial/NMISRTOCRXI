@@ -15,13 +15,13 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        private readonly UserManager<AccountDetails> _userManager;
-        private readonly SignInManager<AccountDetails> _signInManager;
+        private readonly UserManager<AccountDetail> _userManager;
+        private readonly SignInManager<AccountDetail> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
         public ChangePasswordModel(
-            UserManager<AccountDetails> userManager,
-            SignInManager<AccountDetails> signInManager,
+            UserManager<AccountDetail> userManager,
+            SignInManager<AccountDetail> signInManager,
             ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Services.IRepositories;
 using DomainLayer.Models.ViewModels;
-using thesis.Repositories;
+using InfastructureLayer.Repositories;
 
 namespace thesis.Controllers
 {

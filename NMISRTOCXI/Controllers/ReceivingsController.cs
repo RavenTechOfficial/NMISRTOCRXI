@@ -59,7 +59,7 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RecDate,AccountDetailsId")] Receiving receiving)
+        public async Task<IActionResult> Create([Bind("Id,RecDate,AccountDetailsId")] MeatInspectionReceiving receiving)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace thesis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RecDate,AccountDetailsId")] Receiving receiving)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RecDate,AccountDetailsId")] MeatInspectionReceiving receiving)
         {
             if (id != receiving.Id)
             {

@@ -12,8 +12,8 @@ namespace thesis.Controllers
     public class MeatDealersController : Controller
 	{
 		private readonly AppDbContext _context;
-		private readonly UserManager<AccountDetails> _userManager; // Add the type argument 'AccountDetails'
-		public MeatDealersController(AppDbContext context, UserManager<AccountDetails> userManager)
+		private readonly UserManager<AccountDetail> _userManager; // Add the type argument 'AccountDetails'
+		public MeatDealersController(AppDbContext context, UserManager<AccountDetail> userManager)
 		{
 			_context = context;
 			_userManager = userManager;

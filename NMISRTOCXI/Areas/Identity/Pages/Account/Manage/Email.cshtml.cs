@@ -16,13 +16,13 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
 {
     public class EmailModel : PageModel
     {
-        private readonly UserManager<AccountDetails> _userManager;
-        private readonly SignInManager<AccountDetails> _signInManager;
+        private readonly UserManager<AccountDetail> _userManager;
+        private readonly SignInManager<AccountDetail> _signInManager;
         private readonly IEmailSender _emailSender;
 
         public EmailModel(
-            UserManager<AccountDetails> userManager,
-            SignInManager<AccountDetails> signInManager,
+            UserManager<AccountDetail> userManager,
+            SignInManager<AccountDetail> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -72,7 +72,7 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
             public string NewEmail { get; set; }
         }
 
-        private async Task LoadAsync(AccountDetails user)
+        private async Task LoadAsync(AccountDetail user)
         {
             var email = await _userManager.GetEmailAsync(user);
             Email = email;

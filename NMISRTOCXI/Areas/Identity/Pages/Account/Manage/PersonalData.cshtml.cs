@@ -12,11 +12,11 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {
-        private readonly UserManager<AccountDetails> _userManager;
+        private readonly UserManager<AccountDetail> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
 
         public PersonalDataModel(
-            UserManager<AccountDetails> userManager,
+            UserManager<AccountDetail> userManager,
             ILogger<PersonalDataModel> logger)
         {
             _userManager = userManager;

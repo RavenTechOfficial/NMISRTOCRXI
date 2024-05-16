@@ -14,6 +14,6 @@ namespace DomainLayer.Models
         public string ContactNo { get; set; }
         [ForeignKey("MeatEstablishment")]
         public Guid MeatEstablishmentId { get; set; }
-        public MeatEstablishment MeatEstablishment { get; set; }
+        public virtual MeatEstablishment MeatEstablishment { get; set; }
     }
 }

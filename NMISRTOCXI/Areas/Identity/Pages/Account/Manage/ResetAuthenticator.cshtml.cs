@@ -14,13 +14,13 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
-        private readonly UserManager<AccountDetails> _userManager;
-        private readonly SignInManager<AccountDetails> _signInManager;
+        private readonly UserManager<AccountDetail> _userManager;
+        private readonly SignInManager<AccountDetail> _signInManager;
         private readonly ILogger<ResetAuthenticatorModel> _logger;
 
         public ResetAuthenticatorModel(
-            UserManager<AccountDetails> userManager,
-            SignInManager<AccountDetails> signInManager,
+            UserManager<AccountDetail> userManager,
+            SignInManager<AccountDetail> signInManager,
             ILogger<ResetAuthenticatorModel> logger)
         {
             _userManager = userManager;

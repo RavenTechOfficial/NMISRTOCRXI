@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InfastructureLayer.Data;
 
-public class AppDbContext : IdentityDbContext<AccountDetails>
+public class AppDbContext : IdentityDbContext<AccountDetail>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
-    public DbSet<AccountDetails> AccountDetails { get; set; }
-    public DbSet<Antemortem> Antemortems { get; set; }
+    public DbSet<AccountDetail> AccountDetails { get; set; }
+    public DbSet<MeatInspectionAntemortem> Antemortems { get; set; }
     public DbSet<DisapprovedApplication> DisapprovedApplications { get; set; }
     public DbSet<MeatDealer> MeatDealers { get; set; }
     public DbSet<MeatEstablishment> MeatEstablishments { get; set; }
@@ -20,13 +20,13 @@ public class AppDbContext : IdentityDbContext<AccountDetails>
     public DbSet<MTVApplicationResult> MTVApplicationResults { get; set; }
     public DbSet<MTVDetails> MTVDetails { get; set; }
     public DbSet<MTVInspection> MTVInspections { get; set; }
-    public DbSet<PassedForSlaughter> PassedForSlaughters { get; set; }
-    public DbSet<Payment> Payments { get; set; }
-    public DbSet<Postmortem> Postmortems { get; set; }
-    public DbSet<Receiving> Receivings{ get; set; }
-    public DbSet<ReceivingReport> ReceivingReports { get; set; }
-    public DbSet<SummaryAndDistributionOfMIC> SummaryAndDistributionOfMICs { get; set; }
-    public DbSet<TotalNoFitForHumanConsumption> TotalNoFitForHumanConsumptions { get; set; }
+    public DbSet<MeatInspectionPassedForSlaughter> PassedForSlaughters { get; set; }
+    public DbSet<MTVPayment> Payments { get; set; }
+    public DbSet<MeatInspectionPostmortem> Postmortems { get; set; }
+    public DbSet<MeatInspectionReceiving> Receivings{ get; set; }
+    public DbSet<MeatInspectionReceivingReport> ReceivingReports { get; set; }
+    public DbSet<MeatInspectionSummaryAndDistributionOfMIC> SummaryAndDistributionOfMICs { get; set; }
+    public DbSet<MeatInspectionTotalNoFitForHumanConsumption> TotalNoFitForHumanConsumptions { get; set; }
     public DbSet<Driver> Drivers { get; set; }
 	public DbSet<Helper> Helpers { get; set; }
 	public DbSet<MTVQuiz> MTVQuizzes { get; set; }

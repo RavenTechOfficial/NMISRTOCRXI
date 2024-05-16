@@ -4,7 +4,7 @@ using InfastructureLayer.Data;
 using DomainLayer.Enum;
 using ServiceLayer.Services.IRepositories;
 
-namespace thesis.Repositories
+namespace InfastructureLayer.Repositories
 {
     public class AnalyticsRepository : IAnalyticsRepository
     {

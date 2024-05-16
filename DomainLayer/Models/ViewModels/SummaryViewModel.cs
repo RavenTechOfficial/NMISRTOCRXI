@@ -5,8 +5,8 @@ namespace DomainLayer.Models.ViewModels
 {
 	public class SummaryViewModel
 	{
-		public IEnumerable<DomainLayer.Models.SummaryAndDistributionOfMIC> Summary { get; set; }
-		public DomainLayer.Models.SummaryAndDistributionOfMIC SingleSummary { get; set; }
+		public IEnumerable<DomainLayer.Models.MeatInspectionSummaryAndDistributionOfMIC> Summary { get; set; }
+		public DomainLayer.Models.MeatInspectionSummaryAndDistributionOfMIC SingleSummary { get; set; }
 
 
 		public int Id { get; set; }

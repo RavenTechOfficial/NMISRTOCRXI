@@ -103,7 +103,7 @@ namespace thesis.Controllers
 		public async Task<IActionResult> PaymentForm(int vehicleId)
 		{
 
-			Payment payment = _context.Payments
+			MTVPayment payment = _context.Payments
 				.Include(p => p.MTVApplication)
 				.Include(p => p.MTVApplication.VehicleInfo)
 				.Where(p => p.MTVApplication.Id == vehicleId)

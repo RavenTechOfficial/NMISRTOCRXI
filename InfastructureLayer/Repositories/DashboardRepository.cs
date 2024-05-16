@@ -5,7 +5,7 @@ using InfastructureLayer.Data;
 using DomainLayer.Enum;
 using DomainLayer.Models;
 
-namespace thesis.Repositories
+namespace InfastructureLayer.Repositories
 {
     public class DashboardRepository : IDashboardRepository
     {

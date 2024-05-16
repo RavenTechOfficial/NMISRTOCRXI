@@ -2,8 +2,8 @@
 {
     public class MtvDashboardViewModel
 	{
-		public IEnumerable<AccountDetails> AccountDetails { get; set; }
+		public IEnumerable<AccountDetail> AccountDetails { get; set; }
 		public IEnumerable<CheckList> Checklists { get; set; }
-		public IEnumerable<Payment> Payments { get; set; }
+		public IEnumerable<MTVPayment> Payments { get; set; }
 	}
 }

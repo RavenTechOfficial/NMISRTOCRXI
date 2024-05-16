@@ -16,12 +16,12 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<AccountDetails> _userManager;
-        private readonly SignInManager<AccountDetails> _signInManager;
+        private readonly UserManager<AccountDetail> _userManager;
+        private readonly SignInManager<AccountDetail> _signInManager;
 
         public IndexModel(
-            UserManager<AccountDetails> userManager,
-            SignInManager<AccountDetails> signInManager)
+            UserManager<AccountDetail> userManager,
+            SignInManager<AccountDetail> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -62,7 +62,7 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
         }
 
-        private async Task LoadAsync(AccountDetails user)
+        private async Task LoadAsync(AccountDetail user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);

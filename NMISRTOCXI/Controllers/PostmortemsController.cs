@@ -97,7 +97,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(Postmortem postmortem)
+		public async Task<IActionResult> Create(MeatInspectionPostmortem postmortem)
 		{
    //         var image1 = "";
    //         if (postmortemVM.Image1 != null && postmortemVM.Image1.Length > 0)
@@ -189,7 +189,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,PassedForSlaughterId,AnimalPart,Cause,Weight,NoOfHeads,Image1, Image2, Image3")] Postmortem postmortem)
+		public async Task<IActionResult> Edit(int id, [Bind("Id,PassedForSlaughterId,AnimalPart,Cause,Weight,NoOfHeads,Image1, Image2, Image3")] MeatInspectionPostmortem postmortem)
 		{
 			if (id != postmortem.Id)
 			{

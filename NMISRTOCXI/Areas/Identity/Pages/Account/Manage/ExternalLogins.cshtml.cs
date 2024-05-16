@@ -12,14 +12,14 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<AccountDetails> _userManager;
-        private readonly SignInManager<AccountDetails> _signInManager;
-        private readonly IUserStore<AccountDetails> _userStore;
+        private readonly UserManager<AccountDetail> _userManager;
+        private readonly SignInManager<AccountDetail> _signInManager;
+        private readonly IUserStore<AccountDetail> _userStore;
 
         public ExternalLoginsModel(
-            UserManager<AccountDetails> userManager,
-            SignInManager<AccountDetails> signInManager,
-            IUserStore<AccountDetails> userStore)
+            UserManager<AccountDetail> userManager,
+            SignInManager<AccountDetail> signInManager,
+            IUserStore<AccountDetail> userStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -65,7 +65,7 @@ namespace thesis.Areas.Identity.Pages.Account.Manage
                 .ToList();
 
             string passwordHash = null;
-            if (_userStore is IUserPasswordStore<AccountDetails> userPasswordStore)
+            if (_userStore is IUserPasswordStore<AccountDetail> userPasswordStore)
             {
                 passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
             }

@@ -5,7 +5,7 @@ namespace DomainLayer.Models.ViewModels
     public class ResultViewModel
     {
         public List<MeatInspectionReport> MeatInspectionData { get; set; }
-        public List<ReceivingReport> ReceivingReportData { get; set; }
+        public List<MeatInspectionReceivingReport> ReceivingReportData { get; set; }
         public DomainLayer.Models.MeatInspectionReport MeatInspectionReports { get; set; }
 
 
@@ -13,8 +13,8 @@ namespace DomainLayer.Models.ViewModels
         public int Id { get; set; }
         public int MeatInspectionReportId { get; set; }
         public DateTime DateReceived { get; set; }
-        public ReceivingReport? ReceivingReport { get; set; }
-        public AccountDetails? AccountDetails { get; set; }
+        public MeatInspectionReceivingReport? ReceivingReport { get; set; }
+        public AccountDetail? AccountDetails { get; set; }
         public string? Name { get; set; }
         public string? Address { get; set; }
         public string? LicenseToOperateNumber { get; set; }
