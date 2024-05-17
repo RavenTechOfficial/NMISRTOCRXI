@@ -1,7 +1,10 @@
-﻿namespace DomainLayer.Enum
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DomainLayer.Enum
 {
-	public enum applicationtype
+	public enum ApplicationType
 	{
+		[Display(Name = "New Application")]
 		NewApplication,
 		Renewal
 	}

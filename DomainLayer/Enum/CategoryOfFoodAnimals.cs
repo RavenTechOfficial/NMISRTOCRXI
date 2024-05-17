@@ -1,8 +1,11 @@
-﻿namespace DomainLayer.Enum
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DomainLayer.Enum
 {
     public enum CategoryOfFoodAnimals
-    {
-        NA,
+	{
+		[Display(Name = "N/A")]
+		NA,
         Large,
         Small
     }

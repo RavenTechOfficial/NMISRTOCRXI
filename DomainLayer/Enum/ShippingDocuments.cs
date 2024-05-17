@@ -1,10 +1,16 @@
-﻿namespace DomainLayer.Enum
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DomainLayer.Enum
 {
     public enum ShippingDocuments
-    {
-        CertificateOfOwnerShip,
-        CertificateOfTransfer,
-        VeterinaryHealthCertificate,
-        ShippingPermit
+	{
+		[Display(Name = "Certificate Of OwnerShip")]
+		CertificateOfOwnerShip,
+		[Display(Name = "Certificate Of Transfer")]
+		CertificateOfTransfer,
+		[Display(Name = "Veterinary Health Certificate")]
+		VeterinaryHealthCertificate,
+		[Display(Name = "Shipping Permit")]
+		ShippingPermit
     }
 }
