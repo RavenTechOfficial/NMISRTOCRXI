@@ -88,7 +88,7 @@ namespace thesis.Controllers
 
             // Get TotalNoFitForHumanConsumptionId using PostmortemId
             int? totalNoFitForHumanConsumptionId = postmortemId.HasValue
-                ? _context.totalNoFitForHumanConsumptions
+                ? _context.TotalNoFitForHumanConsumptions
                     .Where(tnfhc => tnfhc.PostmortemId == postmortemId.Value)
                     .Select(tnfhc => (int?)tnfhc.Id)
                     .FirstOrDefault()
@@ -854,7 +854,7 @@ namespace thesis.Controllers
                              .Select(c => c.Id)
                              .FirstOrDefault();
 
-            var result = new totalNoFitForHumanConsumptions
+            var result = new TotalNoFitForHumanConsumptions
             {
                 PostmortemId = firstPostId,
                 NoOfHeads = totalHead,
@@ -935,7 +935,7 @@ namespace thesis.Controllers
                                            join coi in _context.ConductOfInspections on mir.Id equals coi.MeatInspectionReportId
                                            join pfs in _context.PassedForSlaughters on coi.Id equals pfs.ConductOfInspectionId
                                            join pm in _context.Postmortems on pfs.Id equals pm.PassedForSlaughterId
-                                           join tnfhc in _context.totalNoFitForHumanConsumptions on pm.Id equals tnfhc.PostmortemId
+                                           join tnfhc in _context.TotalNoFitForHumanConsumptions on pm.Id equals tnfhc.PostmortemId
                                            join sadmic in _context.SummaryAndDistributionOfMICs on tnfhc.Id equals sadmic.TotalNoFitForHumanConsumptionId
                                            select new MeatInspectionViewModel
                                            {

@@ -8,7 +8,7 @@ namespace DomainLayer.Models
     public class ReceivingReport
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public DateTime RecTime { get; set; }
         public int BatchCode { get; set; }
         public Species Species { get; set; }
@@ -23,15 +23,15 @@ namespace DomainLayer.Models
         public int HoldingPenNo { get; set; }
         public string ReceivingBy { get; set; }
         [ForeignKey("AccountDetails")]
-        public string? ProcessedById { get; set; }
-        public virtual AccountDetails? ProcessedBy { get; set; }
+        public string? AccountDetailsId { get; set; }
+        public virtual AccountDetails? AccountDetails { get; set; }
         public InspectionStatus? InspectionStatus { get; set; }
 
-        public MeatInspectionReport? MeatInspectionReport { get; set; }
-        public IEnumerable<Antemortem>? Antemortems { get; set; }
-        public IEnumerable<PassedForSlaughter>? PassedForSlaughter { get; set; }
-        public IEnumerable<Postmortem>? Postmortems { get; set; }
-        public IEnumerable<TotalNoFitForHumanConsumptions>? TotalNoFitForHumanConsumptions { get; set; }
-		public SummaryAndDistributionOfMIC? SummaryAndDistributionOfMIC { get; set; }
+  //      public MeatInspectionReport? MeatInspectionReport { get; set; }
+  //      public IEnumerable<ConductOfInspection>? ConductOfInspection { get; set; }
+  //      public IEnumerable<PassedForSlaughter>? PassedForSlaughter { get; set; }
+  //      public IEnumerable<Postmortem>? Postmortems { get; set; }
+  //      public IEnumerable<TotalNoFitForHumanConsumptions>? TotalNoFitForHumanConsumptions { get; set; }
+		//public SummaryAndDistributionOfMIC? SummaryAndDistributionOfMIC { get; set; }
 	}
 }

@@ -649,7 +649,7 @@ namespace InfastructureLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Antemortems",
+                name: "ConductOfInspection",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -662,9 +662,9 @@ namespace InfastructureLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Antemortems", x => x.Id);
+                    table.PrimaryKey("PK_ConductOfInspection", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Antemortems_MeatInspectionReports_MeatInspectionReportId",
+                        name: "FK_ConductOfInspection_MeatInspectionReports_MeatInspectionReportId",
                         column: x => x.MeatInspectionReportId,
                         principalTable: "MeatInspectionReports",
                         principalColumn: "Id",
@@ -685,9 +685,9 @@ namespace InfastructureLayer.Migrations
                 {
                     table.PrimaryKey("PK_PassedForSlaughters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PassedForSlaughters_Antemortems_ConductOfInspectionId",
+                        name: "FK_PassedForSlaughters_ConductOfInspection_ConductOfInspectionId",
                         column: x => x.ConductOfInspectionId,
-                        principalTable: "Antemortems",
+                        principalTable: "ConductOfInspection",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -809,8 +809,8 @@ namespace InfastructureLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Antemortems_MeatInspectionReportId",
-                table: "Antemortems",
+                name: "IX_ConductOfInspection_MeatInspectionReportId",
+                table: "ConductOfInspection",
                 column: "MeatInspectionReportId");
 
             migrationBuilder.CreateIndex(
@@ -1033,7 +1033,7 @@ namespace InfastructureLayer.Migrations
                 name: "PassedForSlaughters");
 
             migrationBuilder.DropTable(
-                name: "Antemortems");
+                name: "ConductOfInspection");
 
             migrationBuilder.DropTable(
                 name: "MeatInspectionReports");

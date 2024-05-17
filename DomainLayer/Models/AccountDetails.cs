@@ -15,6 +15,7 @@ namespace DomainLayer.Models
         public string? contactNo { get; set; }
         public string? image { get; set; }
         public DateTime? birthdate { get; set; }
+        public Roles? Roles { get; set; }
         public string? sex { get; set; }
         [ForeignKey("MeatEstablishment")]
         public int? MeatEstablishmentId { get; set; }

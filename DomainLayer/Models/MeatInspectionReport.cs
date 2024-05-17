@@ -7,15 +7,15 @@ namespace DomainLayer.Models
     public class MeatInspectionReport
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public DateTime RepDate { get; set; }
         public string? VerifiedByPOSMSHead { get; set; }
         [ForeignKey("ReceivingReport")]
-        public Guid? ReceivingReportId { get; set; }
+        public int? ReceivingReportId { get; set; }
         public ReceivingReport? ReceivingReport { get; set; }
         [ForeignKey("AccountDetails")]
-        public string? InspectedById { get; set; }
-        public AccountDetails? InspectedBy { get; set; }
+        public string? AccountDetailsId { get; set; }
+        public AccountDetails? AccountDetails { get; set; }
         public string UID { get; set; } // para asa ni?
 
     }

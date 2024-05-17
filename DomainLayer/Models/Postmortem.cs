@@ -8,9 +8,12 @@ namespace DomainLayer.Models
     {
         [Key]
         public int Id { get; set; }
-		[ForeignKey("ReceivingReport")]
-		public Guid ReceivingReportId { get; set; }
-		public virtual ReceivingReport? ReceivingReport { get; set; }
+		[ForeignKey("PassedForSlaughter")]
+		public int PassedForSlaughterId { get; set; }
+		public virtual PassedForSlaughter? PassedForSlaughter { get; set; }
+		//[ForeignKey("ReceivingReport")]
+		//public Guid ReceivingReportId { get; set; }
+		//public virtual ReceivingReport? ReceivingReport { get; set; }
 		public AnimalPart AnimalPart { get; set; }
         public Cause Cause { get; set; }
         public double Weight { get; set; }

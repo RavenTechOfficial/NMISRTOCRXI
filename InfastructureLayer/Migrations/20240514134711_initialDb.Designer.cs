@@ -276,7 +276,7 @@ namespace InfastructureLayer.Migrations
 
                     b.HasIndex("MeatInspectionReportId");
 
-                    b.ToTable("Antemortems");
+                    b.ToTable("ConductOfInspection");
                 });
 
             modelBuilder.Entity("DomainLayer.Models.CheckList", b =>

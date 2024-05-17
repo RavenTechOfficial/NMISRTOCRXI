@@ -4,8 +4,8 @@ namespace DomainLayer.Models.ViewModels
 {
     public class ConductOfInspectionViewModel
 	{
-		public IEnumerable<Antemortem> ConductOfInspections { get; set; }
-        public Antemortem SingleConductOfInspection { get; set; }
+		public IEnumerable<ConductOfInspection> ConductOfInspections { get; set; }
+        public ConductOfInspection SingleConductOfInspection { get; set; }
 		public IEnumerable<Postmortem> Postmortems { get; set; }
 		public Postmortem SinglePostmortem { get; set; }
 		public PassedForSlaughter SinglePassedForSlaughter { get; set; }
@@ -34,7 +34,7 @@ namespace DomainLayer.Models.ViewModels
 
 		//PassedForSlaughter
 		public int ConductOfInspectionId { get; set; }
-		public Antemortem? ConductOfInspection { get; set; }
+		public ConductOfInspection? ConductOfInspection { get; set; }
 
 		//totalNoFit
 		public Species Species { get; set; }

@@ -11,9 +11,12 @@ namespace DomainLayer.Models
         public Species Species { get; set; }
         public int NoOfHeads { get; set; }
         public double DressedWeight { get; set; }
-		[ForeignKey("ReceivingReport")]
-		public Guid ReceivingReportId { get; set; }
-		public virtual ReceivingReport? ReceivingReport { get; set; }
+		[ForeignKey("Postmortem")]
+		public int PostmortemId { get; set; }
+		public virtual Postmortem? Postmortem { get; set; }
+		//[ForeignKey("ReceivingReport")]
+		//public Guid ReceivingReportId { get; set; }
+		//public virtual ReceivingReport? ReceivingReport { get; set; }
 
 	}
 }

@@ -57,7 +57,7 @@ namespace thesis.Controllers
 						address = user.address,
 						contactNo = user.contactNo,
 						email = user.Email,
-						Roles = user.Roles, // Assuming Roles is a property in your User entity
+						Roles = (Roles)user.Roles, // Assuming Roles is a property in your User entity
 						MeatEstablishmentId = user.MeatEstablishmentId,
 						MeatEstablishmentName = meatEstablishment.Name
 					})
@@ -122,7 +122,7 @@ namespace thesis.Controllers
 				lastName = users.lastName,
 				middleName = users.middleName,
 				contactNo = users.contactNo,
-				birthdate = users.birthdate,
+				birthdate = (DateTime)users.birthdate,
 				sex = users.sex,
 			};
 			return View(accountVm);
@@ -138,7 +138,7 @@ namespace thesis.Controllers
 				lastName = users.lastName,
 				middleName = users.middleName,
 				contactNo = users.contactNo,
-				birthdate = users.birthdate,
+				birthdate = (DateTime)users.birthdate,
 				sex = users.sex,
 			};
 			return View(accountVm);

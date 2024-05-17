@@ -10,42 +10,42 @@ using DomainLayer.Models;
 
 namespace thesis.Controllers
 {
-	public class totalNoFitForHumanConsumptionsController : Controller
+	public class TotalNoFitForHumanConsumptionsController : Controller
 	{
 		private readonly AppDbContext _context;
 
-		public totalNoFitForHumanConsumptionsController(AppDbContext context)
+		public TotalNoFitForHumanConsumptionsController(AppDbContext context)
 		{
 			_context = context;
 		}
 
-		// GET: totalNoFitForHumanConsumptions
+		// GET: TotalNoFitForHumanConsumptions
 		public async Task<IActionResult> Index()
 		{
-			var AppDbContext = _context.totalNoFitForHumanConsumptions.Include(t => t.Postmortem);
+			var AppDbContext = _context.TotalNoFitForHumanConsumptions.Include(t => t.Postmortem);
 			return View(await AppDbContext.ToListAsync());
 		}
 
-		// GET: totalNoFitForHumanConsumptions/Details/5
+		// GET: TotalNoFitForHumanConsumptions/Details/5
 		public async Task<IActionResult> Details(int? id)
 		{
-			if (id == null || _context.totalNoFitForHumanConsumptions == null)
+			if (id == null || _context.TotalNoFitForHumanConsumptions == null)
 			{
 				return NotFound();
 			}
 
-			var totalNoFitForHumanConsumptions = await _context.totalNoFitForHumanConsumptions
+			var TotalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions
 				.Include(t => t.Postmortem)
 				.FirstOrDefaultAsync(m => m.Id == id);
-			if (totalNoFitForHumanConsumptions == null)
+			if (TotalNoFitForHumanConsumptions == null)
 			{
 				return NotFound();
 			}
 
-			return View(totalNoFitForHumanConsumptions);
+			return View(TotalNoFitForHumanConsumptions);
 		}
 
-		// GET: totalNoFitForHumanConsumptions/Create
+		// GET: TotalNoFitForHumanConsumptions/Create
 		public IActionResult Create()
 		{
 			int? passedForSlaughterId = TempData["PassedForSlaughterId"] as int?;
@@ -102,49 +102,49 @@ namespace thesis.Controllers
 			return View();
 		}
 
-		// POST: totalNoFitForHumanConsumptions/Create
+		// POST: TotalNoFitForHumanConsumptions/Create
 		// To protect from overposting attacks, enable the specific properties you want to bind to.
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] totalNoFitForHumanConsumptions totalNoFitForHumanConsumptions)
+		public async Task<IActionResult> Create([Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] TotalNoFitForHumanConsumptions TotalNoFitForHumanConsumptions)
 		{
 			if (ModelState.IsValid)
 			{
-				_context.Add(totalNoFitForHumanConsumptions);
+				_context.Add(TotalNoFitForHumanConsumptions);
 				await _context.SaveChangesAsync();
 				//   return RedirectToAction(nameof(Index));
 				return RedirectToAction("Create", "SummaryAndDistributionOfMICs");
 			}
-			ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", totalNoFitForHumanConsumptions.PostmortemId);
+			ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", TotalNoFitForHumanConsumptions.PostmortemId);
 			return View();
 		}
 
-		// GET: totalNoFitForHumanConsumptions/Edit/5
+		// GET: TotalNoFitForHumanConsumptions/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
-			if (id == null || _context.totalNoFitForHumanConsumptions == null)
+			if (id == null || _context.TotalNoFitForHumanConsumptions == null)
 			{
 				return NotFound();
 			}
 
-			var totalNoFitForHumanConsumptions = await _context.totalNoFitForHumanConsumptions.FindAsync(id);
-			if (totalNoFitForHumanConsumptions == null)
+			var TotalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions.FindAsync(id);
+			if (TotalNoFitForHumanConsumptions == null)
 			{
 				return NotFound();
 			}
-			ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", totalNoFitForHumanConsumptions.PostmortemId);
-			return View(totalNoFitForHumanConsumptions);
+			ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", TotalNoFitForHumanConsumptions.PostmortemId);
+			return View(TotalNoFitForHumanConsumptions);
 		}
 
-		// POST: totalNoFitForHumanConsumptions/Edit/5
+		// POST: TotalNoFitForHumanConsumptions/Edit/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to.
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] totalNoFitForHumanConsumptions totalNoFitForHumanConsumptions)
+		public async Task<IActionResult> Edit(int id, [Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] TotalNoFitForHumanConsumptions TotalNoFitForHumanConsumptions)
 		{
-			if (id != totalNoFitForHumanConsumptions.Id)
+			if (id != TotalNoFitForHumanConsumptions.Id)
 			{
 				return NotFound();
 			}
@@ -153,12 +153,12 @@ namespace thesis.Controllers
 			{
 				try
 				{
-					_context.Update(totalNoFitForHumanConsumptions);
+					_context.Update(TotalNoFitForHumanConsumptions);
 					await _context.SaveChangesAsync();
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!totalNoFitForHumanConsumptionsExists(totalNoFitForHumanConsumptions.Id))
+					if (!TotalNoFitForHumanConsumptionsExists(TotalNoFitForHumanConsumptions.Id))
 					{
 						return NotFound();
 					}
@@ -169,51 +169,51 @@ namespace thesis.Controllers
 				}
 				return RedirectToAction(nameof(Index));
 			}
-			ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", totalNoFitForHumanConsumptions.PostmortemId);
-			return View(totalNoFitForHumanConsumptions);
+			ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", TotalNoFitForHumanConsumptions.PostmortemId);
+			return View(TotalNoFitForHumanConsumptions);
 		}
 
-		// GET: totalNoFitForHumanConsumptions/Delete/5
+		// GET: TotalNoFitForHumanConsumptions/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
-			if (id == null || _context.totalNoFitForHumanConsumptions == null)
+			if (id == null || _context.TotalNoFitForHumanConsumptions == null)
 			{
 				return NotFound();
 			}
 
-			var totalNoFitForHumanConsumptions = await _context.totalNoFitForHumanConsumptions
+			var TotalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions
 				.Include(t => t.Postmortem)
 				.FirstOrDefaultAsync(m => m.Id == id);
-			if (totalNoFitForHumanConsumptions == null)
+			if (TotalNoFitForHumanConsumptions == null)
 			{
 				return NotFound();
 			}
 
-			return View(totalNoFitForHumanConsumptions);
+			return View(TotalNoFitForHumanConsumptions);
 		}
 
-		// POST: totalNoFitForHumanConsumptions/Delete/5
+		// POST: TotalNoFitForHumanConsumptions/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			if (_context.totalNoFitForHumanConsumptions == null)
+			if (_context.TotalNoFitForHumanConsumptions == null)
 			{
-				return Problem("Entity set 'AppDbContext.totalNoFitForHumanConsumptions'  is null.");
+				return Problem("Entity set 'AppDbContext.TotalNoFitForHumanConsumptions'  is null.");
 			}
-			var totalNoFitForHumanConsumptions = await _context.totalNoFitForHumanConsumptions.FindAsync(id);
-			if (totalNoFitForHumanConsumptions != null)
+			var TotalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions.FindAsync(id);
+			if (TotalNoFitForHumanConsumptions != null)
 			{
-				_context.totalNoFitForHumanConsumptions.Remove(totalNoFitForHumanConsumptions);
+				_context.TotalNoFitForHumanConsumptions.Remove(TotalNoFitForHumanConsumptions);
 			}
 
 			await _context.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
 
-		private bool totalNoFitForHumanConsumptionsExists(int id)
+		private bool TotalNoFitForHumanConsumptionsExists(int id)
 		{
-			return (_context.totalNoFitForHumanConsumptions?.Any(e => e.Id == id)).GetValueOrDefault();
+			return (_context.TotalNoFitForHumanConsumptions?.Any(e => e.Id == id)).GetValueOrDefault();
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace thesis.Controllers
 			var mtvRegistrationViewModel = new MtvRegistrationStatusViewModel
 			{
 				MtvApplicants = mtvApplications,
-				checklists = new checklist()
+				checklists = new CheckList()
 			};
 
 
@@ -57,10 +57,10 @@ namespace thesis.Controllers
 					return BadRequest();
 			}
 
-			checklist existingChecklist = await _context.checklists
+			CheckList existingChecklist = await _context.CheckLists
 				.FirstOrDefaultAsync(c => c.plateno == checks.checklists.plateno);
 
-			var checklists = new checklist
+			var checklists = new CheckList
 			{
 				operatorname = checks.checklists.operatorname,
 				estserved = checks.checklists.estserved,
@@ -130,7 +130,7 @@ namespace thesis.Controllers
 		{
 
 			MTVApplication vehicle = await _context.MTVApplications.FindAsync(payment.MTVApplication.Id);
-			checklist checks = _context.checklists
+			CheckList checks = _context.CheckLists
 				.Where(p => p.plateno == payment.PlateNo)
 				.FirstOrDefault();
 

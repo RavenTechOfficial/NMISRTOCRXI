@@ -8,7 +8,7 @@ namespace DomainLayer.Models
         public int Id { get; set; }
         public DateTime RecDate { get; set; }
         [ForeignKey("AccountDetails")]
-        public string ReceivedById { get; set; }
-        public AccountDetails ReceivedBy { get; set; }
+        public string AccountDetailsId { get; set; }
+        public AccountDetails AccountDetails { get; set; }
     }
 }

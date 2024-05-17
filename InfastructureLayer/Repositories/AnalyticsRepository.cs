@@ -264,7 +264,7 @@ namespace thesis.Repositories
 
 			foreach (var species in speciesList)
 			{
-				var sumForSpecies = _context.Antemortems
+				var sumForSpecies = _context.ConductOfInspections
 					.Include(p => p.MeatInspectionReport)
 					.Include(p => p.MeatInspectionReport.ReceivingReport)
 					.Where(p => p.Issue == issue
