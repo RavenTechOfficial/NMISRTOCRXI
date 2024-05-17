@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InfastructureLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class initialDb : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -60,7 +60,7 @@ namespace InfastructureLayer.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TelNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    gender = table.Column<int>(type: "int", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false),
                     birthdate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -283,6 +283,7 @@ namespace InfastructureLayer.Migrations
                     contactNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     birthdate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Roles = table.Column<int>(type: "int", nullable: true),
                     sex = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MeatEstablishmentId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -649,7 +650,7 @@ namespace InfastructureLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ConductOfInspection",
+                name: "ConductOfInspections",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -662,9 +663,9 @@ namespace InfastructureLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ConductOfInspection", x => x.Id);
+                    table.PrimaryKey("PK_ConductOfInspections", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ConductOfInspection_MeatInspectionReports_MeatInspectionReportId",
+                        name: "FK_ConductOfInspections_MeatInspectionReports_MeatInspectionReportId",
                         column: x => x.MeatInspectionReportId,
                         principalTable: "MeatInspectionReports",
                         principalColumn: "Id",
@@ -685,9 +686,9 @@ namespace InfastructureLayer.Migrations
                 {
                     table.PrimaryKey("PK_PassedForSlaughters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PassedForSlaughters_ConductOfInspection_ConductOfInspectionId",
+                        name: "FK_PassedForSlaughters_ConductOfInspections_ConductOfInspectionId",
                         column: x => x.ConductOfInspectionId,
-                        principalTable: "ConductOfInspection",
+                        principalTable: "ConductOfInspections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -768,29 +769,29 @@ namespace InfastructureLayer.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "14f82252-599c-4bbf-b38a-22f201524522", null, "MTVAdministrator", "MTVADMIN" },
-                    { "366b03a0-31fa-4c26-b5c5-0600f46b992c", null, "InspectorAdministrator", "INSPECTORADMIN" },
-                    { "41afa3e0-6e8b-4c1b-8793-0b05eb448c86", null, "MtvInspector", "MTVINSPECTOR" },
-                    { "49f3739a-2d7b-4966-b10c-52845fff9a0d", null, "MeatEstablishmentRepresentative", "MEATESTABLISHMENTREPRESENTATIVE" },
-                    { "83a13c13-b4fd-43ed-8331-07d809bfc968", null, "MtvUsers", "MTVUSERS" },
-                    { "a5e18a35-772c-4987-adf3-15b3338fb58f", null, "MeatInspector", "MEATINSPECTOR" },
-                    { "d13a9ff6-a3e3-4ed8-88e7-21cc3ebc6230", null, "User", "USER" },
-                    { "e272bc4f-641d-4821-9877-a054d7d21150", null, "SuperAdministrator", "SUPERADMIN" }
+                    { "18624e89-0312-4d39-8e7a-0e9701fff257", null, "MeatEstablishmentRepresentative", "MEATESTABLISHMENTREPRESENTATIVE" },
+                    { "8ff06b4e-ed7c-4ace-9956-d88366b7f786", null, "InspectorAdministrator", "INSPECTORADMIN" },
+                    { "a0ba380e-aa40-4351-96f9-735e087ce21f", null, "MTVAdministrator", "MTVADMIN" },
+                    { "a9e34847-ce14-43cd-9e2e-b2b38eae70a1", null, "MtvInspector", "MTVINSPECTOR" },
+                    { "bf8bce35-2ce9-4cbe-b7ad-5090d976f49f", null, "User", "USER" },
+                    { "dddf7db0-ddaf-447b-8d94-64f294b55e87", null, "MeatInspector", "MEATINSPECTOR" },
+                    { "df6864e8-c680-4df8-8bcc-990ac0d318bf", null, "SuperAdministrator", "SUPERADMIN" },
+                    { "efdf3dd1-18a5-4cbc-9310-3ce07f75bfc6", null, "MtvUsers", "MTVUSERS" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "MeatEstablishmentId", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "address", "birthdate", "contactNo", "firstName", "image", "lastName", "middleName", "sex" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "MeatEstablishmentId", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Roles", "SecurityStamp", "TwoFactorEnabled", "UserName", "address", "birthdate", "contactNo", "firstName", "image", "lastName", "middleName", "sex" },
                 values: new object[,]
                 {
-                    { "34819ef1-3d5a-4fc4-953a-1054e75a9f7c", 0, "985353e5-a57f-40dc-b15c-ec7a24b01663", "mtv@user.com", true, false, null, null, "MTV@USER.COM", "MTVUSER", "AQAAAAIAAYagAAAAEL6J/2BduqAjQDUk0+FNBzG8uZr+UJXT8Rc8I5tqHUKdtqNz88Y1LahnvTugausgMQ==", null, false, "", false, "mtvuser", null, null, null, null, null, null, null, null },
-                    { "5ec843e6-bad4-4901-bc58-9ddb3730f2a5", 0, "1fa9bdad-5fee-4a85-ba5e-f56d8a8a022a", "mtv@inspector.com", true, false, null, null, "MTV@INSPECTOR.COM", "MTVINSPECTOR", "AQAAAAIAAYagAAAAEPZRP1WZutSgj2N0AKsgEoM++llcMYgQ7QS8oZ0hLJIIoe8BtUOIYkhehVe2n41aDQ==", null, false, "", false, "mtvinspector", null, null, null, null, null, null, null, null },
-                    { "71200491-86b8-4a01-8055-3e65289f0131", 0, "a1f6ab51-083e-4b7f-a422-e165a8aff41c", "meat@rep.com", true, false, null, null, "MEAT@REP.COM", "MEATREP", "AQAAAAIAAYagAAAAEPag6tCeODS4wZ7VQjFO3xYfrf7rXvbQZmT4sS9k2L3dYtMkrAufiYqf4pdhWEFZww==", null, false, "", false, "meatrep", null, null, null, null, null, null, null, null },
-                    { "740255c0-4437-48c3-aef8-f60c3ac5b66f", 0, "0ce4c06e-6084-455d-9552-3e7817b95401", "user@user.com", true, false, null, null, "USER@USER.COM", "USER", "AQAAAAIAAYagAAAAEA1cJWDwCJX5l0jyBb5Q1lp68GvhiHWzPdrzPek6Bggr/c/u2WCSa+zsFuDYBFmJgw==", null, false, "", false, "user", null, null, null, null, null, null, null, null },
-                    { "c8867ea3-1d59-4496-9d5e-1ffc2192b596", 0, "a1c2074d-5849-4352-b88d-f911ad0f8038", "mtv@admin.com", true, false, null, null, "INSPECTOR@ADMIN.COM", "INSPECTORADMIN", "AQAAAAIAAYagAAAAEJZ+zTrfRI0aPGh5/4qnT+PsDLi35WLpNwSWT76nJ9oE+Ixm13CDCJqpkbi7gImcdA==", null, false, "", false, "inspectoradmin", null, null, null, null, null, null, null, null },
-                    { "c8d2e500-f3d7-4462-afc1-4ac1791aa1df", 0, "0e89de61-5df6-4631-9092-cb91bb77fe59", "mtv@admin.com", true, false, null, null, "MTV@ADMIN.COM", "MTVRADMIN", "AQAAAAIAAYagAAAAECpUP9r1mMUdWwob5/EwC6C7WTAKem/u1ThRatLj/7Jn8bOSNcrcM8AMLoJsaThdog==", null, false, "", false, "mtvadmin", null, null, null, null, null, null, null, null },
-                    { "e13d8946-67b4-4678-a0a2-8395d3dd4f7c", 0, "46d54d84-09c1-422c-aff5-f1c1ae793921", "super@admin.com", true, false, null, null, "SUPER@ADMIN.COM", "SUPERADMIN", "AQAAAAIAAYagAAAAEA3jCzHaZwty7jsifoem/Ug+BItzMWewD9sGxo6eq7dsivK5zqA1oqWkCtFnZZ7MMw==", null, false, "", false, "superadmin", null, null, null, null, null, null, null, null },
-                    { "fbc25f90-0f87-4be2-8daf-a0d57f867e71", 0, "24793d24-5e79-4842-9cb1-73e30107f57e", "meat@inspector.com", true, false, null, null, "MEAT@INSPECTOR.COM", "MEATINSPECTOR", "AQAAAAIAAYagAAAAEO6MYIjMxjgXYhMizTXnN3iMNOi5DGNgWcM23//4oH+bDLJLfTT2IYtln/C0jhnXaw==", null, false, "", false, "meatinspector", null, null, null, null, null, null, null, null }
+                    { "26924353-da23-4429-ab55-446a56c9f5b9", 0, "ee3aeec6-4b92-4d4f-b982-e85840199fe7", "mtv@admin.com", true, false, null, null, "MTV@ADMIN.COM", "MTVRADMIN", "AQAAAAIAAYagAAAAEEXFF/Fb/ZmQ5nIKCw9MYtvB9T2OQNmfrob33PrbAaXa/hLX8cOQThyvMSYTE3PJmQ==", null, false, null, "", false, "mtvadmin", null, null, null, null, null, null, null, null },
+                    { "2b81fc12-d568-4be5-9ae6-8de0ce5eff94", 0, "70123a97-3e85-4100-93f4-922ec0f9e3d2", "mtv@user.com", true, false, null, null, "MTV@USER.COM", "MTVUSER", "AQAAAAIAAYagAAAAECxGb4Cpvbc6+4OlwoU9nebHplsfpmE6EZUirJ7QWGLSLD3q+Z7Tu0ON5vlDdRnelQ==", null, false, null, "", false, "mtvuser", null, null, null, null, null, null, null, null },
+                    { "30c71afd-3c9c-4508-85e6-e04ebc764893", 0, "28ae9d21-a197-4734-83e1-a0a36ad80843", "user@user.com", true, false, null, null, "USER@USER.COM", "USER", "AQAAAAIAAYagAAAAEDe+3C3DBexdq25PK96atODZ3bYl99zyqA8paC5h/v5UHKEsStY497F31V258rBbzw==", null, false, null, "", false, "user", null, null, null, null, null, null, null, null },
+                    { "9ef16119-f9fa-4b54-9d9b-5417e5462c37", 0, "d95fff77-a681-459f-a6ee-a3d92e3d1331", "mtv@admin.com", true, false, null, null, "INSPECTOR@ADMIN.COM", "INSPECTORADMIN", "AQAAAAIAAYagAAAAEICh5fhQ91EmtVSPXJmfCuAGvwNrzWoG6QbFLCJArVCnBS4gz7lxx7ZbxOxs6p3Q5Q==", null, false, null, "", false, "inspectoradmin", null, null, null, null, null, null, null, null },
+                    { "b305908f-7e27-4356-a112-2778fbf621d2", 0, "ebab2d45-288a-4ce8-a299-1daab27d69e4", "meat@inspector.com", true, false, null, null, "MEAT@INSPECTOR.COM", "MEATINSPECTOR", "AQAAAAIAAYagAAAAEKsXOCIXgO7ked17C6EbZ1yQeKkTkmNXFexpilp8mRGVsHvWyPU5pxsoLD4Xg4OXXA==", null, false, null, "", false, "meatinspector", null, null, null, null, null, null, null, null },
+                    { "cce24038-224f-4626-98aa-2a4df54a5c35", 0, "64971b23-0ad5-4eee-b5c2-267df9f079d8", "mtv@inspector.com", true, false, null, null, "MTV@INSPECTOR.COM", "MTVINSPECTOR", "AQAAAAIAAYagAAAAEO12cJ+0lgQ6nGvqgyyCrPqExosPpga/fM+uekrQbg1mc9luWPh6VmXyuFAGgLI0bw==", null, false, null, "", false, "mtvinspector", null, null, null, null, null, null, null, null },
+                    { "daff8249-afac-40a5-85c3-ad726961b3aa", 0, "ec9f92de-aca0-4750-be14-2f4de4153c9f", "meat@rep.com", true, false, null, null, "MEAT@REP.COM", "MEATREP", "AQAAAAIAAYagAAAAEBIDqBK68gxzAFiMnUeZ/tJyBxBvh821vtZQ1dZm/zQ9otYpBxQ6RoBzUesL3PlhAg==", null, false, null, "", false, "meatrep", null, null, null, null, null, null, null, null },
+                    { "f66739a0-476f-47e5-a7fd-3a84047af089", 0, "fd27ff06-ffea-410f-82ca-087cf50f6f8a", "super@admin.com", true, false, null, null, "SUPER@ADMIN.COM", "SUPERADMIN", "AQAAAAIAAYagAAAAEAApWY/IO/f7XJG5ov4F94XyIYdupZzpNGHqM+jlweekFtOs5hAAUtKLge7BDKn5Zw==", null, false, null, "", false, "superadmin", null, null, null, null, null, null, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -798,20 +799,15 @@ namespace InfastructureLayer.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "83a13c13-b4fd-43ed-8331-07d809bfc968", "34819ef1-3d5a-4fc4-953a-1054e75a9f7c" },
-                    { "41afa3e0-6e8b-4c1b-8793-0b05eb448c86", "5ec843e6-bad4-4901-bc58-9ddb3730f2a5" },
-                    { "49f3739a-2d7b-4966-b10c-52845fff9a0d", "71200491-86b8-4a01-8055-3e65289f0131" },
-                    { "d13a9ff6-a3e3-4ed8-88e7-21cc3ebc6230", "740255c0-4437-48c3-aef8-f60c3ac5b66f" },
-                    { "366b03a0-31fa-4c26-b5c5-0600f46b992c", "c8867ea3-1d59-4496-9d5e-1ffc2192b596" },
-                    { "14f82252-599c-4bbf-b38a-22f201524522", "c8d2e500-f3d7-4462-afc1-4ac1791aa1df" },
-                    { "e272bc4f-641d-4821-9877-a054d7d21150", "e13d8946-67b4-4678-a0a2-8395d3dd4f7c" },
-                    { "a5e18a35-772c-4987-adf3-15b3338fb58f", "fbc25f90-0f87-4be2-8daf-a0d57f867e71" }
+                    { "a0ba380e-aa40-4351-96f9-735e087ce21f", "26924353-da23-4429-ab55-446a56c9f5b9" },
+                    { "efdf3dd1-18a5-4cbc-9310-3ce07f75bfc6", "2b81fc12-d568-4be5-9ae6-8de0ce5eff94" },
+                    { "bf8bce35-2ce9-4cbe-b7ad-5090d976f49f", "30c71afd-3c9c-4508-85e6-e04ebc764893" },
+                    { "8ff06b4e-ed7c-4ace-9956-d88366b7f786", "9ef16119-f9fa-4b54-9d9b-5417e5462c37" },
+                    { "dddf7db0-ddaf-447b-8d94-64f294b55e87", "b305908f-7e27-4356-a112-2778fbf621d2" },
+                    { "a9e34847-ce14-43cd-9e2e-b2b38eae70a1", "cce24038-224f-4626-98aa-2a4df54a5c35" },
+                    { "18624e89-0312-4d39-8e7a-0e9701fff257", "daff8249-afac-40a5-85c3-ad726961b3aa" },
+                    { "df6864e8-c680-4df8-8bcc-990ac0d318bf", "f66739a0-476f-47e5-a7fd-3a84047af089" }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ConductOfInspection_MeatInspectionReportId",
-                table: "ConductOfInspection",
-                column: "MeatInspectionReportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -856,6 +852,11 @@ namespace InfastructureLayer.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConductOfInspections_MeatInspectionReportId",
+                table: "ConductOfInspections",
+                column: "MeatInspectionReportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DisapprovedApplications_MTVInspectionId",
@@ -1033,7 +1034,7 @@ namespace InfastructureLayer.Migrations
                 name: "PassedForSlaughters");
 
             migrationBuilder.DropTable(
-                name: "ConductOfInspection");
+                name: "ConductOfInspections");
 
             migrationBuilder.DropTable(
                 name: "MeatInspectionReports");

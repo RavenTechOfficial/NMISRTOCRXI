@@ -8,16 +8,16 @@ using thesis.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Get the connection string from the configuration
-var connectionString = builder.Configuration.GetConnectionString("thesisContextConnection") ?? throw new InvalidOperationException("Connection string 'thesisContextConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("NMISRTOCR11DbContextConnection") ?? throw new InvalidOperationException("Connection string 'thesisContextConnection' not found.");
 
 // Configure Entity Framework Core with SQL Server
 builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseSqlServer(connectionString));
 
 // Configure Identity with custom roles
-builder.Services.AddIdentityCore<AccountDetails>(options => options.SignIn.RequireConfirmedAccount = true)
-	.AddRoles<IdentityRole>()
-	.AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentity<AccountDetails, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+	.AddEntityFrameworkStores<AppDbContext>()
+	.AddDefaultTokenProviders();
 
 // Add services to the container	
 builder.Services.AddControllersWithViews();

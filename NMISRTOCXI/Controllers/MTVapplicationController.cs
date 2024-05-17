@@ -168,7 +168,7 @@ namespace thesis.Controllers
 					Address = mTVApplicationVM.DriverAddress,
 					Email = mTVApplicationVM.DriverEmail,
 					TelNo = mTVApplicationVM.DriverTelNo,
-					gender = mTVApplicationVM.gender,
+					Gender = mTVApplicationVM.Gender,
 					birthdate = mTVApplicationVM.Driverbirthdate
 				}
 

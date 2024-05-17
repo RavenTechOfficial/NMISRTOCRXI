@@ -12,7 +12,6 @@ using ServiceLayer.Services.IRepositories;
 using DomainLayer.Models.ViewModels;
 using InfastructureLayer.Data;
 using DomainLayer.Enum;
-using DomainLayer.Models;
 
 namespace thesis.Controllers
 {

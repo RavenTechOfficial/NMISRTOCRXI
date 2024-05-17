@@ -31,11 +31,21 @@
   <ItemGroup>
     <Folder Include="wwwroot\img\MTV\" />
     <Folder Include="wwwroot\img\condemnedMeat\" />
+    <Folder Include="wwwroot\img\logo\" />
     <Folder Include="wwwroot\img\PostmortemImages\" />
     <Folder Include="wwwroot\img\uploaded\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\assets\bootstrap\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\assets\dropdown\js\navbar-dropdown.js" />
+    <None Include="wwwroot\assets\mbr-switch-arrow\mbr-switch-arrow.js" />
+    <None Include="wwwroot\assets\smoothscroll\smooth-scroll.js" />
+    <None Include="wwwroot\assets\socicon\fonts\socicon.svg" />
+    <None Include="wwwroot\assets\socicon\fonts\socicon.woff2" />
+    <None Include="wwwroot\assets\theme\js\script.js" />
+    <None Include="wwwroot\assets\web\assets\mobirise-icons2\mobirise2.svg" />
+    <None Include="wwwroot\assets\ytplayer\index.js" />
     <None Include="wwwroot\js\checklists.js" />
     <None Include="wwwroot\js\question.js" />
   </ItemGroup>
