@@ -54,7 +54,7 @@ namespace thesis.Controllers
                                       join ai in _context.ConductOfInspections on mir.Id equals ai.MeatInspectionReportId
                                       join ps in _context.PassedForSlaughters on ai.Id equals ps.ConductOfInspectionId
                                       join pi in _context.Postmortems on ps.Id equals pi.PassedForSlaughterId
-                                      join tn in _context.totalNoFitForHumanConsumptions on pi.Id equals tn.PostmortemId
+                                      join tn in _context.TotalNoFitForHumanConsumptions on pi.Id equals tn.PostmortemId
                                       join sd in _context.SummaryAndDistributionOfMICs on tn.Id equals sd.TotalNoFitForHumanConsumptionId
                                       join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
                                       join au in _context.Users on mir.AccountDetailsId equals au.Id
@@ -151,7 +151,7 @@ namespace thesis.Controllers
             var meatDealers = _context.MeatDealers.ToList();
             var meatInspectionReports = _context.MeatInspectionReports.ToList();
             var postmortem = _context.Postmortems.ToList();
-            var totalNoFitForHumanConsumption = _context.totalNoFitForHumanConsumptions.ToList();
+            var totalNoFitForHumanConsumption = _context.TotalNoFitForHumanConsumptions.ToList();
             var SummaryAndDistributionOfMICs = _context.SummaryAndDistributionOfMICs.ToList();
 
             ViewData["ReceivingReports"] = receivingReports;

@@ -6,7 +6,7 @@ namespace ServiceLayer.Services.IRepositories
 {
     public interface IDashboardRepository
     {
-        Task<ICollection<totalNoFitForHumanConsumptions>> GetTotalNoFitForHumanConsumptions();
+        Task<ICollection<TotalNoFitForHumanConsumptions>> GetTotalNoFitForHumanConsumptions();
         TotalWeightViewModel GetTotalOfMeatPerTimeSeries();
 
     }

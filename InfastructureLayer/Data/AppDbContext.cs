@@ -16,13 +16,13 @@ public class AppDbContext : IdentityDbContext<AccountDetails>
     public DbSet<QrCode> QrCodes { get; set; }
     public DbSet<Result> Results { get; set; }
     public DbSet<PostArticle> PostArticles { get; set; }
-    public DbSet<FeedBack> FeedBacks { get; set; }
+    public DbSet<Feedback> FeedBacks { get; set; }
     public DbSet<LogTransaction> LogTransactions { get; set; }
 
     //Meat Inspection
     public DbSet<Receiving> Receivings { get; set; }
     public DbSet<ReceivingReport> ReceivingReports { get; set; }
-    public DbSet<Antemortem> Antemortems { get; set; }
+    public DbSet<ConductOfInspection> ConductOfInspections { get; set; }
     public DbSet<PassedForSlaughter> PassedForSlaughters { get; set; }
     public DbSet<Postmortem> Postmortems { get; set; }
     public DbSet<SummaryAndDistributionOfMIC> SummaryAndDistributionOfMICs { get; set; }

@@ -216,7 +216,7 @@ namespace thesis.Repositories
 		//na change
 		private int InspectionDate(DateTime dates, Issue issue)
         {
-            var conduct = _context.Antemortems
+            var conduct = _context.ConductOfInspections
                 .Include(p => p.MeatInspectionReport.ReceivingReport)
                 .Where(p => p.MeatInspectionReport.RepDate.Date >= dates.Date && p.Issue == issue)
                 .Sum(p => p.NoOfHeads);

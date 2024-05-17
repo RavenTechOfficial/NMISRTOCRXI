@@ -160,7 +160,7 @@ namespace thesis.Controllers
 				TempData["AlertMessage"] = "Transaction Success";
 				TempData["PassedForSlaughterId"] = postmortem.PassedForSlaughterId;
 				return RedirectToAction("Index", new { myVariable = postmortem.PassedForSlaughterId });
-				//  return RedirectToAction("Create", "totalNoFitForHumanConsumptions");
+				//  return RedirectToAction("Create", "TotalNoFitForHumanConsumptions");
 			}
 			ViewData["PassedForSlaughterId"] = new SelectList(_context.PassedForSlaughters, "Id", "Id", postmortem.PassedForSlaughterId);
 
