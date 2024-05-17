@@ -1,7 +1,10 @@
-﻿namespace DomainLayer.Enum
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DomainLayer.Enum
 {
     public enum AnimalPart
     {
+		[Display(Name = "N/A")]
         NA,
         Carcass,
         Lungs,

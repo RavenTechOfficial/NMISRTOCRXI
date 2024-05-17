@@ -8,7 +8,7 @@ namespace DomainLayer.Models.ViewModels
 	public class MtvApplicationViewModel
 	{
 		//Mtv application
-		public applicationtype applicationtype { get; set; }
+		public ApplicationType applicationtype { get; set; }
 		public string AccreditionNo { get; set; }
 		public string OwnerFname { get; set; }
 		public string OwnerMname { get; set; }

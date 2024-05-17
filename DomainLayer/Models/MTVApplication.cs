@@ -9,7 +9,7 @@ namespace DomainLayer.Models
     {
 		[Key]
 		public int Id { get; set; }
-		public applicationtype applicationtype { get; set; }
+		public ApplicationType applicationtype { get; set; }
 		public string AccreditionNo { get; set; }
 		public string OwnerFname { get; set; }
 		public string OwnerMname { get; set; }
