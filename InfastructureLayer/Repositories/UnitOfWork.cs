@@ -7,6 +7,8 @@ namespace thesis.Repositories
     {
         public AppDbContext _context { get; set; }
         public IAccountDetailsRepository AccountDetails { get; }
+        public IMeatDealersRepository MeatDealers { get; }
+        public IMeatEstablishmentRepository MeatEstablishment { get; }
         public IReceivingReportRepository ReceivingReport { get; }
 
         public IMeatInspectionReportRepository MeatInspectionReport { get; }
@@ -35,8 +37,11 @@ namespace thesis.Repositories
             IChroplethMapRepository chroplethMap
         ) 
         {
+            _context = context;
             ReceivingReport = new ReceivingReportRepository(context);
             AccountDetails = new AccountDetailsRepository(context);
+            MeatDealers = new MeatDealersRepository(context);
+            MeatEstablishment = new MeatEstablishmentRepository(context);
             MeatInspectionReport = meatInspectionReport;
             Dashboard = dashboard;
             Analytics = analytics;
@@ -48,9 +53,9 @@ namespace thesis.Repositories
             
         }
 
-        public void Save()
+        public async Task Save()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

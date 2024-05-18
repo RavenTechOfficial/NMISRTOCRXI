@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InfastructureLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class UpdateAccountDetailsMeatDealersMeatEstablishmentsIDtoGUID : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -123,8 +123,7 @@ namespace InfastructureLayer.Migrations
                 name: "MeatEstablishment",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -282,10 +281,9 @@ namespace InfastructureLayer.Migrations
                     address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     contactNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    birthdate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Roles = table.Column<int>(type: "int", nullable: true),
+                    birthdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     sex = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: true),
+                    MeatEstablishmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -315,14 +313,13 @@ namespace InfastructureLayer.Migrations
                 name: "MeatDealers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MeatEstablishmentId = table.Column<int>(type: "int", nullable: false)
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContactNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MeatEstablishmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -492,7 +489,7 @@ namespace InfastructureLayer.Migrations
                     Category = table.Column<int>(type: "int", nullable: false),
                     NoOfHeads = table.Column<int>(type: "int", nullable: false),
                     LiveWeight = table.Column<double>(type: "float", nullable: false),
-                    MeatDealersId = table.Column<int>(type: "int", nullable: true),
+                    MeatDealersId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Origin = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShippingDoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HoldingPenNo = table.Column<int>(type: "int", nullable: false),
@@ -769,29 +766,29 @@ namespace InfastructureLayer.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "18624e89-0312-4d39-8e7a-0e9701fff257", null, "MeatEstablishmentRepresentative", "MEATESTABLISHMENTREPRESENTATIVE" },
-                    { "8ff06b4e-ed7c-4ace-9956-d88366b7f786", null, "InspectorAdministrator", "INSPECTORADMIN" },
-                    { "a0ba380e-aa40-4351-96f9-735e087ce21f", null, "MTVAdministrator", "MTVADMIN" },
-                    { "a9e34847-ce14-43cd-9e2e-b2b38eae70a1", null, "MtvInspector", "MTVINSPECTOR" },
-                    { "bf8bce35-2ce9-4cbe-b7ad-5090d976f49f", null, "User", "USER" },
-                    { "dddf7db0-ddaf-447b-8d94-64f294b55e87", null, "MeatInspector", "MEATINSPECTOR" },
-                    { "df6864e8-c680-4df8-8bcc-990ac0d318bf", null, "SuperAdministrator", "SUPERADMIN" },
-                    { "efdf3dd1-18a5-4cbc-9310-3ce07f75bfc6", null, "MtvUsers", "MTVUSERS" }
+                    { "04d8e8e2-d7ee-4520-b877-c725072d94ec", null, "SuperAdministrator", "SUPERADMIN" },
+                    { "0dac8dc3-f119-4fee-9834-3ff9d3287b59", null, "MTVAdministrator", "MTVADMIN" },
+                    { "539bb59f-c3b2-4abc-b917-a77eeb32f840", null, "MeatInspector", "MEATINSPECTOR" },
+                    { "797dcc59-cbd5-4ded-b457-bdbebd6bb8dd", null, "User", "USER" },
+                    { "821456fc-93cd-4175-ac2c-893b1e3869f6", null, "MtvInspector", "MTVINSPECTOR" },
+                    { "9de5f368-d024-43d5-bbb1-b229c6089ed4", null, "InspectorAdministrator", "INSPECTORADMIN" },
+                    { "c489a85a-e6b7-4c78-8c56-3e56b921e272", null, "MtvUsers", "MTVUSERS" },
+                    { "fe89ea6b-87c6-47d3-b436-302e80b40990", null, "MeatEstablishmentRepresentative", "MEATESTABLISHMENTREPRESENTATIVE" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "MeatEstablishmentId", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Roles", "SecurityStamp", "TwoFactorEnabled", "UserName", "address", "birthdate", "contactNo", "firstName", "image", "lastName", "middleName", "sex" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "MeatEstablishmentId", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "address", "birthdate", "contactNo", "firstName", "image", "lastName", "middleName", "sex" },
                 values: new object[,]
                 {
-                    { "26924353-da23-4429-ab55-446a56c9f5b9", 0, "ee3aeec6-4b92-4d4f-b982-e85840199fe7", "mtv@admin.com", true, false, null, null, "MTV@ADMIN.COM", "MTVRADMIN", "AQAAAAIAAYagAAAAEEXFF/Fb/ZmQ5nIKCw9MYtvB9T2OQNmfrob33PrbAaXa/hLX8cOQThyvMSYTE3PJmQ==", null, false, null, "", false, "mtvadmin", null, null, null, null, null, null, null, null },
-                    { "2b81fc12-d568-4be5-9ae6-8de0ce5eff94", 0, "70123a97-3e85-4100-93f4-922ec0f9e3d2", "mtv@user.com", true, false, null, null, "MTV@USER.COM", "MTVUSER", "AQAAAAIAAYagAAAAECxGb4Cpvbc6+4OlwoU9nebHplsfpmE6EZUirJ7QWGLSLD3q+Z7Tu0ON5vlDdRnelQ==", null, false, null, "", false, "mtvuser", null, null, null, null, null, null, null, null },
-                    { "30c71afd-3c9c-4508-85e6-e04ebc764893", 0, "28ae9d21-a197-4734-83e1-a0a36ad80843", "user@user.com", true, false, null, null, "USER@USER.COM", "USER", "AQAAAAIAAYagAAAAEDe+3C3DBexdq25PK96atODZ3bYl99zyqA8paC5h/v5UHKEsStY497F31V258rBbzw==", null, false, null, "", false, "user", null, null, null, null, null, null, null, null },
-                    { "9ef16119-f9fa-4b54-9d9b-5417e5462c37", 0, "d95fff77-a681-459f-a6ee-a3d92e3d1331", "mtv@admin.com", true, false, null, null, "INSPECTOR@ADMIN.COM", "INSPECTORADMIN", "AQAAAAIAAYagAAAAEICh5fhQ91EmtVSPXJmfCuAGvwNrzWoG6QbFLCJArVCnBS4gz7lxx7ZbxOxs6p3Q5Q==", null, false, null, "", false, "inspectoradmin", null, null, null, null, null, null, null, null },
-                    { "b305908f-7e27-4356-a112-2778fbf621d2", 0, "ebab2d45-288a-4ce8-a299-1daab27d69e4", "meat@inspector.com", true, false, null, null, "MEAT@INSPECTOR.COM", "MEATINSPECTOR", "AQAAAAIAAYagAAAAEKsXOCIXgO7ked17C6EbZ1yQeKkTkmNXFexpilp8mRGVsHvWyPU5pxsoLD4Xg4OXXA==", null, false, null, "", false, "meatinspector", null, null, null, null, null, null, null, null },
-                    { "cce24038-224f-4626-98aa-2a4df54a5c35", 0, "64971b23-0ad5-4eee-b5c2-267df9f079d8", "mtv@inspector.com", true, false, null, null, "MTV@INSPECTOR.COM", "MTVINSPECTOR", "AQAAAAIAAYagAAAAEO12cJ+0lgQ6nGvqgyyCrPqExosPpga/fM+uekrQbg1mc9luWPh6VmXyuFAGgLI0bw==", null, false, null, "", false, "mtvinspector", null, null, null, null, null, null, null, null },
-                    { "daff8249-afac-40a5-85c3-ad726961b3aa", 0, "ec9f92de-aca0-4750-be14-2f4de4153c9f", "meat@rep.com", true, false, null, null, "MEAT@REP.COM", "MEATREP", "AQAAAAIAAYagAAAAEBIDqBK68gxzAFiMnUeZ/tJyBxBvh821vtZQ1dZm/zQ9otYpBxQ6RoBzUesL3PlhAg==", null, false, null, "", false, "meatrep", null, null, null, null, null, null, null, null },
-                    { "f66739a0-476f-47e5-a7fd-3a84047af089", 0, "fd27ff06-ffea-410f-82ca-087cf50f6f8a", "super@admin.com", true, false, null, null, "SUPER@ADMIN.COM", "SUPERADMIN", "AQAAAAIAAYagAAAAEAApWY/IO/f7XJG5ov4F94XyIYdupZzpNGHqM+jlweekFtOs5hAAUtKLge7BDKn5Zw==", null, false, null, "", false, "superadmin", null, null, null, null, null, null, null, null }
+                    { "4e441fb6-60da-4990-9336-77dfc32126d9", 0, "7f5d0158-581f-47ac-a82e-7ccd0f306950", "mtv@user.com", true, false, null, null, "MTV@USER.COM", "MTVUSER", "AQAAAAIAAYagAAAAEBa2WHpsJsZygtT1FzfZqJbrj/wvkEsVzTSTUzwX/XgK+Mt6qOAXYBy8BNMvZehFKg==", null, false, "", false, "mtvuser", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
+                    { "56d669d2-dca4-4f8b-bf17-421daf7d5c18", 0, "ad6b9239-e01d-4a4c-af23-77ae415bedf2", "super@admin.com", true, false, null, null, "SUPER@ADMIN.COM", "SUPERADMIN", "AQAAAAIAAYagAAAAEKyfa2ZVmOcFRjIpV8M9SPBHvBOmaglb3CWbTeHBb9QAVeBfnToal6L5+4/1cIGUcw==", null, false, "", false, "superadmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
+                    { "67a6201a-b480-4cab-8e38-3a8bec08811c", 0, "65430640-f721-494c-a62d-0a559de96685", "meat@inspector.com", true, false, null, null, "MEAT@INSPECTOR.COM", "MEATINSPECTOR", "AQAAAAIAAYagAAAAEALGhwIHdFVheEwzNKl86LTs/ulbLBeHyRtGteMowHQ0WjZS86LoG7yLGKXivZstag==", null, false, "", false, "meatinspector", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
+                    { "91f28271-7976-4a7f-ac8f-bb1f927f8734", 0, "f134e581-7497-43a0-b612-65234aae6f35", "mtv@admin.com", true, false, null, null, "MTV@ADMIN.COM", "MTVRADMIN", "AQAAAAIAAYagAAAAEPf1RRSL2lHyjIUWyv3E2kEnUpnUE/HQGdHKnh+rF9Uz67TXbtoOjPMRzeYczhmxJw==", null, false, "", false, "mtvadmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
+                    { "942929e4-a6c0-4314-a9eb-4a2f7a68efa0", 0, "f545a3c5-af88-47a7-ae1c-c387ef066078", "mtv@inspector.com", true, false, null, null, "MTV@INSPECTOR.COM", "MTVINSPECTOR", "AQAAAAIAAYagAAAAECBlPMmzfaSk5t9o6Ee+xoxmM8Bj9Vo/XtbdasYgLuKOahckBmK8exWV5VOuEfh09Q==", null, false, "", false, "mtvinspector", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
+                    { "a95a65f1-99b6-4490-822f-b448f8f0b288", 0, "5f61b9e2-d7a3-43ad-8d17-cb1c756bd711", "meat@rep.com", true, false, null, null, "MEAT@REP.COM", "MEATREP", "AQAAAAIAAYagAAAAEObrYW2Mz2DeetU/OT7UiPqk26bZprAuqgZiJ3jDBpJr3kvgMYKzxqX+3cpZH1prcw==", null, false, "", false, "meatrep", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
+                    { "c639668b-1fe3-4a14-80b8-e0e6cb61f1c8", 0, "99866736-b681-42d9-85e3-d1ac366c8e3c", "user@user.com", true, false, null, null, "USER@USER.COM", "USER", "AQAAAAIAAYagAAAAEAWlviQ9fUhoB1djzy89AKKR78ChFD6M1jNwznbqMoQMxYosn6L2Ke+Cbtm+yn8nuA==", null, false, "", false, "user", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
+                    { "f5026bb4-e4e6-44d3-8a57-b2a3f25d0a90", 0, "1cd21b91-2b48-43b8-a5b4-c02aa99e8807", "mtv@admin.com", true, false, null, null, "INSPECTOR@ADMIN.COM", "INSPECTORADMIN", "AQAAAAIAAYagAAAAECfW34atkK3pvlGEm7CkpG2mEsy7IMY24Y18RFRn2xwOC8v6YfLvbLyUrFdrG3Dj2g==", null, false, "", false, "inspectoradmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -799,14 +796,14 @@ namespace InfastructureLayer.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "a0ba380e-aa40-4351-96f9-735e087ce21f", "26924353-da23-4429-ab55-446a56c9f5b9" },
-                    { "efdf3dd1-18a5-4cbc-9310-3ce07f75bfc6", "2b81fc12-d568-4be5-9ae6-8de0ce5eff94" },
-                    { "bf8bce35-2ce9-4cbe-b7ad-5090d976f49f", "30c71afd-3c9c-4508-85e6-e04ebc764893" },
-                    { "8ff06b4e-ed7c-4ace-9956-d88366b7f786", "9ef16119-f9fa-4b54-9d9b-5417e5462c37" },
-                    { "dddf7db0-ddaf-447b-8d94-64f294b55e87", "b305908f-7e27-4356-a112-2778fbf621d2" },
-                    { "a9e34847-ce14-43cd-9e2e-b2b38eae70a1", "cce24038-224f-4626-98aa-2a4df54a5c35" },
-                    { "18624e89-0312-4d39-8e7a-0e9701fff257", "daff8249-afac-40a5-85c3-ad726961b3aa" },
-                    { "df6864e8-c680-4df8-8bcc-990ac0d318bf", "f66739a0-476f-47e5-a7fd-3a84047af089" }
+                    { "c489a85a-e6b7-4c78-8c56-3e56b921e272", "4e441fb6-60da-4990-9336-77dfc32126d9" },
+                    { "04d8e8e2-d7ee-4520-b877-c725072d94ec", "56d669d2-dca4-4f8b-bf17-421daf7d5c18" },
+                    { "539bb59f-c3b2-4abc-b917-a77eeb32f840", "67a6201a-b480-4cab-8e38-3a8bec08811c" },
+                    { "0dac8dc3-f119-4fee-9834-3ff9d3287b59", "91f28271-7976-4a7f-ac8f-bb1f927f8734" },
+                    { "821456fc-93cd-4175-ac2c-893b1e3869f6", "942929e4-a6c0-4314-a9eb-4a2f7a68efa0" },
+                    { "fe89ea6b-87c6-47d3-b436-302e80b40990", "a95a65f1-99b6-4490-822f-b448f8f0b288" },
+                    { "797dcc59-cbd5-4ded-b457-bdbebd6bb8dd", "c639668b-1fe3-4a14-80b8-e0e6cb61f1c8" },
+                    { "9de5f368-d024-43d5-bbb1-b229c6089ed4", "f5026bb4-e4e6-44d3-8a57-b2a3f25d0a90" }
                 });
 
             migrationBuilder.CreateIndex(

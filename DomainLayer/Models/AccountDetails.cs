@@ -14,11 +14,10 @@ namespace DomainLayer.Models
         public string? address { get; set; }
         public string? contactNo { get; set; }
         public string? image { get; set; }
-        public DateTime? birthdate { get; set; }
-        public Roles? Roles { get; set; }
+        public DateTime birthdate { get; set; }
         public string? sex { get; set; }
         [ForeignKey("MeatEstablishment")]
-        public int? MeatEstablishmentId { get; set; }
+        public Guid? MeatEstablishmentId { get; set; }
         public MeatEstablishment? MeatEstablishment { get; set; }
 
     }

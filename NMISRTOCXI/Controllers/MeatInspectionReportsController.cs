@@ -49,53 +49,53 @@ namespace thesis.Controllers
 
         public List<MeatInspectionReportViewModel> MonthlyReports()
         {
-            var monthlyreportsInfo = (from mir in _context.MeatInspectionReports
-                                      join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
-                                      join ai in _context.ConductOfInspections on mir.Id equals ai.MeatInspectionReportId
-                                      join ps in _context.PassedForSlaughters on ai.Id equals ps.ConductOfInspectionId
-                                      join pi in _context.Postmortems on ps.Id equals pi.PassedForSlaughterId
-                                      join tn in _context.TotalNoFitForHumanConsumptions on pi.Id equals tn.PostmortemId
-                                      join sd in _context.SummaryAndDistributionOfMICs on tn.Id equals sd.TotalNoFitForHumanConsumptionId
-                                      join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
-                                      join au in _context.Users on mir.AccountDetailsId equals au.Id
-                                      join me in _context.MeatEstablishment on md.MeatEstablishmentId equals me.Id
-                                      select new MeatInspectionReportViewModel
-                                      {
-                                          MeatInspectionReportId = mir.Id,
-                                          DateReceived = rr.RecTime,
-                                          NoOfHeads = rr.NoOfHeads,
-                                          Origin = rr.Origin,
-                                          Specie = rr.Species,
-                                          ReceivingReportId = rr.Id,
-                                          AntemortemId = rr.Id,
-                                          PassedId = ps.Id,
-                                          PostmortemId = pi.Id,
-                                          TotalNoId = tn.Id,
-                                          SummaryId = sd.Id,
-                                          Issue = ai.Issue,
-                                          AnimalPart = pi.AnimalPart,
-                                          piCause = pi.Cause,
-                                          piNoOfHeads = pi.NoOfHeads,
-                                          piWeight = pi.Weight,
-                                          tnNoOfHeads = tn.NoOfHeads,
-                                          tnDressedWeight = tn.DressedWeight,
-                                          DestinationName = sd.DestinationName,
-                                          DestinationAddress = sd.DestinationAddress,
-                                          MICIssued = sd.MICIssued,
-                                          MICCancelled = sd.MICCancelled,
-                                          Weight = ai.Weight,
-                                          Cause = ai.Cause,
-                                          MeatDealer = md.FirstName + " " + md.LastName,
-                                          MeatEstablishment = me.Name,
-                                          LicenseToOperateNumber = me.LicenseToOperateNumber,
-                                          MeatEstablishmentAddress = me.Address,
-                                          DateInspected = mir.RepDate,
-                                          MeatInspector = au.firstName + " " + au.lastName,
-                                          VerifiedBy = mir.VerifiedByPOSMSHead
-                                      })
-                    .ToList<MeatInspectionReportViewModel>();
+            //var monthlyreportsInfo = (from mir in _context.MeatInspectionReports
+            //                          join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
+            //                          join ai in _context.ConductOfInspections on mir.Id equals ai.MeatInspectionReportId
+            //                          join ps in _context.PassedForSlaughters on ai.Id equals ps.ConductOfInspectionId
+            //                          join pi in _context.Postmortems on ps.Id equals pi.PassedForSlaughterId
+            //                          join tn in _context.TotalNoFitForHumanConsumptions on pi.Id equals tn.PostmortemId
+            //                          join sd in _context.SummaryAndDistributionOfMICs on tn.Id equals sd.TotalNoFitForHumanConsumptionId
+            //                          join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
+            //                          join au in _context.Users on mir.AccountDetailsId equals au.Id
+            //                          join me in _context.MeatEstablishment on md.MeatEstablishmentId equals me.Id
+            //                          select new MeatInspectionReportViewModel
+            //                          {
+            //                              MeatInspectionReportId = mir.Id,
+            //                              DateReceived = rr.RecTime,
+            //                              NoOfHeads = rr.NoOfHeads,
+            //                              Origin = rr.Origin,
+            //                              Specie = rr.Species,
+            //                              ReceivingReportId = rr.Id,
+            //                              AntemortemId = rr.Id,
+            //                              PassedId = ps.Id,
+            //                              PostmortemId = pi.Id,
+            //                              TotalNoId = tn.Id,
+            //                              SummaryId = sd.Id,
+            //                              Issue = ai.Issue,
+            //                              AnimalPart = pi.AnimalPart,
+            //                              piCause = pi.Cause,
+            //                              piNoOfHeads = pi.NoOfHeads,
+            //                              piWeight = pi.Weight,
+            //                              tnNoOfHeads = tn.NoOfHeads,
+            //                              tnDressedWeight = tn.DressedWeight,
+            //                              DestinationName = sd.DestinationName,
+            //                              DestinationAddress = sd.DestinationAddress,
+            //                              MICIssued = sd.MICIssued,
+            //                              MICCancelled = sd.MICCancelled,
+            //                              Weight = ai.Weight,
+            //                              Cause = ai.Cause,
+            //                              MeatDealer = md.FirstName + " " + md.LastName,
+            //                              MeatEstablishment = me.Name,
+            //                              LicenseToOperateNumber = me.LicenseToOperateNumber,
+            //                              MeatEstablishmentAddress = me.Address,
+            //                              DateInspected = mir.RepDate,
+            //                              MeatInspector = au.firstName + " " + au.lastName,
+            //                              VerifiedBy = mir.VerifiedByPOSMSHead
+            //                          })
+            //        .ToList<MeatInspectionReportViewModel>();
 
-            return monthlyreportsInfo;
+            return null;
         }
 
 
@@ -121,29 +121,29 @@ namespace thesis.Controllers
 
         public List<MeatInspectionReportViewModel> GetReports()
         {
-            var reportsInfo = (from mir in _context.MeatInspectionReports
-                               join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
-                               join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
-                               join au in _context.Users on mir.AccountDetailsId equals au.Id
-                               join me in _context.MeatEstablishment on md.MeatEstablishmentId equals me.Id
-                               select new MeatInspectionReportViewModel
-                               {
-                                   MeatInspectionReportId = mir.Id,
-                                   DateReceived = rr.RecTime,
-                                   Specie = rr.Species,
-                                   MeatDealer = md.FirstName + " " + md.LastName,
-                                   MeatEstablishment = me.Name,
-                                   DateInspected = mir.RepDate,
-                                   MeatInspector = au.firstName + " " + au.lastName,
-                                   VerifiedBy = mir.VerifiedByPOSMSHead,
-                                   UID = mir.UID,
-                               })
-                    .ToList();
+            //var reportsInfo = (from mir in _context.MeatInspectionReports
+            //                   join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
+            //                   join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
+            //                   join au in _context.Users on mir.AccountDetailsId equals au.Id
+            //                   join me in _context.MeatEstablishment on md.MeatEstablishmentId equals me.Id
+            //                   select new MeatInspectionReportViewModel
+            //                   {
+            //                       MeatInspectionReportId = mir.Id,
+            //                       DateReceived = rr.RecTime,
+            //                       Specie = rr.Species,
+            //                       MeatDealer = md.FirstName + " " + md.LastName,
+            //                       MeatEstablishment = me.Name,
+            //                       DateInspected = mir.RepDate,
+            //                       MeatInspector = au.firstName + " " + au.lastName,
+            //                       VerifiedBy = mir.VerifiedByPOSMSHead,
+            //                       UID = mir.UID,
+            //                   })
+            //        .ToList();
 
-            return reportsInfo;
+            return null;
         }
 
-        public async Task<IActionResult> DailyIndex(int? id, int? meatEstablishmentId)
+        public async Task<IActionResult> DailyIndex(Guid? id, Guid? meatEstablishmentId)
         {
             var receivingReports = _context.ReceivingReports.ToList();
             var conductOfInspections = _context.ConductOfInspections.ToList();

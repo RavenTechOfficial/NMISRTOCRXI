@@ -248,7 +248,7 @@
                                 var loggedInUser = await UserManager.GetUserAsync(User);
 
                                 // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                                int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
+                                Guid meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? Guid.Empty;
 
                                 // Filter the Model based on the MeatEstablishmentId
                                 filteredModel = Model
@@ -261,7 +261,7 @@
                                 var loggedInUser = await UserManager.GetUserAsync(User);
 
                                 // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                                int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
+                                Guid meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? Guid.Empty;
 
                                 // Filter the Model based on the MeatEstablishmentId
                                 filteredModel = Model

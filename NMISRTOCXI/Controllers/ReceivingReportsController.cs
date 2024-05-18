@@ -24,7 +24,7 @@ namespace thesis.Controllers
 		}
 
 		// GET: ReceivingReports
-		public async Task<IActionResult> Index(int? id, int? meatEstablishmentId, InspectionStatus? statusFilter)
+		public async Task<IActionResult> Index(Guid? id, Guid? meatEstablishmentId, InspectionStatus? statusFilter)
 		{
 			ViewBag.AlertMessage = TempData["AlertMessage"] as string;
 

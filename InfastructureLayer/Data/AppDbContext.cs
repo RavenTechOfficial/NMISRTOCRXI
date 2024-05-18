@@ -11,6 +11,7 @@ public class AppDbContext : IdentityDbContext<AccountDetails>
     {
     }
     //Super Admin
+    public DbSet<Address> Addresses { get; set; }
     public DbSet<MeatDealers> MeatDealers { get; set; }
     public DbSet<MeatEstablishment> MeatEstablishment { get; set; }
     public DbSet<QrCode> QrCodes { get; set; }
@@ -50,5 +51,7 @@ public class AppDbContext : IdentityDbContext<AccountDetails>
         AppDbSeed.SeedRole(modelBuilder);
         AppDbSeed.SeedUserRoles(modelBuilder);
         AppDbSeed.SeedUsers(modelBuilder);
+        AppDbSeed.SeedMeatDealer(modelBuilder);
+        AppDbSeed.SeedMeatEstablishment(modelBuilder);
     }
 }

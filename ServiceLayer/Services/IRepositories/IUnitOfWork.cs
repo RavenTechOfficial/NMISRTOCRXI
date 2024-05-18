@@ -2,8 +2,10 @@
 {
     public interface IUnitOfWork
     {
-        void Save();
+        Task Save();
         IReceivingReportRepository ReceivingReport { get; }
+        IMeatDealersRepository MeatDealers { get; }
+        IMeatEstablishmentRepository MeatEstablishment { get; }
         IAccountDetailsRepository AccountDetails { get; }
         IMeatInspectionReportRepository MeatInspectionReport { get; }
         IDashboardRepository Dashboard { get; }

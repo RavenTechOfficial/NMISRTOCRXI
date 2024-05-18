@@ -14,9 +14,9 @@ namespace thesis.Repositories
         {
             _context = context;
         }
-        public void Update(AccountDetails receivingReport)
+        public void Update(AccountDetails entity)
         {
-            _context.Update(receivingReport);
+            _context.Update(entity);
         }
     }
 }

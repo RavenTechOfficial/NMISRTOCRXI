@@ -21,13 +21,12 @@ namespace thesis.Controllers
 		public async Task<IActionResult> Index()
 		{
 			ViewBag.AlertMessage = TempData["AlertMessage"] as string;
-			ViewBag.AlertMessagee = TempData["AlertMessagee"] as string;
 			var meatEstablishments = await _context.MeatEstablishment.ToListAsync();
 			return View(meatEstablishments);
 		}
 
 		// GET: MeatEstablishments/Details/5
-		public async Task<IActionResult> Details(int? id)
+		public async Task<IActionResult> Details(Guid? id)
 		{
 			if (id == null || _context.MeatEstablishment == null)
 			{
@@ -98,7 +97,7 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Address,LicenseToOperateNumber, LicenseStatus,Lat,Long")] MeatEstablishment meatEstablishment)
+		public async Task<IActionResult> Edit(Guid id, [Bind("Id,Type,Name,Address,LicenseToOperateNumber, LicenseStatus,Lat,Long")] MeatEstablishment meatEstablishment)
 		{
 			if (id != meatEstablishment.Id)
 			{
@@ -131,7 +130,7 @@ namespace thesis.Controllers
 		}
 
 		// GET: MeatEstablishments/Delete/5
-		public async Task<IActionResult> Delete(int? id)
+		public async Task<IActionResult> Delete(Guid? id)
 		{
 			if (id == null)
 			{
@@ -168,7 +167,7 @@ namespace thesis.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		private bool MeatEstablishmentExists(int id)
+		private bool MeatEstablishmentExists(Guid id)
 		{
 			return _context.MeatEstablishment.Any(e => e.Id == id);
 		}

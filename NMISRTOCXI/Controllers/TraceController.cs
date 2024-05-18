@@ -37,7 +37,7 @@ namespace thesis.Controllers
         //    }
         //    return View();
         //}
-        public async Task<IActionResult> Result(string? id, int? meatEstablishmentId)
+        public async Task<IActionResult> Result(string? id, Guid? meatEstablishmentId)
 
         {
 

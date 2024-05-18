@@ -26,7 +26,7 @@
 					<thead>
 						<tr>
 							<th>Name</th>
-							<th>Role</th>
+							@* <th>Role</th> *@
 							<th>Email</th>
 							<th>Phone Number</th>
 							<th>Address</th>
@@ -38,7 +38,7 @@
 						{
 							<tr>
 								<td>@item.lastName, @item.firstName</td>
-								<td>@item.Roles</td>
+								@* <td>@item.Roles</td> *@
 								<td>@item.Email</td>
 								<td>@item.contactNo</td>
 								<td>@item.address</td>
@@ -88,7 +88,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (var item in Model)
+						@* @foreach (var item in Model)
 						{
 							if (item.Roles.ToString() == "MEATINSPECTOR" || item.Roles.ToString() == "MEATESTABLISHMENTREPRESENTATIVE")
 							{
@@ -106,7 +106,7 @@
 									</td>
 								</tr>
 							}
-						}
+						} *@
 					</tbody>
 
 				</table>

@@ -16,7 +16,7 @@ namespace DomainLayer.Models
         public int NoOfHeads { get; set; }
         public double LiveWeight { get; set; }
         [ForeignKey("MeatDealers")]
-        public int? MeatDealersId { get; set; }
+        public Guid? MeatDealersId { get; set; }
         public virtual MeatDealers? MeatDealers { get; set; }
         public string Origin { get; set; }
         public string ShippingDoc { get; set; }

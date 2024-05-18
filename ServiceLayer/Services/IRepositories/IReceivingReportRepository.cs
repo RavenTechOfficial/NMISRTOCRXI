@@ -4,6 +4,6 @@ namespace ServiceLayer.Services.IRepositories
 {
     public interface IReceivingReportRepository : IRepository<ReceivingReport>
     {
-        void Update(ReceivingReport receivingReport);
+        void Update(ReceivingReport entity);
     }
 }

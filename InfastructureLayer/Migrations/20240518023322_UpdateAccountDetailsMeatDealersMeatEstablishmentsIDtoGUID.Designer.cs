@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfastructureLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240517031604_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240518023322_UpdateAccountDetailsMeatDealersMeatEstablishmentsIDtoGUID")]
+    partial class UpdateAccountDetailsMeatDealersMeatEstablishmentsIDtoGUID
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace InfastructureLayer.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("MeatEstablishmentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("MeatEstablishmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -70,9 +70,6 @@ namespace InfastructureLayer.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("Roles")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -86,7 +83,7 @@ namespace InfastructureLayer.Migrations
                     b.Property<string>("address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("birthdate")
+                    b.Property<DateTime>("birthdate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("contactNo")
@@ -124,131 +121,139 @@ namespace InfastructureLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f66739a0-476f-47e5-a7fd-3a84047af089",
+                            Id = "56d669d2-dca4-4f8b-bf17-421daf7d5c18",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fd27ff06-ffea-410f-82ca-087cf50f6f8a",
+                            ConcurrencyStamp = "ad6b9239-e01d-4a4c-af23-77ae415bedf2",
                             Email = "super@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "SUPER@ADMIN.COM",
                             NormalizedUserName = "SUPERADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAApWY/IO/f7XJG5ov4F94XyIYdupZzpNGHqM+jlweekFtOs5hAAUtKLge7BDKn5Zw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKyfa2ZVmOcFRjIpV8M9SPBHvBOmaglb3CWbTeHBb9QAVeBfnToal6L5+4/1cIGUcw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "superadmin"
+                            UserName = "superadmin",
+                            birthdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "9ef16119-f9fa-4b54-9d9b-5417e5462c37",
+                            Id = "f5026bb4-e4e6-44d3-8a57-b2a3f25d0a90",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d95fff77-a681-459f-a6ee-a3d92e3d1331",
+                            ConcurrencyStamp = "1cd21b91-2b48-43b8-a5b4-c02aa99e8807",
                             Email = "mtv@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "INSPECTOR@ADMIN.COM",
                             NormalizedUserName = "INSPECTORADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEICh5fhQ91EmtVSPXJmfCuAGvwNrzWoG6QbFLCJArVCnBS4gz7lxx7ZbxOxs6p3Q5Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECfW34atkK3pvlGEm7CkpG2mEsy7IMY24Y18RFRn2xwOC8v6YfLvbLyUrFdrG3Dj2g==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "inspectoradmin"
+                            UserName = "inspectoradmin",
+                            birthdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "26924353-da23-4429-ab55-446a56c9f5b9",
+                            Id = "91f28271-7976-4a7f-ac8f-bb1f927f8734",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ee3aeec6-4b92-4d4f-b982-e85840199fe7",
+                            ConcurrencyStamp = "f134e581-7497-43a0-b612-65234aae6f35",
                             Email = "mtv@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MTV@ADMIN.COM",
                             NormalizedUserName = "MTVRADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEXFF/Fb/ZmQ5nIKCw9MYtvB9T2OQNmfrob33PrbAaXa/hLX8cOQThyvMSYTE3PJmQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPf1RRSL2lHyjIUWyv3E2kEnUpnUE/HQGdHKnh+rF9Uz67TXbtoOjPMRzeYczhmxJw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "mtvadmin"
+                            UserName = "mtvadmin",
+                            birthdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "30c71afd-3c9c-4508-85e6-e04ebc764893",
+                            Id = "c639668b-1fe3-4a14-80b8-e0e6cb61f1c8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "28ae9d21-a197-4734-83e1-a0a36ad80843",
+                            ConcurrencyStamp = "99866736-b681-42d9-85e3-d1ac366c8e3c",
                             Email = "user@user.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@USER.COM",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDe+3C3DBexdq25PK96atODZ3bYl99zyqA8paC5h/v5UHKEsStY497F31V258rBbzw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAWlviQ9fUhoB1djzy89AKKR78ChFD6M1jNwznbqMoQMxYosn6L2Ke+Cbtm+yn8nuA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "user"
+                            UserName = "user",
+                            birthdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "daff8249-afac-40a5-85c3-ad726961b3aa",
+                            Id = "a95a65f1-99b6-4490-822f-b448f8f0b288",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ec9f92de-aca0-4750-be14-2f4de4153c9f",
+                            ConcurrencyStamp = "5f61b9e2-d7a3-43ad-8d17-cb1c756bd711",
                             Email = "meat@rep.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MEAT@REP.COM",
                             NormalizedUserName = "MEATREP",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBIDqBK68gxzAFiMnUeZ/tJyBxBvh821vtZQ1dZm/zQ9otYpBxQ6RoBzUesL3PlhAg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEObrYW2Mz2DeetU/OT7UiPqk26bZprAuqgZiJ3jDBpJr3kvgMYKzxqX+3cpZH1prcw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "meatrep"
+                            UserName = "meatrep",
+                            birthdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "b305908f-7e27-4356-a112-2778fbf621d2",
+                            Id = "67a6201a-b480-4cab-8e38-3a8bec08811c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ebab2d45-288a-4ce8-a299-1daab27d69e4",
+                            ConcurrencyStamp = "65430640-f721-494c-a62d-0a559de96685",
                             Email = "meat@inspector.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MEAT@INSPECTOR.COM",
                             NormalizedUserName = "MEATINSPECTOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKsXOCIXgO7ked17C6EbZ1yQeKkTkmNXFexpilp8mRGVsHvWyPU5pxsoLD4Xg4OXXA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEALGhwIHdFVheEwzNKl86LTs/ulbLBeHyRtGteMowHQ0WjZS86LoG7yLGKXivZstag==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "meatinspector"
+                            UserName = "meatinspector",
+                            birthdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "cce24038-224f-4626-98aa-2a4df54a5c35",
+                            Id = "942929e4-a6c0-4314-a9eb-4a2f7a68efa0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "64971b23-0ad5-4eee-b5c2-267df9f079d8",
+                            ConcurrencyStamp = "f545a3c5-af88-47a7-ae1c-c387ef066078",
                             Email = "mtv@inspector.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MTV@INSPECTOR.COM",
                             NormalizedUserName = "MTVINSPECTOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO12cJ+0lgQ6nGvqgyyCrPqExosPpga/fM+uekrQbg1mc9luWPh6VmXyuFAGgLI0bw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECBlPMmzfaSk5t9o6Ee+xoxmM8Bj9Vo/XtbdasYgLuKOahckBmK8exWV5VOuEfh09Q==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "mtvinspector"
+                            UserName = "mtvinspector",
+                            birthdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = "2b81fc12-d568-4be5-9ae6-8de0ce5eff94",
+                            Id = "4e441fb6-60da-4990-9336-77dfc32126d9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "70123a97-3e85-4100-93f4-922ec0f9e3d2",
+                            ConcurrencyStamp = "7f5d0158-581f-47ac-a82e-7ccd0f306950",
                             Email = "mtv@user.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MTV@USER.COM",
                             NormalizedUserName = "MTVUSER",
-                            PasswordHash = "AQAAAAIAAYagAAAAECxGb4Cpvbc6+4OlwoU9nebHplsfpmE6EZUirJ7QWGLSLD3q+Z7Tu0ON5vlDdRnelQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBa2WHpsJsZygtT1FzfZqJbrj/wvkEsVzTSTUzwX/XgK+Mt6qOAXYBy8BNMvZehFKg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
-                            UserName = "mtvuser"
+                            UserName = "mtvuser",
+                            birthdate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -686,18 +691,14 @@ namespace InfastructureLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.MeatDealers", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -708,8 +709,8 @@ namespace InfastructureLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MeatEstablishmentId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MeatEstablishmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
@@ -723,11 +724,9 @@ namespace InfastructureLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.MeatEstablishment", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -1004,8 +1003,8 @@ namespace InfastructureLayer.Migrations
                     b.Property<double>("LiveWeight")
                         .HasColumnType("float");
 
-                    b.Property<int?>("MeatDealersId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("MeatDealersId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("NoOfHeads")
                         .HasColumnType("int");
@@ -1243,49 +1242,49 @@ namespace InfastructureLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "df6864e8-c680-4df8-8bcc-990ac0d318bf",
+                            Id = "04d8e8e2-d7ee-4520-b877-c725072d94ec",
                             Name = "SuperAdministrator",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
-                            Id = "8ff06b4e-ed7c-4ace-9956-d88366b7f786",
+                            Id = "9de5f368-d024-43d5-bbb1-b229c6089ed4",
                             Name = "InspectorAdministrator",
                             NormalizedName = "INSPECTORADMIN"
                         },
                         new
                         {
-                            Id = "a0ba380e-aa40-4351-96f9-735e087ce21f",
+                            Id = "0dac8dc3-f119-4fee-9834-3ff9d3287b59",
                             Name = "MTVAdministrator",
                             NormalizedName = "MTVADMIN"
                         },
                         new
                         {
-                            Id = "bf8bce35-2ce9-4cbe-b7ad-5090d976f49f",
+                            Id = "797dcc59-cbd5-4ded-b457-bdbebd6bb8dd",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "18624e89-0312-4d39-8e7a-0e9701fff257",
+                            Id = "fe89ea6b-87c6-47d3-b436-302e80b40990",
                             Name = "MeatEstablishmentRepresentative",
                             NormalizedName = "MEATESTABLISHMENTREPRESENTATIVE"
                         },
                         new
                         {
-                            Id = "dddf7db0-ddaf-447b-8d94-64f294b55e87",
+                            Id = "539bb59f-c3b2-4abc-b917-a77eeb32f840",
                             Name = "MeatInspector",
                             NormalizedName = "MEATINSPECTOR"
                         },
                         new
                         {
-                            Id = "a9e34847-ce14-43cd-9e2e-b2b38eae70a1",
+                            Id = "821456fc-93cd-4175-ac2c-893b1e3869f6",
                             Name = "MtvInspector",
                             NormalizedName = "MTVINSPECTOR"
                         },
                         new
                         {
-                            Id = "efdf3dd1-18a5-4cbc-9310-3ce07f75bfc6",
+                            Id = "c489a85a-e6b7-4c78-8c56-3e56b921e272",
                             Name = "MtvUsers",
                             NormalizedName = "MTVUSERS"
                         });
@@ -1380,43 +1379,43 @@ namespace InfastructureLayer.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "f66739a0-476f-47e5-a7fd-3a84047af089",
-                            RoleId = "df6864e8-c680-4df8-8bcc-990ac0d318bf"
+                            UserId = "56d669d2-dca4-4f8b-bf17-421daf7d5c18",
+                            RoleId = "04d8e8e2-d7ee-4520-b877-c725072d94ec"
                         },
                         new
                         {
-                            UserId = "9ef16119-f9fa-4b54-9d9b-5417e5462c37",
-                            RoleId = "8ff06b4e-ed7c-4ace-9956-d88366b7f786"
+                            UserId = "f5026bb4-e4e6-44d3-8a57-b2a3f25d0a90",
+                            RoleId = "9de5f368-d024-43d5-bbb1-b229c6089ed4"
                         },
                         new
                         {
-                            UserId = "26924353-da23-4429-ab55-446a56c9f5b9",
-                            RoleId = "a0ba380e-aa40-4351-96f9-735e087ce21f"
+                            UserId = "91f28271-7976-4a7f-ac8f-bb1f927f8734",
+                            RoleId = "0dac8dc3-f119-4fee-9834-3ff9d3287b59"
                         },
                         new
                         {
-                            UserId = "30c71afd-3c9c-4508-85e6-e04ebc764893",
-                            RoleId = "bf8bce35-2ce9-4cbe-b7ad-5090d976f49f"
+                            UserId = "c639668b-1fe3-4a14-80b8-e0e6cb61f1c8",
+                            RoleId = "797dcc59-cbd5-4ded-b457-bdbebd6bb8dd"
                         },
                         new
                         {
-                            UserId = "daff8249-afac-40a5-85c3-ad726961b3aa",
-                            RoleId = "18624e89-0312-4d39-8e7a-0e9701fff257"
+                            UserId = "a95a65f1-99b6-4490-822f-b448f8f0b288",
+                            RoleId = "fe89ea6b-87c6-47d3-b436-302e80b40990"
                         },
                         new
                         {
-                            UserId = "b305908f-7e27-4356-a112-2778fbf621d2",
-                            RoleId = "dddf7db0-ddaf-447b-8d94-64f294b55e87"
+                            UserId = "67a6201a-b480-4cab-8e38-3a8bec08811c",
+                            RoleId = "539bb59f-c3b2-4abc-b917-a77eeb32f840"
                         },
                         new
                         {
-                            UserId = "cce24038-224f-4626-98aa-2a4df54a5c35",
-                            RoleId = "a9e34847-ce14-43cd-9e2e-b2b38eae70a1"
+                            UserId = "942929e4-a6c0-4314-a9eb-4a2f7a68efa0",
+                            RoleId = "821456fc-93cd-4175-ac2c-893b1e3869f6"
                         },
                         new
                         {
-                            UserId = "2b81fc12-d568-4be5-9ae6-8de0ce5eff94",
-                            RoleId = "efdf3dd1-18a5-4cbc-9310-3ce07f75bfc6"
+                            UserId = "4e441fb6-60da-4990-9336-77dfc32126d9",
+                            RoleId = "c489a85a-e6b7-4c78-8c56-3e56b921e272"
                         });
                 });
 

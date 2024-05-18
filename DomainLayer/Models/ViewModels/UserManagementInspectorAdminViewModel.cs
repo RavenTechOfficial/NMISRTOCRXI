@@ -11,8 +11,8 @@ namespace DomainLayer.Models.ViewModels
 		public string address { get; set; }
 		public string contactNo { get; set; }
 		public string email { get; set; }
-		public Roles Roles { get; set; }
-		public int? MeatEstablishmentId { get; set; }
+        public string Role { get; set; } 
+        public Guid? MeatEstablishmentId { get; set; }
 		public string MeatEstablishmentName { get; set; }
 	}
 }

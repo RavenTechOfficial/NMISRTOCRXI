@@ -25,23 +25,24 @@ namespace thesis.Controllers
         // GET: MeatInspectionController
         public ActionResult Index()
         {
-            var results = _context.ReceivingReports
-                .Join(
-                    _context.MeatDealers,
-                    rr => rr.MeatDealersId,
-                    md => md.Id,
-                    (rr, md) => new MeatInspectionViewModel
-                    {
-                        ReceivingId = rr.Id,
-                        RecTime = rr.RecTime,
-                        Species = rr.Species,
-                        LiveWeight = rr.LiveWeight,
-                        ReceivingNoOfHeads = rr.NoOfHeads,
-                        MeatDealer = md.FirstName + " " + md.LastName
-                    })
-                .ToList();
+            //var results = _context.ReceivingReports
+            //    .Join(
+            //        _context.MeatDealers,
+            //        rr => rr.MeatDealersId,
+            //        md => md.Id,
+            //        (rr, md) => new MeatInspectionViewModel
+            //        {
+            //            ReceivingId = rr.Id,
+            //            RecTime = rr.RecTime,
+            //            Species = rr.Species,
+            //            LiveWeight = rr.LiveWeight,
+            //            ReceivingNoOfHeads = rr.NoOfHeads,
+            //            MeatDealer = md.FirstName + " " + md.LastName
+            //        })
+            //    .ToList();
 
-            return View(results);
+            //return View(results);
+            return null;
         }
 
 
@@ -184,183 +185,184 @@ namespace thesis.Controllers
 
         public async Task<IActionResult> CreateInspection(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            // Add the code to count rows in MeatInspectionReports table
-            var inspectionCount = await _context.MeatInspectionReports
-                .Where(mir => mir.ReceivingReportId == id)
-                .CountAsync();
+            //// Add the code to count rows in MeatInspectionReports table
+            //var inspectionCount = await _context.MeatInspectionReports
+            //    .Where(mir => mir.ReceivingReportId == id)
+            //    .CountAsync();
 
-            var meatInspectionViewModel = await _context.ReceivingReports
-                .Where(rr => rr.Id == id)
-                .Join(
-                    _context.MeatDealers,
-                    rr => rr.MeatDealersId,
-                    md => md.Id,
-                    (rr, md) => new MeatInspectionViewModel
-                    {
-                        ReceivingId = rr.Id,
-                        RecTime = rr.RecTime,
-                        Species = rr.Species,
-                        LiveWeight = rr.LiveWeight,
-                        MeatDealer = md.FirstName + " " + md.LastName,
-                        ReceivingNoOfHeads = rr.NoOfHeads,
-                        InspectionCount = inspectionCount,
+            //var meatInspectionViewModel = await _context.ReceivingReports
+            //    .Where(rr => rr.Id == id)
+            //    .Join(
+            //        _context.MeatDealers,
+            //        rr => rr.MeatDealersId,
+            //        md => md.Id,
+            //        (rr, md) => new MeatInspectionViewModel
+            //        {
+            //            ReceivingId = rr.Id,
+            //            RecTime = rr.RecTime,
+            //            Species = rr.Species,
+            //            LiveWeight = rr.LiveWeight,
+            //            MeatDealer = md.FirstName + " " + md.LastName,
+            //            ReceivingNoOfHeads = rr.NoOfHeads,
+            //            InspectionCount = inspectionCount,
 
-                    }
-                )
-                .FirstOrDefaultAsync();
-
-
-
-            var resultId = _context.MeatInspectionReports
-             .Where(mir => mir.ReceivingReportId == id)
-             .Select(mir => mir.Id)
-             .FirstOrDefault();
-
-            var antemortemCount = await _context.ConductOfInspections
-                .Where(mir => mir.MeatInspectionReportId == resultId)
-                .CountAsync();
+            //        }
+            //    )
+            //    .FirstOrDefaultAsync();
 
 
-            if (antemortemCount > 0)
-            {
 
-                var result = _context.ConductOfInspections
-                    .Join(
-                        _context.MeatInspectionReports,
-                        coi => coi.MeatInspectionReportId,
-                        mir => mir.Id,
-                        (coi, mir) => new { coi, mir }
-                    )
-                    .Join(
-                        _context.ReceivingReports,
-                        coiMir => coiMir.mir.ReceivingReportId,
-                        rr => rr.Id,
-                        (coiMir, rr) => new
-                        {
-                            coiMir.coi.MeatInspectionReportId,
-                            coiMir.coi.Issue,
-                            coiMir.coi.NoOfHeads,
-                            coiMir.coi.Weight,
-                            coiMir.coi.Cause
-                        }
-                    )
-                    .ToList();
+            //var resultId = _context.MeatInspectionReports
+            // .Where(mir => mir.ReceivingReportId == id)
+            // .Select(mir => mir.Id)
+            // .FirstOrDefault();
 
-                var antemortemInspectionData = _context.ConductOfInspections.Where(item => item.MeatInspectionReportId == resultId).ToList();
-                meatInspectionViewModel.AntemortemInspectionData = antemortemInspectionData;
+            //var antemortemCount = await _context.ConductOfInspections
+            //    .Where(mir => mir.MeatInspectionReportId == resultId)
+            //    .CountAsync();
 
-            }
 
-            var postmortemCount = await _context.ReceivingReports
-                .Where(rr => rr.Id == id)
-                .Join(
-                    _context.MeatInspectionReports,
-                    rr => rr.Id,
-                    mir => mir.ReceivingReportId,
-                    (rr, mir) => mir
-                )
-                .Join(
-                    _context.ConductOfInspections,
-                    mir => mir.Id,
-                    coi => coi.MeatInspectionReportId,
-                    (mir, coi) => coi
-                )
-                .Join(
-                    _context.PassedForSlaughters,
-                    coi => coi.Id,
-                    pfs => pfs.ConductOfInspectionId,
-                    (coi, pfs) => pfs
-                )
-                .Join(
-                    _context.Postmortems,
-                    pfs => pfs.Id,
-                    pm => pm.PassedForSlaughterId,
-                    (pfs, pm) => pm
-                )
-                .CountAsync();
+            //if (antemortemCount > 0)
+            //{
 
-            var passedForSlaughterId = _context.ReceivingReports
-                .Where(rr => rr.Id == id)
-                .Join(
-                    _context.MeatInspectionReports,
-                    rr => rr.Id,
-                    mir => mir.ReceivingReportId,
-                    (rr, mir) => mir
-                )
-                .Join(
-                    _context.ConductOfInspections,
-                    mir => mir.Id,
-                    coi => coi.MeatInspectionReportId,
-                    (mir, coi) => coi
-                )
-                .Join(
-                    _context.PassedForSlaughters,
-                    coi => coi.Id,
-                    pfs => pfs.ConductOfInspectionId,
-                    (coi, pfs) => pfs
-                )
-                .Join(
-                    _context.Postmortems,
-                    pfs => pfs.Id,
-                    pm => pm.PassedForSlaughterId,
-                    (pfs, pm) => pfs.Id
-                )
-                .FirstOrDefault();
+            //    var result = _context.ConductOfInspections
+            //        .Join(
+            //            _context.MeatInspectionReports,
+            //            coi => coi.MeatInspectionReportId,
+            //            mir => mir.Id,
+            //            (coi, mir) => new { coi, mir }
+            //        )
+            //        .Join(
+            //            _context.ReceivingReports,
+            //            coiMir => coiMir.mir.ReceivingReportId,
+            //            rr => rr.Id,
+            //            (coiMir, rr) => new
+            //            {
+            //                coiMir.coi.MeatInspectionReportId,
+            //                coiMir.coi.Issue,
+            //                coiMir.coi.NoOfHeads,
+            //                coiMir.coi.Weight,
+            //                coiMir.coi.Cause
+            //            }
+            //        )
+            //        .ToList();
 
-            if (postmortemCount > 0)
-            {
-                var resultPost = _context.ReceivingReports
-                   .Where(rr => rr.Id == id)
-                   .Join(
-                       _context.MeatInspectionReports,
-                       rr => rr.Id,
-                       mir => mir.ReceivingReportId,
-                       (rr, mir) => mir
-                   )
-                   .Join(
-                       _context.ConductOfInspections,
-                       mir => mir.Id,
-                       coi => coi.MeatInspectionReportId,
-                       (mir, coi) => coi
-                   )
-                   .Join(
-                       _context.PassedForSlaughters,
-                       coi => coi.Id,
-                       pfs => pfs.ConductOfInspectionId,
-                       (coi, pfs) => pfs
-                   )
-                   .Join(
-                       _context.Postmortems,
-                       pfs => pfs.Id,
-                       pm => pm.PassedForSlaughterId,
-                       (pfs, pm) => new
-                       {
-                           pm.AnimalPart,
-                           pm.Cause,
-                           pm.Weight,
-                           pm.NoOfHeads,
-                           pm.Image1,
-                           pm.Image2,
-                           pm.Image3
-                       }
-                   )
-                   .ToList();
+            //    var antemortemInspectionData = _context.ConductOfInspections.Where(item => item.MeatInspectionReportId == resultId).ToList();
+            //    meatInspectionViewModel.AntemortemInspectionData = antemortemInspectionData;
 
-                var postmortemInspectionData = _context.Postmortems.Where(item => item.PassedForSlaughterId == passedForSlaughterId).ToList();
-                meatInspectionViewModel.PostmortemInspectionData = postmortemInspectionData;
-            }
+            //}
 
-            if (meatInspectionViewModel == null)
-            {
-                return NotFound();
-            }
+            //var postmortemCount = await _context.ReceivingReports
+            //    .Where(rr => rr.Id == id)
+            //    .Join(
+            //        _context.MeatInspectionReports,
+            //        rr => rr.Id,
+            //        mir => mir.ReceivingReportId,
+            //        (rr, mir) => mir
+            //    )
+            //    .Join(
+            //        _context.ConductOfInspections,
+            //        mir => mir.Id,
+            //        coi => coi.MeatInspectionReportId,
+            //        (mir, coi) => coi
+            //    )
+            //    .Join(
+            //        _context.PassedForSlaughters,
+            //        coi => coi.Id,
+            //        pfs => pfs.ConductOfInspectionId,
+            //        (coi, pfs) => pfs
+            //    )
+            //    .Join(
+            //        _context.Postmortems,
+            //        pfs => pfs.Id,
+            //        pm => pm.PassedForSlaughterId,
+            //        (pfs, pm) => pm
+            //    )
+            //    .CountAsync();
 
-            return View(meatInspectionViewModel);
+            //var passedForSlaughterId = _context.ReceivingReports
+            //    .Where(rr => rr.Id == id)
+            //    .Join(
+            //        _context.MeatInspectionReports,
+            //        rr => rr.Id,
+            //        mir => mir.ReceivingReportId,
+            //        (rr, mir) => mir
+            //    )
+            //    .Join(
+            //        _context.ConductOfInspections,
+            //        mir => mir.Id,
+            //        coi => coi.MeatInspectionReportId,
+            //        (mir, coi) => coi
+            //    )
+            //    .Join(
+            //        _context.PassedForSlaughters,
+            //        coi => coi.Id,
+            //        pfs => pfs.ConductOfInspectionId,
+            //        (coi, pfs) => pfs
+            //    )
+            //    .Join(
+            //        _context.Postmortems,
+            //        pfs => pfs.Id,
+            //        pm => pm.PassedForSlaughterId,
+            //        (pfs, pm) => pfs.Id
+            //    )
+            //    .FirstOrDefault();
+
+            //if (postmortemCount > 0)
+            //{
+            //    var resultPost = _context.ReceivingReports
+            //       .Where(rr => rr.Id == id)
+            //       .Join(
+            //           _context.MeatInspectionReports,
+            //           rr => rr.Id,
+            //           mir => mir.ReceivingReportId,
+            //           (rr, mir) => mir
+            //       )
+            //       .Join(
+            //           _context.ConductOfInspections,
+            //           mir => mir.Id,
+            //           coi => coi.MeatInspectionReportId,
+            //           (mir, coi) => coi
+            //       )
+            //       .Join(
+            //           _context.PassedForSlaughters,
+            //           coi => coi.Id,
+            //           pfs => pfs.ConductOfInspectionId,
+            //           (coi, pfs) => pfs
+            //       )
+            //       .Join(
+            //           _context.Postmortems,
+            //           pfs => pfs.Id,
+            //           pm => pm.PassedForSlaughterId,
+            //           (pfs, pm) => new
+            //           {
+            //               pm.AnimalPart,
+            //               pm.Cause,
+            //               pm.Weight,
+            //               pm.NoOfHeads,
+            //               pm.Image1,
+            //               pm.Image2,
+            //               pm.Image3
+            //           }
+            //       )
+            //       .ToList();
+
+            //    var postmortemInspectionData = _context.Postmortems.Where(item => item.PassedForSlaughterId == passedForSlaughterId).ToList();
+            //    meatInspectionViewModel.PostmortemInspectionData = postmortemInspectionData;
+            //}
+
+            //if (meatInspectionViewModel == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //return View(meatInspectionViewModel);
+            return null;
         }
 
 
@@ -911,94 +913,95 @@ namespace thesis.Controllers
         [HttpPost]
         public IActionResult CreateSummaryTBL(int MeatInsId, string NameVal, string AddVal, int micIssued, int micCancelled, int ReceivingId, int PassedId, MeatInspectionViewModel viewModel)
         {
-            int inspectionReportCount = _context.MeatInspectionReports
-                .Where(mir => mir.ReceivingReportId == ReceivingId)
-                .Count();
+            //int inspectionReportCount = _context.MeatInspectionReports
+            //    .Where(mir => mir.ReceivingReportId == ReceivingId)
+            //    .Count();
 
-            var result = new SummaryAndDistributionOfMIC
-            {
-                TotalNoFitForHumanConsumptionId = PassedId,
-                DestinationName = NameVal,
-                DestinationAddress = AddVal,
-                //CertificateStatus = (CertificateStatus)CertStat,
-                MICIssued = micIssued,
-                MICCancelled = micCancelled,
-            };
+            //var result = new SummaryAndDistributionOfMIC
+            //{
+            //    TotalNoFitForHumanConsumptionId = PassedId,
+            //    DestinationName = NameVal,
+            //    DestinationAddress = AddVal,
+            //    //CertificateStatus = (CertificateStatus)CertStat,
+            //    MICIssued = micIssued,
+            //    MICCancelled = micCancelled,
+            //};
 
-            _context.Add(result);
-            _context.SaveChanges();
+            //_context.Add(result);
+            //_context.SaveChanges();
 
-            var meatInspectionViewModel = (from rr in _context.ReceivingReports
-                                           where rr.Id == ReceivingId
-                                           join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
-                                           join mir in _context.MeatInspectionReports on rr.Id equals mir.ReceivingReportId
-                                           join coi in _context.ConductOfInspections on mir.Id equals coi.MeatInspectionReportId
-                                           join pfs in _context.PassedForSlaughters on coi.Id equals pfs.ConductOfInspectionId
-                                           join pm in _context.Postmortems on pfs.Id equals pm.PassedForSlaughterId
-                                           join tnfhc in _context.TotalNoFitForHumanConsumptions on pm.Id equals tnfhc.PostmortemId
-                                           join sadmic in _context.SummaryAndDistributionOfMICs on tnfhc.Id equals sadmic.TotalNoFitForHumanConsumptionId
-                                           select new MeatInspectionViewModel
-                                           {
-                                               ReceivingId = rr.Id,
-                                               RecTime = rr.RecTime,
-                                               Species = rr.Species,
-                                               LiveWeight = rr.LiveWeight,
-                                               MeatDealer = md.FirstName + " " + md.LastName,
-                                               ReceivingNoOfHeads = rr.NoOfHeads,
-                                               MeatInspectionReportId = mir.Id,
-                                               NoOfHeadsPassed = pfs.NoOfHeads,
-                                               WeightPassed = pfs.Weight,
-                                               AntemortemId = coi.Id,
-                                               DressedWeight = tnfhc.DressedWeight,
-                                               DestinationName = sadmic.DestinationName,
-                                               DestinationAddress = sadmic.DestinationAddress,
-                                               MICIssued = sadmic.MICIssued,
-                                               MICCancelled = sadmic.MICCancelled,
-                                               Passed = pfs.Id
-                                           })
-                            .FirstOrDefault();
+            //var meatInspectionViewModel = (from rr in _context.ReceivingReports
+            //                               where rr.Id == ReceivingId
+            //                               join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
+            //                               join mir in _context.MeatInspectionReports on rr.Id equals mir.ReceivingReportId
+            //                               join coi in _context.ConductOfInspections on mir.Id equals coi.MeatInspectionReportId
+            //                               join pfs in _context.PassedForSlaughters on coi.Id equals pfs.ConductOfInspectionId
+            //                               join pm in _context.Postmortems on pfs.Id equals pm.PassedForSlaughterId
+            //                               join tnfhc in _context.TotalNoFitForHumanConsumptions on pm.Id equals tnfhc.PostmortemId
+            //                               join sadmic in _context.SummaryAndDistributionOfMICs on tnfhc.Id equals sadmic.TotalNoFitForHumanConsumptionId
+            //                               select new MeatInspectionViewModel
+            //                               {
+            //                                   ReceivingId = rr.Id,
+            //                                   RecTime = rr.RecTime,
+            //                                   Species = rr.Species,
+            //                                   LiveWeight = rr.LiveWeight,
+            //                                   MeatDealer = md.FirstName + " " + md.LastName,
+            //                                   ReceivingNoOfHeads = rr.NoOfHeads,
+            //                                   MeatInspectionReportId = mir.Id,
+            //                                   NoOfHeadsPassed = pfs.NoOfHeads,
+            //                                   WeightPassed = pfs.Weight,
+            //                                   AntemortemId = coi.Id,
+            //                                   DressedWeight = tnfhc.DressedWeight,
+            //                                   DestinationName = sadmic.DestinationName,
+            //                                   DestinationAddress = sadmic.DestinationAddress,
+            //                                   MICIssued = sadmic.MICIssued,
+            //                                   MICCancelled = sadmic.MICCancelled,
+            //                                   Passed = pfs.Id
+            //                               })
+            //                .FirstOrDefault();
 
-            // Assign the values to viewModel properties
-            viewModel.RecTime = meatInspectionViewModel.RecTime;
-            viewModel.Species = meatInspectionViewModel.Species;
-            viewModel.LiveWeight = meatInspectionViewModel.LiveWeight;
-            viewModel.MeatDealer = meatInspectionViewModel.MeatDealer;
-            viewModel.ReceivingNoOfHeads = meatInspectionViewModel.ReceivingNoOfHeads;
-            viewModel.MeatInspectionReportId = meatInspectionViewModel.MeatInspectionReportId;
-            viewModel.AntemortemId = meatInspectionViewModel.AntemortemId;
-            //   viewModel.Passed = result.Id;
-            viewModel.Passed = meatInspectionViewModel.Passed;
+            //// Assign the values to viewModel properties
+            //viewModel.RecTime = meatInspectionViewModel.RecTime;
+            //viewModel.Species = meatInspectionViewModel.Species;
+            //viewModel.LiveWeight = meatInspectionViewModel.LiveWeight;
+            //viewModel.MeatDealer = meatInspectionViewModel.MeatDealer;
+            //viewModel.ReceivingNoOfHeads = meatInspectionViewModel.ReceivingNoOfHeads;
+            //viewModel.MeatInspectionReportId = meatInspectionViewModel.MeatInspectionReportId;
+            //viewModel.AntemortemId = meatInspectionViewModel.AntemortemId;
+            ////   viewModel.Passed = result.Id;
+            //viewModel.Passed = meatInspectionViewModel.Passed;
 
-            viewModel.NoOfHeadsPassed = meatInspectionViewModel.NoOfHeadsPassed;
-            viewModel.WeightPassed = meatInspectionViewModel.WeightPassed;
+            //viewModel.NoOfHeadsPassed = meatInspectionViewModel.NoOfHeadsPassed;
+            //viewModel.WeightPassed = meatInspectionViewModel.WeightPassed;
 
-            viewModel.TotalNoOfHeads = meatInspectionViewModel.NoOfHeadsPassed;
-            viewModel.DressedWeight = meatInspectionViewModel.WeightPassed;
+            //viewModel.TotalNoOfHeads = meatInspectionViewModel.NoOfHeadsPassed;
+            //viewModel.DressedWeight = meatInspectionViewModel.WeightPassed;
 
-            viewModel.DestinationName = meatInspectionViewModel.DestinationName;
-            viewModel.DestinationAddress = meatInspectionViewModel.DestinationAddress;
-            viewModel.MICIssued = meatInspectionViewModel.MICIssued;
-            viewModel.MICCancelled = meatInspectionViewModel.MICCancelled;
+            //viewModel.DestinationName = meatInspectionViewModel.DestinationName;
+            //viewModel.DestinationAddress = meatInspectionViewModel.DestinationAddress;
+            //viewModel.MICIssued = meatInspectionViewModel.MICIssued;
+            //viewModel.MICCancelled = meatInspectionViewModel.MICCancelled;
 
-            var antemortemInspectionData = _context.ConductOfInspections.Where(item => item.MeatInspectionReportId == MeatInsId).ToList();
-            viewModel.AntemortemInspectionData = antemortemInspectionData;
+            //var antemortemInspectionData = _context.ConductOfInspections.Where(item => item.MeatInspectionReportId == MeatInsId).ToList();
+            //viewModel.AntemortemInspectionData = antemortemInspectionData;
 
-            var postmortemInspectionData = _context.Postmortems.Where(item => item.PassedForSlaughterId == meatInspectionViewModel.Passed).ToList();
-            viewModel.PostmortemInspectionData = postmortemInspectionData;
+            //var postmortemInspectionData = _context.Postmortems.Where(item => item.PassedForSlaughterId == meatInspectionViewModel.Passed).ToList();
+            //viewModel.PostmortemInspectionData = postmortemInspectionData;
 
-            var receivingReportToUpdate = _context.ReceivingReports.FirstOrDefault(rr => rr.Id == ReceivingId);
-            if (receivingReportToUpdate != null)
-            {
-                // Update the specific column value
-                receivingReportToUpdate.InspectionStatus = InspectionStatus.Done;
+            //var receivingReportToUpdate = _context.ReceivingReports.FirstOrDefault(rr => rr.Id == ReceivingId);
+            //if (receivingReportToUpdate != null)
+            //{
+            //    // Update the specific column value
+            //    receivingReportToUpdate.InspectionStatus = InspectionStatus.Done;
 
-                // Save the changes to the database
-                _context.SaveChanges();
-            }
+            //    // Save the changes to the database
+            //    _context.SaveChanges();
+            //}
 
-            viewModel.InspectionCount = inspectionReportCount;
-            // return View("~/Views/MeatInspections/CreateInspection.cshtml", viewModel);
-            return RedirectToAction("DailyInspection", "MeatInspectionReports");
+            //viewModel.InspectionCount = inspectionReportCount;
+            //// return View("~/Views/MeatInspections/CreateInspection.cshtml", viewModel);
+            //return RedirectToAction("DailyInspection", "MeatInspectionReports");
+            return null;
         }
 
 

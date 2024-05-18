@@ -86,7 +86,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var user in Model)
+                   @*  @foreach (var user in Model)
                     {
                         <tr>
                             <td>@user.lastName, @user.firstName </td>
@@ -110,7 +110,7 @@
                                 <a type="button" class="btn btn-danger py-1 font-weight-light" asp-action="MeatCheckDelete" asp-route-id="@user.Id">Delete</a>
                             </td>
                         </tr>
-                    }
+                    } *@
                 </tbody>
             </table>
 

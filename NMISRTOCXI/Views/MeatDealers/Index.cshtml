@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using DomainLayer.Models;
-@model IEnumerable<DomainLayer.Models.MeatDealers>
+@model IEnumerable<DomainLayer.Models.ViewModels.MeatDealersViewModel>
 
 @inject SignInManager<AccountDetails> SignInManager
 @inject UserManager<AccountDetails> UserManager
@@ -27,7 +27,7 @@
             });
         </script>
     }
-    if (!string.IsNullOrEmpty(ViewBag.AlertMessagee))
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessage))
     {
         <script>
             const Toast = Swal.mixin({
@@ -44,7 +44,7 @@
 
             Toast.fire({
                 icon: 'success',
-                title: '@ViewBag.AlertMessagee'
+                title: '@ViewBag.AlertMessage'
             });
         </script>
     }
@@ -152,34 +152,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            var accountId = UserManager.GetUserId(User);
-                            var filteredModel = Model;
-                            if (User.IsInRole("MeatEstablishmentRepresentative"))
-                            {
-                                filteredModel = Model
-                                .Where(meatDealer => meatDealer.MeatEstablishmentId == UserManager.Users
-                                .Where(user => user.Id == accountId)
-                                .Select(user => user.MeatEstablishmentId)
-                                .FirstOrDefault()
-                                );
-                            }
-                            if (User.IsInRole("MeatInspector"))
-                            {
-                                filteredModel = Model
-                                .Where(meatDealer => meatDealer.MeatEstablishmentId == UserManager.Users
-                                .Where(user => user.Id == accountId)
-                                .Select(user => user.MeatEstablishmentId)
-                                .FirstOrDefault()
-                                );
-                            }
-                            if (User.IsInRole("InspectorAdministrator"))
-                            {
-                                filteredModel = Model;
-                            }
-                        }
-
-                        @foreach (var item in filteredModel)
+                        @foreach (var item in Model)
                         {
                             <tr class="filter-item">
                                 <td>
@@ -198,21 +171,15 @@
                                     @Html.DisplayFor(modelItem => item.ContactNo)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.MeatEstablishment.Name)
+                                    @Html.DisplayFor(modelItem => item.MeatEstablishment)
                                 </td>
-                                @if (User.IsInRole("InspectorAdministrator"))
+                                @if (User.IsInRole("InspectorAdministrator") || User.IsInRole("MeatInspector"))
                                 {
                                     <td>
                                         No details
                                     </td>
                                 }
-                                @if (User.IsInRole("MeatInspector"))
-                                {
-                                    <td>
-                                        No Details
-                                    </td>
-                                }
-                                @if (User.IsInRole("MeatEstablishmentRepresentative"))
+                                else if (User.IsInRole("MeatEstablishmentRepresentative"))
                                 {
                                     <td>
                                         <div class="btn-group">

@@ -4,18 +4,22 @@ using DomainLayer.Models;
 using ServiceLayer.Services.IRepositories;
 using InfastructureLayer.Data;
 using thesis.Repositories;
+using SendGrid.Helpers.Mail;
+using ServiceLayer.Common;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using DomainLayer.Models.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Get the connection string from the configuration
-var connectionString = builder.Configuration.GetConnectionString("NMISRTOCR11DbContextConnection") ?? throw new InvalidOperationException("Connection string 'thesisContextConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("NMISRTOCR11DbContextConnection") ?? throw new InvalidOperationException("Connection string 'NMISRTOCR11DbContextConnection' not found.");
 
 // Configure Entity Framework Core with SQL Server
 builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseSqlServer(connectionString));
 
 // Configure Identity with custom roles
-builder.Services.AddIdentity<AccountDetails, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<AccountDetails, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
 	.AddEntityFrameworkStores<AppDbContext>()
 	.AddDefaultTokenProviders();
 
@@ -23,6 +27,9 @@ builder.Services.AddIdentity<AccountDetails, IdentityRole>(options => options.Si
 builder.Services.AddControllersWithViews();
 builder.Services.AddMemoryCache();
 
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddSingleton<IEmailSender, SendGridEmailSender>();
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 // Configure authentication cookie settings
 builder.Services.ConfigureApplicationCookie(options =>
 {
