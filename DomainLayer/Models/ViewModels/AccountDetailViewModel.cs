@@ -2,7 +2,7 @@
 
 namespace DomainLayer.Models.ViewModels
 {
-	public class UserManagementInspectorAdminViewModel
+	public class AccountDetailViewModel
 	{
 		public string Id { get; set; }
 		public string firstName { get; set; }
@@ -12,7 +12,6 @@ namespace DomainLayer.Models.ViewModels
 		public string contactNo { get; set; }
 		public string email { get; set; }
         public string Role { get; set; } 
-        public Guid? MeatEstablishmentId { get; set; }
 		public string MeatEstablishmentName { get; set; }
 	}
 }

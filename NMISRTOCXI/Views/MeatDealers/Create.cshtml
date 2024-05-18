@@ -1,10 +1,13 @@
-﻿@model DomainLayer.Models.ViewModels.UpsertMeatDealersViewModel
-<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
+﻿@model DomainLayer.Models.ViewModels.CreateMeatDealersViewModel
 @{
     ViewData["Title"] = "Create";
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessage))
+    {
+        <script>
+            showToast(@ViewBag.AlertMessage);
+        </script>
+    }
 }
-<link href="~/css/createMeatCheck.css" rel="stylesheet" asp-append-version="true" />
-
 <section id="content">
 
     <!-- MAIN STARTS-->
@@ -93,7 +96,7 @@
                     </div>
                     <div class="input-box">
                         <label class="control-label">Meat Establishment:</label>
-                        <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentId" readonly></select>
+                        <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentList"></select>
                     </div>
                     <br />
 

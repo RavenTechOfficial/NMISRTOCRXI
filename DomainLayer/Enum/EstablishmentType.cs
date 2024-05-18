@@ -1,10 +1,16 @@
-﻿namespace DomainLayer.Enum
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DomainLayer.Enum
 {
     public enum EstablishmentType
     {
+        [Display(Name = "Slaughter House")]
         SLH,
-        PDP,
-        MCP,
-        CSW
+		[Display(Name = "Poultry Dressing Plant")]
+		PDP,
+		[Display(Name = "Meat Cutting Plant")]
+		MCP,
+		[Display(Name = "Cold Storage Warehouse")]
+		CSW
     }
 }

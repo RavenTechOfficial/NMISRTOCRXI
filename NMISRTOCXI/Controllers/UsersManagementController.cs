@@ -50,11 +50,43 @@ namespace thesis.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "RequireInspectorAdmin")]
         public async Task<IActionResult> IndexInspectorAdmin()
         {
-            var userList = await GetUserDataAsync();
-            return View(userList);
-        }
+			// Roles to filter
+			var rolesToFilter = new[] { "MeatEstablishmentRepresentative", "MeatInspector" };
+
+			// List to hold users and their roles
+			var usersAndRoles = new List<AccountDetailViewModel>();
+
+			// Loop through each role and get users in it
+			foreach (var role in rolesToFilter)
+			{
+				var usersInRole = await _userManager.GetUsersInRoleAsync(role);
+				// Add users and their roles to the list
+
+				foreach (var user in usersInRole)
+				{
+                    string meatEstablishmentName = user.MeatEstablishment != null ? user.MeatEstablishment.Name : null;
+                    usersAndRoles.Add(
+                        new AccountDetailViewModel {
+							Id = user.Id,
+							firstName = user.firstName,
+							lastName = user.lastName,
+							middleName = user.middleName,
+							address = user.address,
+							contactNo = user.contactNo,
+							email = user.Email,
+							MeatEstablishmentName = meatEstablishmentName, 
+                            Role = role 
+                        }
+                    );
+				}
+			}
+
+			// Pass the users and their roles to the view
+			return View(usersAndRoles);
+		}
 
         [HttpGet]
         public async Task<IActionResult> Details(string id)
@@ -180,43 +212,6 @@ namespace thesis.Controllers
             await NotifyUserDeleteAsync(id);
 
             return RedirectToAction(nameof(Index));
-        }
-
-        private async Task<List<UserManagementInspectorAdminViewModel>> GetUserDataAsync()
-        {
-            var rolesToFilter = new[] { "MeatEstablishmentRepresentative", "MeatInspector" };
-
-            var usersInRoles = new List<AccountDetails>();
-            foreach (var role in rolesToFilter)
-            {
-                var usersInRole = await _userManager.GetUsersInRoleAsync(role);
-                usersInRoles.AddRange(usersInRole);
-            }
-
-            var distinctUserIds = usersInRoles.Select(u => u.Id).Distinct().ToList();
-
-            var users = await _unitOfWork.AccountDetails.GetAll(c => distinctUserIds.Contains(c.Id), includeProperties: "MeatEstablishment");
-
-            var userList = await Task.WhenAll(users.Select(async user =>
-            {
-                var roles = await _userManager.GetRolesAsync(user);
-                var roleName = roles.FirstOrDefault(r => rolesToFilter.Contains(r));
-                return new UserManagementInspectorAdminViewModel
-                {
-                    Id = user.Id,
-                    firstName = user.firstName,
-                    lastName = user.lastName,
-                    middleName = user.middleName,
-                    address = user.address,
-                    contactNo = user.contactNo,
-                    email = user.Email,
-                    Role = roleName,
-                    MeatEstablishmentId = user.MeatEstablishmentId,
-                    MeatEstablishmentName = user.MeatEstablishment.Name
-                };
-            }));
-
-            return userList.ToList();
         }
 
         private async Task NotifyUserEditAsync(AccountDetails user, string editedUserId)

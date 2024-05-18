@@ -13,10 +13,20 @@ namespace ServiceLayer.Common
     {
         public MappingProfile()
         {
-            CreateMap<MeatDealers, MeatDealersViewModel>()
+            CreateMap<AccountDetails, AccountDetailsViewModel>()
                 .ForMember(dest => dest.MeatEstablishment, opt => opt.MapFrom(src => src.MeatEstablishment.Name))
                 .ReverseMap();
-            CreateMap<MeatDealers, UpsertMeatDealersViewModel>().ReverseMap();
-        }
+
+            CreateMap<MeatDealers, AccountDetailsViewModel>()
+                .ForMember(dest => dest.MeatEstablishment, opt => opt.MapFrom(src => src.MeatEstablishment.Name))
+                .ReverseMap();
+            CreateMap<MeatDealers, CreateMeatDealersViewModel>().ReverseMap();
+            CreateMap<MeatDealers, EditMeatDealersViewModel>().ReverseMap();
+
+            CreateMap<MeatEstablishment, MeatEstablishmentViewModel>().ReverseMap();
+            CreateMap<MeatEstablishment, CreateMeatEstablishmentViewModel>().ReverseMap();
+            CreateMap<MeatEstablishment, EditMeatEstablishmentViewModel>().ReverseMap();
+
+		}
     }
 }

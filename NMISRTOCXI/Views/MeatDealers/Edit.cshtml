@@ -1,4 +1,4 @@
-﻿@model DomainLayer.Models.MeatDealers
+﻿@model DomainLayer.Models.ViewModels.EditMeatDealersViewModel
 <link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
 @{
     ViewData["Title"] = "Edit";
@@ -86,8 +86,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="column">
                         <div class="input-box">
                             <label asp-for="ContactNo" class="control-label">Contact No.</label>
@@ -97,7 +95,7 @@
                     </div>
                     <div class="input-box">
                         <label class="control-label">Meat Establishment:</label>
-                        <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentId" readonly></select>
+                        <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentList"></select>
                         <span asp-validation-for="MeatEstablishmentId" class="text-danger"></span>
 
                     </div>
