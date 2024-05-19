@@ -27,7 +27,6 @@ namespace thesis.Repositories
         public IChroplethMapRepository ChroplethMap { get; }
 
         public UnitOfWork(AppDbContext context,
-            IMeatInspectionReportRepository meatInspectionReport,
             IDashboardRepository dashboard,
             IAnalyticsRepository analytics,
             IUsersManangementRepository usersManangement,
@@ -39,10 +38,10 @@ namespace thesis.Repositories
         {
             _context = context;
             ReceivingReport = new ReceivingReportRepository(context);
+            MeatInspectionReport = new MeatInspectionReportRepository(context);
             AccountDetails = new AccountDetailsRepository(context);
             MeatDealers = new MeatDealersRepository(context);
             MeatEstablishment = new MeatEstablishmentRepository(context);
-            MeatInspectionReport = meatInspectionReport;
             Dashboard = dashboard;
             Analytics = analytics;
             UsersManangement = usersManangement;

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DomainLayer.Models;
 
 namespace DomainLayer.Models
 {
@@ -11,7 +10,7 @@ namespace DomainLayer.Models
         public DateTime RepDate { get; set; }
         public string? VerifiedByPOSMSHead { get; set; }
         [ForeignKey("ReceivingReport")]
-        public int? ReceivingReportId { get; set; }
+        public Guid? ReceivingReportId { get; set; }
         public ReceivingReport? ReceivingReport { get; set; }
         [ForeignKey("AccountDetails")]
         public string? AccountDetailsId { get; set; }

@@ -48,73 +48,73 @@ namespace thesis.Controllers
 		// GET: PassedForSlaughters/Create
 		public IActionResult Create()
 		{
-			int? meatInspectionReportId = TempData["MeatInspectionReportId"] as int?;
+			//int? meatInspectionReportId = TempData["MeatInspectionReportId"] as int?;
 
-			int mostRecentId = (int)meatInspectionReportId;
+			//int mostRecentId = (int)meatInspectionReportId;
 
-			// Execute the first SQL query and retrieve the results
-			var firstQueryResult = _context.ConductOfInspections
-				.Where(ci => ci.MeatInspectionReportId == mostRecentId)
-				.GroupBy(ci => ci.MeatInspectionReportId)
-				.Select(g => new
-				{
-					MeatInspectionReportId = g.Key,
-					TotalNoOfHeads = g.Sum(ci => ci.NoOfHeads),
-					TotalWeight = g.Sum(ci => ci.Weight)
-				})
-				.FirstOrDefault();
+			//// Execute the first SQL query and retrieve the results
+			//var firstQueryResult = _context.ConductOfInspections
+			//	.Where(ci => ci.MeatInspectionReportId == mostRecentId)
+			//	.GroupBy(ci => ci.MeatInspectionReportId)
+			//	.Select(g => new
+			//	{
+			//		MeatInspectionReportId = g.Key,
+			//		TotalNoOfHeads = g.Sum(ci => ci.NoOfHeads),
+			//		TotalWeight = g.Sum(ci => ci.Weight)
+			//	})
+			//	.FirstOrDefault();
 
-			// Execute the second SQL query and retrieve the results
-			var secondQueryResult = _context.MeatInspectionReports
-				.Where(mir => mir.Id == mostRecentId)
-				.Join(_context.ReceivingReports, mir => mir.ReceivingReportId, rr => rr.Id, (mir, rr) => new
-				{
-					ReceivingNoOfHeads = rr.NoOfHeads,
-					InspectionNoOfHeads = _context.ConductOfInspections
-						.Where(ci => ci.MeatInspectionReportId == mostRecentId)
-						.Sum(ci => ci.NoOfHeads),
-					TotalNoOfHeads = firstQueryResult.TotalNoOfHeads
-				})
-				.Select(result => new
-				{
-					result.ReceivingNoOfHeads,
-					result.InspectionNoOfHeads,
-					PassedForSlaughterHeads = result.ReceivingNoOfHeads - result.TotalNoOfHeads
-				})
-				.FirstOrDefault();
+			//// Execute the second SQL query and retrieve the results
+			//var secondQueryResult = _context.MeatInspectionReports
+			//	.Where(mir => mir.Id == mostRecentId)
+			//	.Join(_context.ReceivingReports, mir => mir.ReceivingReportId, rr => rr.Id, (mir, rr) => new
+			//	{
+			//		ReceivingNoOfHeads = rr.NoOfHeads,
+			//		InspectionNoOfHeads = _context.ConductOfInspections
+			//			.Where(ci => ci.MeatInspectionReportId == mostRecentId)
+			//			.Sum(ci => ci.NoOfHeads),
+			//		TotalNoOfHeads = firstQueryResult.TotalNoOfHeads
+			//	})
+			//	.Select(result => new
+			//	{
+			//		result.ReceivingNoOfHeads,
+			//		result.InspectionNoOfHeads,
+			//		PassedForSlaughterHeads = result.ReceivingNoOfHeads - result.TotalNoOfHeads
+			//	})
+			//	.FirstOrDefault();
 
-			// Execute the third SQL query and retrieve the results
-			var thirdQueryResult = _context.MeatInspectionReports
-				.Where(mir => mir.Id == mostRecentId)
-				.Join(_context.ReceivingReports, mir => mir.ReceivingReportId, rr => rr.Id, (mir, rr) => new
-				{
-					ReceivingLiveWeight = rr.LiveWeight,
-					InspectionWeight = _context.ConductOfInspections
-						.Where(ci => ci.MeatInspectionReportId == mostRecentId)
-						.Sum(ci => ci.Weight),
-					TotalWeight = firstQueryResult.TotalWeight
-				})
-				.Select(result => new
-				{
-					result.ReceivingLiveWeight,
-					result.InspectionWeight,
-					PassedForSlaughterWeight = result.ReceivingLiveWeight - result.TotalWeight
-				})
-				.FirstOrDefault();
+			//// Execute the third SQL query and retrieve the results
+			//var thirdQueryResult = _context.MeatInspectionReports
+			//	.Where(mir => mir.Id == mostRecentId)
+			//	.Join(_context.ReceivingReports, mir => mir.ReceivingReportId, rr => rr.Id, (mir, rr) => new
+			//	{
+			//		ReceivingLiveWeight = rr.LiveWeight,
+			//		InspectionWeight = _context.ConductOfInspections
+			//			.Where(ci => ci.MeatInspectionReportId == mostRecentId)
+			//			.Sum(ci => ci.Weight),
+			//		TotalWeight = firstQueryResult.TotalWeight
+			//	})
+			//	.Select(result => new
+			//	{
+			//		result.ReceivingLiveWeight,
+			//		result.InspectionWeight,
+			//		PassedForSlaughterWeight = result.ReceivingLiveWeight - result.TotalWeight
+			//	})
+			//	.FirstOrDefault();
 
-			// You can now use the 'secondQueryResult' and 'thirdQueryResult' to pass data to the view
-			ViewData["ReceivingNoOfHeads"] = secondQueryResult?.ReceivingNoOfHeads;
-			ViewData["InspectionNoOfHeads"] = secondQueryResult?.InspectionNoOfHeads;
-			ViewData["PassedForSlaughterHeads"] = secondQueryResult?.PassedForSlaughterHeads;
-			ViewData["ReceivingLiveWeight"] = thirdQueryResult?.ReceivingLiveWeight;
-			ViewData["InspectionWeight"] = thirdQueryResult?.InspectionWeight;
-			ViewData["PassedForSlaughterWeight"] = thirdQueryResult?.PassedForSlaughterWeight;
+			//// You can now use the 'secondQueryResult' and 'thirdQueryResult' to pass data to the view
+			//ViewData["ReceivingNoOfHeads"] = secondQueryResult?.ReceivingNoOfHeads;
+			//ViewData["InspectionNoOfHeads"] = secondQueryResult?.InspectionNoOfHeads;
+			//ViewData["PassedForSlaughterHeads"] = secondQueryResult?.PassedForSlaughterHeads;
+			//ViewData["ReceivingLiveWeight"] = thirdQueryResult?.ReceivingLiveWeight;
+			//ViewData["InspectionWeight"] = thirdQueryResult?.InspectionWeight;
+			//ViewData["PassedForSlaughterWeight"] = thirdQueryResult?.PassedForSlaughterWeight;
 
-			int mostRecentId1 = _context.ConductOfInspections
-					.OrderByDescending(c => c.Id)
-					.Select(c => c.Id)
-					.FirstOrDefault();
-			ViewData["ConductOfInspectionId"] = new SelectList(_context.ConductOfInspections, "Id", "Id", mostRecentId1);
+			//int mostRecentId1 = _context.ConductOfInspections
+			//		.OrderByDescending(c => c.Id)
+			//		.Select(c => c.Id)
+			//		.FirstOrDefault();
+			//ViewData["ConductOfInspectionId"] = new SelectList(_context.ConductOfInspections, "Id", "Id", mostRecentId1);
 			return View();
 		}
 		//public IActionResult Create()

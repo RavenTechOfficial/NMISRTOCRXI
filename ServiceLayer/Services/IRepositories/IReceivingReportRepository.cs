@@ -1,4 +1,5 @@
 ﻿using DomainLayer.Models;
+using DomainLayer.Models.ViewModels;
 
 namespace ServiceLayer.Services.IRepositories
 {

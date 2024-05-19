@@ -3,6 +3,7 @@ using ServiceLayer.Services.IRepositories;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
 using InfastructureLayer.Repositories;
+using DomainLayer.Models.ViewModels;
 
 namespace thesis.Repositories
 {

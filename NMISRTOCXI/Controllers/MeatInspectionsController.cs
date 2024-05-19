@@ -53,9 +53,9 @@ namespace thesis.Controllers
             return View();
         }
         [HttpGet]
-        public JsonResult GetIds(int routeId)
+        public JsonResult GetIds(Guid routeId)
         {
-            int? receivingReportId = routeId;
+            Guid? receivingReportId = routeId;
 
             // Get MeatInspectionReportId using ReceivingReportId
             int? meatInspectionReportId = _context.MeatInspectionReports
@@ -382,7 +382,7 @@ namespace thesis.Controllers
 
         // INSPECT BUTTON // add data to MeatInspectionReport
         [HttpPost]
-        public IActionResult AddMeatInspectionTBL(int receivingId, DateTime dateInspected)
+        public IActionResult AddMeatInspectionTBL(Guid receivingId, DateTime dateInspected)
         {
             string randomUID = GenerateRandomUID(8);
             Console.WriteLine($"Received request for receivingId: {receivingId}");

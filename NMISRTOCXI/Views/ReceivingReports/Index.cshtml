@@ -1,7 +1,7 @@
 ﻿@using DomainLayer.Enum;
-@model IEnumerable<DomainLayer.Models.ReceivingReport>
 @using Microsoft.AspNetCore.Identity;
 @using DomainLayer.Models;
+@model IEnumerable<DomainLayer.Models.ViewModels.ReceivingReportViewModel>
 
 @inject SignInManager<AccountDetails> SignInManager
 @inject UserManager<AccountDetails> UserManager
@@ -11,111 +11,10 @@
     if (!string.IsNullOrEmpty(ViewBag.AlertMessage))
     {
         <script>
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'bottom-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            });
-
-            Toast.fire({
-                icon: 'success',
-                title: '@ViewBag.AlertMessage'
-            });
+            showToast(ViewBag.AlertMessage)
         </script>
     }
-
-
-
 }
-<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-
-<style>
-    #content main .FirstLayer .applications .header h3 {
-        text-align: center;
-        margin-top: 5px;
-        font-size: 45px;
-        font-weight: 700;
-        color: var(--black);
-    }
-
-    #content main h3 {
-        font-size: 25px;
-        font-weight: 600;
-        margin-top: 8px;
-        margin-bottom: 3px;
-        margin-left: 10px;
-        color: var(--black);
-    }
-
-    .filter {
-        width: 160px;
-        height: 35px;
-        padding: 10px;
-        color: var(--black);
-        border: 1px solid var(--filterborder);
-        background-color: var(--filterbgcolor);
-        border-radius: 5px;
-    }
-
-    /*.input-wrapper1 .form-control {
-                width: 320px;
-                margin-top: 50px;
-                margin-left: 1px;
-                display: flex;
-                flex-direction: column;
-                margin-bottom: 10px;
-            }*/
-
-    .centerbtn .custombtn {
-        margin-top: 15px;
-        margin-bottom: 1px;
-        margin-left: 10px;
-        width: 150px;
-        background-color: var(--green7);
-        border: 1px solid var(--green7);
-        color: var(--white);
-    }
-
-        .centerbtn .custombtn:hover {
-            margin-top: 15px;
-            margin-bottom: 1px;
-            margin-left: 10px;
-            width: 150px;
-            background-color: var(--light-green);
-            border: 1px solid var(--light-green);
-            color: var(--white);
-        }
-
-    .custombtn {
-        width: 100px;
-        background-color: var(--green7);
-        border: 1px solid var(--green7);
-        color: var(--white);
-    }
-
-        .custombtn:hover {
-            width: 100px;
-            background-color: var(--light-green);
-            border: 1px solid var(--light-green);
-            color: var(--white);
-        }
-
-    .FirstLayer .breadcrumb {
-        margin-top: -20px;
-        margin-bottom: 15px;
-    }
-</style>
-
 <section id="content">
 
     <!-- MAIN STARTS-->
@@ -127,63 +26,32 @@
             <div class="column">
                 <div class="form-group">
                     <div class="row gx-1">
+
+                        <div class="col-md-4">
+                            <div class="input-wrapper">
+                                <label for="dateFilter">Date:</label>
+                                <input type="date" id="dateFilter" class="form-control" />
+                            </div>
+                        </div>
+
                         @if (User.IsInRole("InspectorAdministrator"))
                         {
                             <div class="col-md-5">
                                 <div class="input-wrapper">
                                     <label>Meat Establishment:</label>
                                     <select id="meatEstablishmentFilter" asp-items="@ViewBag.MeatEstablishments" class="form-control">
-                                        <option value="">All</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="input-wrapper">
-                                    <label for="dateFilter">Date:</label>
-                                    <input type="date" id="dateFilter" class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <div class="input-wrapper">
-                                    <label>Status:</label>
-                                    <select id="statusFilter" asp-items="@Html.GetEnumSelectList<InspectionStatus>()" asp-items="@ViewBag.statusFilter" class="form-control">
-                                        <option value="">All</option>
                                     </select>
                                 </div>
                             </div>
                         }
 
-                        @if (User.IsInRole("MeatInspector"))
-                        {
+                        <div class="col">
                             <div class="input-wrapper">
-                                <label for="dateFilter">Date:</label>
-                                <input type="date" id="dateFilter" class="form-control" />
+                                <label>Status:</label>
+                                <select id="statusFilter" asp-items="@Html.GetEnumSelectList<InspectionStatus>()" class="form-control">
+                                </select>
                             </div>
-                        }
-
-                        @if (User.IsInRole("MeatEstablishmentRepresentative"))
-                        {
-                            <div class="row gx-1">
-                                <div class="col">
-                                    <div class="input-wrapper">
-                                        <label for="dateFilter">Date:</label>
-                                        <input type="date" id="dateFilter" class="form-control" />
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="input-wrapper">
-                                        <label>Status:</label>
-                                        <select id="statusFilter" asp-items="@Html.GetEnumSelectList<InspectionStatus>()" asp-items="@ViewBag.statusFilter" class="form-control">
-                                            <option value="">All</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </div>
-                        }
+                        </div>
                     </div>
 
                 </div>
@@ -237,44 +105,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            // Assuming accountId is the specific AccountDetails id you want to filter by
-                            string accountId = UserManager.GetUserId(User);
-                            var filteredModel = Model;
-
-                            if (User.IsInRole("MeatEstablishmentRepresentative"))
-                            {
-                                // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
-                                var loggedInUser = await UserManager.GetUserAsync(User);
-
-                                // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                                Guid meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? Guid.Empty;
-
-                                // Filter the Model based on the MeatEstablishmentId
-                                filteredModel = Model
-                                .Where(item => item.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
-
-                            }
-                            else if (User.IsInRole("MeatInspector"))
-                            {
-                                // Fetch the MeatEstablishmentId of the logged-in user from the UserManager (assuming it has the necessary extension method to fetch user details).
-                                var loggedInUser = await UserManager.GetUserAsync(User);
-
-                                // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                                Guid meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? Guid.Empty;
-
-                                // Filter the Model based on the MeatEstablishmentId
-                                filteredModel = Model
-                                .Where(item => item.AccountDetails.MeatEstablishmentId == meatEstablishmentId)
-                                .Where(item => item.InspectionStatus == 0);
-                            }
-                            else if (User.IsInRole("InspectorAdmin"))
-                            {
-                                // No filtering required for InspectorAdmin, so keep the original Model.
-                                filteredModel = Model;
-                            }
-                        }
-                        @foreach (var item in filteredModel)
+                        @foreach (var item in Model)
                         {
                             <tr>
 
@@ -293,7 +124,7 @@
                                     @Html.DisplayFor(modelItem => item.LiveWeight)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.AccountDetails.MeatEstablishment.Name)
+                                    @Html.DisplayFor(modelItem => item.MeatEstablishment)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.InspectionStatus)

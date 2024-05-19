@@ -255,7 +255,7 @@ namespace thesis.Controllers
             // If there was a validation error, populate the ViewData with the actual ReceivingReportId values
             //  ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
             ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
-            ViewData["ReceivingReportLabelText"] = _context.ReceivingReports.FirstOrDefault(r => r.Id == meatInspectionReport.ReceivingReportId)?.Id.ToString();
+           // ViewData["ReceivingReportLabelText"] = _context.ReceivingReports.FirstOrDefault(r => r.Id == meatInspectionReport.ReceivingReportId)?.Id.ToString();
 
             // return View(meatInspectionReport);
             return RedirectToAction("Create", "ConductOfInspections", new { meatInspectionReportId = meatInspectionReport.ReceivingReportId });

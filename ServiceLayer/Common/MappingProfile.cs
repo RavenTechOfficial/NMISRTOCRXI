@@ -27,6 +27,14 @@ namespace ServiceLayer.Common
             CreateMap<MeatEstablishment, CreateMeatEstablishmentViewModel>().ReverseMap();
             CreateMap<MeatEstablishment, EditMeatEstablishmentViewModel>().ReverseMap();
 
-		}
+            CreateMap<ReceivingReport, ReceivingReportViewModel>()
+                .ForMember(dest => dest.MeatDealer, opt => opt.MapFrom(src => $"{src.MeatDealers.FirstName} {src.MeatDealers.LastName}"))
+                .ForMember(dest => dest.Inspector, opt => opt.MapFrom(src => $"{src.AccountDetails.firstName} {src.AccountDetails.lastName}"))
+                .ForMember(dest => dest.MeatEstablishment, opt => opt.MapFrom(src => src.AccountDetails.MeatEstablishment.Name))
+                .ReverseMap();
+            CreateMap<ReceivingReport, CreateReceivingReportViewModel>().ReverseMap();
+            CreateMap<ReceivingReport, EditReceivingReportViewModel>().ReverseMap();
+
+        }
     }
 }

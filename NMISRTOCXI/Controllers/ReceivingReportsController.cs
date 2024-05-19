@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InfastructureLayer.Data;
 using DomainLayer.Enum;
-using DomainLayer.Models;
+using DomainLayer.Models.ViewModels;
+using ServiceLayer.Services.IRepositories;
+using AutoMapper;
 
 namespace thesis.Controllers
 {
@@ -13,79 +15,84 @@ namespace thesis.Controllers
 	{
 
 
-		private readonly AppDbContext _context;
-		private readonly UserManager<AccountDetails> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly UserManager<AccountDetails> _userManager;
 
 
-		public ReceivingReportsController(AppDbContext context, UserManager<AccountDetails> userManager)
+		public ReceivingReportsController(IUnitOfWork unitOfWork,
+			IMapper mapper,
+			UserManager<AccountDetails> userManager)
 		{
-			_context = context;
-			_userManager = userManager;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _userManager = userManager;
 		}
 
 		// GET: ReceivingReports
-		public async Task<IActionResult> Index(Guid? id, Guid? meatEstablishmentId, InspectionStatus? statusFilter)
+		public async Task<IActionResult> Index()
 		{
-			ViewBag.AlertMessage = TempData["AlertMessage"] as string;
-
-			var meatDealers = _context.MeatDealers.ToList();
+            ViewBag.AlertMessage = TempData["AlertMessage"] as string;
+            var user = await _userManager.GetUserAsync(User);
+            var meatDealers = await _unitOfWork.MeatDealers.GetAll(c => c.MeatEstablishmentId == user.MeatEstablishmentId,
+				includeProperties: "MeatEstablishment");
 
 			ViewData["MeatDealers"] = meatDealers;
-
-			if (meatEstablishmentId.HasValue)
-			{
-				meatDealers = meatDealers.Where(dealer => dealer.MeatEstablishmentId == meatEstablishmentId.Value).ToList();
-			}
-
-			var meatEstablishments = _context.MeatEstablishment
-			.Where(me => me.Name != null)
-			.ToList();
+			var meatEstablishments = await _unitOfWork.MeatEstablishment.GetAll(me => me.Name != null);
 			ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
-
-			//var statusFilter = _context.ReceivingReports
-			//         .Where(me => me.InspectionStatus == InspectionStatus.Done)
-			//         .ToList();
-			//         ViewData["statusFilter"] = new SelectList(statusFilter, "Id", "InspectionStatus");
-
-			var AppDbContext = _context.ReceivingReports
-				.Include(r => r.AccountDetails)
-				.Include(r => r.MeatDealers);
-
-
-
-			return View(await AppDbContext.ToListAsync());
-		}
+			if (User.IsInRole("MeatEstablishmentRepresentative"))
+			{
+                var receivingReport = await _unitOfWork.ReceivingReport.GetAll(
+					c => c.AccountDetails.MeatEstablishmentId == user.MeatEstablishmentId, 
+					includeProperties: "AccountDetails,MeatDealers");
+			    var receivingReportMapped = _mapper.Map<IEnumerable<ReceivingReportViewModel>>(receivingReport);
+                var response = receivingReportMapped.OrderByDescending(r => r.RecTime).ToList();
+                return View(response);
+            }
+            else if (User.IsInRole("MeatInspector"))
+			{
+                var receivingReport = await _unitOfWork.ReceivingReport.GetAll(c => c.InspectionStatus == InspectionStatus.Pending, 
+					includeProperties: "AccountDetails,MeatDealers");
+                var receivingReportMapped = _mapper.Map<IEnumerable<ReceivingReportViewModel>>(receivingReport);
+                var response = receivingReportMapped.OrderByDescending(r => r.RecTime).ToList();
+                return View(response);
+            }
+			else if(User.IsInRole("InspectorAdmin"))
+			{
+                var receivingReport = await _unitOfWork.ReceivingReport.GetAll(includeProperties: "AccountDetails,MeatDealers");
+                var receivingReportMapped = _mapper.Map<IEnumerable<ReceivingReportViewModel>>(receivingReport);
+                var response = receivingReportMapped.OrderByDescending(r => r.RecTime).ToList();
+                return View(response);
+            }
+			return View();
+        }
 
 
 		// GET: ReceivingReports/Details/5
-		public async Task<IActionResult> Details(int? id)
+		public async Task<IActionResult> Details(Guid? Id)
 		{
-			if (id == null || _context.ReceivingReports == null)
+			if (Id == null)
+			{
+				return NotFound();
+			}
+            var response = await _unitOfWork.ReceivingReport.Get(c => c.Id == Id, includeProperties: "AccountDetails,MeatDealers");
+			if (response == null)
 			{
 				return NotFound();
 			}
 
-			var receivingReport = await _context.ReceivingReports
-				.Include(r => r.AccountDetails)
-				.Include(r => r.MeatDealers)
-				.FirstOrDefaultAsync(m => m.Id == id);
-			if (receivingReport == null)
-			{
-				return NotFound();
-			}
-
-			return View(receivingReport);
+			return View(response);
 		}
 
 		// GET: ReceivingReports/Create
-		public IActionResult Create()
+		public async Task<IActionResult> Create()
 		{
 			var loggedInUserId = _userManager.GetUserId(User); // Replace this with your actual logic to get the logged-in user's ID.
-			var loggedInUser = _context.Users.FirstOrDefault(user => user.Id == loggedInUserId);
-			var meatDealersList = _context.MeatDealers.ToList();
-			var concatenatedList = new List<SelectListItem>();
+			var loggedInUser = await _unitOfWork.AccountDetails.Get(user => user.Id == loggedInUserId, includeProperties: "MeatEstablishment");
+            var meatDealerList = await _unitOfWork.MeatDealers.GetAll(includeProperties: "MeatEstablishment");
+            var concatenatedList = new List<SelectListItem>();
 
-			foreach (var meatDealer in meatDealersList)
+			foreach (var meatDealer in meatDealerList)
 			{
 				if (loggedInUser != null && meatDealer.MeatEstablishmentId == loggedInUser.MeatEstablishmentId)
 				{
@@ -99,9 +106,9 @@ namespace thesis.Controllers
 				}
 			}
 
-			ViewData["MeatDealersId"] = new SelectList(concatenatedList, "Value", "Text");
+            ViewBag.MeatDealersId = new SelectList(concatenatedList, "Value", "Text");
 
-			var userList = _context.Users.ToList();
+			var userList = await _unitOfWork.AccountDetails.GetAll();
 			var concatenatedList1 = new List<SelectListItem>();
 
 			foreach (var user in userList)
@@ -115,9 +122,8 @@ namespace thesis.Controllers
 				concatenatedList1.Add(selectListItem);
 			}
 
-			ViewData["AccountDetailsId"] = new SelectList(concatenatedList1, "Value", "Text");
-			//    ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id");
-			return View();
+            ViewBag.AccountDetailsId = new SelectList(concatenatedList1, "Value", "Text");
+            return View();
 		}
 
 		// POST: ReceivingReports/Create
@@ -125,50 +131,78 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId,InspectionStatus")] ReceivingReport receivingReport)
+		public async Task<IActionResult> Create(CreateReceivingReportViewModel request)
 		{
+			var response = _mapper.Map<ReceivingReport>(request);
 			if (ModelState.IsValid) //not not
 			{
-				_context.Add(receivingReport);
-				await _context.SaveChangesAsync();
+				_unitOfWork.ReceivingReport.Add(response);
+				await _unitOfWork.Save();
 				TempData["AlertMessage"] = "Transaction Success";
 				return RedirectToAction(nameof(Index));
 			}
-			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
-			ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
-			return View(receivingReport);
+			return View(request);
 		}
 
 		// GET: ReceivingReports/Edit/5
-		public async Task<IActionResult> Edit(int? id)
+		public async Task<IActionResult> Edit(Guid? Id)
 		{
-			if (id == null || _context.ReceivingReports == null)
+			if (Id == null)
 			{
 				return NotFound();
 			}
 
-			var receivingReport = await _context.ReceivingReports.FindAsync(id);
+			var receivingReport = await _unitOfWork.ReceivingReport.Get(c => c.Id == Id);
 			if (receivingReport == null)
 			{
 				return NotFound();
 			}
-			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
-			//  ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
-			var meatDealersList = _context.MeatDealers.ToList();
-			var concatenatedList = new List<SelectListItem>();
 
-			foreach (var meatDealer in meatDealersList)
-			{
-				var concatenatedValue = $"{meatDealer.FirstName} {meatDealer.LastName}";
-				var selectListItem = new SelectListItem
-				{
-					Value = meatDealer.Id.ToString(),
-					Text = concatenatedValue
-				};
-				concatenatedList.Add(selectListItem);
-			}
-			ViewData["MeatDealersId"] = new SelectList(concatenatedList, "Value", "Text");
-			return View(receivingReport);
+            var response = _mapper.Map<EditReceivingReportViewModel>(receivingReport);
+
+            var loggedInUserId = _userManager.GetUserId(User); // Replace this with your actual logic to get the logged-in user's ID.
+            var loggedInUser = await _unitOfWork.AccountDetails.Get(user => user.Id == loggedInUserId, includeProperties: "MeatEstablishment");
+            var meatDealerList = await _unitOfWork.MeatDealers.GetAll(includeProperties: "MeatEstablishment");
+            var concatenatedList = new List<SelectListItem>();
+
+            foreach (var meatDealer in meatDealerList)
+            {
+                if (loggedInUser != null && meatDealer.MeatEstablishmentId == loggedInUser.MeatEstablishmentId)
+                {
+                    var concatenatedValue = $"{meatDealer.FirstName} {meatDealer.LastName}";
+                    var selectListItem = new SelectListItem
+                    {
+                        Value = meatDealer.Id.ToString(),
+                        Text = concatenatedValue
+                    };
+                    concatenatedList.Add(selectListItem);
+                }
+            }
+
+            ViewBag.MeatDealersId = new SelectList(concatenatedList, "Value", "Text");
+
+            var userList = await _unitOfWork.AccountDetails.GetAll();
+            var concatenatedList1 = new List<SelectListItem>();
+
+            foreach (var user in userList)
+            {
+                var concatenatedValue = $"{user.firstName} {user.lastName}";
+                var selectListItem = new SelectListItem
+                {
+                    Value = user.Id.ToString(),
+                    Text = concatenatedValue
+                };
+                concatenatedList1.Add(selectListItem);
+            }
+
+            ViewBag.AccountDetailsId = new SelectList(concatenatedList1, "Value", "Text");
+            var speciesList = EnumSelectListGenerator<Species>.GenerateSelectList();
+            ViewBag.Species = new SelectList(speciesList, "Value", "Text");
+            var categoryOfFoodAnimalsList = EnumSelectListGenerator<CategoryOfFoodAnimals>.GenerateSelectList();
+            ViewBag.CategoryOfFoodAnimals = new SelectList(categoryOfFoodAnimalsList, "Value", "Text");
+            var inspectionStatusList = EnumSelectListGenerator<InspectionStatus>.GenerateSelectList();
+            ViewBag.InspectionStatus = new SelectList(inspectionStatusList, "Value", "Text");
+            return View(response);
 		}
 
 		// POST: ReceivingReports/Edit/5
@@ -176,52 +210,32 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId,InspectionStatus")] ReceivingReport receivingReport)
+		public async Task<IActionResult> Edit(EditReceivingReportViewModel request)
 		{
-			if (id != receivingReport.Id)
-			{
-				return NotFound();
-			}
+			var existingEntity = await _unitOfWork.ReceivingReport.Get(c => c.Id == request.Id);
+			_mapper.Map(request, existingEntity);
 
 			if (ModelState.IsValid)
 			{
-				try
-				{
-					_context.Update(receivingReport);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!ReceivingReportExists(receivingReport.Id))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction(nameof(Index));
+
+                _unitOfWork.ReceivingReport.Update(existingEntity);
+                await _unitOfWork.Save();
+                return RedirectToAction(nameof(Index));
 			}
 
 			TempData["AlertMessage"] = "Transaction Success";
-			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
-			ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
-			return View(receivingReport);
+			return View(request);
 		}
 
 		// GET: ReceivingReports/Delete/5
-		public async Task<IActionResult> Delete(int? id)
+		public async Task<IActionResult> Delete(Guid? Id)
 		{
-			if (id == null || _context.ReceivingReports == null)
+			if (Id == null)
 			{
 				return NotFound();
 			}
 
-			var receivingReport = await _context.ReceivingReports
-				.Include(r => r.AccountDetails)
-				.Include(r => r.MeatDealers)
-				.FirstOrDefaultAsync(m => m.Id == id);
+			var receivingReport = await _unitOfWork.ReceivingReport.GetAll(c => c.Id == Id, includeProperties: "AccountDetails,MeatDealers");
 			if (receivingReport == null)
 			{
 				return NotFound();
@@ -233,30 +247,21 @@ namespace thesis.Controllers
 		// POST: ReceivingReports/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
+		public async Task<IActionResult> DeleteConfirmed(Guid Id)
 		{
-			if (_context.ReceivingReports == null)
-			{
-				return Problem("Entity set 'AppDbContext.ReceivingReports'  is null.");
-			}
-			var receivingReport = await _context.ReceivingReports.FindAsync(id);
+			var receivingReport = await _unitOfWork.ReceivingReport.Get(c => c.Id == Id);
 			if (receivingReport != null)
 			{
-				_context.ReceivingReports.Remove(receivingReport);
+				_unitOfWork.ReceivingReport.Remove(receivingReport);
 			}
 
-			await _context.SaveChangesAsync();
+			await _unitOfWork.Save();
 			TempData["AlertMessage"] = "Transaction Success";
 			return RedirectToAction(nameof(Index));
 		}
 
-		private bool ReceivingReportExists(int id)
-		{
-			return (_context.ReceivingReports?.Any(e => e.Id == id)).GetValueOrDefault();
-		}
-
 		[HttpPost]
-		public IActionResult actionResult(int Id)
+		public async Task<IActionResult> ActionResult(Guid Id)
 		{
 			// Use the Id value as needed
 			var result = new MeatInspectionReport
@@ -265,14 +270,14 @@ namespace thesis.Controllers
 				RepDate = DateTime.Now,
 			};
 
-			_context.Add(result);
-			_context.SaveChanges();
+			_unitOfWork.MeatInspectionReport.Add(result);
+			await _unitOfWork.Save();
 
 			// Retrieve the MeatInspectionReportId after it is saved
 			int meatInspectionReportId = result.Id;
 
-			// Redirect to the Create action of ConductOfInspections controller and pass the MeatInspectionReportId
-			return RedirectToAction("Create", "ConductOfInspections", new { meatInspectionReportId = meatInspectionReportId });
+            // Redirect to the Create action of ConductOfInspections controller and pass the MeatInspectionReportId
+            return RedirectToAction("Create", "ConductOfInspections", new { meatInspectionReportId });
 
 		}
 

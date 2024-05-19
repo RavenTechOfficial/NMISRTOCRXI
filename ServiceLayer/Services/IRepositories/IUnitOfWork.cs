@@ -4,10 +4,10 @@
     {
         Task Save();
         IReceivingReportRepository ReceivingReport { get; }
+        IMeatInspectionReportRepository MeatInspectionReport { get; }
         IMeatDealersRepository MeatDealers { get; }
         IMeatEstablishmentRepository MeatEstablishment { get; }
         IAccountDetailsRepository AccountDetails { get; }
-        IMeatInspectionReportRepository MeatInspectionReport { get; }
         IDashboardRepository Dashboard { get; }
         IAnalyticsRepository Analytics { get; }
         IUsersManangementRepository UsersManangement { get; }
