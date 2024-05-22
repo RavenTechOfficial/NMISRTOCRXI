@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace DomainLayer.Models.ViewModels
 {
-    public class InspectViewModel
+    public class InspectorViewModel
 	{
 		public Species SelectedSpecies { get; set; }
 		public string SelectedTimeSeries { get; set; }

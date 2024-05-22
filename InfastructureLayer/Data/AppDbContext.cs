@@ -24,7 +24,7 @@ public class AppDbContext : IdentityDbContext<AccountDetails>
     //Meat Inspection
     public DbSet<Receiving> Receivings { get; set; }
     public DbSet<ReceivingReport> ReceivingReports { get; set; }
-    public DbSet<ConductOfInspection> ConductOfInspections { get; set; }
+    public DbSet<Antemortem> Antemortems { get; set; }
     public DbSet<PassedForSlaughter> PassedForSlaughters { get; set; }
     public DbSet<Postmortem> Postmortems { get; set; }
     public DbSet<SummaryAndDistributionOfMIC> SummaryAndDistributionOfMICs { get; set; }
@@ -49,10 +49,10 @@ public class AppDbContext : IdentityDbContext<AccountDetails>
     {
         base.OnModelCreating(modelBuilder);
 
-        AppDbSeed.SeedRole(modelBuilder);
-        AppDbSeed.SeedUserRoles(modelBuilder);
-        AppDbSeed.SeedUsers(modelBuilder);
-        AppDbSeed.SeedMeatDealer(modelBuilder);
-        AppDbSeed.SeedMeatEstablishment(modelBuilder);
+        //AppDbSeed.SeedRole(modelBuilder);
+        //AppDbSeed.SeedUserRoles(modelBuilder);
+        //AppDbSeed.SeedUsers(modelBuilder);
+        //AppDbSeed.SeedMeatDealer(modelBuilder);
+        //AppDbSeed.SeedMeatEstablishment(modelBuilder);
     }
 }

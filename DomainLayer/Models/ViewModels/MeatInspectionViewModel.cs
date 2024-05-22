@@ -6,7 +6,7 @@ namespace DomainLayer.Models.ViewModels
     public class MeatInspectionViewModel
     {
 
-        public List<ConductOfInspection> AntemortemInspectionData { get; set; }
+        public List<Antemortem> AntemortemInspectionData { get; set; }
         public List<Postmortem> PostmortemInspectionData { get; set; }
         public int MeatInspectionViewModelId { get; set; }
         public int InspectionCount { get; set; }

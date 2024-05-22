@@ -4,7 +4,7 @@ using InfastructureLayer.Data;
 using DomainLayer.Models;
 using InfastructureLayer.Repositories;
 
-namespace thesis.Repositories
+namespace NMISRTOCXI.Repositories
 {
     public class MeatDealersRepository : Repository<MeatDealers>, IMeatDealersRepository
     {

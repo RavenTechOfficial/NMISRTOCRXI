@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DomainLayer.Models;
 
-namespace thesis.Areas.Identity.Pages.Account.Manage
+namespace NMISRTOCXI.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {

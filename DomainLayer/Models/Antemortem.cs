@@ -4,7 +4,7 @@ using DomainLayer.Enum;
 
 namespace DomainLayer.Models
 {
-    public class ConductOfInspection
+    public class Antemortem
     {
         [Key]
         public int Id { get; set; }
@@ -12,9 +12,11 @@ namespace DomainLayer.Models
         public int NoOfHeads { get; set; }
         public double Weight { get; set; }
         public Cause Cause { get; set; }
-        [ForeignKey("MeatInspectionReport")]
-        public int MeatInspectionReportId { get; set; }
-        public virtual MeatInspectionReport? MeatInspectionReport { get; set; }
+        public string? Other { get; set; }
+        public string? Remarks { get; set; }
+        [ForeignKey("ReceivingReport")]
+        public Guid ReceivingReportId { get; set; }
+        public virtual ReceivingReport? ReceivingReport { get; set; }
         //[ForeignKey("ReceivingReport")]
         //public int ReceivingReportId { get; set; }
         //public virtual ReceivingReport? ReceivingReport { get; set; }

@@ -7,6 +7,10 @@ namespace DomainLayer.Enum
 		[Display(Name = "N/A")]
 		NA,
         Suspect,
-        Condemned
+        Condemned,
+        [Display(Name = "Apparently Healthy")]
+        ApparentlyHealthy,
+        [Display(Name = "“Animal Welfare Issue")]
+        AnimalWelfareIssue,
     }
 }

@@ -89,7 +89,7 @@
                 <form asp-action="Create" class="form">
                     <div class="column">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+                        <input asp-for="AccountDetailsId" class="form-control" hidden/>
                         <div class="input-box">
                             <label asp-for="RecTime" class="control-label">Date & Time:</label>
                             <input asp-for="RecTime" class="form-control" id="recTimeInput" />
@@ -173,45 +173,12 @@
 
                     <div class="input-box">
                         <label asp-for="ShippingDoc" class="control-label">Shipping Documents:</label>
-                        <div class="checkbox-list">
-                            <div class="checkbox-row">
-                                <label>
-                                    <input type="checkbox" id="COO" class="checkbox">
-                                    Certificate Of Ownership
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="COT" class="checkbox">
-                                    Certificate Of Transfer
-                                </label>
-                            </div>
-                            <div class="checkbox-row">
-                                <label>
-                                    <input type="checkbox" id="VHC" class="checkbox">
-                                    Veterinary Health Certificate
-                                </label>
-                                <label>
-                                    <input type="checkbox" id="SP" class="checkbox">
-                                    Shipping Permit
-                                </label>
-                            </div>
-                        </div>
+                        <select id="status" class="form-control" asp-for="ShippingDoc" 
+                            asp-items="@Html.GetEnumSelectList<ShippingDocuments>()" multiple>
+                        </select>
+                        <span asp-validation-for="ShippingDoc" class="text-danger"></span>
                         <input asp-for="ShippingDoc" type="text" id="result" readonly>
                     </div>
-
-                    <script>
-                        const checkboxes = document.querySelectorAll('.checkbox');
-                        const resultField = document.getElementById('result');
-
-                        checkboxes.forEach(checkbox => {
-                            checkbox.addEventListener('change', updateResult);
-                        });
-
-                        function updateResult() {
-                            const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
-                            const selectedValues = selectedCheckboxes.map(checkbox => checkbox.nextSibling.textContent.trim());
-                            resultField.value = selectedValues.join(', ');
-                        }
-                    </script>
 
                     <div class="column">
                         <div class="input-box">
@@ -225,12 +192,6 @@
                             <span asp-validation-for="ReceivingBy" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="column">
-                        <div class="input-box" style="display: none;">
-                            <label asp-for="AccountDetailsId" class="control-label"></label>
-                            <input id="accountDetailsInput" asp-for="AccountDetailsId" class="form-control" />
-                        </div>
-                    </div>
                     <div class="input-box">
                         <label asp-for="InspectionStatus" class="control-label">Inspection Status:</label>
                         <select asp-for="InspectionStatus" class="form-control">
@@ -238,9 +199,29 @@
                         </select>
                     </div>
                     <br />
-                    <button type="submit" value="Create">Create</button>
+                    <button type="submit" data-toggle="modal" data-target="#logoutModal" value="Create">Create</button>
 
-
+                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="logoutModalLabel">Receiving Report</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Confirm receiving report
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <form asp-area="ReceivingReports" asp-route-returnUrl="@Url.Action("/")" method="post">
+                                        <button type="submit" class="btn btn-danger">Logout</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
 
@@ -251,27 +232,41 @@
     </main>
 </section>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script>
     // Set the value of the input field to the current datetime
     var defaultDateTime = moment().format('YYYY-MM-DDTHH:mm');
     document.getElementById("recTimeInput").value = defaultDateTime;
 
-    // Retrieve the ID from UserManager.GetUsername
-    var selectedAccountId = "@UserManager.GetUserId(User)";
+    function getSelectedValues() {
+        // Get the selected options
+        var selectedOptions = $('#status option:selected');
 
-    // Get the input element
-    var inputElement = document.getElementById("accountDetailsInput");
+        // Initialize an array to store the text of selected options
+        var selectedTexts = [];
 
-    // Set the value of the input field to the obtained ID
-    inputElement.value = selectedAccountId;
+        // Iterate over the selected options and retrieve their text
+        selectedOptions.each(function () {
+            selectedTexts.push($(this).text());
+        });
+
+        // Join the array of selected texts into a comma-separated string
+        return selectedTexts.join(', ');
+    }
+
+
+    // Example of how to use the function
+    $('#status').change(function () {
+        var selectedValues = getSelectedValues(); // Get the selected values
+        $('#result').val(selectedValues); // Set the selected values to the input field
+    });
 
 </script>
 
 
 @section Scripts {
     @{
+        await Html.RenderPartialAsync("_Notifications");
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }

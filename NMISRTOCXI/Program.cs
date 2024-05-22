@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models;
 using ServiceLayer.Services.IRepositories;
 using InfastructureLayer.Data;
-using thesis.Repositories;
+using NMISRTOCXI.Repositories;
 using SendGrid.Helpers.Mail;
 using ServiceLayer.Common;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -26,9 +26,14 @@ builder.Services.AddIdentity<AccountDetails, IdentityRole>(options => options.Si
 // Add services to the container	
 builder.Services.AddControllersWithViews();
 builder.Services.AddMemoryCache();
+builder.Services.AddControllers().AddNewtonsoftJson(option => 
+	option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.Configure<EmailSenderSettings>(builder.Configuration.GetSection("EmailSender"));
 builder.Services.AddSingleton<IEmailSender, SendGridEmailSender>();
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 // Configure authentication cookie settings
 builder.Services.ConfigureApplicationCookie(options =>

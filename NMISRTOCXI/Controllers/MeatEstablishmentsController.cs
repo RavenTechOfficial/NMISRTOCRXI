@@ -9,7 +9,7 @@ using ServiceLayer.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	[Authorize(Policy = "RequireInspectorAdmin")]
 	public class MeatEstablishmentsController : Controller

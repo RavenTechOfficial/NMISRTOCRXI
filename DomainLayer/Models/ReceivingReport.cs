@@ -27,11 +27,10 @@ namespace DomainLayer.Models
         public virtual AccountDetails? AccountDetails { get; set; }
         public InspectionStatus? InspectionStatus { get; set; }
 
-  //      public MeatInspectionReport? MeatInspectionReport { get; set; }
-  //      public IEnumerable<ConductOfInspection>? ConductOfInspection { get; set; }
-  //      public IEnumerable<PassedForSlaughter>? PassedForSlaughter { get; set; }
-  //      public IEnumerable<Postmortem>? Postmortems { get; set; }
-  //      public IEnumerable<TotalNoFitForHumanConsumptions>? TotalNoFitForHumanConsumptions { get; set; }
-		//public SummaryAndDistributionOfMIC? SummaryAndDistributionOfMIC { get; set; }
-	}
+        public MeatInspectionReport? MeatInspectionReport { get; set; }
+        public IEnumerable<Antemortem>? Antemortems { get; set; }
+        public PassedForSlaughter? PassedForSlaughter { get; set; }
+        public IEnumerable<Postmortem>? Postmortems { get; set; }
+        public TotalNoFitForHumanConsumptions? TotalNoFitForHumanConsumption { get; set; }
+    }
 }

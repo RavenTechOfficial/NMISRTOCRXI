@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InfastructureLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdatedReceivingReport : Migration
+    public partial class updateAccountDetails : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -291,14 +291,13 @@ namespace InfastructureLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    firstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    middleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    contactNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    birthdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    sex = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MeatEstablishmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -595,16 +594,41 @@ namespace InfastructureLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Antemortems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Issue = table.Column<int>(type: "int", nullable: false),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<double>(type: "float", nullable: false),
+                    Cause = table.Column<int>(type: "int", nullable: false),
+                    Other = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceivingReportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Antemortems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Antemortems_ReceivingReports_ReceivingReportId",
+                        column: x => x.ReceivingReportId,
+                        principalTable: "ReceivingReports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MeatInspectionReports",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RepDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VerifiedByPOSMSHead = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceivingReportId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     AccountDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    UID = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -619,6 +643,75 @@ namespace InfastructureLayer.Migrations
                         column: x => x.ReceivingReportId,
                         principalTable: "ReceivingReports",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PassedForSlaughters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<double>(type: "float", nullable: false),
+                    ReceivingReportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PassedForSlaughters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PassedForSlaughters_ReceivingReports_ReceivingReportId",
+                        column: x => x.ReceivingReportId,
+                        principalTable: "ReceivingReports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Postmortems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReceivingReportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AnimalPart = table.Column<int>(type: "int", nullable: false),
+                    Cause = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<double>(type: "float", nullable: false),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    Image1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image3 = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Postmortems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Postmortems_ReceivingReports_ReceivingReportId",
+                        column: x => x.ReceivingReportId,
+                        principalTable: "ReceivingReports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TotalNoFitForHumanConsumptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Species = table.Column<int>(type: "int", nullable: false),
+                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
+                    DressedWeight = table.Column<double>(type: "float", nullable: false),
+                    ReceivingReportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TotalNoFitForHumanConsumptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TotalNoFitForHumanConsumptions_ReceivingReports_ReceivingReportId",
+                        column: x => x.ReceivingReportId,
+                        principalTable: "ReceivingReports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -662,98 +755,6 @@ namespace InfastructureLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ConductOfInspections",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Issue = table.Column<int>(type: "int", nullable: false),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    Weight = table.Column<double>(type: "float", nullable: false),
-                    Cause = table.Column<int>(type: "int", nullable: false),
-                    MeatInspectionReportId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ConductOfInspections", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ConductOfInspections_MeatInspectionReports_MeatInspectionReportId",
-                        column: x => x.MeatInspectionReportId,
-                        principalTable: "MeatInspectionReports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PassedForSlaughters",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    Weight = table.Column<double>(type: "float", nullable: false),
-                    ConductOfInspectionId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PassedForSlaughters", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PassedForSlaughters_ConductOfInspections_ConductOfInspectionId",
-                        column: x => x.ConductOfInspectionId,
-                        principalTable: "ConductOfInspections",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Postmortems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PassedForSlaughterId = table.Column<int>(type: "int", nullable: false),
-                    AnimalPart = table.Column<int>(type: "int", nullable: false),
-                    Cause = table.Column<int>(type: "int", nullable: false),
-                    Weight = table.Column<double>(type: "float", nullable: false),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    Image1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image3 = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Postmortems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Postmortems_PassedForSlaughters_PassedForSlaughterId",
-                        column: x => x.PassedForSlaughterId,
-                        principalTable: "PassedForSlaughters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TotalNoFitForHumanConsumptions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Species = table.Column<int>(type: "int", nullable: false),
-                    NoOfHeads = table.Column<int>(type: "int", nullable: false),
-                    DressedWeight = table.Column<double>(type: "float", nullable: false),
-                    PostmortemId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TotalNoFitForHumanConsumptions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TotalNoFitForHumanConsumptions_Postmortems_PostmortemId",
-                        column: x => x.PostmortemId,
-                        principalTable: "Postmortems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SummaryAndDistributionOfMICs",
                 columns: table => new
                 {
@@ -781,14 +782,14 @@ namespace InfastructureLayer.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "11fa1942-a36b-4f79-aa48-0d7b3932e818", null, "MtvInspector", "MTVINSPECTOR" },
-                    { "509beeaa-f999-4a02-bb71-3d9d81f3c922", null, "MeatEstablishmentRepresentative", "MEATESTABLISHMENTREPRESENTATIVE" },
-                    { "7c4f8c34-165d-4ba1-b2de-dab02e730514", null, "User", "USER" },
-                    { "9a23fd1f-a14a-4cd3-8af4-2522b73a8d01", null, "SuperAdministrator", "SUPERADMIN" },
-                    { "a0959cd8-b05f-477a-a9bd-bbc9923148d9", null, "MeatInspector", "MEATINSPECTOR" },
-                    { "c3318b9d-3600-4e9a-86b1-180b4a4bf9f4", null, "MTVAdministrator", "MTVADMIN" },
-                    { "e63f37a4-2566-49e6-9143-6847bf424b74", null, "MtvUsers", "MTVUSERS" },
-                    { "ea7b614f-94f8-43aa-8711-92d154c7a32e", null, "InspectorAdministrator", "INSPECTORADMIN" }
+                    { "0826d88e-b994-46a4-9d44-64378a3d2f5c", null, "MeatInspector", "MEATINSPECTOR" },
+                    { "09c7723d-da4f-431e-bd1d-76679d917724", null, "SuperAdministrator", "SUPERADMIN" },
+                    { "2f59a6f7-108a-46f4-82b0-3eca17436684", null, "MTVAdministrator", "MTVADMIN" },
+                    { "3efb5f25-75f7-48bd-b4e3-f9eb98b214ff", null, "InspectorAdministrator", "INSPECTORADMIN" },
+                    { "53e57515-7b1f-4db8-8224-a1fd36836231", null, "MtvInspector", "MTVINSPECTOR" },
+                    { "8ab596d6-fd91-4ad9-9b9b-77e406046a73", null, "User", "USER" },
+                    { "d9c89315-a0d7-4002-9756-b8a8f1ddad03", null, "MtvUsers", "MTVUSERS" },
+                    { "ee12030b-211f-4597-9f59-ba5bf3b8c9c8", null, "MeatEstablishmentRepresentative", "MEATESTABLISHMENTREPRESENTATIVE" }
                 });
 
             migrationBuilder.InsertData(
@@ -796,25 +797,25 @@ namespace InfastructureLayer.Migrations
                 columns: new[] { "Id", "Address", "Lat", "LicenseStatus", "LicenseToOperateNumber", "Long", "Name", "Type" },
                 values: new object[,]
                 {
-                    { new Guid("0b8620ad-8d5b-4367-a059-8656f0f397c1"), null, 0.0, 1, "fdc85acf-bc4c-4c82-af38-2e33624996c6", 0.0, "Meat Establishment 3", 2 },
-                    { new Guid("8d0d6727-4dab-4527-913f-56e3baf97c75"), null, 0.0, 0, "4d91dce5-bfe4-4ea7-91e5-13c3fba58534", 0.0, "Meat Establishment 2", 3 },
-                    { new Guid("ce2c0f46-21bf-40e8-a093-02e2680a4688"), null, 0.0, 0, "63ed65fc-8920-455d-9657-31315deaa3d0", 0.0, "Meat Establishment 1", 0 },
-                    { new Guid("d7de101c-caae-406b-8254-37da9186ab22"), null, 0.0, 0, "c70d2f71-29a1-4938-b041-2c39003631bb", 0.0, "Meat Establishment 4", 1 }
+                    { new Guid("5f2e8b7c-0d0a-4022-ba4e-792297574b3f"), null, 0.0, 0, "e62ebd09-b8ca-4aa0-abfe-aeae67b90256", 0.0, "Meat Establishment 2", 3 },
+                    { new Guid("94c2c274-2a0b-4f24-a84d-6cf7ee8cb9d9"), null, 0.0, 0, "28693801-33a0-4339-996a-3c8964ceb394", 0.0, "Meat Establishment 1", 0 },
+                    { new Guid("95aecde7-ab6e-45b9-937c-d85290af8683"), null, 0.0, 1, "b63e2a32-7dbd-4bec-8700-d0bfd5507097", 0.0, "Meat Establishment 3", 2 },
+                    { new Guid("d64f2090-bff6-4bea-a4b6-f0245395785c"), null, 0.0, 0, "6c86575e-a38f-4305-befd-9028f39c05ca", 0.0, "Meat Establishment 4", 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "MeatEstablishmentId", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "address", "birthdate", "contactNo", "firstName", "image", "lastName", "middleName", "sex" },
+                columns: new[] { "Id", "AccessFailedCount", "Address", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "Gender", "Image", "LastName", "LockoutEnabled", "LockoutEnd", "MeatEstablishmentId", "MiddleName", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1a916ac7-7b47-4181-ac54-f9485d866595", 0, "dda761cf-f0c9-46be-9f30-80cb68d215e1", "meat@rep.com", true, false, null, new Guid("ce2c0f46-21bf-40e8-a093-02e2680a4688"), "MEAT@REP.COM", "MEATREP", "AQAAAAIAAYagAAAAENKveMThM8Tgp6r7AGMdGU4YwI8omwMER4RsIWPzxKk1B8X8OTE9XhpOv8kdwQ+KNA==", null, false, "", false, "meatrep", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
-                    { "5cacf88d-a6d3-400b-b3db-0d40be0fa7b4", 0, "7af1c648-89d5-4aa1-bf8b-5377f98bdec8", "super@admin.com", true, false, null, new Guid("ce2c0f46-21bf-40e8-a093-02e2680a4688"), "SUPER@ADMIN.COM", "SUPERADMIN", "AQAAAAIAAYagAAAAEFGNAPcrAuDj4wAHkLcYd4cNNu9j1uiAzB3SltwLN2qdJ+GJhgqIubdLpBsOJERNeA==", null, false, "", false, "superadmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
-                    { "66089874-2756-46d0-b6b9-ce18aa519853", 0, "b9e81102-2e71-44ab-a9c9-30840be82269", "mtv@user.com", true, false, null, new Guid("d7de101c-caae-406b-8254-37da9186ab22"), "MTV@USER.COM", "MTVUSER", "AQAAAAIAAYagAAAAEJIzaETzRopfCfwNXvpt2cfLOsy9s+PDcxCnUBDEo5bFbGhzPQoksfS8Ka19GtepcQ==", null, false, "", false, "mtvuser", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
-                    { "8c70bb8a-c34d-44ab-b146-4c9819a251da", 0, "f4467625-539a-47bd-a65f-cbd30de8ae55", "mtv@inspector.com", true, false, null, new Guid("0b8620ad-8d5b-4367-a059-8656f0f397c1"), "MTV@INSPECTOR.COM", "MTVINSPECTOR", "AQAAAAIAAYagAAAAEATI0SyVFTEwacGPuZe+kzrdRoFqIQDddMJYxa/ie+sbR34dYmeSdC8HBkfIMidCPQ==", null, false, "", false, "mtvinspector", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
-                    { "a13810d4-300f-49ef-b611-5100216dea9d", 0, "aa60a150-9196-4840-9891-32d0e584f1cd", "user@user.com", true, false, null, new Guid("d7de101c-caae-406b-8254-37da9186ab22"), "USER@USER.COM", "USER", "AQAAAAIAAYagAAAAEHKZaqbfZUH0Hu+xNLxGUnssm+5AevNy2GcfL/P7eGXp300dK5M06feSBFVbZ7Pn5Q==", null, false, "", false, "user", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
-                    { "bc61fe3f-fc07-4ea4-a1e4-481c7afa3fd9", 0, "c46e8208-ccb6-45d4-afc2-ceb821074313", "mtv@admin.com", true, false, null, new Guid("8d0d6727-4dab-4527-913f-56e3baf97c75"), "INSPECTOR@ADMIN.COM", "INSPECTORADMIN", "AQAAAAIAAYagAAAAEH6xHl9jqq2gXbYm52d9e6AwCUoJR17KT2q0Uy0Z/C6WSoDFUmX13MUCIRxnAsv+DQ==", null, false, "", false, "inspectoradmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
-                    { "c83029c7-482b-42da-a2cb-f61ab851706e", 0, "fe5d1eac-e61d-48eb-b2a1-c903d9388903", "meat@inspector.com", true, false, null, new Guid("8d0d6727-4dab-4527-913f-56e3baf97c75"), "MEAT@INSPECTOR.COM", "MEATINSPECTOR", "AQAAAAIAAYagAAAAELyaQ9FOpvYbtMuTC4dBkSomvcgJJa7qpNKZOe9200apg5/lWMDVGU+XLqnb/ckYMw==", null, false, "", false, "meatinspector", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null },
-                    { "d6923837-db91-4e0e-826c-f1dac07ab02a", 0, "6a2e7211-97ae-4201-8bb3-8143f68d1205", "mtv@admin.com", true, false, null, new Guid("0b8620ad-8d5b-4367-a059-8656f0f397c1"), "MTV@ADMIN.COM", "MTVRADMIN", "AQAAAAIAAYagAAAAEAi7WAMb5W96YiCSqk9yb6Ks5iXLN03LKfJR0BO3BlRVvi+rnKv89MALwVfIUVNElA==", null, false, "", false, "mtvadmin", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, null, null, null, null }
+                    { "04fe76dc-d9ea-4883-87ef-a53504d0dd06", 0, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "ae35533f-f03d-41a6-8fcf-b198f8b6ef9b", "meat@inspector.com", true, null, null, null, null, false, null, new Guid("5f2e8b7c-0d0a-4022-ba4e-792297574b3f"), null, "MEAT@INSPECTOR.COM", "MEATINSPECTOR", "AQAAAAIAAYagAAAAEDt287u2uI5mItu4nMru9VN7cEaGwD7glh8v5XlYCsCgK+ToVbp8qRjiMSYToSdocw==", null, false, "", false, "meatinspector" },
+                    { "25aa9ace-3318-467d-b212-d5403c253451", 0, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "663e2ad9-837d-4807-9ba3-72611ea34138", "meat@rep.com", true, null, null, null, null, false, null, new Guid("94c2c274-2a0b-4f24-a84d-6cf7ee8cb9d9"), null, "MEAT@REP.COM", "MEATREP", "AQAAAAIAAYagAAAAEIDO908dvTE+CmitQypZ+2kCfDgYff998vzHw7YYJpDi9ZUfmdzEdcHY0FuOiyqx1A==", null, false, "", false, "meatrep" },
+                    { "4e5cbff5-8073-4a6e-be62-6440a5d87c80", 0, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "76c12de5-e3e0-4d88-8b3b-f7c3691d1bab", "mtv@admin.com", true, null, null, null, null, false, null, new Guid("95aecde7-ab6e-45b9-937c-d85290af8683"), null, "MTV@ADMIN.COM", "MTVRADMIN", "AQAAAAIAAYagAAAAEDFUvbwa/KAv4osnRLT8BQta8ThFN8bgoSiFtZeLurKqPnKNV/EZV1GhD474QBt/8Q==", null, false, "", false, "mtvadmin" },
+                    { "7180b314-e623-4d53-8960-6e367d1bd49b", 0, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "27494fda-6a3e-4e5c-87ec-066a430cd75e", "mtv@admin.com", true, null, null, null, null, false, null, new Guid("5f2e8b7c-0d0a-4022-ba4e-792297574b3f"), null, "INSPECTOR@ADMIN.COM", "INSPECTORADMIN", "AQAAAAIAAYagAAAAEG0m4l1d8wGtdKEq8UTDPbGOG1Z0cmZfvCbCzkt3pE6FfhsKZ73X9XNh98M6gPzoaA==", null, false, "", false, "inspectoradmin" },
+                    { "92d593de-6455-4225-aeef-c1dd433938d0", 0, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "6a72b78f-c07f-4427-89d1-74e503f175dc", "user@user.com", true, null, null, null, null, false, null, new Guid("d64f2090-bff6-4bea-a4b6-f0245395785c"), null, "USER@USER.COM", "USER", "AQAAAAIAAYagAAAAEF2rdKpj19YZJsT6Ryv6OYwh+7WQeFpI42cP8wn/dEJxnfCHPc1E4Dm1ywVqB5lq7w==", null, false, "", false, "user" },
+                    { "aec7f9fc-995b-491d-8829-03e2ae050c96", 0, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "60a0b370-870f-4650-b9c5-317b92cf7588", "mtv@inspector.com", true, null, null, null, null, false, null, new Guid("95aecde7-ab6e-45b9-937c-d85290af8683"), null, "MTV@INSPECTOR.COM", "MTVINSPECTOR", "AQAAAAIAAYagAAAAECzeWQ3r7WfOBCrW2SU6WCftxuvZe7PKZq10OFrpB6In0cYjUJgJBE2BOBqBI1FJsA==", null, false, "", false, "mtvinspector" },
+                    { "d5b60b83-40ca-48db-85d8-7f6ebbd51a1f", 0, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "67d7b1f7-8901-4988-9668-1e43cdf8543d", "mtv@user.com", true, null, null, null, null, false, null, new Guid("d64f2090-bff6-4bea-a4b6-f0245395785c"), null, "MTV@USER.COM", "MTVUSER", "AQAAAAIAAYagAAAAEPDt0oRosfoHbiNOYckL7rLbYX/9PW0cQGiwiiJ83QNedHAU2l0CFnswHlsdJilRCQ==", null, false, "", false, "mtvuser" },
+                    { "e70e8fde-d12b-49bf-b44c-6ba18caaee0e", 0, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "2279dbcf-cb2a-440c-9aeb-ca3dc0656782", "super@admin.com", true, null, null, null, null, false, null, new Guid("94c2c274-2a0b-4f24-a84d-6cf7ee8cb9d9"), null, "SUPER@ADMIN.COM", "SUPERADMIN", "AQAAAAIAAYagAAAAEGHBfdkWi/tMrM0kijF/CTjpMYfL1y/iA6zH+j5bv+L1NwGlK7BhLAW52zXt6IgGyA==", null, false, "", false, "superadmin" }
                 });
 
             migrationBuilder.InsertData(
@@ -822,10 +823,10 @@ namespace InfastructureLayer.Migrations
                 columns: new[] { "Id", "Address", "ContactNo", "FirstName", "LastName", "MeatEstablishmentId", "MiddleName" },
                 values: new object[,]
                 {
-                    { new Guid("2055c964-e81c-4887-8fbd-15140dc30cb3"), null, null, "Meat", "Dealer 4", new Guid("d7de101c-caae-406b-8254-37da9186ab22"), null },
-                    { new Guid("cf1e159d-2b53-4c52-bbee-5ce43ab87054"), null, null, "Meat", "Dealer 1", new Guid("ce2c0f46-21bf-40e8-a093-02e2680a4688"), null },
-                    { new Guid("d9225a90-c80f-4835-8599-acd455d377cb"), null, null, "Meat", "Dealer 3", new Guid("0b8620ad-8d5b-4367-a059-8656f0f397c1"), null },
-                    { new Guid("e835ea5d-8659-45d8-bd8b-add9d774c63b"), null, null, "Meat", "Dealer 2", new Guid("8d0d6727-4dab-4527-913f-56e3baf97c75"), null }
+                    { new Guid("57722378-cbc1-467f-b45b-c66fe72dcb7c"), null, null, "Meat", "Dealer 2", new Guid("5f2e8b7c-0d0a-4022-ba4e-792297574b3f"), null },
+                    { new Guid("a324e6d1-6a37-4857-a2f8-1147fd5c5a02"), null, null, "Meat", "Dealer 1", new Guid("94c2c274-2a0b-4f24-a84d-6cf7ee8cb9d9"), null },
+                    { new Guid("a3dd942f-f9b8-4454-8801-2bf3af3c146d"), null, null, "Meat", "Dealer 4", new Guid("d64f2090-bff6-4bea-a4b6-f0245395785c"), null },
+                    { new Guid("c7e2469d-25a9-4dc3-8131-a3c8ff41e963"), null, null, "Meat", "Dealer 3", new Guid("95aecde7-ab6e-45b9-937c-d85290af8683"), null }
                 });
 
             migrationBuilder.InsertData(
@@ -833,15 +834,20 @@ namespace InfastructureLayer.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "509beeaa-f999-4a02-bb71-3d9d81f3c922", "1a916ac7-7b47-4181-ac54-f9485d866595" },
-                    { "9a23fd1f-a14a-4cd3-8af4-2522b73a8d01", "5cacf88d-a6d3-400b-b3db-0d40be0fa7b4" },
-                    { "e63f37a4-2566-49e6-9143-6847bf424b74", "66089874-2756-46d0-b6b9-ce18aa519853" },
-                    { "11fa1942-a36b-4f79-aa48-0d7b3932e818", "8c70bb8a-c34d-44ab-b146-4c9819a251da" },
-                    { "7c4f8c34-165d-4ba1-b2de-dab02e730514", "a13810d4-300f-49ef-b611-5100216dea9d" },
-                    { "ea7b614f-94f8-43aa-8711-92d154c7a32e", "bc61fe3f-fc07-4ea4-a1e4-481c7afa3fd9" },
-                    { "a0959cd8-b05f-477a-a9bd-bbc9923148d9", "c83029c7-482b-42da-a2cb-f61ab851706e" },
-                    { "c3318b9d-3600-4e9a-86b1-180b4a4bf9f4", "d6923837-db91-4e0e-826c-f1dac07ab02a" }
+                    { "0826d88e-b994-46a4-9d44-64378a3d2f5c", "04fe76dc-d9ea-4883-87ef-a53504d0dd06" },
+                    { "ee12030b-211f-4597-9f59-ba5bf3b8c9c8", "25aa9ace-3318-467d-b212-d5403c253451" },
+                    { "2f59a6f7-108a-46f4-82b0-3eca17436684", "4e5cbff5-8073-4a6e-be62-6440a5d87c80" },
+                    { "3efb5f25-75f7-48bd-b4e3-f9eb98b214ff", "7180b314-e623-4d53-8960-6e367d1bd49b" },
+                    { "8ab596d6-fd91-4ad9-9b9b-77e406046a73", "92d593de-6455-4225-aeef-c1dd433938d0" },
+                    { "53e57515-7b1f-4db8-8224-a1fd36836231", "aec7f9fc-995b-491d-8829-03e2ae050c96" },
+                    { "d9c89315-a0d7-4002-9756-b8a8f1ddad03", "d5b60b83-40ca-48db-85d8-7f6ebbd51a1f" },
+                    { "09c7723d-da4f-431e-bd1d-76679d917724", "e70e8fde-d12b-49bf-b44c-6ba18caaee0e" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Antemortems_ReceivingReportId",
+                table: "Antemortems",
+                column: "ReceivingReportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -888,11 +894,6 @@ namespace InfastructureLayer.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConductOfInspections_MeatInspectionReportId",
-                table: "ConductOfInspections",
-                column: "MeatInspectionReportId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DisapprovedApplications_MTVInspectionId",
                 table: "DisapprovedApplications",
                 column: "MTVInspectionId");
@@ -910,7 +911,9 @@ namespace InfastructureLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_MeatInspectionReports_ReceivingReportId",
                 table: "MeatInspectionReports",
-                column: "ReceivingReportId");
+                column: "ReceivingReportId",
+                unique: true,
+                filter: "[ReceivingReportId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MTVApplicationResults_MTVInspectionId",
@@ -943,9 +946,10 @@ namespace InfastructureLayer.Migrations
                 column: "MTVApplicationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PassedForSlaughters_ConductOfInspectionId",
+                name: "IX_PassedForSlaughters_ReceivingReportId",
                 table: "PassedForSlaughters",
-                column: "ConductOfInspectionId");
+                column: "ReceivingReportId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_MTVApplicationId",
@@ -953,9 +957,9 @@ namespace InfastructureLayer.Migrations
                 column: "MTVApplicationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Postmortems_PassedForSlaughterId",
+                name: "IX_Postmortems_ReceivingReportId",
                 table: "Postmortems",
-                column: "PassedForSlaughterId");
+                column: "ReceivingReportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReceivingReports_AccountDetailsId",
@@ -978,9 +982,10 @@ namespace InfastructureLayer.Migrations
                 column: "TotalNoFitForHumanConsumptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TotalNoFitForHumanConsumptions_PostmortemId",
+                name: "IX_TotalNoFitForHumanConsumptions_ReceivingReportId",
                 table: "TotalNoFitForHumanConsumptions",
-                column: "PostmortemId");
+                column: "ReceivingReportId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -988,6 +993,9 @@ namespace InfastructureLayer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "Antemortems");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -1017,6 +1025,9 @@ namespace InfastructureLayer.Migrations
                 name: "LogTransactions");
 
             migrationBuilder.DropTable(
+                name: "MeatInspectionReports");
+
+            migrationBuilder.DropTable(
                 name: "MTVApplicationResults");
 
             migrationBuilder.DropTable(
@@ -1026,10 +1037,16 @@ namespace InfastructureLayer.Migrations
                 name: "MTVquizzes");
 
             migrationBuilder.DropTable(
+                name: "PassedForSlaughters");
+
+            migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "PostArticles");
+
+            migrationBuilder.DropTable(
+                name: "Postmortems");
 
             migrationBuilder.DropTable(
                 name: "QrCodes");
@@ -1056,7 +1073,7 @@ namespace InfastructureLayer.Migrations
                 name: "MTVApplications");
 
             migrationBuilder.DropTable(
-                name: "Postmortems");
+                name: "ReceivingReports");
 
             migrationBuilder.DropTable(
                 name: "Drivers");
@@ -1066,18 +1083,6 @@ namespace InfastructureLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "VehicleInfos");
-
-            migrationBuilder.DropTable(
-                name: "PassedForSlaughters");
-
-            migrationBuilder.DropTable(
-                name: "ConductOfInspections");
-
-            migrationBuilder.DropTable(
-                name: "MeatInspectionReports");
-
-            migrationBuilder.DropTable(
-                name: "ReceivingReports");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

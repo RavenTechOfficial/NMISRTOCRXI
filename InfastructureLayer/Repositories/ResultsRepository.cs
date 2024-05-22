@@ -3,7 +3,7 @@ using ServiceLayer.Services.IRepositories;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
 
-namespace thesis.Repositories
+namespace NMISRTOCXI.Repositories
 {
     public class ResultsRepository : IResultsRepository
     {

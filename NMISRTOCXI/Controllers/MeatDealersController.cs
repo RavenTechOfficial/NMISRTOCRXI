@@ -7,7 +7,7 @@ using AutoMapper;
 using DomainLayer.Models.ViewModels;
 
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	//[Authorize(Policy = "RequireInspectorAdmin")]
 	public class MeatDealersController : Controller

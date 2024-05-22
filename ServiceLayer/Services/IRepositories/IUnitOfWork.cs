@@ -5,6 +5,10 @@
         Task Save();
         IReceivingReportRepository ReceivingReport { get; }
         IMeatInspectionReportRepository MeatInspectionReport { get; }
+        IAntemortemRepository Antemortem { get; }
+        IPassedForSlaughterRepository PassedForSlaughter { get; }
+        IPostmortemRepository Postmortem { get; }
+        ITotalNoFitForHumanConsumptionRepository TotalNoFitForHumanConsumption { get; }
         IMeatDealersRepository MeatDealers { get; }
         IMeatEstablishmentRepository MeatEstablishment { get; }
         IAccountDetailsRepository AccountDetails { get; }

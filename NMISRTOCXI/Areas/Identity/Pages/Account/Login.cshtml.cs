@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 using DomainLayer.Models;
 using System.Security.Claims;
 
-namespace thesis.Areas.Identity.Pages.Account
+namespace NMISRTOCXI.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {

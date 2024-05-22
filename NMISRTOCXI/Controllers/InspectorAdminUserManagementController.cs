@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	[Authorize(Policy = "RequireInspectorAdmin")]
 	public class InspectorAdminUserManagementController : Controller

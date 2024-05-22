@@ -5,7 +5,7 @@ using DomainLayer.Models;
 using InfastructureLayer.Repositories;
 using DomainLayer.Models.ViewModels;
 
-namespace thesis.Repositories
+namespace NMISRTOCXI.Repositories
 {
     public class ReceivingReportRepository : Repository<ReceivingReport>, IReceivingReportRepository
     {

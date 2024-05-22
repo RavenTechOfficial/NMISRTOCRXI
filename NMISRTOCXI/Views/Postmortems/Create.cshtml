@@ -1,4 +1,4 @@
-﻿@model DomainLayer.Models.ViewModels.PostmortemViewModel
+﻿@* @model DomainLayer.Models.ViewModels.PostmortemViewModel
 @using Azure.Core;
 @using DomainLayer.Enum;
 <link href="~/css/inspectorSideNav.css" rel="stylesheet" />
@@ -30,7 +30,6 @@
 
         <div class="container">
 
-            @*<h1>Create</h1>*@
             <a class='bx bxs-chevron-left' asp-action="Index">
                 <span>Back</span>
             </a>
@@ -205,15 +204,7 @@
         </div>
 
         <br />
-        @* <input type="submit" value="Create" class="btn btn-primary" />*@
-
-
-        @*   <a class="btn btn-success" asp-controller="Postmortems" asp-action="Index"> <i class="bx bx-detail"> </i> <span>Show all</span></a>*@
-
         <br />
-
-
-
         @section Scripts {
             @{
                 await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -225,3 +216,4 @@
 
 
 <script src="~/js/register.js"></script>
+ *@

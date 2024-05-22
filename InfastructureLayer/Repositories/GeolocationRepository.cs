@@ -3,7 +3,7 @@ using DomainLayer.Models.ViewModels;
 using InfastructureLayer.Data;
 using DomainLayer.Enum;
 
-namespace thesis.Repositories
+namespace NMISRTOCXI.Repositories
 {
 	public class GeolocationRepository : IGeolocationRepository
 	{

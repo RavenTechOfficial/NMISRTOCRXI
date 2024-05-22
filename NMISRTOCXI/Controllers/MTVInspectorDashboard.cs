@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models.ViewModels;
 using InfastructureLayer.Data;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	public class MTVInspectorDashboard : Controller
 	{

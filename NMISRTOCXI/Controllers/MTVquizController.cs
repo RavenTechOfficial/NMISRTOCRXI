@@ -4,7 +4,7 @@ using InfastructureLayer.Data;
 using DomainLayer.Enum;
 using DomainLayer.Models;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	public class MTVquizController : Controller
 	{

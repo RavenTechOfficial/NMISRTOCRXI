@@ -1,0 +1,434 @@
+﻿@model DomainLayer.Models.ViewModels.ReceivingReportViewModel
+@using DomainLayer.Enum;
+
+<link href="~/css/inspect.css" rel="stylesheet" />
+<script src="~/js/meatinspection/inspection.js"></script>
+<link rel="stylesheet" href="~/css/createMeatCheck.css" asp-append-version="true">
+<section id="content">
+    <main>
+        <div class="container1">
+            <h1>DAILY MEAT INSPECTION REPORT</h1>
+            <hr />
+
+            <div class="column">
+
+                <form>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input hidden id="receivingId" name="ReceivingId" value="@Model.Id" />
+                    <h2>I. ANTEMORTEM INSPECTION</h2>
+                    <br />
+                    <h4>A. RECEIVING REPORT</h4>
+                    <br />
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-center">
+                                    <!-- Center the image horizontally -->
+                                    <img id="image" src="~/img/@(Model.Species).png" style="max-width: 65%; max-height: 65%;" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="input-box">
+                                            <label asp-for="RecTime" class="control-label">Date & Time:</label>
+                                            <input readonly type="datetime-local" asp-for="RecTime" class="form-control" />
+                                            <span asp-validation-for="RecTime" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <label asp-for="Species" class="control-label">Species:</label>
+                                                <input readonly asp-for="Species" class="form-control" />
+                                                <span asp-validation-for="Species" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <label asp-for="MeatDealer" class="control-label">Meat Dealer:</label>
+                                                <input readonly asp-for="MeatDealer" class="form-control" />
+                                                <span asp-validation-for="MeatDealer" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <label asp-for="NoOfHeads" class="control-label">No. of Heads:</label>
+                                                <input readonly id="receivingHead" asp-for="NoOfHeads" class="form-control" />
+                                                <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-box">
+                                                <label asp-for="LiveWeight" class="control-label">Live Weight:</label>
+                                                <input readonly id="receivingWeight" asp-for="LiveWeight" class="form-control" />
+                                                <span asp-validation-for="LiveWeight" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <hr />
+                <h4>A.1 EVALUATION</h4>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="input-box">
+                                <label class="control-label">Issue:</label>
+                                <select id="conductIssue" class="form-control" asp-items="@Html.GetEnumSelectList<Issue>()" name="IssueVal"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-box">
+                                <label class="control-label">Cause:</label>
+                                <select id="conductCause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()" name="CauseVal"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="input-box">
+                                <label asp-for="MeatInspectionReport.RepDate" class="control-label">Date & Time Inspected:</label>
+                                <input asp-for="MeatInspectionReport.RepDate" class="form-control" />
+                                <span asp-for="MeatInspectionReport.RepDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-box">
+                                <label class="control-label">Inspector:</label>
+                                <input id="inspector" class="form-control" />
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="input-box">
+                                <label class="control-label">Remarks:</label>
+                                <input id="inspectionRemarks" class="form-control" />
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-box">
+                                <label asp-for="InspectionStatus" class="control-label">Status:</label>
+                                <select id="status" class="form-control" asp-for="InspectionStatus" asp-items="@Html.GetEnumSelectList<InspectionStatus>()">
+                                </select>
+                                <span asp-validation-for="InspectionStatus" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="input-box">
+                            <div class="centerbtn">
+                                <button id="startReturn" type="submit" class="btn btn-primary">
+                                    Return
+                                </button>
+                                <button id="startInspect" type="submit" class="btn btn-warning">
+                                    Inspect
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+
+        <!-- ANTE INSPECTION -->
+        <div id="section2" class="container1">
+            <h4 id="anteForm">B. CONDUCT OF ANTEMORTEM INSPECTION</h4>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <label class="control-label">Issue:</label>
+                            <select id="conductIssue" class="form-control" asp-items="@Html.GetEnumSelectList<Issue>()" name="IssueVal"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <label class="control-label">Cause:</label>
+                            <select id="conductCause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()" name="CauseVal"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="input-box"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-box" id="othersContainer" style="display: none;">
+                            <label class="control-label">(If Others):</label>
+                            <input id="others" class="form-control" name="Others" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <label class="control-label">No. of Heads:</label>
+                            <input id="conductHead" class="form-control" name="Heads" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <label class="control-label">Weight:</label>
+                            <input id="conductWeight" class="form-control" name="WeightVal" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-box">
+                    <label class="control-label">Remarks:</label>
+                    <input id="conductRemarks" class="form-control" name="Remarks" />
+                </div>
+            </div>
+            <br />
+            <div class="centerbtn">
+                <button id="antemortemAdd" type="submit" class="btn btn-primary">
+                    Add
+                </button>
+            </div>
+
+            <div hidden id="editGroup" class="centerbtn">
+                <button id="editCancel" type="submit" class="btn btn-warning">
+                    Cancel
+                </button>
+                <button id="editConfirm" type="submit" class="btn btn-primary">
+                    Confirm
+                </button>
+
+            </div>
+
+            <!-- KAY TABLE-ANTEMORTEM NI-->
+            <div class="containertable">
+                <div class="FirstLayer">
+                    <div class="applications" style="width: 100%">
+                        <table id="anteTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Issue</th>
+                                    <th>Cause</th>
+                                    <th>No. of Heads</th>
+                                    <th>Weight</th>
+                                    <th>Remarks</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <hr />
+
+            <h4>C. PASSED FOR SLAUGHTER</h4>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <label class="control-label">No of Heads:</label>
+                            <input readonly id="passedHead" class="form-control" name="HeadsPassed" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <label class="control-label">Weight:</label>
+                            <input readonly id="passedWeight" class="form-control" name="WeightPassed" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <button id="antemortemNext" type="submit" class="btn btn-warning">Next</button>
+
+        </div>
+
+        <!-- POST INSPECTION -->
+        <div id="section3" class="container1">
+            <h2 id="postForm">II. POSTMORTEM INSPECTION </h2>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <label class="control-label">Animal Part:</label>
+                            <select id="postPart" class="form-control" asp-items="@Html.GetEnumSelectList<AnimalPart>()" name="AnimalPartVal"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <label class="control-label">Cause:</label>
+                            <select id="postCause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()" name="CauseVal"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <label class="control-label">Weight:</label>
+                            <input id="postWeight" class="form-control" name="WeightVal" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <label class="control-label">No. of Heads (Carcass):</label>
+                            <input id="postHead" class="form-control" name="CarcassHead" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+            <label for="file">If the meat is condemned, Please upload 3 Images for Inspection (Optional)</label>
+            <br />
+
+            <div id="imageForm" class="containertable">
+                <div class="upload-box">
+                    <div class="lbl">
+                        <label for="fileInput" class="control-label">Upload Images:</label>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" class="form-control-file" multiple hidden />
+                    <div class="img-area5">
+
+                        <!-- More image containers can be added dynamically -->
+                    </div>
+                    <button class="btn btn-primary select-images" type="button">Select Images</button>
+                </div>
+            </div>
+            <br />
+            <div class="centerbtn">
+                <button id="postmortemAdd" type="submit" class="btn btn-primary">
+                    Add
+                </button>
+            </div>
+            <div hidden id="posteditGroup" class="centerbtn">
+                <button id="posteditCancel" type="submit" class="btn btn-warning">
+                    Cancel
+                </button>
+                <button id="posteditConfirm" type="submit" class="btn btn-primary">
+                    Confirm
+                </button>
+
+            </div>
+
+            <!-- KAY TABLE-POSTMORTEM NI-->
+            <div class="containertable">
+                <div class="FirstLayer">
+                    <div class="applications" style="width: 100%">
+                        <table id="postTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Animal Part</th>
+                                    <th>Postmortem Cause</th>
+                                    <th>No. of Head (Carcass)</th>
+                                    <th>Postmortem Weight</th>
+                                    <th>Image 1</th>
+                                    <th>Image 2</th>
+                                    <th>Image 3</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <hr />
+        </div>
+        <div id="section4" class="container1">
+            <h2>III. FIT FOR HUMAN CONSUMPTION</h2>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <div class="input-box">
+                            <label class="control-label">No. of Heads:</label>
+                            <input readonly id="fitHead" class="form-control" name="HeadsPassed" />
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-box">
+                            <label class="control-label">Dressed Weight:</label>
+                            <input id="fitWeight" class="form-control" name="WeightPassed" />
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-box">
+                            <label class="control-label">OFALS:</label>
+                            <input id="ofals" class="form-control" name="WeightPassed" />
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+            <div class="centerbtn">
+                <button id="postmortemNext" type="submit" class="btn btn-warning">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </main>
+
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script src="~/js/register.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="~/js/meatinspection/meatInspectionReport.js"></script>
+<script src="~/js/meatinspection/antemortem.js"></script>
+<script src="~/js/meatinspection/passedForSlaughter.js"></script>
+<script src="~/js/meatinspection/postmortem.js"></script>
+<script src="~/js/meatinspection/totalnoFitForHumanConsumption.js"></script>
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+    // Get the "Others" input field
+    var othersInput = document.getElementById("othersContainer");
+
+    $('#conductCause').on('change', function () {
+        var selectedTexts = $(this).find('option:selected').text();
+
+        // Check if the selected option is "All"
+        if (selectedTexts === "Others") {
+            othersInput.style.display = "block";
+        } else {
+            othersInput.style.display = "none";
+        }
+    });
+</script>

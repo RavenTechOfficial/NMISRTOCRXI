@@ -19,7 +19,7 @@ using InfastructureLayer.Data;
 using DomainLayer.Enum;
 using System.Data;
 
-namespace thesis.Areas.Identity.Pages.Account
+namespace NMISRTOCXI.Areas.Identity.Pages.Account
 {
 
     public class RegisterModel : PageModel
@@ -167,7 +167,7 @@ namespace thesis.Areas.Identity.Pages.Account
                 {
                     var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(Input.image.FileName)}";
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/profile", uniqueFileName);
-                    user.image = filePath;
+                    user.Image = filePath;
 
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
@@ -175,13 +175,12 @@ namespace thesis.Areas.Identity.Pages.Account
                     }
                 }
 
-                user.firstName = Input.firstName;
-                user.lastName = Input.lastName;
-                user.middleName = Input.middleName;
-                user.contactNo = Input.contactNo;
-                user.address = Input.address;
-                user.sex = Input.Sex;
-                user.birthdate = Input.Birthdate;
+                user.FirstName = Input.firstName;
+                user.LastName = Input.lastName;
+                user.MiddleName = Input.middleName;
+                user.Address = Input.address;
+                user.Gender = Input.Sex;
+                user.BirthDate = Input.Birthdate;
                 user.MeatEstablishmentId = Input.MeatEsblishmentId;
 
 				var result = await _roleManager.RoleExistsAsync(Input.Roles.ToString());

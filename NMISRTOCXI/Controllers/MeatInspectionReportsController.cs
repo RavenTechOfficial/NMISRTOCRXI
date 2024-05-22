@@ -8,29 +8,95 @@ using DomainLayer.Models;
 //using OfficeOpenXml.Style;
 using System.Data;
 using Microsoft.AspNetCore.Identity;
-using DomainLayer.Models;
+using ServiceLayer.Services.IRepositories;
+using DomainLayer.Enum;
+using AutoMapper;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
     //[Authorize(Policy = "RequireInspectorAdmin")]
 
     public class MeatInspectionReportsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly ILogger<MeatInspectionReportsController> _logger;
         private readonly UserManager<AccountDetails> _userManager;
 
-        public MeatInspectionReportsController(AppDbContext context, UserManager<AccountDetails> userManager)
+        public MeatInspectionReportsController(AppDbContext context, 
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            ILogger<MeatInspectionReportsController> logger,
+            UserManager<AccountDetails> userManager)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _logger = logger;
             _userManager = userManager;
         }
 
-        // GET: MeatInspectionReports
-        //public async Task<IActionResult> Index()
-        //{
-        //    var AppDbContext = _context.MeatInspectionReports.Include(m => m.ReceivingReport);
-        //    return View(await AppDbContext.ToListAsync());
-        //}
+        // INSPECT BUTTON // add data to MeatInspectionReport
+        [HttpPost]
+        public async Task<IActionResult> Create(Guid receivingId, DateTime dateInspected, string inspectionRemarks, InspectionStatus status)
+        {
+            try
+            {
+                // Log the incoming data
+                _logger.LogInformation($"Received data: receivingId={receivingId}, dateInspected={dateInspected}");
+
+                var loggedInUserId = _userManager.GetUserId(User);
+
+                // Check if loggedInUserId is null
+                if (loggedInUserId == null)
+                {
+                    _logger.LogWarning("User is not logged in or user ID is null.");
+                    return Unauthorized();
+                }
+
+                var receivingReport = await _unitOfWork.ReceivingReport.Get(c => c.Id == receivingId, includeProperties: "MeatInspectionReport");
+
+                receivingReport.InspectionStatus = status;
+
+                if (receivingReport.MeatInspectionReport != null)
+                {
+                    receivingReport.MeatInspectionReport.Remarks = inspectionRemarks;
+                }
+                else
+                {
+                    receivingReport.MeatInspectionReport = new MeatInspectionReport
+                    {
+                        RepDate = dateInspected,
+                        ReceivingReportId = receivingId,
+                        AccountDetailsId = loggedInUserId,
+                        UID = Guid.NewGuid(),
+                        Remarks = inspectionRemarks
+                    };
+                } 
+
+                _unitOfWork.ReceivingReport.Update(receivingReport);
+                await _unitOfWork.Save();
+
+                // Log after saving to the database
+                _logger.LogInformation("Meat inspection report added successfully.");
+
+                var response = new
+                {
+                    success = true,
+                    message = "Meat inspection report added successfully."
+                };
+
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while creating meat inspection report.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+
         public async Task<IActionResult> Index(int? meatEstablishmentId)
         {
             var meatEstablishments = _context.MeatEstablishment
@@ -106,21 +172,32 @@ namespace thesis.Controllers
         }
         public async Task<IActionResult> DailyInspection()
         {
-            var meatEstablishments = _context.MeatEstablishment
-                .Where(me => me.Name != null)
-                .ToList();
-            ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
+            var user = await _userManager.GetUserAsync(User);
+            var meatEstablishmentId = user.MeatEstablishmentId;
+            IEnumerable<MeatEstablishment> meatEstablishments = Enumerable.Empty<MeatEstablishment>();
+            if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
+            {
+                meatEstablishments = await _unitOfWork.MeatEstablishment.GetAll(c => c.Id == meatEstablishmentId);
 
-            var reportsInfo = GetReports();
+            }
+            else if (User.IsInRole("InspectorAdmin"))
+            {
+                meatEstablishments = await _unitOfWork.MeatEstablishment.GetAll();
+            }
+
+            ViewBag.MeatEstablishments = new SelectList(meatEstablishments, "Id", "Name");
+
+            var reportsInfo = await GetReports();
 
             // Sort the reportsInfo list by CreatedAt in descending order
-            var sortedReportsInfo = reportsInfo.OrderByDescending(item => item.DateInspected).ToList();
+            var sortedReportsInfo = reportsInfo.OrderByDescending(item => item.MeatInspectionReport.RepDate).ToList();
 
             return View(sortedReportsInfo);
         }
 
-        public List<MeatInspectionReportViewModel> GetReports()
+        public async Task<IEnumerable<ReceivingReportViewModel>> GetReports()
         {
+            var reportsInfo = await _unitOfWork.ReceivingReport.GetAll(includeProperties: "AccountDetails,MeatDealers,MeatInspectionReport.AccountDetails");
             //var reportsInfo = (from mir in _context.MeatInspectionReports
             //                   join rr in _context.ReceivingReports on mir.ReceivingReportId equals rr.Id
             //                   join md in _context.MeatDealers on rr.MeatDealersId equals md.Id
@@ -139,14 +216,14 @@ namespace thesis.Controllers
             //                       UID = mir.UID,
             //                   })
             //        .ToList();
-
-            return null;
+            var response = _mapper.Map<IEnumerable<ReceivingReportViewModel>>(reportsInfo);
+            return response;
         }
 
         public async Task<IActionResult> DailyIndex(Guid? id, Guid? meatEstablishmentId)
         {
             var receivingReports = _context.ReceivingReports.ToList();
-            var conductOfInspections = _context.ConductOfInspections.ToList();
+            var conductOfInspections = _context.Antemortems.ToList();
             var passedForSlaughters = _context.PassedForSlaughters.ToList();
             var meatDealers = _context.MeatDealers.ToList();
             var meatInspectionReports = _context.MeatInspectionReports.ToList();
@@ -170,7 +247,7 @@ namespace thesis.Controllers
                   (user, report) => new SelectListItem
                   {
                       Value = user.Id.ToString(),
-                      Text = $"{user.firstName} {user.lastName}"
+                      Text = $"{user.FirstName} {user.LastName}"
                   })
               .ToList();
 
@@ -190,12 +267,6 @@ namespace thesis.Controllers
             var AppDbContext = _context.ReceivingReports
                .Include(r => r.AccountDetails)
                .Include(r => r.MeatDealers);
-
-
-
-
-
-
 
             if (id == null || _context.MeatInspectionReports == null)
             {
@@ -218,9 +289,8 @@ namespace thesis.Controllers
                 Address = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Address,
                 LicenseToOperateNumber = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.LicenseToOperateNumber,
                 MeatEstablishment = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Name,
-                VerifiedBy = meatInspectionReport.VerifiedByPOSMSHead,
                 Specie = meatInspectionReport.ReceivingReport.Species,
-                UID = meatInspectionReport.UID,
+                //UID = meatInspectionReport.UID,
 
             };
 
@@ -231,35 +301,35 @@ namespace thesis.Controllers
             return View(viewModel);
         }
 
-        // GET: MeatInspectionReports/Create
-        public IActionResult Create()
-        {
-            ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id");
-            return View();
-        }
+        //// GET: MeatInspectionReports/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id");
+        //    return View();
+        //}
 
-        // POST: MeatInspectionReports/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RepDate,VerifiedByPOSMSHead,ReceivingReportId,AccountDetailsId")] MeatInspectionReport meatInspectionReport)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(meatInspectionReport);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+        //// POST: MeatInspectionReports/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,RepDate,VerifiedByPOSMSHead,ReceivingReportId,AccountDetailsId")] MeatInspectionReport meatInspectionReport)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(meatInspectionReport);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
 
-            // If there was a validation error, populate the ViewData with the actual ReceivingReportId values
-            //  ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
-            ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
-           // ViewData["ReceivingReportLabelText"] = _context.ReceivingReports.FirstOrDefault(r => r.Id == meatInspectionReport.ReceivingReportId)?.Id.ToString();
+        //    // If there was a validation error, populate the ViewData with the actual ReceivingReportId values
+        //    //  ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
+        //    ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
+        //   // ViewData["ReceivingReportLabelText"] = _context.ReceivingReports.FirstOrDefault(r => r.Id == meatInspectionReport.ReceivingReportId)?.Id.ToString();
 
-            // return View(meatInspectionReport);
-            return RedirectToAction("Create", "ConductOfInspections", new { meatInspectionReportId = meatInspectionReport.ReceivingReportId });
-        }
+        //    // return View(meatInspectionReport);
+        //    return RedirectToAction("Create", "ConductOfInspections", new { meatInspectionReportId = meatInspectionReport.ReceivingReportId });
+        //}
 
         // GET: MeatInspectionReports/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -285,7 +355,7 @@ namespace thesis.Controllers
                   (user, report) => new SelectListItem
                   {
                       Value = user.Id.ToString(),
-                      Text = $"{user.firstName} {user.lastName}"
+                      Text = $"{user.FirstName} {user.LastName}"
                   })
               .ToList();
 
@@ -334,7 +404,7 @@ namespace thesis.Controllers
                   (user, report) => new SelectListItem
                   {
                       Value = user.Id.ToString(),
-                      Text = $"{user.firstName} {user.lastName}"
+                      Text = $"{user.FirstName} {user.LastName}"
                   })
               .ToList();
 

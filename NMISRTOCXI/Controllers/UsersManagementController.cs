@@ -17,7 +17,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
     public class UsersManagementController : Controller
     {
@@ -71,11 +71,10 @@ namespace thesis.Controllers
                     usersAndRoles.Add(
                         new AccountDetailViewModel {
 							Id = user.Id,
-							firstName = user.firstName,
-							lastName = user.lastName,
-							middleName = user.middleName,
-							address = user.address,
-							contactNo = user.contactNo,
+							firstName = user.FirstName,
+							lastName = user.LastName,
+							middleName = user.MiddleName,
+							address = user.Address,
 							email = user.Email,
 							MeatEstablishmentName = meatEstablishmentName, 
                             Role = role 
@@ -98,7 +97,7 @@ namespace thesis.Controllers
             if (user == null)
                 return NotFound();
 
-            ViewBag.filename = Path.GetFileName(user.image);
+            ViewBag.filename = Path.GetFileName(user.Image);
             return View(user);
         }
 
@@ -112,7 +111,7 @@ namespace thesis.Controllers
             if (user == null)
                 return NotFound();
 
-            ViewBag.filename = Path.GetFileName(user.image);
+            ViewBag.filename = Path.GetFileName(user.Image);
             return View(user);
         }
 
@@ -125,12 +124,11 @@ namespace thesis.Controllers
 
             var accountVm = new AccountUserViewModel
             {
-                firstName = user.firstName,
-                lastName = user.lastName,
-                middleName = user.middleName,
-                contactNo = user.contactNo,
-                birthdate = user.birthdate,
-                sex = user.sex,
+                firstName = user.FirstName,
+                lastName = user.LastName,
+                middleName = user.MiddleName,
+                birthdate = user.BirthDate,
+                sex = user.Gender,
             };
 
             return View(accountVm);
@@ -196,7 +194,7 @@ namespace thesis.Controllers
             if (user == null)
                 return NotFound();
 
-            ViewBag.filename = Path.GetFileName(user.image);
+            ViewBag.filename = Path.GetFileName(user.Image);
             return View(user);
         }
 
@@ -217,7 +215,7 @@ namespace thesis.Controllers
         private async Task NotifyUserEditAsync(AccountDetails user, string editedUserId)
         {
             var currentUser = await _userManager.GetUserAsync(User);
-            var userName = currentUser.firstName + " " + currentUser.lastName;
+            var userName = currentUser.FirstName + " " + currentUser.LastName;
 
             var logEntry = new LogTransaction
             {
@@ -235,7 +233,7 @@ namespace thesis.Controllers
         private async Task NotifyUserDeleteAsync(string deletedUserId)
         {
             var currentUser = await _userManager.GetUserAsync(User);
-            var userName = currentUser.firstName + " " + currentUser.lastName;
+            var userName = currentUser.FirstName + " " + currentUser.LastName;
 
             var logEntry = new LogTransaction
             {

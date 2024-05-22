@@ -34,11 +34,11 @@
 								@foreach (var item in Model)
 								{
 									<tr>
-										<td>@item.lastName, @item.firstName</td>
+										<td>@item.LastName, @item.FirstName</td>
 										@* <td>@item.Roles</td> *@
 										<td>@item.Email</td>
-										<td>@item.contactNo</td>
-										<td>@item.address</td>
+										<td>@item.PhoneNumber</td>
+										<td>@item.Address</td>
 										<td class="d-flex flex-nowrap">
 											<a type="button" class="btn btn-primary py-1 font-weight-light" asp-action="Details" asp-route-id="@item.Id">View</a>
 											<a type="button" class="btn btn-warning  mx-1 py-1 font-weight-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a>

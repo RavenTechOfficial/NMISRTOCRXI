@@ -3,6 +3,9 @@
     public enum InspectionStatus
     {
         Pending,
-        Done
-    }
+        Returned,
+        Ongoing,
+		Frozen,
+		Released
+	}
 }

@@ -57,10 +57,11 @@ namespace InfastructureLayer.Data
                 new IdentityRole { Id = MTVUserRoleId, Name = "MtvUsers", NormalizedName = "MTVUSERS", ConcurrencyStamp = null }
             );
         }
+
         public static void SeedUserRoles(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string> { UserId = SuperAdminId, RoleId = SuperAdminRoleId }, 
+                new IdentityUserRole<string> { UserId = SuperAdminId, RoleId = SuperAdminRoleId },
                 new IdentityUserRole<string> { UserId = InspectorAdminId, RoleId = InspectorAdminRoleId },
                 new IdentityUserRole<string> { UserId = MTVAdminId, RoleId = MTVAdminRoleId },
                 new IdentityUserRole<string> { UserId = UserId, RoleId = UserRoleId },
@@ -74,19 +75,19 @@ namespace InfastructureLayer.Data
         public static void SeedMeatDealer(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MeatDealers>().HasData(
-                new MeatDealers { Id = MeatDealerId1, FirstName =  "Meat", LastName = "Dealer 1", MeatEstablishmentId = MeatEstablishmentId1 },
-                new MeatDealers { Id = MeatDealerId2, FirstName =  "Meat", LastName = "Dealer 2", MeatEstablishmentId = MeatEstablishmentId2 },
-                new MeatDealers { Id = MeatDealerId3, FirstName =  "Meat", LastName = "Dealer 3", MeatEstablishmentId = MeatEstablishmentId3 },
-                new MeatDealers { Id = MeatDealerId4, FirstName =  "Meat", LastName = "Dealer 4", MeatEstablishmentId = MeatEstablishmentId4 }
+                new MeatDealers { Id = MeatDealerId1, FirstName = "Meat", LastName = "Dealer 1", MeatEstablishmentId = MeatEstablishmentId1 },
+                new MeatDealers { Id = MeatDealerId2, FirstName = "Meat", LastName = "Dealer 2", MeatEstablishmentId = MeatEstablishmentId2 },
+                new MeatDealers { Id = MeatDealerId3, FirstName = "Meat", LastName = "Dealer 3", MeatEstablishmentId = MeatEstablishmentId3 },
+                new MeatDealers { Id = MeatDealerId4, FirstName = "Meat", LastName = "Dealer 4", MeatEstablishmentId = MeatEstablishmentId4 }
             );
         }
         public static void SeedMeatEstablishment(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MeatEstablishment>().HasData(
-                new MeatEstablishment { Id = MeatEstablishmentId1, Type = EstablishmentType.SLH, Name = "Meat Establishment 1", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus  = LicenseStatus.Licensed},
-                new MeatEstablishment { Id = MeatEstablishmentId2, Type = EstablishmentType.CSW, Name = "Meat Establishment 2", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus  = LicenseStatus.Licensed},
-                new MeatEstablishment { Id = MeatEstablishmentId3, Type = EstablishmentType.MCP, Name = "Meat Establishment 3", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus  = LicenseStatus.NonLicensed},
-                new MeatEstablishment { Id = MeatEstablishmentId4, Type = EstablishmentType.PDP, Name = "Meat Establishment 4", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus  = LicenseStatus.Licensed}
+                new MeatEstablishment { Id = MeatEstablishmentId1, Type = EstablishmentType.SLH, Name = "Meat Establishment 1", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus = LicenseStatus.Licensed },
+                new MeatEstablishment { Id = MeatEstablishmentId2, Type = EstablishmentType.CSW, Name = "Meat Establishment 2", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus = LicenseStatus.Licensed },
+                new MeatEstablishment { Id = MeatEstablishmentId3, Type = EstablishmentType.MCP, Name = "Meat Establishment 3", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus = LicenseStatus.NonLicensed },
+                new MeatEstablishment { Id = MeatEstablishmentId4, Type = EstablishmentType.PDP, Name = "Meat Establishment 4", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus = LicenseStatus.Licensed }
             );
         }
 

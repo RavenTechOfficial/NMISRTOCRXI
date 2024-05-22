@@ -19,12 +19,10 @@ namespace DomainLayer.Models.ViewModels
         public string ReceivingBy { get; set; }
         public string? Inspector { get; set; }
         public InspectionStatus? InspectionStatus { get; set; }
-
-        //      public MeatInspectionReport? MeatInspectionReport { get; set; }
-        //      public IEnumerable<ConductOfInspection>? ConductOfInspection { get; set; }
-        //      public IEnumerable<PassedForSlaughter>? PassedForSlaughter { get; set; }
-        //      public IEnumerable<Postmortem>? Postmortems { get; set; }
-        //      public IEnumerable<TotalNoFitForHumanConsumptions>? TotalNoFitForHumanConsumptions { get; set; }
-        //public SummaryAndDistributionOfMIC? SummaryAndDistributionOfMIC { get; set; }
+        public MeatInspectionReport? MeatInspectionReport { get; set; } = new MeatInspectionReport();
+        public List<AntemortemViewModel>? Antemortems { get; set; } = new List<AntemortemViewModel>();
+        public PassedForSlaughter? PassedForSlaughter { get; set; } = new PassedForSlaughter();
+        public List<PostmortemViewModel>? Postmortems { get; set; } = new List<PostmortemViewModel>();
+        public TotalNoFitForHumanConsumptions? TotalNoFitForHumanConsumption { get; set; } = new TotalNoFitForHumanConsumptions();
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	[Authorize(Policy = "RequireInspectorAdmin")]
 	public class ReceivingsController : Controller

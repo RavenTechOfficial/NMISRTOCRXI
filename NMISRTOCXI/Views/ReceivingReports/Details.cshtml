@@ -72,7 +72,7 @@
                             Meat Dealer:
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.MeatDealers.FirstName)
+                            @Html.DisplayFor(model => model.MeatDealers.FirstName) 
                             @Html.DisplayFor(model => model.MeatDealers.LastName)
                         </dd>
                         <dt class="col-sm-2">
@@ -106,11 +106,17 @@
                             @Html.DisplayFor(model => model.InspectionStatus)
                         </dd>
                         <dt class="col-sm-2">
-                            @* Meat Establishment  *@Representative:
+                            Remarks for Returned Report:
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.AccountDetails.firstName)
-                            @Html.DisplayFor(model => model.AccountDetails.lastName)
+                            @Html.DisplayFor(model => model.MeatInspectionReport.Remarks)
+                        </dd>
+                        <dt class="col-sm-2">
+                            Inspector:
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.MeatInspectionReport.AccountDetails.FirstName)
+                            @Html.DisplayFor(model => model.MeatInspectionReport.AccountDetails.LastName)
                         </dd>
                     </dl>
                     @if (Model.InspectionStatus == DomainLayer.Enum.InspectionStatus.Pending)
@@ -196,8 +202,8 @@
                             Representative:
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.AccountDetails.firstName)
-                            @Html.DisplayFor(model => model.AccountDetails.lastName)
+                            @Html.DisplayFor(model => model.AccountDetails.FirstName)
+                            @Html.DisplayFor(model => model.AccountDetails.LastName)
                         </dd>
                     </dl>
                 }

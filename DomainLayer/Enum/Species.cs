@@ -9,6 +9,7 @@
       Chicken,
       Duck,
       Sheep,
-	  Hog
+	  Hog,
+      Rabbit
 	}
 }

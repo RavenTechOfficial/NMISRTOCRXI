@@ -12,6 +12,7 @@ namespace DomainLayer.Enum
         Anthrax,
         Aflatoxicosis,
         Ascariasis,
-        AtrophicRhinitis
+        AtrophicRhinitis,
+        Others
     }
 }
