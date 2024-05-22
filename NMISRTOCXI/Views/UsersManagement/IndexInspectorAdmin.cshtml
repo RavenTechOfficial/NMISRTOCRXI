@@ -1,6 +1,6 @@
 ﻿@using DomainLayer.Models.ViewModels
 @using DomainLayer.Enum;
-@model List<UserManagementInspectorAdminViewModel>
+@model List<AccountDetailViewModel>
 <link rel="stylesheet" href="~/css/users.css" asp-append-version="true" />
 
 <style>
@@ -90,24 +90,15 @@
                     {
                         <tr>
                             <td>@user.lastName, @user.firstName </td>
-                            <td>
-                                @if (user.Roles == Roles.MEATESTABLISHMENTREPRESENTATIVE)
-                                {
-                                    @Html.Raw("Meat Establishment Representative")
-                                }
-                                else if (user.Roles == Roles.MEATINSPECTOR)
-                                {
-                                    @Html.Raw("Meat Inspector")
-                                }
-                            </td>
+                            <td>@user.Role</td>
                             <td>@user.MeatEstablishmentName</td>
                             <td>@user.email</td>
                             <td>@user.contactNo</td>
                             <td>@user.address</td>
                             <td class="d-flex flex-nowrap">
-                                <a type="button" class="btn btn-primary py-1 font-weight-light" asp-action="MeatCheckDetails" asp-route-id="@user.Id">View</a>
-                                <a type="button" class="btn btn-warning mx-1 py-1 font-weight-light" asp-action="MeatCheckEdit" asp-route-id="@user.Id">Edit</a>
-                                <a type="button" class="btn btn-danger py-1 font-weight-light" asp-action="MeatCheckDelete" asp-route-id="@user.Id">Delete</a>
+                                <a type="button" class="btn btn-primary py-1 font-weight-light" asp-action="Details" asp-route-id="@user.Id">View</a>
+                                <a type="button" class="btn btn-warning mx-1 py-1 font-weight-light" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                                <a type="button" class="btn btn-danger py-1 font-weight-light" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
                             </td>
                         </tr>
                     }

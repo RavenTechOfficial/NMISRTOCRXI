@@ -4,7 +4,7 @@ using ServiceLayer.Services.IRepositories;
 using DomainLayer.Models.ViewModels;
 using InfastructureLayer.Data;
 
-namespace thesis.Repositories
+namespace NMISRTOCXI.Repositories
 {
 	public class UsersManagementRepository : IUsersManangementRepository
 	{
@@ -51,12 +51,11 @@ namespace thesis.Repositories
 			}
 
 			// Update the properties of the AccountDetails entity
-			account.firstName = accountDetails.firstName;
-			account.lastName = accountDetails.lastName;
-			account.middleName = accountDetails.middleName;
-			account.contactNo = accountDetails.contactNo;
-			account.birthdate = accountDetails.birthdate;
-			account.sex = accountDetails.sex;
+			account.FirstName = accountDetails.firstName;
+			account.LastName = accountDetails.lastName;
+			account.MiddleName = accountDetails.middleName;
+			account.BirthDate = accountDetails.birthdate;
+			account.Gender = accountDetails.sex;
 
 			_context.Update(account);
 			return Save();

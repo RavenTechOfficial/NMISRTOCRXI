@@ -1,16 +1,21 @@
-﻿using InfastructureLayer.Data;
+﻿using DomainLayer.Models;
+using InfastructureLayer.Data;
 using ServiceLayer.Services.IRepositories;
 
-namespace thesis.Repositories
+namespace NMISRTOCXI.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
         public AppDbContext _context { get; set; }
         public IAccountDetailsRepository AccountDetails { get; }
+        public IMeatDealersRepository MeatDealers { get; }
+        public IMeatEstablishmentRepository MeatEstablishment { get; }
         public IReceivingReportRepository ReceivingReport { get; }
-
         public IMeatInspectionReportRepository MeatInspectionReport { get; }
-
+        public IAntemortemRepository Antemortem { get; }
+        public IPassedForSlaughterRepository PassedForSlaughter { get; }
+        public IPostmortemRepository Postmortem { get; }
+        public ITotalNoFitForHumanConsumptionRepository TotalNoFitForHumanConsumption { get; }
         public IDashboardRepository Dashboard { get; }
 
         public IAnalyticsRepository Analytics { get; }
@@ -25,7 +30,6 @@ namespace thesis.Repositories
         public IChroplethMapRepository ChroplethMap { get; }
 
         public UnitOfWork(AppDbContext context,
-            IMeatInspectionReportRepository meatInspectionReport,
             IDashboardRepository dashboard,
             IAnalyticsRepository analytics,
             IUsersManangementRepository usersManangement,
@@ -35,9 +39,16 @@ namespace thesis.Repositories
             IChroplethMapRepository chroplethMap
         ) 
         {
+            _context = context;
             ReceivingReport = new ReceivingReportRepository(context);
+            MeatInspectionReport = new MeatInspectionReportRepository(context);
+            Antemortem = new AntemortemRepository(context);
+            PassedForSlaughter = new PassedForSlaughterRepository(context);
+            Postmortem = new PostmortemRepository(context);
+            TotalNoFitForHumanConsumption = new TotalNoFitForHumanConsumptionRepository(context);
             AccountDetails = new AccountDetailsRepository(context);
-            MeatInspectionReport = meatInspectionReport;
+            MeatDealers = new MeatDealersRepository(context);
+            MeatEstablishment = new MeatEstablishmentRepository(context);
             Dashboard = dashboard;
             Analytics = analytics;
             UsersManangement = usersManangement;
@@ -48,9 +59,9 @@ namespace thesis.Repositories
             
         }
 
-        public void Save()
+        public async Task Save()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

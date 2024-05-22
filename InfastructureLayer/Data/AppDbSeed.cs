@@ -1,4 +1,5 @@
-﻿using DomainLayer.Models;
+﻿using DomainLayer.Enum;
+using DomainLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,6 +32,17 @@ namespace InfastructureLayer.Data
         private static string MTVInspectorId = Guid.NewGuid().ToString();
         private static string MTVUserId = Guid.NewGuid().ToString();
 
+        //Meat Dealers Id
+        private static Guid MeatDealerId1 = Guid.NewGuid();
+        private static Guid MeatDealerId2 = Guid.NewGuid();
+        private static Guid MeatDealerId3 = Guid.NewGuid();
+        private static Guid MeatDealerId4 = Guid.NewGuid();
+
+        //Meat Establishment Id
+        private static Guid MeatEstablishmentId1 = Guid.NewGuid();
+        private static Guid MeatEstablishmentId2 = Guid.NewGuid();
+        private static Guid MeatEstablishmentId3 = Guid.NewGuid();
+        private static Guid MeatEstablishmentId4 = Guid.NewGuid();
 
         public static void SeedRole(ModelBuilder modelBuilder)
         {
@@ -45,10 +57,11 @@ namespace InfastructureLayer.Data
                 new IdentityRole { Id = MTVUserRoleId, Name = "MtvUsers", NormalizedName = "MTVUSERS", ConcurrencyStamp = null }
             );
         }
+
         public static void SeedUserRoles(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string> { UserId = SuperAdminId, RoleId = SuperAdminRoleId }, 
+                new IdentityUserRole<string> { UserId = SuperAdminId, RoleId = SuperAdminRoleId },
                 new IdentityUserRole<string> { UserId = InspectorAdminId, RoleId = InspectorAdminRoleId },
                 new IdentityUserRole<string> { UserId = MTVAdminId, RoleId = MTVAdminRoleId },
                 new IdentityUserRole<string> { UserId = UserId, RoleId = UserRoleId },
@@ -56,6 +69,25 @@ namespace InfastructureLayer.Data
                 new IdentityUserRole<string> { UserId = MeatInspectorId, RoleId = MeatInspectorRoleId },
                 new IdentityUserRole<string> { UserId = MTVInspectorId, RoleId = MTVInspectorRoleId },
                 new IdentityUserRole<string> { UserId = MTVUserId, RoleId = MTVUserRoleId }
+            );
+        }
+
+        public static void SeedMeatDealer(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<MeatDealers>().HasData(
+                new MeatDealers { Id = MeatDealerId1, FirstName = "Meat", LastName = "Dealer 1", MeatEstablishmentId = MeatEstablishmentId1 },
+                new MeatDealers { Id = MeatDealerId2, FirstName = "Meat", LastName = "Dealer 2", MeatEstablishmentId = MeatEstablishmentId2 },
+                new MeatDealers { Id = MeatDealerId3, FirstName = "Meat", LastName = "Dealer 3", MeatEstablishmentId = MeatEstablishmentId3 },
+                new MeatDealers { Id = MeatDealerId4, FirstName = "Meat", LastName = "Dealer 4", MeatEstablishmentId = MeatEstablishmentId4 }
+            );
+        }
+        public static void SeedMeatEstablishment(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<MeatEstablishment>().HasData(
+                new MeatEstablishment { Id = MeatEstablishmentId1, Type = EstablishmentType.SLH, Name = "Meat Establishment 1", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus = LicenseStatus.Licensed },
+                new MeatEstablishment { Id = MeatEstablishmentId2, Type = EstablishmentType.CSW, Name = "Meat Establishment 2", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus = LicenseStatus.Licensed },
+                new MeatEstablishment { Id = MeatEstablishmentId3, Type = EstablishmentType.MCP, Name = "Meat Establishment 3", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus = LicenseStatus.NonLicensed },
+                new MeatEstablishment { Id = MeatEstablishmentId4, Type = EstablishmentType.PDP, Name = "Meat Establishment 4", LicenseToOperateNumber = Guid.NewGuid().ToString(), LicenseStatus = LicenseStatus.Licensed }
             );
         }
 
@@ -72,7 +104,8 @@ namespace InfastructureLayer.Data
                 Email = "super@admin.com",
                 NormalizedEmail = "SUPER@ADMIN.COM",
                 EmailConfirmed = true,
-                SecurityStamp = string.Empty
+                SecurityStamp = string.Empty,
+                MeatEstablishmentId = MeatEstablishmentId1,
             };
             superadmin.PasswordHash = hasher.HashPassword(superadmin, "pass@123");
             modelBuilder.Entity<AccountDetails>().HasData(superadmin);
@@ -87,7 +120,8 @@ namespace InfastructureLayer.Data
                     NormalizedEmail = "INSPECTOR@ADMIN.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "pass@123"),
-                    SecurityStamp = string.Empty
+                    SecurityStamp = string.Empty,
+                    MeatEstablishmentId = MeatEstablishmentId2,
                 },
                 new AccountDetails
                 {
@@ -98,7 +132,8 @@ namespace InfastructureLayer.Data
                     NormalizedEmail = "MTV@ADMIN.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "pass@123"),
-                    SecurityStamp = string.Empty
+                    SecurityStamp = string.Empty,
+                    MeatEstablishmentId = MeatEstablishmentId3,
                 },
                 new AccountDetails
                 {
@@ -109,7 +144,8 @@ namespace InfastructureLayer.Data
                     NormalizedEmail = "USER@USER.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "pass@123"),
-                    SecurityStamp = string.Empty
+                    SecurityStamp = string.Empty,
+                    MeatEstablishmentId = MeatEstablishmentId4,
                 },
                 new AccountDetails
                 {
@@ -120,7 +156,8 @@ namespace InfastructureLayer.Data
                     NormalizedEmail = "MEAT@REP.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "pass@123"),
-                    SecurityStamp = string.Empty
+                    SecurityStamp = string.Empty,
+                    MeatEstablishmentId = MeatEstablishmentId1,
                 },
                 new AccountDetails
                 {
@@ -131,7 +168,8 @@ namespace InfastructureLayer.Data
                     NormalizedEmail = "MEAT@INSPECTOR.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "pass@123"),
-                    SecurityStamp = string.Empty
+                    SecurityStamp = string.Empty,
+                    MeatEstablishmentId = MeatEstablishmentId2,
                 },
                 new AccountDetails
                 {
@@ -142,7 +180,8 @@ namespace InfastructureLayer.Data
                     NormalizedEmail = "MTV@INSPECTOR.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "pass@123"),
-                    SecurityStamp = string.Empty
+                    SecurityStamp = string.Empty,
+                    MeatEstablishmentId = MeatEstablishmentId3,
                 },
                 new AccountDetails
                 {
@@ -153,7 +192,8 @@ namespace InfastructureLayer.Data
                     NormalizedEmail = "MTV@USER.COM",
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, "pass@123"),
-                    SecurityStamp = string.Empty
+                    SecurityStamp = string.Empty,
+                    MeatEstablishmentId = MeatEstablishmentId4,
                 }
             );
         }

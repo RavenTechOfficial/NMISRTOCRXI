@@ -17,14 +17,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using InfastructureLayer.Data;
 using DomainLayer.Enum;
+using System.Data;
 
-namespace thesis.Areas.Identity.Pages.Account
+namespace NMISRTOCXI.Areas.Identity.Pages.Account
 {
 
     public class RegisterModel : PageModel
 	{
 		private readonly SignInManager<AccountDetails> _signInManager;
-		private readonly UserManager<AccountDetails> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<AccountDetails> _userManager;
 		private readonly IUserStore<AccountDetails> _userStore;
 		private readonly IUserEmailStore<AccountDetails> _emailStore;
 		private readonly ILogger<RegisterModel> _logger;
@@ -36,6 +38,7 @@ namespace thesis.Areas.Identity.Pages.Account
 			UserManager<AccountDetails> userManager,
 			IUserStore<AccountDetails> userStore,
 			SignInManager<AccountDetails> signInManager,
+			RoleManager<IdentityRole> roleManager,
 			ILogger<RegisterModel> logger,
 			IEmailSender emailSender,
 			IWebHostEnvironment hostEnvironment,
@@ -45,7 +48,8 @@ namespace thesis.Areas.Identity.Pages.Account
 			_userStore = userStore;
 			_emailStore = GetEmailStore();
 			_signInManager = signInManager;
-			_logger = logger;
+            _roleManager = roleManager;
+            _logger = logger;
 			_emailSender = emailSender;
 			_hostEnvironment = hostEnvironment;
 			_context = context;
@@ -82,7 +86,7 @@ namespace thesis.Areas.Identity.Pages.Account
 			/// </summary>
 			/// 
 			public MeatEstablishment MeatEstablishment { get; set; }
-			public int MeatEsblishmentId { get; set; }
+			public Guid MeatEsblishmentId { get; set; }
 			public Roles Roles { get; set; }
 
 			[Required]
@@ -150,118 +154,95 @@ namespace thesis.Areas.Identity.Pages.Account
 				.ToList();
 			ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
 		}
-		public async Task<IActionResult> OnPostAsync(string returnUrl = null)
-		{
-			returnUrl ??= Url.Content("~/");
-			ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-			if (ModelState.IsValid)
-			{
-				var user = CreateUser();
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        {
+            returnUrl ??= Url.Content("~/");
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-				if (Input.image != null && Input.image.Length > 0)
+            if (ModelState.IsValid)
+            {
+                var user = CreateUser();
+
+                if (Input.image != null && Input.image.Length > 0)
+                {
+                    var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(Input.image.FileName)}";
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/profile", uniqueFileName);
+                    user.Image = filePath;
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Input.image.CopyToAsync(fileStream);
+                    }
+                }
+
+                user.FirstName = Input.firstName;
+                user.LastName = Input.lastName;
+                user.MiddleName = Input.middleName;
+                user.Address = Input.address;
+                user.Gender = Input.Sex;
+                user.BirthDate = Input.Birthdate;
+                user.MeatEstablishmentId = Input.MeatEsblishmentId;
+
+				var result = await _roleManager.RoleExistsAsync(Input.Roles.ToString());
+                if (result)
+                {
+                    switch (Input.Roles)
+                    {
+                        case Roles.SUPERADMIN:
+                        case Roles.MTVADMIN:
+                        case Roles.INSPECTORADMIN:
+                        case Roles.MTVUSERS:
+                        case Roles.MTVINSPECTOR:
+                            user.MeatEstablishment = new MeatEstablishment
+                            {
+                                Type = Input.MeatEstablishment.Type ?? new EstablishmentType()
+                            };
+                            break;
+                        default:
+                            break;
+                    }
+
+                    await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                    await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                    var createResult = await _userManager.CreateAsync(user, Input.Password);
+
+                    if (createResult.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Roles.ToString());
+                        _logger.LogInformation("User created a new account with password.");
+						//var userId = await _userManager.GetUserIdAsync(user);
+						//var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+						//code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+						//var callbackUrl = Url.Page(
+						//    "/Account/ConfirmEmail",
+						//    pageHandler: null,
+						//    values: new { area = "Identity", userId, code },
+						//    protocol: Request.Scheme);
+						//await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+						//    $"Greetings from NMIS RTOC R11! Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+						//return RedirectToPage("RegisterConfirmation", new { userId, code });
+						return RedirectToPage("RegistrationSuccessful");
+                    }
+
+                    foreach (var error in createResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+				else
 				{
-					var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(Input.image.FileName)}";
-					var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/uploaded", uniqueFileName);
-					user.image = filePath;
+					ModelState.AddModelError(string.Empty, "Error reading users");
+                }
+            }
 
-					using (var fileStream = new FileStream(filePath, FileMode.Create))
-					{
-						await Input.image.CopyToAsync(fileStream);
-					}
-				}
-
-				user.firstName = Input.firstName;
-				user.lastName = Input.lastName;
-				user.middleName = Input.middleName;
-				user.contactNo = Input.contactNo;
-				user.address = Input.address;
-				user.sex = Input.Sex;
-				user.birthdate = Input.Birthdate;
-
-				user.Roles = Input.Roles;
-				user.MeatEstablishmentId = Input.MeatEsblishmentId;
-
-				if (user.Roles == Roles.SUPERADMIN || user.Roles == Roles.MTVADMIN || user.Roles == Roles.INSPECTORADMIN || user.Roles == Roles.MTVUSERS || user.Roles == Roles.MTVINSPECTOR)
-				{
-					user.MeatEstablishment = new MeatEstablishment
-					{
-						Type = Input.MeatEstablishment.Type ?? new EstablishmentType()
-					};
-				}
-
-				await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-				await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-				var result = await _userManager.CreateAsync(user, Input.Password);
-
-				if (result.Succeeded)
-				{
-					_logger.LogInformation("User created a new account with password.");
-
-					var userId = await _userManager.GetUserIdAsync(user);
-					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-					code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-					var callbackUrl = Url.Page(
-						"/Account/ConfirmEmail",
-						pageHandler: null,
-						values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-						protocol: Request.Scheme);
-					await _userManager.AddToRoleAsync(user, Input.Roles.ToString());
-					await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-						$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-					//Notifications
-
-					string USER_ID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-					var USER_ = _context.Users.FirstOrDefault(pu => pu.Id == USER_ID);
-					var admintypecreated = user.Roles;
+            // If we got this far, something failed, redisplay form
+            return Page();
+        }
 
 
-					if (USER_ != null)
-					{
-						// Construct a success message with the user's name
-						var name = USER_.firstName + " " + USER_.lastName;
-						TempData["success"] = $"Admin Successfully Added by {name}";
-
-
-						var logEntry = new LogTransaction
-						{
-							LogName = name,
-							LogPurpose = $"Created an Admin [{admintypecreated}]",
-							LogDate = DateTime.Now
-						};
-						_context.Add(logEntry);
-						await _context.SaveChangesAsync();
-					}
-					else
-					{
-						// Handle the case where the user is not found
-						TempData["success"] = "Application Successful";
-					}
-
-					// Notification End
-
-
-
-					if (_userManager.Options.SignIn.RequireConfirmedAccount)
-					{
-						return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-					}
-					else
-					{
-						await _signInManager.SignInAsync(user, isPersistent: false);
-						return LocalRedirect(returnUrl);
-					}
-				}
-				foreach (var error in result.Errors)
-				{
-					ModelState.AddModelError(string.Empty, error.Description);
-				}
-			}
-
-			// If we got this far, something failed, redisplay form
-			return Page();
-		}
-		private AccountDetails CreateUser()
+        private AccountDetails CreateUser()
 		{
 			try
 			{

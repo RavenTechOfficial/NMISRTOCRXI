@@ -1,14 +1,18 @@
-﻿namespace DomainLayer.Enum
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DomainLayer.Enum
 {
     public enum Cause
-    {
-        NA,
+	{
+		[Display(Name = "N/A")]
+		NA,
         Actinobacillosis,
         Actinomycosis,
         Anaplasmosis,
         Anthrax,
         Aflatoxicosis,
         Ascariasis,
-        AtrophicRhinitis
+        AtrophicRhinitis,
+        Others
     }
 }

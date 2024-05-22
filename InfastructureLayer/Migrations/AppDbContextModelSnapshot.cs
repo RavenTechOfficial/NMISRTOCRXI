@@ -30,6 +30,12 @@ namespace InfastructureLayer.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -41,14 +47,29 @@ namespace InfastructureLayer.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("MeatEstablishmentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("MeatEstablishmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -77,30 +98,6 @@ namespace InfastructureLayer.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("birthdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("contactNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("firstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("middleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("sex")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MeatEstablishmentId");
@@ -114,136 +111,35 @@ namespace InfastructureLayer.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "e13d8946-67b4-4678-a0a2-8395d3dd4f7c",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "46d54d84-09c1-422c-aff5-f1c1ae793921",
-                            Email = "super@admin.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "SUPER@ADMIN.COM",
-                            NormalizedUserName = "SUPERADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA3jCzHaZwty7jsifoem/Ug+BItzMWewD9sGxo6eq7dsivK5zqA1oqWkCtFnZZ7MMw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "superadmin"
-                        },
-                        new
-                        {
-                            Id = "c8867ea3-1d59-4496-9d5e-1ffc2192b596",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a1c2074d-5849-4352-b88d-f911ad0f8038",
-                            Email = "mtv@admin.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "INSPECTOR@ADMIN.COM",
-                            NormalizedUserName = "INSPECTORADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJZ+zTrfRI0aPGh5/4qnT+PsDLi35WLpNwSWT76nJ9oE+Ixm13CDCJqpkbi7gImcdA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "inspectoradmin"
-                        },
-                        new
-                        {
-                            Id = "c8d2e500-f3d7-4462-afc1-4ac1791aa1df",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "0e89de61-5df6-4631-9092-cb91bb77fe59",
-                            Email = "mtv@admin.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "MTV@ADMIN.COM",
-                            NormalizedUserName = "MTVRADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAECpUP9r1mMUdWwob5/EwC6C7WTAKem/u1ThRatLj/7Jn8bOSNcrcM8AMLoJsaThdog==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "mtvadmin"
-                        },
-                        new
-                        {
-                            Id = "740255c0-4437-48c3-aef8-f60c3ac5b66f",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "0ce4c06e-6084-455d-9552-3e7817b95401",
-                            Email = "user@user.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "USER@USER.COM",
-                            NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA1cJWDwCJX5l0jyBb5Q1lp68GvhiHWzPdrzPek6Bggr/c/u2WCSa+zsFuDYBFmJgw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "user"
-                        },
-                        new
-                        {
-                            Id = "71200491-86b8-4a01-8055-3e65289f0131",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a1f6ab51-083e-4b7f-a422-e165a8aff41c",
-                            Email = "meat@rep.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "MEAT@REP.COM",
-                            NormalizedUserName = "MEATREP",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPag6tCeODS4wZ7VQjFO3xYfrf7rXvbQZmT4sS9k2L3dYtMkrAufiYqf4pdhWEFZww==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "meatrep"
-                        },
-                        new
-                        {
-                            Id = "fbc25f90-0f87-4be2-8daf-a0d57f867e71",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "24793d24-5e79-4842-9cb1-73e30107f57e",
-                            Email = "meat@inspector.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "MEAT@INSPECTOR.COM",
-                            NormalizedUserName = "MEATINSPECTOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO6MYIjMxjgXYhMizTXnN3iMNOi5DGNgWcM23//4oH+bDLJLfTT2IYtln/C0jhnXaw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "meatinspector"
-                        },
-                        new
-                        {
-                            Id = "5ec843e6-bad4-4901-bc58-9ddb3730f2a5",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "1fa9bdad-5fee-4a85-ba5e-f56d8a8a022a",
-                            Email = "mtv@inspector.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "MTV@INSPECTOR.COM",
-                            NormalizedUserName = "MTVINSPECTOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPZRP1WZutSgj2N0AKsgEoM++llcMYgQ7QS8oZ0hLJIIoe8BtUOIYkhehVe2n41aDQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "mtvinspector"
-                        },
-                        new
-                        {
-                            Id = "34819ef1-3d5a-4fc4-953a-1054e75a9f7c",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "985353e5-a57f-40dc-b15c-ec7a24b01663",
-                            Email = "mtv@user.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "MTV@USER.COM",
-                            NormalizedUserName = "MTVUSER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL6J/2BduqAjQDUk0+FNBzG8uZr+UJXT8Rc8I5tqHUKdtqNz88Y1LahnvTugausgMQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "mtvuser"
-                        });
+            modelBuilder.Entity("DomainLayer.Models.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Barangay")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Province")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Antemortem", b =>
@@ -260,20 +156,26 @@ namespace InfastructureLayer.Migrations
                     b.Property<int>("Issue")
                         .HasColumnType("int");
 
-                    b.Property<int>("MeatInspectionReportId")
-                        .HasColumnType("int");
-
                     b.Property<int>("NoOfHeads")
                         .HasColumnType("int");
+
+                    b.Property<string>("Other")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ReceivingReportId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Weight")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeatInspectionReportId");
+                    b.HasIndex("ReceivingReportId");
 
-                    b.ToTable("ConductOfInspection");
+                    b.ToTable("Antemortems");
                 });
 
             modelBuilder.Entity("DomainLayer.Models.CheckList", b =>
@@ -362,6 +264,9 @@ namespace InfastructureLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
                     b.Property<string>("LicenseBack")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -377,15 +282,12 @@ namespace InfastructureLayer.Migrations
                     b.Property<DateTime>("birthdate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("gender")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Drivers");
                 });
 
-            modelBuilder.Entity("DomainLayer.Models.FeedBack", b =>
+            modelBuilder.Entity("DomainLayer.Models.Feedback", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -680,18 +582,14 @@ namespace InfastructureLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.MeatDealers", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -702,8 +600,8 @@ namespace InfastructureLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MeatEstablishmentId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MeatEstablishmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
@@ -717,11 +615,9 @@ namespace InfastructureLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.MeatEstablishment", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -760,24 +656,25 @@ namespace InfastructureLayer.Migrations
                     b.Property<string>("AccountDetailsId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("ReceivingReportId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ReceivingReportId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RepDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VerifiedByPOSMSHead")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountDetailsId");
 
-                    b.HasIndex("ReceivingReportId");
+                    b.HasIndex("ReceivingReportId")
+                        .IsUnique()
+                        .HasFilter("[ReceivingReportId] IS NOT NULL");
 
                     b.ToTable("MeatInspectionReports");
                 });
@@ -790,18 +687,19 @@ namespace InfastructureLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ConductOfInspectionId")
-                        .HasColumnType("int");
-
                     b.Property<int>("NoOfHeads")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("ReceivingReportId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Weight")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConductOfInspectionId");
+                    b.HasIndex("ReceivingReportId")
+                        .IsUnique();
 
                     b.ToTable("PassedForSlaughters");
                 });
@@ -916,15 +814,15 @@ namespace InfastructureLayer.Migrations
                     b.Property<int>("NoOfHeads")
                         .HasColumnType("int");
 
-                    b.Property<int>("PassedForSlaughterId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ReceivingReportId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Weight")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PassedForSlaughterId");
+                    b.HasIndex("ReceivingReportId");
 
                     b.ToTable("Postmortems");
                 });
@@ -974,11 +872,9 @@ namespace InfastructureLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.ReceivingReport", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccountDetailsId")
                         .HasColumnType("nvarchar(450)");
@@ -998,8 +894,8 @@ namespace InfastructureLayer.Migrations
                     b.Property<double>("LiveWeight")
                         .HasColumnType("float");
 
-                    b.Property<int?>("MeatDealersId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("MeatDealersId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("NoOfHeads")
                         .HasColumnType("int");
@@ -1157,15 +1053,16 @@ namespace InfastructureLayer.Migrations
                     b.Property<int>("NoOfHeads")
                         .HasColumnType("int");
 
-                    b.Property<int>("PostmortemId")
-                        .HasColumnType("int");
+                    b.Property<double>("OFALS")
+                        .HasColumnType("float");
 
-                    b.Property<int>("Species")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ReceivingReportId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostmortemId");
+                    b.HasIndex("ReceivingReportId")
+                        .IsUnique();
 
                     b.ToTable("TotalNoFitForHumanConsumptions");
                 });
@@ -1233,56 +1130,6 @@ namespace InfastructureLayer.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "e272bc4f-641d-4821-9877-a054d7d21150",
-                            Name = "SuperAdministrator",
-                            NormalizedName = "SUPERADMIN"
-                        },
-                        new
-                        {
-                            Id = "366b03a0-31fa-4c26-b5c5-0600f46b992c",
-                            Name = "InspectorAdministrator",
-                            NormalizedName = "INSPECTORADMIN"
-                        },
-                        new
-                        {
-                            Id = "14f82252-599c-4bbf-b38a-22f201524522",
-                            Name = "MTVAdministrator",
-                            NormalizedName = "MTVADMIN"
-                        },
-                        new
-                        {
-                            Id = "d13a9ff6-a3e3-4ed8-88e7-21cc3ebc6230",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "49f3739a-2d7b-4966-b10c-52845fff9a0d",
-                            Name = "MeatEstablishmentRepresentative",
-                            NormalizedName = "MEATESTABLISHMENTREPRESENTATIVE"
-                        },
-                        new
-                        {
-                            Id = "a5e18a35-772c-4987-adf3-15b3338fb58f",
-                            Name = "MeatInspector",
-                            NormalizedName = "MEATINSPECTOR"
-                        },
-                        new
-                        {
-                            Id = "41afa3e0-6e8b-4c1b-8793-0b05eb448c86",
-                            Name = "MtvInspector",
-                            NormalizedName = "MTVINSPECTOR"
-                        },
-                        new
-                        {
-                            Id = "83a13c13-b4fd-43ed-8331-07d809bfc968",
-                            Name = "MtvUsers",
-                            NormalizedName = "MTVUSERS"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1370,48 +1217,6 @@ namespace InfastructureLayer.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "e13d8946-67b4-4678-a0a2-8395d3dd4f7c",
-                            RoleId = "e272bc4f-641d-4821-9877-a054d7d21150"
-                        },
-                        new
-                        {
-                            UserId = "c8867ea3-1d59-4496-9d5e-1ffc2192b596",
-                            RoleId = "366b03a0-31fa-4c26-b5c5-0600f46b992c"
-                        },
-                        new
-                        {
-                            UserId = "c8d2e500-f3d7-4462-afc1-4ac1791aa1df",
-                            RoleId = "14f82252-599c-4bbf-b38a-22f201524522"
-                        },
-                        new
-                        {
-                            UserId = "740255c0-4437-48c3-aef8-f60c3ac5b66f",
-                            RoleId = "d13a9ff6-a3e3-4ed8-88e7-21cc3ebc6230"
-                        },
-                        new
-                        {
-                            UserId = "71200491-86b8-4a01-8055-3e65289f0131",
-                            RoleId = "49f3739a-2d7b-4966-b10c-52845fff9a0d"
-                        },
-                        new
-                        {
-                            UserId = "fbc25f90-0f87-4be2-8daf-a0d57f867e71",
-                            RoleId = "a5e18a35-772c-4987-adf3-15b3338fb58f"
-                        },
-                        new
-                        {
-                            UserId = "5ec843e6-bad4-4901-bc58-9ddb3730f2a5",
-                            RoleId = "41afa3e0-6e8b-4c1b-8793-0b05eb448c86"
-                        },
-                        new
-                        {
-                            UserId = "34819ef1-3d5a-4fc4-953a-1054e75a9f7c",
-                            RoleId = "83a13c13-b4fd-43ed-8331-07d809bfc968"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -1444,13 +1249,13 @@ namespace InfastructureLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.Antemortem", b =>
                 {
-                    b.HasOne("DomainLayer.Models.MeatInspectionReport", "MeatInspectionReport")
-                        .WithMany()
-                        .HasForeignKey("MeatInspectionReportId")
+                    b.HasOne("DomainLayer.Models.ReceivingReport", "ReceivingReport")
+                        .WithMany("Antemortems")
+                        .HasForeignKey("ReceivingReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MeatInspectionReport");
+                    b.Navigation("ReceivingReport");
                 });
 
             modelBuilder.Entity("DomainLayer.Models.DisapprovedApplication", b =>
@@ -1536,8 +1341,8 @@ namespace InfastructureLayer.Migrations
                         .HasForeignKey("AccountDetailsId");
 
                     b.HasOne("DomainLayer.Models.ReceivingReport", "ReceivingReport")
-                        .WithMany()
-                        .HasForeignKey("ReceivingReportId");
+                        .WithOne("MeatInspectionReport")
+                        .HasForeignKey("DomainLayer.Models.MeatInspectionReport", "ReceivingReportId");
 
                     b.Navigation("AccountDetails");
 
@@ -1546,13 +1351,13 @@ namespace InfastructureLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.PassedForSlaughter", b =>
                 {
-                    b.HasOne("DomainLayer.Models.Antemortem", "ConductOfInspection")
-                        .WithMany()
-                        .HasForeignKey("ConductOfInspectionId")
+                    b.HasOne("DomainLayer.Models.ReceivingReport", "ReceivingReport")
+                        .WithOne("PassedForSlaughter")
+                        .HasForeignKey("DomainLayer.Models.PassedForSlaughter", "ReceivingReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ConductOfInspection");
+                    b.Navigation("ReceivingReport");
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Payment", b =>
@@ -1568,13 +1373,13 @@ namespace InfastructureLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.Postmortem", b =>
                 {
-                    b.HasOne("DomainLayer.Models.PassedForSlaughter", "PassedForSlaughter")
-                        .WithMany()
-                        .HasForeignKey("PassedForSlaughterId")
+                    b.HasOne("DomainLayer.Models.ReceivingReport", "ReceivingReport")
+                        .WithMany("Postmortems")
+                        .HasForeignKey("ReceivingReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PassedForSlaughter");
+                    b.Navigation("ReceivingReport");
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Receiving", b =>
@@ -1616,13 +1421,13 @@ namespace InfastructureLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.TotalNoFitForHumanConsumptions", b =>
                 {
-                    b.HasOne("DomainLayer.Models.Postmortem", "Postmortem")
-                        .WithMany()
-                        .HasForeignKey("PostmortemId")
+                    b.HasOne("DomainLayer.Models.ReceivingReport", "ReceivingReport")
+                        .WithOne("TotalNoFitForHumanConsumption")
+                        .HasForeignKey("DomainLayer.Models.TotalNoFitForHumanConsumptions", "ReceivingReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Postmortem");
+                    b.Navigation("ReceivingReport");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1674,6 +1479,19 @@ namespace InfastructureLayer.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DomainLayer.Models.ReceivingReport", b =>
+                {
+                    b.Navigation("Antemortems");
+
+                    b.Navigation("MeatInspectionReport");
+
+                    b.Navigation("PassedForSlaughter");
+
+                    b.Navigation("Postmortems");
+
+                    b.Navigation("TotalNoFitForHumanConsumption");
                 });
 #pragma warning restore 612, 618
         }

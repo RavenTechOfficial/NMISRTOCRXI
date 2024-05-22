@@ -1,380 +1,251 @@
 ﻿using DomainLayer.Models;
+using DomainLayer.Models.ViewModels;
+using InfastructureLayer.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using ServiceLayer.Services.IRepositories;
+using System;
+using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
-using ServiceLayer.Services.IRepositories;
-using DomainLayer.Models.ViewModels;
-using InfastructureLayer.Data;
-using DomainLayer.Enum;
-using DomainLayer.Models;
+using System.Threading.Tasks;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
     public class UsersManagementController : Controller
-	{
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly AppDbContext _context;
-		private readonly UserManager<AccountDetails> _userManager;
-		private readonly IEmailSender _emailSender;
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly AppDbContext _context;
+        private readonly UserManager<AccountDetails> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailSender _emailSender;
 
-		public UsersManagementController(
-			IUnitOfWork unitOfWork,
-			AppDbContext context,
-			UserManager<AccountDetails> userManager,
+        public UsersManagementController(
+            IUnitOfWork unitOfWork,
+            AppDbContext context,
+            UserManager<AccountDetails> userManager,
+            RoleManager<IdentityRole> roleManager,
             IEmailSender emailSender)
-		{
-			_unitOfWork = unitOfWork;
-			_context = context;
-			_userManager = userManager;
-			_emailSender = emailSender;
-		}
-		[Authorize(Policy = "RequireSuperAdmin")]
-		public async Task<IActionResult> Index()
-		{
+        {
+            _unitOfWork = unitOfWork;
+            _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _emailSender = emailSender;
+        }
 
-			var users = await _unitOfWork.UsersManangement.GetAllUsersAsync();
-			return View(users);
-		}
-		public List<UserManagementInspectorAdminViewModel> GetUserData()
-		{
-			var userList = _context.Users
-				.Join(
-					_context.MeatEstablishment,
-					user => user.MeatEstablishmentId,
-					meatEstablishment => meatEstablishment.Id,
-					(user, meatEstablishment) => new UserManagementInspectorAdminViewModel
-					{
-						Id = user.Id,
-						firstName = user.firstName,
-						lastName = user.lastName,
-						middleName = user.middleName,
-						address = user.address,
-						contactNo = user.contactNo,
-						email = user.Email,
-						Roles = (Roles)user.Roles, // Assuming Roles is a property in your User entity
-						MeatEstablishmentId = user.MeatEstablishmentId,
-						MeatEstablishmentName = meatEstablishment.Name
-					})
-				.Where(user => user.Roles == Roles.MEATESTABLISHMENTREPRESENTATIVE || user.Roles == Roles.MEATINSPECTOR)
-				.ToList();
+        [HttpGet]
+        [Authorize(Policy = "RequireSuperAdmin")]
+        public async Task<IActionResult> Index()
+        {
+            var users = await _unitOfWork.AccountDetails.GetAll(includeProperties: "MeatEstablishment");
+            return View(users);
+        }
 
-			return userList;
+        [HttpGet]
+        [Authorize(Policy = "RequireInspectorAdmin")]
+        public async Task<IActionResult> IndexInspectorAdmin()
+        {
+			// Roles to filter
+			var rolesToFilter = new[] { "MeatEstablishmentRepresentative", "MeatInspector" };
 
-		}
+			// List to hold users and their roles
+			var usersAndRoles = new List<AccountDetailViewModel>();
 
-		public async Task<IActionResult> IndexInspectorAdmin()
-		{
-			var userList = GetUserData();
-
-			return View(userList);
-		}
-		[Authorize(Policy = "RequireSuperAdmin")]
-		public async Task<IActionResult> Details(string id)
-		{
-			if (id == null)
+			// Loop through each role and get users in it
+			foreach (var role in rolesToFilter)
 			{
-				return NotFound();
-			}
+				var usersInRole = await _userManager.GetUsersInRoleAsync(role);
+				// Add users and their roles to the list
 
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
-
-			if (users == null)
-			{
-				return NotFound();
-			}
-			string filename = Path.GetFileName(users.image);
-			ViewBag.filename = filename;
-
-			return View(users);
-		}
-		public async Task<IActionResult> MeatCheckDetails(string id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
-
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
-
-			if (users == null)
-			{
-				return NotFound();
-			}
-			string filename = Path.GetFileName(users.image);
-			ViewBag.filename = filename;
-
-			return View(users);
-		}
-
-		public async Task<IActionResult> MeatCheckEdit(string id)
-		{
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id); // AccountDetails
-			if (users == null) return View("Error");
-			var accountVm = new AccountUserViewModel
-			{
-				firstName = users.firstName,
-				lastName = users.lastName,
-				middleName = users.middleName,
-				contactNo = users.contactNo,
-				birthdate = (DateTime)users.birthdate,
-				sex = users.sex,
-			};
-			return View(accountVm);
-		}
-		[Authorize(Policy = "RequireSuperAdmin")]
-		public async Task<IActionResult> Edit(string id)
-		{
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id); // AccountDetails
-			if (users == null) return View("Error");
-			var accountVm = new AccountUserViewModel
-			{
-				firstName = users.firstName,
-				lastName = users.lastName,
-				middleName = users.middleName,
-				contactNo = users.contactNo,
-				birthdate = (DateTime)users.birthdate,
-				sex = users.sex,
-			};
-			return View(accountVm);
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> MeatCheckEdit(string id, AccountUserViewModel accountDetails)
-		{
-			if (!ModelState.IsValid)
-			{
-				ModelState.AddModelError("", "Failed to edit account");
-				return View("Edit", accountDetails);
-			}
-
-			try
-			{
-				if (_unitOfWork.UsersManangement.Update(accountDetails))
+				foreach (var user in usersInRole)
 				{
-					_unitOfWork.UsersManangement.Save();
-
-					// Send confirmation email
-					var user = await _userManager.GetUserAsync(User);
-					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-					code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-					var callbackUrl = Url.Page(
-						"/EditConfirmation",
-						pageHandler: null,
-						values: new { area = "Identity", userId = user.Id, code = code },
-						protocol: Request.Scheme);
-
-					await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
-						$"Please confirm your updated account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-					return RedirectToAction(nameof(EditConfirmation));
-				}
-				else
-				{
-					// Handle the case when the account is not found
-					return View("Error");
+                    string meatEstablishmentName = user.MeatEstablishment != null ? user.MeatEstablishment.Name : null;
+                    usersAndRoles.Add(
+                        new AccountDetailViewModel {
+							Id = user.Id,
+							firstName = user.FirstName,
+							lastName = user.LastName,
+							middleName = user.MiddleName,
+							address = user.Address,
+							email = user.Email,
+							MeatEstablishmentName = meatEstablishmentName, 
+                            Role = role 
+                        }
+                    );
 				}
 			}
-			catch (DbUpdateConcurrencyException ex)
-			{
-				_context.Entry(accountDetails).Reload();
-				ModelState.AddModelError("", "The entity has been modified or deleted by another user.");
-				return View("Edit", accountDetails);
-			}
+
+			// Pass the users and their roles to the view
+			return View(usersAndRoles);
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> Edit(string id, AccountUserViewModel accountDetails)
-		{
-			if (!ModelState.IsValid)
-			{
-				ModelState.AddModelError("", "Failed to edit account");
-				return View("Edit", accountDetails);
-			}
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+                return NotFound();
 
-			try
-			{
-				if (_unitOfWork.UsersManangement.Update(accountDetails))
-				{
+            var user = await _unitOfWork.AccountDetails.Get(c => c.Id == id);
+            if (user == null)
+                return NotFound();
 
+            ViewBag.filename = Path.GetFileName(user.Image);
+            return View(user);
+        }
 
-					_unitOfWork.UsersManangement.Save();
+        [HttpGet]
+        public async Task<IActionResult> MeatCheckDetails(string id)
+        {
+            if (id == null)
+                return NotFound();
 
-					// Send confirmation email
-					var user = await _userManager.GetUserAsync(User);
-					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-					code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-					var callbackUrl = Url.Page(
-						"/EditConfirmation",
-						pageHandler: null,
-						values: new { area = "Identity", userId = user.Id, code = code },
-						protocol: Request.Scheme);
+            var user = await _unitOfWork.AccountDetails.Get(c => c.Id == id);
+            if (user == null)
+                return NotFound();
 
-					await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
-						$"Please confirm your updated account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            ViewBag.filename = Path.GetFileName(user.Image);
+            return View(user);
+        }
 
-					//Notification
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = await _unitOfWork.AccountDetails.Get(c => c.Id == id);
+            if (user == null)
+                return View("Error");
 
-					string USER_ID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-					var USER_ = _context.Users.FirstOrDefault(pu => pu.Id == USER_ID);
-					var editedUser = await _unitOfWork.UsersManangement.GetAccountDetails(id);
+            var accountVm = new AccountUserViewModel
+            {
+                firstName = user.FirstName,
+                lastName = user.LastName,
+                middleName = user.MiddleName,
+                birthdate = user.BirthDate,
+                sex = user.Gender,
+            };
 
-					if (USER_ != null)
-					{
-						// Construct a success message with the user's name
-						var name = USER_.firstName + " " + USER_.lastName;
-						TempData["info"] = $"User Edited Successfully by {name}";
+            return View(accountVm);
+        }
 
-						var logEntry = new LogTransaction
-						{
-							LogName = name,
-							LogPurpose = $"Edited the User [{editedUser}]",
-							LogDate = DateTime.Now
-						};
-						_context.Add(logEntry);
-						await _context.SaveChangesAsync();
-					}
-					else
-					{
-						// Handle the case where the user is not found
-						TempData["error"] = "Error Found";
-					}
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, AccountUserViewModel accountDetails)
+        {
+            if (!ModelState.IsValid)
+                return View("Edit", accountDetails);
 
-					// Notification End
+            try
+            {
+                if (_unitOfWork.UsersManangement.Update(accountDetails))
+                {
+                    await _unitOfWork.Save();
 
+                    var user = await _userManager.GetUserAsync(User);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/EditConfirmation",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = user.Id, code = code },
+                        protocol: Request.Scheme);
 
-					return RedirectToAction(nameof(EditConfirmation));
+                    await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
+                        $"Please confirm your updated account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    // Notification
+                    await NotifyUserEditAsync(user, id);
+                    // Notification End
 
-				}
-				else
-				{
-					// Handle the case when the account is not found
-					return View("Error");
-				}
-			}
-			catch (DbUpdateConcurrencyException ex)
-			{
-				_context.Entry(accountDetails).Reload();
-				ModelState.AddModelError("", "The entity has been modified or deleted by another user.");
-				return View("Edit", accountDetails);
-			}
-		}
-		//[Authorize(Policy = "RequireSuperAdmin")]
-		public IActionResult EditConfirmation()
-		{
-			return View();
-		}
-		[Authorize(Policy = "RequireSuperAdmin")]
-		public async Task<IActionResult> Delete(string id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
+                    return RedirectToAction(nameof(EditConfirmation));
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                _context.Entry(accountDetails).Reload();
+                ModelState.AddModelError("", "The entity has been modified or deleted by another user.");
+                return View("Edit", accountDetails);
+            }
+        }
 
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
+        [HttpGet]
+        public IActionResult EditConfirmation()
+        {
+            return View();
+        }
 
-			if (users == null)
-			{
-				return NotFound();
-			}
-			string filename = Path.GetFileName(users.image);
-			ViewBag.filename = filename;
+        [HttpPost]
+        [Authorize(Policy = "RequireSuperAdmin")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+                return NotFound();
 
-			return View(users);
-		}
+            var user = await _unitOfWork.AccountDetails.Get(c => c.Id == id);
+            if (user == null)
+                return NotFound();
 
-		[HttpPost, ActionName("Delete")]
-		public async Task<IActionResult> DeleteConfirmed(string id)
-		{
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
-			if (users == null)
-			{
-				return Problem("your user doesn't exist");
-			}
+            ViewBag.filename = Path.GetFileName(user.Image);
+            return View(user);
+        }
 
-			string USER_ID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			var USER_ = _context.Users.FirstOrDefault(pu => pu.Id == USER_ID);
-			var deletedUserEmail = users.Email;
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var user = await _unitOfWork.AccountDetails.Get(c => c.Id == id);
+            if (user == null)
+                return Problem("your user doesn't exist");
 
-			if (deletedUserEmail != USER_.Email)
-			{
-				_unitOfWork.UsersManangement.Delete(users);
+            _unitOfWork.AccountDetails.Remove(user);
 
-				if (USER_ != null)
-				{
-					var name = USER_.firstName + " " + USER_.lastName;
-					TempData["success"] = $"User Deleted Successfully by {name}";
+            await NotifyUserDeleteAsync(id);
 
-					var logEntry = new LogTransaction
-					{
-						LogName = name,
-						LogPurpose = $"Deleted the User [{deletedUserEmail}] Role [{users.Roles}]",
-						LogDate = DateTime.Now
-					};
-					_context.Add(logEntry);
-					await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-					_unitOfWork.UsersManangement.Save();
-				}
-				else
-				{
-					TempData["error"] = "Error Found";
-				}
-			}
-			else
-			{
-				TempData["error"] = "You cannot delete your own account";
-			}
+        private async Task NotifyUserEditAsync(AccountDetails user, string editedUserId)
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var userName = currentUser.FirstName + " " + currentUser.LastName;
 
-			return RedirectToAction(nameof(Index));
-		}
+            var logEntry = new LogTransaction
+            {
+                LogName = userName,
+                LogPurpose = $"Edited the User [{editedUserId}]",
+                LogDate = DateTime.Now
+            };
 
+            _context.Add(logEntry);
+            await _context.SaveChangesAsync();
 
-		public async Task<IActionResult> MeatCheckDelete(string id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
+            TempData["success"] = $"User Edited Successfully by {userName}";
+        }
 
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
+        private async Task NotifyUserDeleteAsync(string deletedUserId)
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var userName = currentUser.FirstName + " " + currentUser.LastName;
 
-			if (users == null)
-			{
-				return NotFound();
-			}
-			string filename = Path.GetFileName(users.image);
-			ViewBag.filename = filename;
+            var logEntry = new LogTransaction
+            {
+                LogName = userName,
+                LogPurpose = $"Deleted the User [{deletedUserId}] With Role]",
+                LogDate = DateTime.Now
+            };
 
-			return View(users);
-		}
+            _context.Add(logEntry);
+            await _unitOfWork.Save();
 
-		[HttpPost, ActionName("MeatCheckDelete")]
-		public async Task<IActionResult> MeatCheckDeleteConfirmed(string id)
-		{
-			var users = await _unitOfWork.UsersManangement.GetAccountDetails(id);
-			if (users == null)
-			{
-				return Problem("your user doesn't exist");
-			}
-
-			if (users != null)
-			{
-				_unitOfWork.UsersManangement.Delete(users);
-			}
-
-			_unitOfWork.UsersManangement.Save();
-			return RedirectToAction(nameof(IndexInspectorAdmin));
-		}
-
-
-
-	}
+            TempData["success"] = $"User Deleted Successfully by {userName}";
+        }
+    }
 }

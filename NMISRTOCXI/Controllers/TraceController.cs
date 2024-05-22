@@ -6,7 +6,7 @@ using DomainLayer.Models.ViewModels;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
     public class TraceController : Controller
     {
@@ -37,86 +37,86 @@ namespace thesis.Controllers
         //    }
         //    return View();
         //}
-        public async Task<IActionResult> Result(string? id, int? meatEstablishmentId)
+        public async Task<IActionResult> Result(string? id, Guid? meatEstablishmentId)
 
         {
 
-            if (id == null || !_context.MeatInspectionReports.Any())
-            {
-                return NotFound();
-            }
-            var meatInspectionReport = await _context.MeatInspectionReports
-                .Include(m => m.ReceivingReport)
-                    .ThenInclude(rr => rr.MeatDealers)
-                    .ThenInclude(md => md.MeatEstablishment)
-          
-                .FirstOrDefaultAsync(m => m.UID == id);
+            //         if (id == null || !_context.MeatInspectionReports.Any())
+            //         {
+            //             return NotFound();
+            //         }
+            //         var meatInspectionReport = await _context.MeatInspectionReports
+            //             .Include(m => m.ReceivingReport)
+            //                 .ThenInclude(rr => rr.MeatDealers)
+            //                 .ThenInclude(md => md.MeatEstablishment)
 
-            if (meatInspectionReport == null)
-            {
-                return NotFound();
-            }
+            //             .FirstOrDefaultAsync(m => m.UID == id);
 
-			var summary = await _context.SummaryAndDistributionOfMICs
-	        .Include(p => p.TotalNoFitForHumanConsumption)
-	           .ThenInclude(p => p.Postmortem)
-	           .ThenInclude(p => p.PassedForSlaughter)
-	           .ThenInclude(p => p.ConductOfInspection)
-	           .ThenInclude(p => p.MeatInspectionReport)
-	           .Where(p => p.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.UID == id) // Use the 'id' parameter to filter
-	           .FirstOrDefaultAsync();
+            //         if (meatInspectionReport == null)
+            //         {
+            //             return NotFound();
+            //         }
 
-			var totalfit = await _context.TotalNoFitForHumanConsumptions
-				.Include(p => p.Postmortem)
-				   .ThenInclude(p => p.PassedForSlaughter)
-				   .ThenInclude(p => p.ConductOfInspection)
-				   .ThenInclude(p => p.MeatInspectionReport)
-				   .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.UID == id) // Use the 'id' parameter to filter
-				   .FirstOrDefaultAsync();
+            //var summary = await _context.SummaryAndDistributionOfMICs
+            //      .Include(p => p.TotalNoFitForHumanConsumption)
+            //         .ThenInclude(p => p.Postmortem)
+            //         .ThenInclude(p => p.PassedForSlaughter)
+            //         .ThenInclude(p => p.ConductOfInspection)
+            //         //.ThenInclude(p => p.MeatInspectionReport)
+            //         //.Where(p => p.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.UID == id) // Use the 'id' parameter to filter
+            //         .FirstOrDefaultAsync();
 
-
-			List<MeatDealers> meatDealers = new List<MeatDealers>();
-            if (meatEstablishmentId.HasValue)
-            {
-                meatDealers = await _context.MeatDealers
-                    .Where(dealer => dealer.MeatEstablishmentId == meatEstablishmentId.Value)
-                    .ToListAsync();
-            }
+            //var totalfit = await _context.TotalNoFitForHumanConsumptions
+            //	.Include(p => p.Postmortem)
+            //	   .ThenInclude(p => p.PassedForSlaughter)
+            //	   .ThenInclude(p => p.ConductOfInspection)
+            //	   //.ThenInclude(p => p.MeatInspectionReport)
+            //	   //.Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.UID == id) // Use the 'id' parameter to filter
+            //	   .FirstOrDefaultAsync();
 
 
-            var viewModel = new ResultViewModel
-            {
-                Id = meatInspectionReport.Id,
-                AccountDetailsId = meatInspectionReport.AccountDetailsId,
-                VerifiedBy = meatInspectionReport.VerifiedByPOSMSHead,
-                Specie = meatInspectionReport.ReceivingReport.Species,
-                Category = meatInspectionReport.ReceivingReport.Category,
-                ReceivingBy = meatInspectionReport.ReceivingReport.ReceivingBy,
-                RecTime = meatInspectionReport.ReceivingReport.RecTime,
-                LiveWeight = meatInspectionReport.ReceivingReport.LiveWeight,
-                NoOfHeads = meatInspectionReport.ReceivingReport.NoOfHeads,
-                RepDate = meatInspectionReport.RepDate,
-                RepHeads = totalfit.NoOfHeads,
-                DressedWeight = totalfit.DressedWeight,
-                //CertificateStatus = summary.CertificateStatus,
-                origin = meatInspectionReport.ReceivingReport.Origin,
-                MeatDealerFName = meatInspectionReport.ReceivingReport.MeatDealers.FirstName,
-                MeatDealerMName = meatInspectionReport.ReceivingReport.MeatDealers.MiddleName,
-                MeatDealerLName = meatInspectionReport.ReceivingReport.MeatDealers.LastName,
-                MeatDealerAddress = meatInspectionReport.ReceivingReport.MeatDealers.Address,
-                MeatDealerContactNo = meatInspectionReport.ReceivingReport.MeatDealers.ContactNo,
-                Address = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Address,
-                UID = meatInspectionReport.UID,
-                MeatEstablishmentLTO = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.LicenseToOperateNumber,
-                MeatEstablishmentName = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Name,
-                MeatEstablishmentAddress = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Address,
-                ShippingDocuments = meatInspectionReport.ReceivingReport.ShippingDoc,
+            //List<MeatDealers> meatDealers = new List<MeatDealers>();
+            //         if (meatEstablishmentId.HasValue)
+            //         {
+            //             meatDealers = await _context.MeatDealers
+            //                 .Where(dealer => dealer.MeatEstablishmentId == meatEstablishmentId.Value)
+            //                 .ToListAsync();
+            //         }
 
-            };
 
-            ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
+            //         var viewModel = new ResultViewModel
+            //         {
+            //             Id = meatInspectionReport.Id,
+            //             AccountDetailsId = meatInspectionReport.AccountDetailsId,
+            //             VerifiedBy = meatInspectionReport.VerifiedByPOSMSHead,
+            //             Specie = meatInspectionReport.ReceivingReport.Species,
+            //             Category = meatInspectionReport.ReceivingReport.Category,
+            //             ReceivingBy = meatInspectionReport.ReceivingReport.ReceivingBy,
+            //             RecTime = meatInspectionReport.ReceivingReport.RecTime,
+            //             LiveWeight = meatInspectionReport.ReceivingReport.LiveWeight,
+            //             NoOfHeads = meatInspectionReport.ReceivingReport.NoOfHeads,
+            //             RepDate = meatInspectionReport.RepDate,
+            //             RepHeads = totalfit.NoOfHeads,
+            //             DressedWeight = totalfit.DressedWeight,
+            //             //CertificateStatus = summary.CertificateStatus,
+            //             origin = meatInspectionReport.ReceivingReport.Origin,
+            //             MeatDealerFName = meatInspectionReport.ReceivingReport.MeatDealers.FirstName,
+            //             MeatDealerMName = meatInspectionReport.ReceivingReport.MeatDealers.MiddleName,
+            //             MeatDealerLName = meatInspectionReport.ReceivingReport.MeatDealers.LastName,
+            //             MeatDealerAddress = meatInspectionReport.ReceivingReport.MeatDealers.Address,
+            //             MeatDealerContactNo = meatInspectionReport.ReceivingReport.MeatDealers.ContactNo,
+            //             Address = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Address,
+            //             UID = meatInspectionReport.UID,
+            //             MeatEstablishmentLTO = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.LicenseToOperateNumber,
+            //             MeatEstablishmentName = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Name,
+            //             MeatEstablishmentAddress = meatInspectionReport.ReceivingReport.MeatDealers.MeatEstablishment.Address,
+            //             ShippingDocuments = meatInspectionReport.ReceivingReport.ShippingDoc,
 
-            return View(viewModel);
+            //         };
+
+            //         ViewData["ReceivingReportId"] = new SelectList(_context.ReceivingReports, "Id", "Id", meatInspectionReport.ReceivingReportId);
+            return View();
+            //return View(viewModel);
         }
 
 

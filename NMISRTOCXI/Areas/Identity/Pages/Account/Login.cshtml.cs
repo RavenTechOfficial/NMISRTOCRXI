@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 using DomainLayer.Models;
 using System.Security.Claims;
 
-namespace thesis.Areas.Identity.Pages.Account
+namespace NMISRTOCXI.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
@@ -139,11 +139,6 @@ namespace thesis.Areas.Identity.Pages.Account
                     }
                     await _signInManager.SignInWithClaimsAsync(user, Input.RememberMe, claims);
 
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.Succeeded)
-                {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

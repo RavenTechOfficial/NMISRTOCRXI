@@ -12,7 +12,7 @@ using DomainLayer.Models.ViewModels;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	public class PostArticlesController : Controller
 	{
@@ -106,7 +106,7 @@ namespace thesis.Controllers
 				if (user != null)
 				{
 					// Construct a success message with the user's name
-					var name = user.firstName + " " + user.lastName;
+					var name = user.FirstName + " " + user.LastName;
 					TempData["success"] = $"Article Successfully Added by {name}";
 
 
@@ -173,7 +173,7 @@ namespace thesis.Controllers
 					if (user != null)
 					{
 						// Construct a success message with the user's name
-						var name = user.firstName + " " + user.lastName;
+						var name = user.FirstName + " " + user.LastName;
 						TempData["info"] = $"Article Successfully Edited by {name}";
 
 
@@ -250,7 +250,7 @@ namespace thesis.Controllers
 				if (user != null)
 				{
 					// Construct a success message with the user's name
-					var name = user.firstName + " " + user.lastName;
+					var name = user.FirstName + " " + user.LastName;
 					TempData["success"] = $"Article Successfully Deleted by {name}";
 
 

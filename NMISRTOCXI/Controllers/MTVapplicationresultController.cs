@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	public class MTVapplicationresultController : Controller
 	{

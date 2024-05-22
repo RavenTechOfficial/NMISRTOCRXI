@@ -4,7 +4,7 @@ using InfastructureLayer.Data;
 using DomainLayer.Enum;
 using DomainLayer.Models;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	public class MTVquizController : Controller
 	{
@@ -27,7 +27,7 @@ namespace thesis.Controllers
 
 			var application = _context.MTVApplications.OrderBy(p => p.Id).LastOrDefault();
 
-			var ifpercentage = (percentage < 75) ? passorfail.Fail : passorfail.Pass;
+			var ifpercentage = (percentage < 75) ? PassOrFail.Fail : PassOrFail.Pass;
 
 			var res = new MTVquiz
 			{

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DomainLayer.Models.TotalNoFitForHumanConsumptions>
+﻿@* @model IEnumerable<DomainLayer.Models.TotalNoFitForHumanConsumptions>
 
 <link href="~/css/inspectorSideNav.css" rel="stylesheet" />
 @{
@@ -80,10 +80,6 @@
                             <th>
                                 Total Dressed Weight (kg.)
                             </th>
-                            @* <th>
-                            @Html.DisplayNameFor(model => model.Postmortem)
-                            </th>*@
-                            @*  <th></th>*@
                         </tr>
                     </thead>
                     <tbody>
@@ -99,9 +95,6 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.DressedWeight)
                                 </td>
-                                @* <td>
-                            @Html.DisplayFor(modelItem => item.Postmortem.Id)
-                            </td>*@\
 
                             </tr>
                         }
@@ -125,3 +118,4 @@
 </section>
 
 
+ *@

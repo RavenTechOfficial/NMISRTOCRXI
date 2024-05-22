@@ -41,34 +41,30 @@
 					<div class="column">
 						<div class="input-box">
 							<label>First Name:</label>
-							<input type="text" placeholder="@Model.firstName" readonly />
+							<input type="text" placeholder="@Model.FirstName" readonly />
 						</div>
 						<div class="input-box">
 							<label>Middle Name:</label>
-							<input type="text" placeholder="@Model.middleName" readonly />
+							<input type="text" placeholder="@Model.MiddleName" readonly />
 						</div>
 						<div class="input-box">
 							<label>Last Name:</label>
-							<input type="text" placeholder="@Model.lastName" readonly />
+							<input type="text" placeholder="@Model.LastName" readonly />
 						</div>
 					</div>
 
 					<div class="input-box address">
 						<div class="input-box">
 							<label>Address:</label>
-							<input type="text" placeholder="@Model.address" readonly />
+							<input type="text" placeholder="@Model.Address" readonly />
 						</div>
 					</div>
 
 					<div class="column">
 						<div class="row">
 							<div class="input-box">
-								<label>Contact No.:</label>
-								<input type="number" placeholder="@Model.contactNo" readonly />
-							</div>
-							<div class="input-box">
 								<label>Birth Date:</label>
-								<input type="text" id="birthdate" placeholder="@Model.birthdate" readonly />
+								<input type="text" id="birthdate" placeholder="@Model.BirthDate" readonly />
 							</div>
 							<script>
 								document.addEventListener("DOMContentLoaded", function () {
@@ -85,13 +81,13 @@
 								});
 							</script>
 
-							<div class="input-box roles">
+							@* <div class="input-box roles">
 								<label>Role:</label>
 								<input type="text" placeholder="@Model.Roles" readonly />
-							</div>
+							</div> *@
 							<div class="input-box roles">
 								<label>Sex:</label>
-								<input type="text" placeholder="@Model.sex" readonly />
+								<input type="text" placeholder="@Model.Gender" readonly />
 							</div>
 							<div class="input-box">
 								<label>Email:</label>

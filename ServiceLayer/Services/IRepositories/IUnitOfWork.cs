@@ -2,10 +2,16 @@
 {
     public interface IUnitOfWork
     {
-        void Save();
+        Task Save();
         IReceivingReportRepository ReceivingReport { get; }
-        IAccountDetailsRepository AccountDetails { get; }
         IMeatInspectionReportRepository MeatInspectionReport { get; }
+        IAntemortemRepository Antemortem { get; }
+        IPassedForSlaughterRepository PassedForSlaughter { get; }
+        IPostmortemRepository Postmortem { get; }
+        ITotalNoFitForHumanConsumptionRepository TotalNoFitForHumanConsumption { get; }
+        IMeatDealersRepository MeatDealers { get; }
+        IMeatEstablishmentRepository MeatEstablishment { get; }
+        IAccountDetailsRepository AccountDetails { get; }
         IDashboardRepository Dashboard { get; }
         IAnalyticsRepository Analytics { get; }
         IUsersManangementRepository UsersManangement { get; }

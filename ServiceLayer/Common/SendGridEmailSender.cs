@@ -1,28 +1,25 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using DomainLayer.Models.Common;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ServiceLayer.Common
 {
     public class SendGridEmailSender : IEmailSender
     {
-        private readonly string _apiKey;
+        private readonly EmailSettings _emailSettings;
 
-        public SendGridEmailSender(string apiKey)
+        public SendGridEmailSender(IOptions<EmailSettings> emailSettings)
         {
-            _apiKey = apiKey;
+            _emailSettings = emailSettings.Value;
         }
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var client = new SendGridClient(_apiKey);
-            var from = new EmailAddress("nmisrtocxipremess@gmail.com", "NMIS RTOC R11");
+            var client = new SendGridClient(_emailSettings.ApiKey);
+            var from = new EmailAddress(_emailSettings.SenderEmail, _emailSettings.SenderName);
             var to = new EmailAddress(email);
             var msg = MailHelper.CreateSingleEmail(from, to, subject, htmlMessage, htmlMessage);
             return client.SendEmailAsync(msg);

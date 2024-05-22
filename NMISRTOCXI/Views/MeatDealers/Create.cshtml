@@ -1,46 +1,30 @@
-﻿@model DomainLayer.Models.MeatDealers
-<link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
+﻿@model DomainLayer.Models.ViewModels.CreateMeatDealersViewModel
 @{
     ViewData["Title"] = "Create";
+    if (!string.IsNullOrEmpty(ViewBag.AlertMessage))
+    {
+        <script>
+            showToast(@ViewBag.AlertMessage);
+        </script>
+    }
 }
-<link href="~/css/createMeatCheck" rel="stylesheet" asp-append-version="true" />
-
-<style>
-    #content .FirstLayer .applications h3 {
-        text-align: center;
-        font-size: 40px;
-        font-weight: 700;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        margin-left: 5px;
-        color: var(--black);
-    }
-
-    .backbtn {
-        margin-left: 5px;
-    }
-</style>
-
 <section id="content">
 
     <!-- MAIN STARTS-->
     <main class="registration">
 
-        @*<div class="FirstLayer">
-        </div>*@
-        @*<div class="FirstLayer">
-        <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Meat Dealer</li>
-        <li class="breadcrumb-item active" aria-current="page">Create</li>
-
-        </ol>
-        </nav>
-        </div>*@
-        <div>
-            <a class="backbtn" asp-action="Index">Back to List</a>
+        <div class="FirstLayer">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index">Meat Dealer</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                </ol>
+            </nav>
         </div>
+        @* <div>
+            <a class="backbtn" asp-action="Index">Back to List</a>
+        </div> *@
         <div class="FirstLayer">
             <div class="applications">
                 <h3>MEAT DEALER REGISTRATION</h3>
@@ -67,7 +51,6 @@
                     </div>
                     <div class="column" style="display: none;">
                         <div class="input-box">
-
                             <input asp-for="Address" class="form-control" id="addressInput" />
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
@@ -104,25 +87,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <script>
-                        function updateAddressInput() {
-                            // Get the selected values from the dropdowns
-                            var barangay = document.getElement("barangaySelect").value;
-                            var city = document.getElementById("citySelect").value;
-                            var province = document.getElementById("provinceSelect").value;
-                            var region = document.getElementById("regionSelect").value;
-
-
-
-                            // Construct the address using the selected values
-                            var address = barangay + ", " + city + ", " + province + ", " + region;
-
-                            // Update the value of the address input box
-                            document.getElementBy("addressInput").value = Address;
-                        }
-                    </script>
-
                     <div class="column">
                         <div class="input-box">
                             <label asp-for="ContactNo" class="control-label">Contact No.:</label>
@@ -132,7 +96,7 @@
                     </div>
                     <div class="input-box">
                         <label class="control-label">Meat Establishment:</label>
-                        <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentId" readonly></select>
+                        <select asp-for="MeatEstablishmentId" class="form-control" asp-items="ViewBag.MeatEstablishmentList"></select>
                     </div>
                     <br />
 
@@ -150,154 +114,5 @@
     }
 }
 
-
-<script>
-    function updateAddressInput() {
-        // Get the selected values from the dropdowns
-        var barangay = document.getElement("barangaySelect").value;
-        var city = document.getElementById("citySelect").value;
-        var province = document.getElementById("provinceSelect").value;
-        var region = document.getElementById("regionSelect").value;
-
-
-
-        // Construct the address using the selected values
-        var address = barangay + ", " + city + ", " + province + ", " + region;
-
-        // Update the value of the address input box
-        document.getElementBy("addressInput").value = Address;
-    }
-</script>
-
 <script src="~/js/register.js"></script>
-<script>
-    //integration of Philippines Address JSON
-    fetch('@Url.Content("https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
-        .then(response => response.json())
-        .then(data => {
-            const regionSelect = document.getElementById('regionSelect');
-            const provinceSelect = document.getElementById('provinceSelect');
-            const citySelect = document.getElementById('citySelect');
-            const barangaySelect = document.getElementById('barangaySelect');
-            var addressInput = document.getElementById('addressInput');
-
-            // Define the desired order of regions
-            const regionOrder = [
-                { regionCode: "NCR", regionName: "National Capital Region" },
-                { regionCode: "CAR", regionName: "Cordillera Administrative Region" },
-                { regionCode: "01", regionName: "Region I" },
-                { regionCode: "02", regionName: "Region II" },
-                { regionCode: "03", regionName: "Region III" },
-                { regionCode: "4A", regionName: "Region IV-A" },
-                { regionCode: "4B", regionName: "Region IV-B" },
-                { regionCode: "05", regionName: "Region V" },
-                { regionCode: "06", regionName: "Region VI" },
-                { regionCode: "07", regionName: "Region VII" },
-                { regionCode: "08", regionName: "Region VIII" },
-                { regionCode: "09", regionName: "Region IX" },
-                { regionCode: "10", regionName: "Region X" },
-                { regionCode: "11", regionName: "Region XI" },
-                { regionCode: "12", regionName: "Region XII" },
-                { regionCode: "13", regionName: "Region XIII" },
-                { regionCode: "BARMM", regionName: "Bangsamoro Autonomous Region in Muslim Mindanao" }
-            ];
-
-            // Populate regions dropdown
-            regionOrder.forEach(region => {
-                const option = document.createElement('option');
-                option.value = region.regionCode;
-                option.textContent = region.regionName;
-                regionSelect.appendChild(option);
-            });
-
-            // Function to populate provinces based on the selected region
-            function populateProvinces() {
-                const selectedRegion = regionSelect.value;
-                provinceSelect.innerHTML = "<option hidden>Select Province</option>";
-                citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
-                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-                if (selectedRegion !== "") {
-                    const regionData = data[selectedRegion];
-                    const provinceList = regionData.province_list;
-
-                    for (const [provinceCode, province] of Object.entries(provinceList)) {
-                        const option = document.createElement('option');
-                        option.value = provinceCode;
-                        option.textContent = provinceCode;
-                        provinceSelect.appendChild(option);
-                    }
-                }
-            }
-
-            // Function to populate cities/municipalities based on the selected province
-            function populateCities() {
-                const selectedRegion = regionSelect.value;
-                const selectedProvince = provinceSelect.value;
-                citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
-                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-                if (selectedRegion !== "" && selectedProvince !== "") {
-                    const regionData = data[selectedRegion];
-                    const provinceData = regionData.province_list[selectedProvince];
-                    const municipalityList = provinceData.municipality_list;
-
-                    for (const [municipalityCode, municipality] of Object.entries(municipalityList)) {
-                        const option = document.createElement('option');
-                        option.value = municipalityCode;
-                        option.textContent = municipalityCode;
-                        citySelect.appendChild(option);
-                    }
-                }
-            }
-
-            // Function to populate barangays based on the selected city/municipality
-            function populateBarangays() {
-                const selectedRegion = regionSelect.value;
-                const selectedProvince = provinceSelect.value;
-                const selectedCity = citySelect.value;
-                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-                if (selectedRegion !== "" && selectedProvince !== "" && selectedCity !== "") {
-                    const regionData = data[selectedRegion];
-                    const provinceData = regionData.province_list[selectedProvince];
-                    const municipalityData = provinceData.municipality_list[selectedCity];
-                    const barangayList = municipalityData.barangay_list;
-
-                    for (const barangay of barangayList) {
-                        const option = document.createElement('option');
-                        option.value = barangay;
-                        option.textContent = barangay;
-                        barangaySelect.appendChild(option);
-                    }
-                }
-            }
-            function updateAddress() {
-                var regionSelect = document.getElementById('regionSelect');
-                var provinceSelect = document.getElementById('provinceSelect');
-                var citySelect = document.getElementById('citySelect');
-                var barangaySelect = document.getElementById('barangaySelect');
-                var addressInput = document.getElementById('addressInput');
-
-                var region = regionSelect.value || '';
-                var province = provinceSelect.value || '';
-                var city = citySelect.value || '';
-                var barangay = barangaySelect.value || '';
-
-                var address = region + ', ' + province + ', ' + city + ', ' + barangay;
-                addressInput.value = address;
-            }
-
-
-            // Add event listeners to call the populate functions on change
-            regionSelect.addEventListener('change', populateProvinces);
-            provinceSelect.addEventListener('change', populateCities);
-            citySelect.addEventListener('change', populateBarangays);
-            document.getElementById('regionSelect').addEventListener('change', updateAddress);
-            document.getElementById('provinceSelect').addEventListener('change', updateAddress);
-            document.getElementById('citySelect').addEventListener('change', updateAddress);
-            document.getElementById('barangaySelect').addEventListener('change', updateAddress);
-        })
-        .catch(error => console.error('Error fetching JSON:', error));
-
-</script>
+<script src="~/js/address.js"></script>

@@ -2,173 +2,297 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using InfastructureLayer.Data;
 using DomainLayer.Enum;
-using DomainLayer.Models;
+using DomainLayer.Models.ViewModels;
+using ServiceLayer.Services.IRepositories;
+using AutoMapper;
+using System.Linq;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
+
     public class ReceivingReportsController : Controller
 	{
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly ILogger<ReceivingReportsController> _logger;
+        private readonly UserManager<AccountDetails> _userManager;
 
-
-		private readonly AppDbContext _context;
-		private readonly UserManager<AccountDetails> _userManager;
-
-
-		public ReceivingReportsController(AppDbContext context, UserManager<AccountDetails> userManager)
+        public ReceivingReportsController(IUnitOfWork unitOfWork,
+			IMapper mapper,
+            ILogger<ReceivingReportsController> logger,
+            UserManager<AccountDetails> userManager)
 		{
-			_context = context;
-			_userManager = userManager;
-		}
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _logger = logger;
+            _userManager = userManager;
+        }
 
-		// GET: ReceivingReports
-		public async Task<IActionResult> Index(int? id, int? meatEstablishmentId, InspectionStatus? statusFilter)
+		public async Task<IActionResult> DailyInspection()
 		{
-			ViewBag.AlertMessage = TempData["AlertMessage"] as string;
-
-			var meatDealers = _context.MeatDealers.ToList();
-
-			ViewData["MeatDealers"] = meatDealers;
-
-			if (meatEstablishmentId.HasValue)
+			var user = await _userManager.GetUserAsync(User);
+			var meatEstablishmentId = user.MeatEstablishmentId;
+			IEnumerable<MeatEstablishment> meatEstablishments = Enumerable.Empty<MeatEstablishment>();
+			if (User.IsInRole("MeatEstablishmentRepresentative") || User.IsInRole("MeatInspector"))
 			{
-				meatDealers = meatDealers.Where(dealer => dealer.MeatEstablishmentId == meatEstablishmentId.Value).ToList();
+				meatEstablishments = await _unitOfWork.MeatEstablishment.GetAll(c => c.Id == meatEstablishmentId);
+
+			}
+			else if (User.IsInRole("InspectorAdmin"))
+			{
+				meatEstablishments = await _unitOfWork.MeatEstablishment.GetAll();
 			}
 
-			var meatEstablishments = _context.MeatEstablishment
-			.Where(me => me.Name != null)
-			.ToList();
-			ViewData["MeatEstablishments"] = new SelectList(meatEstablishments, "Id", "Name");
+			ViewBag.MeatEstablishments = new SelectList(meatEstablishments, "Id", "Name");
 
-			//var statusFilter = _context.ReceivingReports
-			//         .Where(me => me.InspectionStatus == InspectionStatus.Done)
-			//         .ToList();
-			//         ViewData["statusFilter"] = new SelectList(statusFilter, "Id", "InspectionStatus");
+			var reportsInfo = await _unitOfWork.ReceivingReport.GetAll();
 
-			var AppDbContext = _context.ReceivingReports
-				.Include(r => r.AccountDetails)
-				.Include(r => r.MeatDealers);
+			// Sort the reportsInfo list by CreatedAt in descending order
+			var sortedReportsInfo = reportsInfo.OrderByDescending(item => item.MeatInspectionReport.RepDate).ToList();
 
-
-
-			return View(await AppDbContext.ToListAsync());
+			return View(sortedReportsInfo);
 		}
 
 
-		// GET: ReceivingReports/Details/5
-		public async Task<IActionResult> Details(int? id)
+		[HttpPost]
+        public async Task<IActionResult> Release(Guid Id)
+        {
+            var receivingReport = await _unitOfWork.ReceivingReport.Get(c => c.Id == Id);
+            receivingReport.InspectionStatus = InspectionStatus.Released;
+
+            _unitOfWork.ReceivingReport.Update(receivingReport);
+            await _unitOfWork.Save();
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Frozen(Guid Id)
+        {
+            var receivingReport = await _unitOfWork.ReceivingReport.Get(c => c.Id == Id);
+            receivingReport.InspectionStatus = InspectionStatus.Frozen;
+
+            _unitOfWork.ReceivingReport.Update(receivingReport);
+            await _unitOfWork.Save();
+
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Notification()
+        {
+            var loggedInUserId = _userManager.GetUserId(User);
+                var receivingReport = await _unitOfWork.ReceivingReport.GetAll(c => c.AccountDetailsId == loggedInUserId && c.InspectionStatus == InspectionStatus.Returned);
+
+            var notification = new NotificationViewModel
+            {
+                NotificationCount = receivingReport.Count(),
+
+            };
+
+            return View(notification);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Return(Guid receivingId, DateTime dateInspected, string inspectionRemarks, InspectionStatus status)
+        {
+            var loggedInUserId = _userManager.GetUserId(User);
+
+            var receivingReport = await _unitOfWork.ReceivingReport.Get(c => c.Id == receivingId, includeProperties: "MeatInspectionReport");
+            if (receivingReport == null)
+            {
+                return NotFound(new { message = "Receiving report not found." });
+            }
+
+            receivingReport.InspectionStatus = status;
+
+            if (receivingReport.MeatInspectionReport != null)
+            {
+                receivingReport.MeatInspectionReport.Remarks = inspectionRemarks;
+            }
+            else
+            {
+                receivingReport.MeatInspectionReport = new MeatInspectionReport
+                {
+                    Remarks = inspectionRemarks,
+                    RepDate = dateInspected,
+                    AccountDetailsId = loggedInUserId,
+                    UID = Guid.NewGuid(),
+                };
+            }
+
+            _unitOfWork.ReceivingReport.Update(receivingReport);
+            await _unitOfWork.Save();
+
+            var response = _mapper.Map<ReceivingReportViewModel>(receivingReport);
+
+            return RedirectToAction("Index", response);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Inspect(Guid? Id, bool jsonResponse = false)
+        {
+            if (Id == null)
+            {
+                _logger.LogError("Id is null");
+                if (jsonResponse)
+                {
+                    return Json(new { success = false, message = "Id is null" });
+                }
+                return NotFound("Id is null");
+            }
+
+            _logger.LogInformation("Method called with Id: {Id}", Id);
+
+            var receivingReport = await _unitOfWork.ReceivingReport.Get(
+                c => c.Id == Id,
+                includeProperties: "MeatDealers,AccountDetails,MeatInspectionReport,MeatInspectionReport.AccountDetails," +
+                "Antemortems,PassedForSlaughter,Postmortems,TotalNoFitForHumanConsumption"
+            );
+
+            if (receivingReport == null)
+            {
+                _logger.LogError("Receiving report not found for Id: {Id}", Id);
+                if (jsonResponse)
+                {
+                    return Json(new { success = false, message = "Receiving report not found" });
+                }
+                return NotFound("Receiving report not found");
+            }
+
+            var totalNoOfHeads = receivingReport.Antemortems?.Sum(c => c.NoOfHeads) ?? 0;
+            var totalWeight = receivingReport.Antemortems?.Sum(c => c.Weight) ?? 0;
+
+            var receivingReportMapped = _mapper.Map<ReceivingReportViewModel>(receivingReport);
+            _logger.LogInformation("Receiving report mapped successfully for Id: {Id}", Id);
+
+            if (jsonResponse)
+            {
+                var result = new
+                {
+                    Data = receivingReportMapped,
+                    TotalNoOfHeads = totalNoOfHeads,
+                    TotalWeight = totalWeight
+                };
+                return Json(result);
+            }
+            else
+            {
+                return View(receivingReportMapped);
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var loggedInUser = await _userManager.GetUserAsync(User);
+            // Retrieve receiving reports based on user's role
+            IEnumerable<ReceivingReport> receivingReport;
+            if (User.IsInRole("MeatEstablishmentRepresentative"))
+                receivingReport = await _unitOfWork.ReceivingReport.GetAll(
+                    c => c.AccountDetails.MeatEstablishmentId == loggedInUser.MeatEstablishmentId,
+                    includeProperties: "AccountDetails,MeatDealers,MeatInspectionReport.AccountDetails");
+            else if (User.IsInRole("MeatInspector"))
+                receivingReport = await _unitOfWork.ReceivingReport.GetAll(
+                    c => c.AccountDetails.MeatEstablishmentId == loggedInUser.MeatEstablishmentId,
+                    includeProperties: "AccountDetails,MeatDealers,MeatInspectionReport.AccountDetails");
+            else if (User.IsInRole("InspectorAdmin"))
+                receivingReport = await _unitOfWork.ReceivingReport.GetAll(
+                    includeProperties: "AccountDetails,MeatDealers,MeatInspectionReport.AccountDetails");
+            else
+                return View();
+
+            // Map receiving reports to view models
+            var receivingReportMapped = _mapper.Map<IEnumerable<ReceivingReportViewModel>>(receivingReport);
+
+            // Order the mapped receiving reports by RecTime and convert to list
+            var response = receivingReportMapped.OrderByDescending(r => r.RecTime).ToList();
+            return View(response);
+        }
+
+        // GET: ReceivingReports/Details/5
+        public async Task<IActionResult> Details(Guid? Id)
 		{
-			if (id == null || _context.ReceivingReports == null)
+			if (Id == null)
 			{
-				return NotFound();
+				TempData["error"] = "Id not found.";
+                return NotFound();
+			}
+            var response = await _unitOfWork.ReceivingReport.Get(c => c.Id == Id, includeProperties: "AccountDetails,MeatDealers");
+			if (response == null)
+            {
+                TempData["error"] = "Receiving report not found.";
+                return NotFound();
 			}
 
-			var receivingReport = await _context.ReceivingReports
-				.Include(r => r.AccountDetails)
-				.Include(r => r.MeatDealers)
-				.FirstOrDefaultAsync(m => m.Id == id);
-			if (receivingReport == null)
-			{
-				return NotFound();
-			}
-
-			return View(receivingReport);
+			return View(response);
 		}
 
 		// GET: ReceivingReports/Create
-		public IActionResult Create()
+		public async Task<IActionResult> Create()
 		{
 			var loggedInUserId = _userManager.GetUserId(User); // Replace this with your actual logic to get the logged-in user's ID.
-			var loggedInUser = _context.Users.FirstOrDefault(user => user.Id == loggedInUserId);
-			var meatDealersList = _context.MeatDealers.ToList();
-			var concatenatedList = new List<SelectListItem>();
-
-			foreach (var meatDealer in meatDealersList)
+			var loggedInUser = await _unitOfWork.AccountDetails.Get(user => user.Id == loggedInUserId, includeProperties: "MeatEstablishment");
+            var meatDealerList = await _unitOfWork.MeatDealers.GetAll(
+				c => c.MeatEstablishmentId == loggedInUser.MeatEstablishmentId, 
+				includeProperties: "MeatEstablishment");
+			var meatDealers = meatDealerList.Select(c => new
 			{
-				if (loggedInUser != null && meatDealer.MeatEstablishmentId == loggedInUser.MeatEstablishmentId)
-				{
-					var concatenatedValue = $"{meatDealer.FirstName} {meatDealer.LastName}";
-					var selectListItem = new SelectListItem
-					{
-						Value = meatDealer.Id.ToString(),
-						Text = concatenatedValue
-					};
-					concatenatedList.Add(selectListItem);
-				}
-			}
+                Id = c.Id,
+				FullName = $"{c.FirstName} {c.LastName}"
+            });
+            ViewBag.MeatDealersId = new SelectList(meatDealers, "Id", "FullName");
 
-			ViewData["MeatDealersId"] = new SelectList(concatenatedList, "Value", "Text");
-
-			var userList = _context.Users.ToList();
-			var concatenatedList1 = new List<SelectListItem>();
-
-			foreach (var user in userList)
-			{
-				var concatenatedValue = $"{user.firstName} {user.lastName}";
-				var selectListItem = new SelectListItem
-				{
-					Value = user.Id.ToString(),
-					Text = concatenatedValue
-				};
-				concatenatedList1.Add(selectListItem);
-			}
-
-			ViewData["AccountDetailsId"] = new SelectList(concatenatedList1, "Value", "Text");
-			//    ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id");
-			return View();
+            return View();
 		}
 
-		// POST: ReceivingReports/Create
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
+        // POST: ReceivingReports/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId,InspectionStatus")] ReceivingReport receivingReport)
+		public async Task<IActionResult> Create(CreateReceivingReportViewModel request)
 		{
+            request.AccountDetailsId = _userManager.GetUserId(User);
+			var response = _mapper.Map<ReceivingReport>(request);
 			if (ModelState.IsValid) //not not
 			{
-				_context.Add(receivingReport);
-				await _context.SaveChangesAsync();
-				TempData["AlertMessage"] = "Transaction Success";
+				_unitOfWork.ReceivingReport.Add(response);
+				await _unitOfWork.Save();
+				TempData["success"] = "Receiving report successfully updated";
 				return RedirectToAction(nameof(Index));
 			}
-			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
-			ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
-			return View(receivingReport);
+			return View(request);
 		}
 
 		// GET: ReceivingReports/Edit/5
-		public async Task<IActionResult> Edit(int? id)
+		public async Task<IActionResult> Edit(Guid? Id)
 		{
-			if (id == null || _context.ReceivingReports == null)
+			if (Id == null)
 			{
 				return NotFound();
 			}
 
-			var receivingReport = await _context.ReceivingReports.FindAsync(id);
+			var receivingReport = await _unitOfWork.ReceivingReport.Get(c => c.Id == Id);
 			if (receivingReport == null)
 			{
 				return NotFound();
 			}
-			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
-			//  ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
-			var meatDealersList = _context.MeatDealers.ToList();
-			var concatenatedList = new List<SelectListItem>();
 
-			foreach (var meatDealer in meatDealersList)
-			{
-				var concatenatedValue = $"{meatDealer.FirstName} {meatDealer.LastName}";
-				var selectListItem = new SelectListItem
-				{
-					Value = meatDealer.Id.ToString(),
-					Text = concatenatedValue
-				};
-				concatenatedList.Add(selectListItem);
-			}
-			ViewData["MeatDealersId"] = new SelectList(concatenatedList, "Value", "Text");
-			return View(receivingReport);
+            var response = _mapper.Map<EditReceivingReportViewModel>(receivingReport);
+
+            var loggedInUserId = _userManager.GetUserId(User); // Replace this with your actual logic to get the logged-in user's ID.
+            var loggedInUser = await _unitOfWork.AccountDetails.Get(
+                user => user.Id == loggedInUserId, includeProperties: "MeatEstablishment");
+            var meatDealerList = await _unitOfWork.MeatDealers.GetAll(
+               c => c.MeatEstablishmentId == loggedInUser.MeatEstablishmentId,
+               includeProperties: "MeatEstablishment");
+            var meatDealers = meatDealerList.Select(c => new
+            {
+                Id = c.Id,
+                FullName = $"{c.FirstName} {c.LastName}"
+            });
+            ViewBag.MeatDealersId = new SelectList(meatDealers, "Id", "FullName");
+            return View(response);
 		}
 
 		// POST: ReceivingReports/Edit/5
@@ -176,52 +300,32 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,RecTime,BatchCode,Species,Category,NoOfHeads,LiveWeight,MeatDealersId,Origin,ShippingDoc,HoldingPenNo,ReceivingBy,AccountDetailsId,InspectionStatus")] ReceivingReport receivingReport)
+		public async Task<IActionResult> Edit(EditReceivingReportViewModel request)
 		{
-			if (id != receivingReport.Id)
-			{
-				return NotFound();
-			}
+			var existingEntity = await _unitOfWork.ReceivingReport.Get(c => c.Id == request.Id);
+			_mapper.Map(request, existingEntity);
 
 			if (ModelState.IsValid)
 			{
-				try
-				{
-					_context.Update(receivingReport);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!ReceivingReportExists(receivingReport.Id))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction(nameof(Index));
+
+                _unitOfWork.ReceivingReport.Update(existingEntity);
+                await _unitOfWork.Save();
+                return RedirectToAction(nameof(Index));
 			}
 
-			TempData["AlertMessage"] = "Transaction Success";
-			ViewData["AccountDetailsId"] = new SelectList(_context.Users, "Id", "Id", receivingReport.AccountDetailsId);
-			ViewData["MeatDealersId"] = new SelectList(_context.MeatDealers, "Id", "Id", receivingReport.MeatDealersId);
-			return View(receivingReport);
+			TempData["success"] = "Transaction Success";
+			return RedirectToAction("Index");
 		}
 
 		// GET: ReceivingReports/Delete/5
-		public async Task<IActionResult> Delete(int? id)
+		public async Task<IActionResult> Delete(Guid? Id)
 		{
-			if (id == null || _context.ReceivingReports == null)
+			if (Id == null)
 			{
 				return NotFound();
 			}
 
-			var receivingReport = await _context.ReceivingReports
-				.Include(r => r.AccountDetails)
-				.Include(r => r.MeatDealers)
-				.FirstOrDefaultAsync(m => m.Id == id);
+			var receivingReport = await _unitOfWork.ReceivingReport.GetAll(c => c.Id == Id);
 			if (receivingReport == null)
 			{
 				return NotFound();
@@ -233,51 +337,18 @@ namespace thesis.Controllers
 		// POST: ReceivingReports/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
+		public async Task<IActionResult> DeleteConfirmed(Guid Id)
 		{
-			if (_context.ReceivingReports == null)
-			{
-				return Problem("Entity set 'AppDbContext.ReceivingReports'  is null.");
-			}
-			var receivingReport = await _context.ReceivingReports.FindAsync(id);
+			var receivingReport = await _unitOfWork.ReceivingReport.Get(c => c.Id == Id);
 			if (receivingReport != null)
 			{
-				_context.ReceivingReports.Remove(receivingReport);
+				_unitOfWork.ReceivingReport.Remove(receivingReport);
 			}
 
-			await _context.SaveChangesAsync();
-			TempData["AlertMessage"] = "Transaction Success";
-			return RedirectToAction(nameof(Index));
+			await _unitOfWork.Save();
+            TempData["success"] = "Receiving report successfully deleted";
+            return RedirectToAction(nameof(Index));
 		}
-
-		private bool ReceivingReportExists(int id)
-		{
-			return (_context.ReceivingReports?.Any(e => e.Id == id)).GetValueOrDefault();
-		}
-
-		[HttpPost]
-		public IActionResult actionResult(int Id)
-		{
-			// Use the Id value as needed
-			var result = new MeatInspectionReport
-			{
-				ReceivingReportId = Id,
-				RepDate = DateTime.Now,
-			};
-
-			_context.Add(result);
-			_context.SaveChanges();
-
-			// Retrieve the MeatInspectionReportId after it is saved
-			int meatInspectionReportId = result.Id;
-
-			// Redirect to the Create action of ConductOfInspections controller and pass the MeatInspectionReportId
-			return RedirectToAction("Create", "ConductOfInspections", new { meatInspectionReportId = meatInspectionReportId });
-
-		}
-
-
-
 	}
 }
 

@@ -112,7 +112,6 @@
             <thead>
                 <tr>
                     <th scope="col">Date</th>
-                    <th scope="col">VerifiedByPOSMSHead</th>
                     <th scope="col">Id</th>
                     <th scope="col">ReceivingReportId</th>
 
@@ -125,7 +124,6 @@
                 {
                     <tr>
                         <td>@inspection.RepDate</td>
-                        <td>@inspection.VerifiedByPOSMSHead</td>
                         <td>@inspection.Id</td>
                         <td>@inspection.ReceivingReportId</td>
                     </tr>
@@ -260,7 +258,7 @@
                             var loggedInUser = await UserManager.GetUserAsync(User);
 
                             // Explicitly cast the meatEstablishmentId to a non-nullable int and provide a default value of 0 if it's null.
-                            int meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? 0;
+                            Guid meatEstablishmentId = loggedInUser.MeatEstablishmentId ?? Guid.Empty;
 
                             // Filter the Model based on the MeatEstablishmentId
                             filteredModel = model1.Where(item => item.AccountDetails.MeatEstablishmentId == meatEstablishmentId);
@@ -301,21 +299,21 @@
                             <th scope="col">Weight (kg)</th>
                             <th scope="col">Cause</th>
                             <th scope="col" aria-hidden="true">Id</th>
-                            <th scope="col" aria-hidden="true">MeatInspectionId</th>
+                           @*  <th scope="col" aria-hidden="true">MeatInspectionId</th> *@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var inspection in ViewData["ConductOfInspections"] as IEnumerable<DomainLayer.Models.ConductOfInspection>)
+                        @foreach (var inspection in ViewData["ConductOfInspections"] as IEnumerable<DomainLayer.Models.Antemortem>)
                         {
                             <tr>
-                                <td>@inspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
-                                <td>@inspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                @* <td>@inspection.ReceivingReport.MeatDealers.FirstName</td> *@
+                                <td>@inspection.ReceivingReport.Species</td>
                                 <td>@inspection.Issue</td>
                                 <td>@inspection.NoOfHeads</td>
                                 <td>@inspection.Weight</td>
                                 <td>@inspection.Cause</td>
                                 <td aria-hidden="true">@inspection.Id</td>
-                                <td aria-hidden="true">@inspection.MeatInspectionReportId</td>
+                                @* <td aria-hidden="true">@inspection.MeatInspectionReportId</td> *@
                             </tr>
                         }
                     </tbody>
@@ -340,12 +338,12 @@
                         @foreach (var passed in ViewData["PassedForSlaughters"] as IEnumerable<DomainLayer.Models.PassedForSlaughter>)
                         {
                             <tr>
-                                <td>@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
-                                <td>@passed.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                @* <td>@passed.ConductOfInspection.ReceivingReport.MeatDealers.FirstName</td> *@
+                                @* <td>@passed.ConductOfInspection.ReceivingReport.Species</td> *@
                                 <td>@passed.NoOfHeads</td>
                                 <td>@passed.Weight</td>
                                 <td aria-hidden="true">@passed.Id</td>
-                                <td aria-hidden="true">@passed.ConductOfInspectionId</td>
+                                @* <td aria-hidden="true">@passed.ConductOfInspectionId</td> *@
                                 <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
                             </tr>
                             // Build a unique key for each combination of Issue, Cause, Species, and Meat Dealer
@@ -379,14 +377,13 @@
                         @foreach (var post in ViewData["postmortem"] as IEnumerable<DomainLayer.Models.Postmortem>)
                         {
                             <tr>
-                                <td>@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.MeatDealers.FirstName</td>
-                                <td>@post.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                @* <td>@post.PassedForSlaughter.ConductOfInspection.ReceivingReport.MeatDealers.FirstName</td> *@
+                                @* <td>@post.PassedForSlaughter.ConductOfInspection.ReceivingReport.Species</td> *@
                                 <td>@post.AnimalPart</td>
                                 <td>@post.Cause</td>
                                 <td>@post.NoOfHeads</td>
                                 <td>@post.Weight</td>
                                 <td aria-hidden="true">@post.Id</td>
-                                <td aria-hidden="true">@post.PassedForSlaughterId</td>
 
                                 <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
                             </tr>
@@ -415,27 +412,25 @@
                             <th scope="col">Total Number of Animals</th>
                             <th scope="col">Total Dressed Weight</th>
                             <th scope="col" aria-hidden="true">Id</th>
-                            <th scope="col" aria-hidden="true">PostmortemId</th>
 
 
                         </tr>
 
                     </thead>
                     <tbody>
-                        @foreach (var total in ViewData["totalNoFitForHumanConsumption"] as IEnumerable<DomainLayer.Models.TotalNoFitForHumanConsumptions>)
+                       @*  @foreach (var total in ViewData["totalNoFitForHumanConsumption"] as IEnumerable<DomainLayer.Models.TotalNoFitForHumanConsumptions>)
                         {
                             <tr>
 
-                                <td>@total.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                <td>@total.Postmortem.PassedForSlaughter.ConductOfInspection.ReceivingReport.Species</td>
                                 <td>@total.NoOfHeads</td>
                                 <td>@total.DressedWeight</td>
                                 <td aria-hidden="true">@total.Id</td>
-                                <td aria-hidden="true">@total.PostmortemId</td>
 
                                 <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
                             </tr>
 
-                        }
+                        } *@
 
                 </table>
 
@@ -466,10 +461,10 @@
 
                     </thead>
                     <tbody>
-                        @foreach (var summary in ViewData["SummaryAndDistributionOfMICs"] as IEnumerable<DomainLayer.Models.SummaryAndDistributionOfMIC>)
+                       @*  @foreach (var summary in ViewData["SummaryAndDistributionOfMICs"] as IEnumerable<DomainLayer.Models.SummaryAndDistributionOfMIC>)
                         {
                             <tr>
-                                <td>@summary.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species</td>
+                                <td>@summary.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.ReceivingReport.Species</td>
                                 <td>@summary.TotalNoFitForHumanConsumption.NoOfHeads</td>
                                 <td>@summary.TotalNoFitForHumanConsumption.DressedWeight</td>
                                 <td>@summary.DestinationName</td>
@@ -482,7 +477,7 @@
 
                                 <!-- Add columns for "Rejected for Slaughter" and "Condemned" as needed -->
                             </tr>
-                        }
+                        } *@
                     </tbody>
 
                 </table>

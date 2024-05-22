@@ -1,9 +1,16 @@
-﻿namespace DomainLayer.Enum
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DomainLayer.Enum
 {
     public enum Issue
-    {
-        NA,
+	{
+		[Display(Name = "N/A")]
+		NA,
         Suspect,
-        Condemned
+        Condemned,
+        [Display(Name = "Apparently Healthy")]
+        ApparentlyHealthy,
+        [Display(Name = "“Animal Welfare Issue")]
+        AnimalWelfareIssue,
     }
 }

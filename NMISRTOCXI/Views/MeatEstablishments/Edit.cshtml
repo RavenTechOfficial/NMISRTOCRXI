@@ -1,5 +1,5 @@
 ﻿@using DomainLayer.Enum;
-@model DomainLayer.Models.MeatEstablishment;
+@model DomainLayer.Models.ViewModels.EditMeatEstablishmentViewModel;
 @using Azure.Core;
 @{
 	ViewData["Title"] = "Edit";
@@ -24,16 +24,15 @@
 	<!-- MAIN STARTS-->
 	<main class="registration">
 
-		@*<div class="FirstLayer">
-		</div>*@
-		@*<div class="FirstLayer">
-		<nav aria-label="breadcrumb">
-		<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="#">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">Registration</li>
-		</ol>
-		</nav>
-		</div>*@
+		<div class="FirstLayer">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item" aria-current="page">Meat Establishment</li>
+					<li class="breadcrumb-item active" aria-current="page">Edit</li>
+				</ol>
+			</nav>
+		</div>
 
 		<div class="FirstLayer">
 			<div class="applications">
@@ -44,12 +43,7 @@
 						<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 						<div class="input-box">
 							<label asp-for="Type" class="control-label">Establishment Type:</label>
-							<select asp-for="Type" class="form-control">
-								<option>--Select--</option>
-								<option value="SLH">Slaughter House</option>
-								<option value="PDP">Poultry Dressing Plant</option>
-								<option value="MCP">Meat Cutting Plant</option>
-								<option value="CSW">Cold Storage Warehouse</option>
+							<select asp-for="Type" class="form-control" asp-items="@Html.GetEnumSelectList<EstablishmentType>()">
 							</select>
 						</div>
 					</div>
@@ -99,30 +93,9 @@
 						</div>
 					</div>
 
-					<script>
-						function updateAddressInput() {
-							// Get the selected values from the dropdowns
-							var barangay = document.getElement("barangaySelect").value;
-							var city = document.getElementById("citySelect").value;
-							var province = document.getElementById("provinceSelect").value;
-							var region = document.getElementById("regionSelect").value;
-
-
-
-							// Construct the address using the selected values
-							var address = barangay + ", " + city + ", " + province + ", " + region;
-
-							// Update the value of the address input box
-							document.getElementBy("addressInput").value = Address;
-						}
-					</script>
-
 					<div class="input-box">
 						<label class="control-label">License Status:</label>
-						<select asp-for="LicenseStatus" class="form-control">
-							<option>--Select--</option>
-							<option value="Licensed">Licensed</option>
-							<option value="NonLicensed">Non-Licensed</option>
+						<select asp-for="LicenseStatus" class="form-control" asp-items="@Html.GetEnumSelectList<LicenseStatus>()">
 						</select>
 					</div>
 					<div class="input-box">
@@ -160,136 +133,5 @@
 	}
 }
 <script src="~/js/register.js"></script>
-<script>
-	//integration of Philippines Address JSON
-	fetch('@Url.Content("https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
-		.then(response => response.json())
-		.then(data => {
-			const regionSelect = document.getElementById('regionSelect');
-			const provinceSelect = document.getElementById('provinceSelect');
-			const citySelect = document.getElementById('citySelect');
-			const barangaySelect = document.getElementById('barangaySelect');
-			var addressInput = document.getElementById('addressInput');
-
-			// Define the desired order of regions
-			const regionOrder = [
-				{ regionCode: "NCR", regionName: "National Capital Region" },
-				{ regionCode: "CAR", regionName: "Cordillera Administrative Region" },
-				{ regionCode: "01", regionName: "Region I" },
-				{ regionCode: "02", regionName: "Region II" },
-				{ regionCode: "03", regionName: "Region III" },
-				{ regionCode: "4A", regionName: "Region IV-A" },
-				{ regionCode: "4B", regionName: "Region IV-B" },
-				{ regionCode: "05", regionName: "Region V" },
-				{ regionCode: "06", regionName: "Region VI" },
-				{ regionCode: "07", regionName: "Region VII" },
-				{ regionCode: "08", regionName: "Region VIII" },
-				{ regionCode: "09", regionName: "Region IX" },
-				{ regionCode: "10", regionName: "Region X" },
-				{ regionCode: "11", regionName: "Region XI" },
-				{ regionCode: "12", regionName: "Region XII" },
-				{ regionCode: "13", regionName: "Region XIII" },
-				{ regionCode: "BARMM", regionName: "Bangsamoro Autonomous Region in Muslim Mindanao" }
-			];
-
-			// Populate regions dropdown
-			regionOrder.forEach(region => {
-				const option = document.createElement('option');
-				option.value = region.regionCode;
-				option.textContent = region.regionName;
-				regionSelect.appendChild(option);
-			});
-
-			// Function to populate provinces based on the selected region
-			function populateProvinces() {
-				const selectedRegion = regionSelect.value;
-				provinceSelect.innerHTML = "<option hidden>Select Province</option>";
-				citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
-				barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-				if (selectedRegion !== "") {
-					const regionData = data[selectedRegion];
-					const provinceList = regionData.province_list;
-
-					for (const [provinceCode, province] of Object.entries(provinceList)) {
-						const option = document.createElement('option');
-						option.value = provinceCode;
-						option.textContent = provinceCode;
-						provinceSelect.appendChild(option);
-					}
-				}
-			}
-
-			// Function to populate cities/municipalities based on the selected province
-			function populateCities() {
-				const selectedRegion = regionSelect.value;
-				const selectedProvince = provinceSelect.value;
-				citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
-				barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-				if (selectedRegion !== "" && selectedProvince !== "") {
-					const regionData = data[selectedRegion];
-					const provinceData = regionData.province_list[selectedProvince];
-					const municipalityList = provinceData.municipality_list;
-
-					for (const [municipalityCode, municipality] of Object.entries(municipalityList)) {
-						const option = document.createElement('option');
-						option.value = municipalityCode;
-						option.textContent = municipalityCode;
-						citySelect.appendChild(option);
-					}
-				}
-			}
-
-			// Function to populate barangays based on the selected city/municipality
-			function populateBarangays() {
-				const selectedRegion = regionSelect.value;
-				const selectedProvince = provinceSelect.value;
-				const selectedCity = citySelect.value;
-				barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-				if (selectedRegion !== "" && selectedProvince !== "" && selectedCity !== "") {
-					const regionData = data[selectedRegion];
-					const provinceData = regionData.province_list[selectedProvince];
-					const municipalityData = provinceData.municipality_list[selectedCity];
-					const barangayList = municipalityData.barangay_list;
-
-					for (const barangay of barangayList) {
-						const option = document.createElement('option');
-						option.value = barangay;
-						option.textContent = barangay;
-						barangaySelect.appendChild(option);
-					}
-				}
-			}
-			function updateAddress() {
-				var regionSelect = document.getElementById('regionSelect');
-				var provinceSelect = document.getElementById('provinceSelect');
-				var citySelect = document.getElementById('citySelect');
-				var barangaySelect = document.getElementById('barangaySelect');
-				var addressInput = document.getElementById('addressInput');
-
-				var region = regionSelect.value || '';
-				var province = provinceSelect.value || '';
-				var city = citySelect.value || '';
-				var barangay = barangaySelect.value || '';
-
-				var address = region + ', ' + province + ', ' + city + ', ' + barangay;
-				addressInput.value = address;
-			}
-
-
-			// Add event listeners to call the populate functions on change
-			regionSelect.addEventListener('change', populateProvinces);
-			provinceSelect.addEventListener('change', populateCities);
-			citySelect.addEventListener('change', populateBarangays);
-			document.getElementById('regionSelect').addEventListener('change', updateAddress);
-			document.getElementById('provinceSelect').addEventListener('change', updateAddress);
-			document.getElementById('citySelect').addEventListener('change', updateAddress);
-			document.getElementById('barangaySelect').addEventListener('change', updateAddress);
-		})
-		.catch(error => console.error('Error fetching JSON:', error));
-
-</script>
-
+<script src="~/js/address.js"></script>
 }

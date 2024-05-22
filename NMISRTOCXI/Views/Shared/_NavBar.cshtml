@@ -1,0 +1,212 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DomainLayer.Models
+
+@inject SignInManager<AccountDetails> SignInManager
+@inject UserManager<AccountDetails> UserManager
+@inject IUrlHelper Url
+
+<ul class="navbar-nav">
+	@if (SignInManager.IsSignedIn(User))
+	{
+		<section id="sidebar">
+
+			<div class="head">
+				<div class="logo">
+					<a asp-area="" asp-controller="Dashboard" asp-action="Index">
+						<img src="~/img/logo.png" />
+					</a>
+				</div>
+				<div class="details">
+					<p class="office">NMIS</p>
+					<p class="region">RTOC XI</p>
+				</div>
+			</div>
+
+			<ul class="side-menu top">
+				<p class="title">Main</p>
+				<li>
+					<a asp-area="" asp-controller="Dashboard" asp-action="Index">
+						<i class='bx bxs-dashboard'></i>
+						<span class="text">Dashboard</span>
+					</a>
+				</li>
+				<li>
+					<a asp-area="" asp-controller="Analytics" asp-action="Index">
+						<i class='bx bxs-doughnut-chart'></i>
+						<span class="text">Analytics</span>
+					</a>
+				</li>
+				<li>
+					<a asp-controller="GeoLocation" asp-action="Index">
+						<i class='bx bx-current-location'></i>
+						<span class="text">GeoLocation</span>
+					</a>
+				</li>
+				<li>
+					<a asp-controller="ChoroplethMap" asp-action="Index">
+						<i class='bx bx-current-location'></i>
+						<span class="text">Choropleth Map</span>
+					</a>
+				</li>
+				<li>
+					<a asp-controller="UsersManagement" asp-action="Index">
+						<i class='bx bxs-user-account'></i>
+						<span class="text">Users Management</span>
+					</a>
+				</li>
+				<li>
+					<a asp-controller="PostArticles" asp-action="Index">
+						<i class='bx bxs-user-account'></i>
+						<span class="text">Articles Section</span>
+					</a>
+				</li>
+			</ul>
+
+			<ul class="side-menu">
+				<p class="title">Meat Inspection Pages</p>
+				<li>
+					<a asp-controller="MeatInspectorList" asp-action="Index">
+						<i class='bx bxs-report'></i>
+						<span class="text">Meat Inspection Reports</span>
+						@*<i class="bx bxs-chevron-down dropdown-icon"></i>*@
+					</a>
+				</li>
+				<li>
+					<a asp-controller="MeatInspectorList" asp-action="Index">
+						<i class='bx bxs-report'></i>
+						<span class="text">Meat Inspection Reports</span>
+						@*<i class="bx bxs-chevron-down dropdown-icon"></i>*@
+					</a>
+				</li>
+
+			</ul>
+			<ul class="side-menu">
+				<p class="title">MTV Inspection Pages</p>
+				<li>
+					<a asp-controller="MeatInspectorList" asp-action="Index">
+						<i class='bx bxs-report'></i>
+						<span class="text">MTV Inspection Reports</span>
+						@*<i class="bx bxs-chevron-down dropdown-icon"></i>*@
+					</a>
+				</li>
+				<li>
+					<a asp-controller="MeatInspectorList" asp-action="Index">
+						<i class='bx bxs-report'></i>
+						<span class="text">MTV Inspection Reports</span>
+						@*<i class="bx bxs-chevron-down dropdown-icon"></i>*@
+					</a>
+				</li>
+
+			</ul>
+			<ul class="side-menu bot">
+				<p class="title">Others</p>
+				<li>
+					<a asp-area="Identity" asp-page="/Account/Manage/Index">
+						<i class='bx bxs-cog'></i>
+						<span class="text">Settings</span>
+					</a>
+				</li>
+				<li>
+					<a class="logout" data-toggle="modal" data-target="#logoutModal">
+						<i class='bx bxs-log-out-circle'></i>
+						<span class="text">Logout</span>
+					</a>
+				</li>
+			</ul>
+
+			<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							Do you really want to log out?
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+								<button type="submit" class="btn btn-danger">Logout</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div id="navbar">
+			<nav>
+				<i class='bx bx-menu'></i>
+				<form action="#">
+				</form>
+				<input type="checkbox" id="switch-mode" hidden>
+				<label for="switch-mode" class="switch-mode"></label>
+				<div class="dropdown">
+					<a href="#" id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="num" style="position: absolute; margin-right: 20px;"><label id="notificationCount"></label></span>
+						<i class='bx bxs-bell'></i>
+					</a>
+				</div>
+				<div class="dropdown">
+					<a href="#" class="profile dropdown-toggle" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<img src="~/img/profile/user.png">
+					</a>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+						<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Account Settings</a>
+
+						<a class="dropdown-item logout" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+					</div>
+				</div>
+			</nav>
+		</div>
+	}
+	else
+	{
+		@if (!ViewContext.HttpContext.Request.Path.Equals("/Identity/Account/Login", StringComparison.OrdinalIgnoreCase) &&
+				!ViewContext.HttpContext.Request.Path.Equals("/Identity/Account/Register", StringComparison.OrdinalIgnoreCase))
+		{
+			<section data-bs-version="5.1" class="menu menu2 cid-tJS6tZXiPa" once="menu" id="menu02-0">
+
+
+				<nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+					<div class="container">
+						<div class="navbar-brand">
+							<span class="navbar-logo">
+								<a href="https://www.facebook.com/nmis11safemeatforall" target="_blank">
+									<img src="assets/images/logo-1.png" alt="NMIS Region XI" style="height: 5rem;">
+								</a>
+							</span>
+
+						</div>
+						<button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbarSupportedContent" data-bs-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+							<div class="hamburger">
+								<span></span>
+								<span></span>
+								<span></span>
+								<span></span>
+							</div>
+						</button>
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav nav-dropdown" data-app-modern-menu="true">
+								<li class="nav-item">
+									<a class="nav-link link text-black text-primary display-4" href="#header01-7">Home</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link link text-black text-primary display-4" href="#features04-w" aria-expanded="false">Articles</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link link text-black text-primary display-4" href="#contacts02-9">FAQs</a>
+								</li>
+								<li class="nav-item"><a class="nav-link link text-black text-primary display-4" href="#contacts02-9">About Us</a></li>
+							</ul>
+
+							<div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary display-4" href="#form02-6">TRACE</a></div>
+						</div>
+					</div>
+				</nav>
+			</section>
+		}
+	}
+</ul>

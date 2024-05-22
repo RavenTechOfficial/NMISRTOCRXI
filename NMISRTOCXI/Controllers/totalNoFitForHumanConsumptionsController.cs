@@ -7,213 +7,263 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
+using ServiceLayer.Services.IRepositories;
+using SendGrid.Helpers.Mail;
+using DomainLayer.Models.ViewModels;
+using AutoMapper;
+using DomainLayer.Enum;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	public class TotalNoFitForHumanConsumptionsController : Controller
 	{
-		private readonly AppDbContext _context;
+		private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-		public TotalNoFitForHumanConsumptionsController(AppDbContext context)
+        public TotalNoFitForHumanConsumptionsController(IUnitOfWork unitOfWork,
+            IMapper mapper)
 		{
-			_context = context;
-		}
+			_unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
 
-		// GET: TotalNoFitForHumanConsumptions
-		public async Task<IActionResult> Index()
-		{
-			var AppDbContext = _context.TotalNoFitForHumanConsumptions.Include(t => t.Postmortem);
-			return View(await AppDbContext.ToListAsync());
-		}
+        [HttpPost]
+        public async Task<IActionResult> Create(int totalHead, double totalWeight,double ofals, Guid Id)
+        {
+            var fitForHuman = await _unitOfWork.TotalNoFitForHumanConsumption.Get(c => c.ReceivingReportId == Id);
 
-		// GET: TotalNoFitForHumanConsumptions/Details/5
-		public async Task<IActionResult> Details(int? id)
-		{
-			if (id == null || _context.TotalNoFitForHumanConsumptions == null)
-			{
-				return NotFound();
-			}
+            if(fitForHuman == null)
+            {
+                fitForHuman = new TotalNoFitForHumanConsumptions
+                {
+                    ReceivingReportId = Id,
+                    NoOfHeads = totalHead,
+                    DressedWeight = totalWeight,
+                    OFALS = ofals,
+                };
 
-			var TotalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions
-				.Include(t => t.Postmortem)
-				.FirstOrDefaultAsync(m => m.Id == id);
-			if (TotalNoFitForHumanConsumptions == null)
-			{
-				return NotFound();
-			}
+                _unitOfWork.TotalNoFitForHumanConsumption.Add(fitForHuman);
+            }
+            else
+            {
+                fitForHuman.NoOfHeads = totalHead;
+                fitForHuman.DressedWeight = totalWeight;
+                fitForHuman.OFALS = ofals;
+                _unitOfWork.TotalNoFitForHumanConsumption.Update(fitForHuman);
+            }
+            var receivingReport = await _unitOfWork.ReceivingReport.Get(c => c.Id == Id);
 
-			return View(TotalNoFitForHumanConsumptions);
-		}
+            if (receivingReport != null)
+            {
+                receivingReport.InspectionStatus = InspectionStatus.Frozen;
+                _unitOfWork.ReceivingReport.Update(receivingReport);
+            }
 
-		// GET: TotalNoFitForHumanConsumptions/Create
-		public IActionResult Create()
-		{
-			int? passedForSlaughterId = TempData["PassedForSlaughterId"] as int?;
-			int mostRecentId = (int)passedForSlaughterId;
+            await _unitOfWork.Save();
 
-			// Check if the specific PassedForSlaughterId has multiple inputs
-			var multipleInputs = _context.Postmortems
-				.Where(pm => pm.PassedForSlaughterId == mostRecentId)
-				.GroupBy(pm => pm.PassedForSlaughterId)
-				.Select(group => new { PassedForSlaughterId = group.Key, TotalPostWeight = group.Sum(pm => pm.Weight), TotalPostNoOfHeads = group.Sum(pm => pm.NoOfHeads) })
-				.FirstOrDefault();
+            var response = _mapper.Map<ReceivingReportViewModel>(receivingReport);
 
-			if (multipleInputs == null)
-			{
-				// Handle the case when there are no multiple inputs
-				// You might want to show an error message or take other actions
-			}
-			else
-			{
-				double totalPostWeight = multipleInputs.TotalPostWeight; //double or float
-				int totalPostNoOfHeads = multipleInputs.TotalPostNoOfHeads;
+            if(response == null) {
+                return Json(new { redirectUrl = Url.Action("Inspect", new { Id = Id }) });
+            }
 
-				// Execute the provided SQL queries using LINQ to calculate the differences
-				var passedForSlaughterData = _context.PassedForSlaughters
-					.Where(pfs => pfs.Id == mostRecentId)
-					.Select(pfs => new
-					{
-						InspectionWeight = pfs.Weight,
-						InspectionNoOfHeads = pfs.NoOfHeads,
-						PostWeight = totalPostWeight,
-						PostNoOfHeads = totalPostNoOfHeads,
-						WeightPassed = pfs.Weight - totalPostWeight,
-						NoOfHeadsPassed = pfs.NoOfHeads - totalPostNoOfHeads
-					})
-					.FirstOrDefault();
+            return Json(new { redirectUrl = Url.Action("Index", response) });
+        }
+        //		// GET: TotalNoFitForHumanConsumptions
+        //		public async Task<IActionResult> Index()
+        //		{
+        //			var IUnitOfWork = _unitOfWork.TotalNoFitForHumanConsumptions.Include(t => t.Postmortem);
+        //			return View(await IUnitOfWork.ToListAsync());
+        //		}
 
-				if (passedForSlaughterData == null)
-				{
-					// Handle the case when data is not found
-					// You might want to show an error message or take other actions
-				}
-				else
-				{
-					// Pass the calculated data to the view
-					ViewData["WeightPassed"] = passedForSlaughterData.WeightPassed;
-					ViewData["NoOfHeadsPassed"] = passedForSlaughterData.NoOfHeadsPassed;
+        //		// GET: TotalNoFitForHumanConsumptions/Details/5
+        //		public async Task<IActionResult> Details(int? id)
+        //		{
+        //			if (id == null || _unitOfWork.TotalNoFitForHumanConsumptions == null)
+        //			{
+        //				return NotFound();
+        //			}
 
-				}
-			}
-			//ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id");
-			//return View();
-			int latestId = _context.Postmortems.OrderByDescending(p => p.Id).FirstOrDefault()?.Id ?? 0;
-			ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", latestId);
-			return View();
-		}
+        //			var TotalNoFitForHumanConsumptions = await _unitOfWork.TotalNoFitForHumanConsumptions
+        //				.Include(t => t.Postmortem)
+        //				.FirstOrDefaultAsync(m => m.Id == id);
+        //			if (TotalNoFitForHumanConsumptions == null)
+        //			{
+        //				return NotFound();
+        //			}
 
-		// POST: TotalNoFitForHumanConsumptions/Create
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] TotalNoFitForHumanConsumptions TotalNoFitForHumanConsumptions)
-		{
-			if (ModelState.IsValid)
-			{
-				_context.Add(TotalNoFitForHumanConsumptions);
-				await _context.SaveChangesAsync();
-				//   return RedirectToAction(nameof(Index));
-				return RedirectToAction("Create", "SummaryAndDistributionOfMICs");
-			}
-			ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", TotalNoFitForHumanConsumptions.PostmortemId);
-			return View();
-		}
+        //			return View(TotalNoFitForHumanConsumptions);
+        //		}
 
-		// GET: TotalNoFitForHumanConsumptions/Edit/5
-		public async Task<IActionResult> Edit(int? id)
-		{
-			if (id == null || _context.TotalNoFitForHumanConsumptions == null)
-			{
-				return NotFound();
-			}
+        //		// GET: TotalNoFitForHumanConsumptions/Create
+        //		public IActionResult Create()
+        //		{
+        //			int? passedForSlaughterId = TempData["PassedForSlaughterId"] as int?;
+        //			int mostRecentId = (int)passedForSlaughterId;
 
-			var TotalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions.FindAsync(id);
-			if (TotalNoFitForHumanConsumptions == null)
-			{
-				return NotFound();
-			}
-			ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", TotalNoFitForHumanConsumptions.PostmortemId);
-			return View(TotalNoFitForHumanConsumptions);
-		}
+        //			// Check if the specific PassedForSlaughterId has multiple inputs
+        //			var multipleInputs = _unitOfWork.Postmortems
+        //				.Where(pm => pm.PassedForSlaughterId == mostRecentId)
+        //				.GroupBy(pm => pm.PassedForSlaughterId)
+        //				.Select(group => new { PassedForSlaughterId = group.Key, TotalPostWeight = group.Sum(pm => pm.Weight), TotalPostNoOfHeads = group.Sum(pm => pm.NoOfHeads) })
+        //				.FirstOrDefault();
 
-		// POST: TotalNoFitForHumanConsumptions/Edit/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] TotalNoFitForHumanConsumptions TotalNoFitForHumanConsumptions)
-		{
-			if (id != TotalNoFitForHumanConsumptions.Id)
-			{
-				return NotFound();
-			}
+        //			if (multipleInputs == null)
+        //			{
+        //				// Handle the case when there are no multiple inputs
+        //				// You might want to show an error message or take other actions
+        //			}
+        //			else
+        //			{
+        //				double totalPostWeight = multipleInputs.TotalPostWeight; //double or float
+        //				int totalPostNoOfHeads = multipleInputs.TotalPostNoOfHeads;
 
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					_context.Update(TotalNoFitForHumanConsumptions);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!TotalNoFitForHumanConsumptionsExists(TotalNoFitForHumanConsumptions.Id))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction(nameof(Index));
-			}
-			ViewData["PostmortemId"] = new SelectList(_context.Postmortems, "Id", "Id", TotalNoFitForHumanConsumptions.PostmortemId);
-			return View(TotalNoFitForHumanConsumptions);
-		}
+        //				// Execute the provided SQL queries using LINQ to calculate the differences
+        //				var passedForSlaughterData = _unitOfWork.PassedForSlaughters
+        //					.Where(pfs => pfs.Id == mostRecentId)
+        //					.Select(pfs => new
+        //					{
+        //						InspectionWeight = pfs.Weight,
+        //						InspectionNoOfHeads = pfs.NoOfHeads,
+        //						PostWeight = totalPostWeight,
+        //						PostNoOfHeads = totalPostNoOfHeads,
+        //						WeightPassed = pfs.Weight - totalPostWeight,
+        //						NoOfHeadsPassed = pfs.NoOfHeads - totalPostNoOfHeads
+        //					})
+        //					.FirstOrDefault();
 
-		// GET: TotalNoFitForHumanConsumptions/Delete/5
-		public async Task<IActionResult> Delete(int? id)
-		{
-			if (id == null || _context.TotalNoFitForHumanConsumptions == null)
-			{
-				return NotFound();
-			}
+        //				if (passedForSlaughterData == null)
+        //				{
+        //					// Handle the case when data is not found
+        //					// You might want to show an error message or take other actions
+        //				}
+        //				else
+        //				{
+        //					// Pass the calculated data to the view
+        //					ViewData["WeightPassed"] = passedForSlaughterData.WeightPassed;
+        //					ViewData["NoOfHeadsPassed"] = passedForSlaughterData.NoOfHeadsPassed;
 
-			var TotalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions
-				.Include(t => t.Postmortem)
-				.FirstOrDefaultAsync(m => m.Id == id);
-			if (TotalNoFitForHumanConsumptions == null)
-			{
-				return NotFound();
-			}
+        //				}
+        //			}
+        //			//ViewData["PostmortemId"] = new SelectList(_unitOfWork.Postmortems, "Id", "Id");
+        //			//return View();
+        //			int latestId = _unitOfWork.Postmortems.OrderByDescending(p => p.Id).FirstOrDefault()?.Id ?? 0;
+        //			ViewData["PostmortemId"] = new SelectList(_unitOfWork.Postmortems, "Id", "Id", latestId);
+        //			return View();
+        //		}
 
-			return View(TotalNoFitForHumanConsumptions);
-		}
+        //		// POST: TotalNoFitForHumanConsumptions/Create
+        //		// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //		[HttpPost]
+        //		[ValidateAntiForgeryToken]
+        //		public async Task<IActionResult> Create([Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] TotalNoFitForHumanConsumptions TotalNoFitForHumanConsumptions)
+        //		{
+        //			if (ModelState.IsValid)
+        //			{
+        //				_unitOfWork.Add(TotalNoFitForHumanConsumptions);
+        //				await _unitOfWork.SaveChangesAsync();
+        //				//   return RedirectToAction(nameof(Index));
+        //				return RedirectToAction("Create", "SummaryAndDistributionOfMICs");
+        //			}
+        //			ViewData["PostmortemId"] = new SelectList(_unitOfWork.Postmortems, "Id", "Id", TotalNoFitForHumanConsumptions.PostmortemId);
+        //			return View();
+        //		}
 
-		// POST: TotalNoFitForHumanConsumptions/Delete/5
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
-		{
-			if (_context.TotalNoFitForHumanConsumptions == null)
-			{
-				return Problem("Entity set 'AppDbContext.TotalNoFitForHumanConsumptions'  is null.");
-			}
-			var TotalNoFitForHumanConsumptions = await _context.TotalNoFitForHumanConsumptions.FindAsync(id);
-			if (TotalNoFitForHumanConsumptions != null)
-			{
-				_context.TotalNoFitForHumanConsumptions.Remove(TotalNoFitForHumanConsumptions);
-			}
+        //		// GET: TotalNoFitForHumanConsumptions/Edit/5
+        //		public async Task<IActionResult> Edit(int? id)
+        //		{
+        //			if (id == null || _unitOfWork.TotalNoFitForHumanConsumptions == null)
+        //			{
+        //				return NotFound();
+        //			}
 
-			await _context.SaveChangesAsync();
-			return RedirectToAction(nameof(Index));
-		}
+        //			var TotalNoFitForHumanConsumptions = await _unitOfWork.TotalNoFitForHumanConsumptions.FindAsync(id);
+        //			if (TotalNoFitForHumanConsumptions == null)
+        //			{
+        //				return NotFound();
+        //			}
+        //			ViewData["PostmortemId"] = new SelectList(_unitOfWork.Postmortems, "Id", "Id", TotalNoFitForHumanConsumptions.PostmortemId);
+        //			return View(TotalNoFitForHumanConsumptions);
+        //		}
 
-		private bool TotalNoFitForHumanConsumptionsExists(int id)
-		{
-			return (_context.TotalNoFitForHumanConsumptions?.Any(e => e.Id == id)).GetValueOrDefault();
-		}
-	}
+        //		// POST: TotalNoFitForHumanConsumptions/Edit/5
+        //		// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //		[HttpPost]
+        //		[ValidateAntiForgeryToken]
+        //		public async Task<IActionResult> Edit(int id, [Bind("Id,Species,NoOfHeads,DressedWeight,PostmortemId")] TotalNoFitForHumanConsumptions TotalNoFitForHumanConsumptions)
+        //		{
+        //			if (id != TotalNoFitForHumanConsumptions.Id)
+        //			{
+        //				return NotFound();
+        //			}
+
+        //			if (ModelState.IsValid)
+        //			{
+        //				try
+        //				{
+        //					_unitOfWork.Update(TotalNoFitForHumanConsumptions);
+        //					await _unitOfWork.SaveChangesAsync();
+        //				}
+        //				catch (DbUpdateConcurrencyException)
+        //				{
+        //					if (!TotalNoFitForHumanConsumptionsExists(TotalNoFitForHumanConsumptions.Id))
+        //					{
+        //						return NotFound();
+        //					}
+        //					else
+        //					{
+        //						throw;
+        //					}
+        //				}
+        //				return RedirectToAction(nameof(Index));
+        //			}
+        //			ViewData["PostmortemId"] = new SelectList(_unitOfWork.Postmortems, "Id", "Id", TotalNoFitForHumanConsumptions.PostmortemId);
+        //			return View(TotalNoFitForHumanConsumptions);
+        //		}
+
+        //		// GET: TotalNoFitForHumanConsumptions/Delete/5
+        //		public async Task<IActionResult> Delete(int? id)
+        //		{
+        //			if (id == null || _unitOfWork.TotalNoFitForHumanConsumptions == null)
+        //			{
+        //				return NotFound();
+        //			}
+
+        //			var TotalNoFitForHumanConsumptions = await _unitOfWork.TotalNoFitForHumanConsumptions
+        //				.Include(t => t.Postmortem)
+        //				.FirstOrDefaultAsync(m => m.Id == id);
+        //			if (TotalNoFitForHumanConsumptions == null)
+        //			{
+        //				return NotFound();
+        //			}
+
+        //			return View(TotalNoFitForHumanConsumptions);
+        //		}
+
+        //		// POST: TotalNoFitForHumanConsumptions/Delete/5
+        //		[HttpPost, ActionName("Delete")]
+        //		[ValidateAntiForgeryToken]
+        //		public async Task<IActionResult> DeleteConfirmed(int id)
+        //		{
+        //			if (_unitOfWork.TotalNoFitForHumanConsumptions == null)
+        //			{
+        //				return Problem("Entity set 'IUnitOfWork.TotalNoFitForHumanConsumptions'  is null.");
+        //			}
+        //			var TotalNoFitForHumanConsumptions = await _unitOfWork.TotalNoFitForHumanConsumptions.FindAsync(id);
+        //			if (TotalNoFitForHumanConsumptions != null)
+        //			{
+        //				_unitOfWork.TotalNoFitForHumanConsumptions.Remove(TotalNoFitForHumanConsumptions);
+        //			}
+
+        //			await _unitOfWork.SaveChangesAsync();
+        //			return RedirectToAction(nameof(Index));
+        //		}
+
+        //		private bool TotalNoFitForHumanConsumptionsExists(int id)
+        //		{
+        //			return (_unitOfWork.TotalNoFitForHumanConsumptions?.Any(e => e.Id == id)).GetValueOrDefault();
+        //		}
+    }
 }

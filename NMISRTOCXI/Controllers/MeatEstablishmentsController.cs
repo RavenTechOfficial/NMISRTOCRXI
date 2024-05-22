@@ -1,59 +1,59 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using DomainLayer.Models.ViewModels;
-using InfastructureLayer.Data;
 using DomainLayer.Models;
+using ServiceLayer.Services.IRepositories;
+using AutoMapper;
+using DomainLayer.Enum;
+using ServiceLayer.Common;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
 	[Authorize(Policy = "RequireInspectorAdmin")]
 	public class MeatEstablishmentsController : Controller
 	{
-		private readonly AppDbContext _context;
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
 
-		public MeatEstablishmentsController(AppDbContext context)
+		public MeatEstablishmentsController(IUnitOfWork unitOfWork, IMapper mapper)
 		{
-			_context = context;
+			_unitOfWork = unitOfWork;
+			_mapper = mapper;
 		}
 
 		// GET: MeatEstablishments
 		public async Task<IActionResult> Index()
 		{
 			ViewBag.AlertMessage = TempData["AlertMessage"] as string;
-			ViewBag.AlertMessagee = TempData["AlertMessagee"] as string;
-			var meatEstablishments = await _context.MeatEstablishment.ToListAsync();
-			return View(meatEstablishments);
+
+			var meatEstablishments = await _unitOfWork.MeatEstablishment.GetAll();
+			var response = _mapper.Map<IEnumerable<MeatEstablishmentViewModel>>(meatEstablishments);
+			return View(response);
 		}
 
 		// GET: MeatEstablishments/Details/5
-		public async Task<IActionResult> Details(int? id)
+		public async Task<IActionResult> Details(Guid? Id)
 		{
-			if (id == null || _context.MeatEstablishment == null)
+			if (Id == null)
 			{
 				return NotFound();
 			}
 
-			var meatEstablishment = await _context.MeatEstablishment
-				.FirstOrDefaultAsync(m => m.Id == id);
-			if (meatEstablishment == null)
-			{
-				return NotFound();
-			}
-			var viewModel = new MeatEstablishmentViewModel();
-			viewModel.SingleMeatEstablishment = meatEstablishment;
-
-			return View(viewModel);
+			var meatEstablishment = await _unitOfWork.MeatEstablishment.Get(c => c.Id == Id);
+			var response = _mapper.Map<MeatEstablishmentViewModel>(meatEstablishment);
+			return View(response);
 		}
 
 		// GET: MeatEstablishments/Create
 		public IActionResult Create()
-		{
-			var viewModel = new MeatEstablishmentViewModel
-			{
-				MeatEstablishments = _context.MeatEstablishment.ToList()
-			};
-			return View(viewModel);
+        {
+            var establishmentTypesList = EnumSelectListGenerator<EstablishmentType>.GenerateSelectList();
+            var licenseStatusList = EnumSelectListGenerator<LicenseStatus>.GenerateSelectList();
+            ViewBag.EstablishmentTypesList = new SelectList(establishmentTypesList, "Value", "Text");
+            ViewBag.LicenseStatusList = new SelectList(licenseStatusList, "Value", "Text");
+            return View();
 		}
 
 		// POST: MeatEstablishments/Create
@@ -61,116 +61,94 @@ namespace thesis.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,Type,Name,Address,LicenseToOperateNumber,LicenseStatus,Long,Lat")] MeatEstablishment meatEstablishment)
+		public async Task<IActionResult> Create(CreateMeatEstablishmentViewModel request)
 		{
+			var response = _mapper.Map<MeatEstablishment>(request);
 			if (ModelState.IsValid)
 			{
-				_context.Add(meatEstablishment);
-				await _context.SaveChangesAsync();
+
+				_unitOfWork.MeatEstablishment.Add(response);
+				await _unitOfWork.Save();
 				TempData["AlertMessage"] = "Transaction Success";
 
 				return RedirectToAction(nameof(Index));
 			}
 
-			return View(meatEstablishment);
+			return View(request);
 		}
 
 
-		// GET: MeatEstablishments/Edit/5
-		public async Task<IActionResult> Edit(int? id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
+        // GET: MeatEstablishments/Edit/5
+        public async Task<IActionResult> Edit(Guid? id)
+        {
 
-			var meatEstablishment = await _context.MeatEstablishment.FindAsync(id);
-			if (meatEstablishment == null)
-			{
-				return NotFound();
-			}
+            var existingEntity = await _unitOfWork.MeatEstablishment.Get(c => c.Id == id);
 
-			return View(meatEstablishment);
-		}
+            if (existingEntity == null) return NotFound();
 
-		// POST: MeatEstablishments/Edit/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Address,LicenseToOperateNumber, LicenseStatus,Lat,Long")] MeatEstablishment meatEstablishment)
-		{
-			if (id != meatEstablishment.Id)
-			{
-				return NotFound();
-			}
+            var response = _mapper.Map<EditMeatEstablishmentViewModel>(existingEntity);
+            var establishmentTypesList = EnumSelectListGenerator<EstablishmentType>.GenerateSelectList();
+            var licenseStatusList = EnumSelectListGenerator<LicenseStatus>.GenerateSelectList();
 
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					_context.Update(meatEstablishment);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!MeatEstablishmentExists(meatEstablishment.Id.Value))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				//TempData["AlertMessagee"] = "Transaction Success";
+			ViewBag.EstablishmentTypesList = new SelectList(establishmentTypesList, "Value", "Text");
+            ViewBag.LicenseStatusList = new SelectList(licenseStatusList, "Value", "Text");
 
-				return RedirectToAction(nameof(Index));
-			}
-			return View(meatEstablishment);
-		}
+            return View(response);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditMeatEstablishmentViewModel request)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingEntity = await _unitOfWork.MeatEstablishment.Get(c => c.Id == request.Id);
+
+                if (existingEntity == null)
+                {
+                    return NotFound();
+                }
+
+                _mapper.Map(request, existingEntity); 
+                _unitOfWork.MeatEstablishment.Update(existingEntity);
+                await _unitOfWork.Save();
+
+                TempData["AlertMessage"] = "Transaction Success";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(request);
+        }
 
 		// GET: MeatEstablishments/Delete/5
-		public async Task<IActionResult> Delete(int? id)
+		public async Task<IActionResult> Delete(Guid? Id)
 		{
-			if (id == null)
+			if (Id == null)
 			{
 				return NotFound();
 			}
 
-			var meatEstablishment = await _context.MeatEstablishment
-				.FirstOrDefaultAsync(m => m.Id == id);
+			var response = await _unitOfWork.MeatEstablishment.Get(c => c.Id == Id);
 
-			if (meatEstablishment == null)
-			{
-				return NotFound();
-			}
+			if (response == null) return NotFound();
 
-			return View(meatEstablishment);
+			return View(response);
 		}
 
 		// POST: MeatEstablishments/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int? id)
+		public async Task<IActionResult> DeleteConfirmed(Guid? Id)
 		{
-			var meatEstablishment = await _context.MeatEstablishment.FindAsync(id);
-
-			if (meatEstablishment == null)
+			var response = await _unitOfWork.MeatEstablishment.Get(c => c.Id == Id);
+			if (response != null)
 			{
-				return NotFound();
+				_unitOfWork.MeatEstablishment.Remove(response);
+				TempData["AlertMessage"] = "Transaction Success";
 			}
 
-			_context.MeatEstablishment.Remove(meatEstablishment);
-			await _context.SaveChangesAsync();
-			TempData["AlertMessage"] = "Transaction Success";
-
+			await _unitOfWork.Save();
 			return RedirectToAction(nameof(Index));
-		}
-
-		private bool MeatEstablishmentExists(int id)
-		{
-			return _context.MeatEstablishment.Any(e => e.Id == id);
 		}
 	}
 }

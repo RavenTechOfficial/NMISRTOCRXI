@@ -1,4 +1,4 @@
-﻿@model DomainLayer.Models.MeatDealers
+﻿@model DomainLayer.Models.ViewModels.AccountDetailsViewModel
 <link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
 @{
     ViewData["Title"] = "Details";
@@ -44,7 +44,7 @@
             @Html.DisplayNameFor(model => model.MeatEstablishment)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MeatEstablishment.Id)
+            @Html.DisplayFor(model => model.MeatEstablishment)
         </dd>
     </dl>
 </div>

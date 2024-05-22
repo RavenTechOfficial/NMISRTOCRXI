@@ -4,7 +4,7 @@ using ServiceLayer.Services.IRepositories;
 using DomainLayer.Models.ViewModels;
 using DomainLayer.Enum;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
     public class AnalyticsController : Controller
     {

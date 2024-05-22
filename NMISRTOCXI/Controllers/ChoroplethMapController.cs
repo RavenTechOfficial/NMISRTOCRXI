@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Services.IRepositories;
 using DomainLayer.Models.ViewModels;
-using thesis.Repositories;
+using NMISRTOCXI.Repositories;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
     public class ChoroplethMapController : Controller
     {

@@ -15,7 +15,7 @@ namespace DomainLayer.Models
 		public string? Address { get; set; }
 		public string Email { get; set; }
 		public string TelNo { get; set; }
-		public gender gender { get; set; }
+		public Gender Gender { get; set; }
 		public DateTime birthdate { get; set; }
 	}
 }

@@ -4,7 +4,7 @@ using DomainLayer.Models.ViewModels;
 using InfastructureLayer.Data;
 using DomainLayer.Enum;
 
-namespace thesis.Repositories
+namespace NMISRTOCXI.Repositories
 {
     public class ChroplethMapRepository : IChroplethMapRepository
     {
@@ -89,13 +89,13 @@ namespace thesis.Repositories
 
         public double ChroplethValueMeatDealers(Species species, string address)
         {
-            var stackchart = _context.TotalNoFitForHumanConsumptions
-                .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
-                .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species == species
-                && p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Origin == address)
-                .Sum(p => p.DressedWeight);
+            //var stackchart = _context.TotalNoFitForHumanConsumptions
+            //    .Include(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
+            //    .Where(p => p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species == species
+            //    && p.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Origin == address)
+            //    .Sum(p => p.DressedWeight);
 
-            return stackchart;
+            return 0;
         }
 
   //      public double ChroplethValue(Species species, string address)
@@ -111,13 +111,13 @@ namespace thesis.Repositories
 
 		public double ChroplethValue(Species species, string address)
 		{
-			var stackchart = _context.SummaryAndDistributionOfMICs
-				.Include(p => p.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
-				.Where(p => p.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species == species
-				&& p.DestinationAddress == address)
-				.Sum(p => p.TotalNoFitForHumanConsumption.DressedWeight);
+			//var stackchart = _context.SummaryAndDistributionOfMICs
+			//	.Include(p => p.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport)
+			//	.Where(p => p.TotalNoFitForHumanConsumption.Postmortem.PassedForSlaughter.ConductOfInspection.MeatInspectionReport.ReceivingReport.Species == species
+			//	&& p.DestinationAddress == address)
+			//	.Sum(p => p.TotalNoFitForHumanConsumption.DressedWeight);
 
-			return stackchart;
+			return 0;
 		}
 	}
 }

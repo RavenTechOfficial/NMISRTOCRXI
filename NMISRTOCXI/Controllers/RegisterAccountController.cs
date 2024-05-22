@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using InfastructureLayer.Data;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
     public class RegisterAccountController : Controller
     {

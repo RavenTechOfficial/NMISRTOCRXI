@@ -1,4 +1,4 @@
-﻿@model DomainLayer.Models.PassedForSlaughter
+﻿@* @model DomainLayer.Models.PassedForSlaughter
 <link href="~/css/inspectorSideNav.css" rel="stylesheet" />
 @{
     ViewData["Title"] = "Create";
@@ -28,12 +28,7 @@
         <div class="FirstLayer">
 
 
-            @*<h1>Create</h1>*@
-
-
             <div class="applications">
-                @*
-                <h1>Create</h1>*@
 
                 <a class='bx bxs-chevron-left' asp-controller="ReceivingReports" asp-action="Index">
                     <span>Back</span>
@@ -42,16 +37,6 @@
                     <div class="col-md-4">
                         <form asp-action="Create">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            @*<div class="form-group">
-                            <label asp-for="NoOfHeads" class="control-label">No. Of Heads:</label>
-                            <input asp-for="NoOfHeads" class="form-control" value="@ViewData["CalculatedDifferenceNoOfHeads"]" readonly />
-                            <span asp-validation-for="NoOfHeads" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                            <label asp-for="Weight" class="control-label">Weight:</label>
-                            <input asp-for="Weight" class="form-control" value="@ViewData["CalculatedDifferenceWeight"]" readonly />
-                            <span asp-validation-for="Weight" class="text-danger"></span>
-                            </div>*@
                             <div class="form-group">
                                 <label asp-for="NoOfHeads" class="control-label">No. Of Heads::</label>
                                 <input asp-for="NoOfHeads" class="form-control" value="@ViewData["PassedForSlaughterHeads"]" readonly />
@@ -69,10 +54,6 @@
                             <br />
                             <div class="form-group">
                                 <input type="submit" value="Next" class="btn btn-primary" />
-                                @*<div class="button">
-                                <a class="btn btn-success" asp-controller="PassedForSlaughters" asp-action="Index"> <i class="bx bx-detail"> </i> <span>Show all</span></a>
-
-                                </div>*@
                             </div>
                         </form>
                     </div>
@@ -87,14 +68,9 @@
                     }
                 }
                 <br />
-
-                @* <div class="button">
-                <a class="btn btn-dark "  asp-controller="Postmortems" asp-action="Create"> <span>Next</span> <i class="bx bx-chevron-right"> </i> </a>
-                </div>*@
-
-
             </div>
 
         </div>
     </main>
 </section>
+ *@

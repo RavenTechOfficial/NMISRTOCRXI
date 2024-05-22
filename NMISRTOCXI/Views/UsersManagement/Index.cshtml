@@ -1,6 +1,5 @@
 ﻿@using DomainLayer.Models;
 @model IEnumerable<AccountDetails>
-<link rel="stylesheet" href="~/css/users.css" asp-append-version="true" />
 <partial name="_Notifications" />
 
 @if (User.IsInRole("SuperAdministrator"))
@@ -9,53 +8,51 @@
 
 
 		<!-- MAIN STARTS-->
-		<main class="registration">
+		<main>
+
 			<div class="head-title">
 				<div class="left">
 					<h1>Users Management</h1>
+					<div class="table-container">
+						<div style="margin-bottom: 25px;">
+							<a asp-area="Identity" asp-page="/Account/Register" class="createBtn">
+								<i class="bi bi-plus-circle me-1"></i> Add Account
+							</a>
+						</div>
+						<table id="admin-accounts" class="table table-striped" style="width:100%">
+							<thead>
+								<tr>
+									<th>Name</th>
+									@* <th>Role</th> *@
+									<th>Email</th>
+									<th>Phone Number</th>
+									<th>Address</th>
+									<th style="">Options</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var item in Model)
+								{
+									<tr>
+										<td>@item.LastName, @item.FirstName</td>
+										@* <td>@item.Roles</td> *@
+										<td>@item.Email</td>
+										<td>@item.PhoneNumber</td>
+										<td>@item.Address</td>
+										<td class="d-flex flex-nowrap">
+											<a type="button" class="btn btn-primary py-1 font-weight-light" asp-action="Details" asp-route-id="@item.Id">View</a>
+											<a type="button" class="btn btn-warning  mx-1 py-1 font-weight-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+											<a type="button" class="btn btn-danger py-1 font-weight-light" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+										</td>
+									</tr>
+								}
+
+							</tbody>
+
+						</table>
+					</div>
 				</div>
 			</div>
-				
-			<div class="table-container">
-				<div style="margin-bottom: 25px;">
-					<a asp-area="Identity" asp-page="/Account/Register" class="createBtn">
-						<i class="bi bi-plus-circle me-1"></i> Add Account
-					</a>
-				</div>
-				<table id="admin-accounts" class="table table-striped" style="width:100%">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Role</th>
-							<th>Email</th>
-							<th>Phone Number</th>
-							<th>Address</th>
-							<th style="">Options</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var item in Model)
-						{
-							<tr>
-								<td>@item.lastName, @item.firstName</td>
-								<td>@item.Roles</td>
-								<td>@item.Email</td>
-								<td>@item.contactNo</td>
-								<td>@item.address</td>
-								<td class="d-flex flex-nowrap">
-									<a type="button" class="btn btn-primary py-1 font-weight-light" asp-action="Details" asp-route-id="@item.Id">View</a>
-									<a type="button" class="btn btn-warning  mx-1 py-1 font-weight-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-									<a type="button" class="btn btn-danger py-1 font-weight-light" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-								</td>
-							</tr>
-						}
-
-					</tbody>
-
-				</table>
-			</div>
-
-
 		</main>
 		<!-- MAIN ENDS -->
 
@@ -88,7 +85,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (var item in Model)
+						@* @foreach (var item in Model)
 						{
 							if (item.Roles.ToString() == "MEATINSPECTOR" || item.Roles.ToString() == "MEATESTABLISHMENTREPRESENTATIVE")
 							{
@@ -106,7 +103,7 @@
 									</td>
 								</tr>
 							}
-						}
+						} *@
 					</tbody>
 
 				</table>
@@ -121,5 +118,3 @@
 
 <!-- CONTENT ENDS-->
 
-
-<script src="~/js/users.js" asp-append-version="true"></script>

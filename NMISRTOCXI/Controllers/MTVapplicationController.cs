@@ -11,7 +11,7 @@ using DomainLayer.Models.ViewModels;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
     public class MTVapplicationController : Controller
     {
@@ -168,7 +168,7 @@ namespace thesis.Controllers
 					Address = mTVApplicationVM.DriverAddress,
 					Email = mTVApplicationVM.DriverEmail,
 					TelNo = mTVApplicationVM.DriverTelNo,
-					gender = mTVApplicationVM.gender,
+					Gender = mTVApplicationVM.Gender,
 					birthdate = mTVApplicationVM.Driverbirthdate
 				}
 

@@ -2,8 +2,6 @@
 @model RegisterModel
 <partial name="_Notifications" />
 
-
-
 @if (User.Identity.IsAuthenticated)
 {
 	<link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
@@ -191,155 +189,31 @@
 
 else
 {
-	<style data-tag="reset-style-sheet">
-		html {
-			line-height: 1.15;
-		}
-
-		body {
-			margin: 0;
-		}
-
-		* {
-			box-sizing: border-box;
-			border-width: 0;
-			border-style: solid;
-		}
-
-		p, li, ul, pre, div, h1, h2, h3, h4, h5, h6, figure, blockquote, figcaption {
-			margin: 0;
-			padding: 0;
-		}
-
-		button {
-			background-color: transparent;
-		}
-
-		button, input, optgroup, select, textarea {
-			font-family: inherit;
-			font-size: 100%;
-			line-height: 1.15;
-			margin: 0;
-		}
-
-		button, select {
-			text-transform: none;
-		}
-
-		button, [type="button"], [type="reset"], [type="submit"] {
-			-webkit-appearance: button;
-		}
-
-			button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
-				border-style: none;
-				padding: 0;
-			}
-
-			button:-moz-focus, [type="button"]:-moz-focus, [type="reset"]:-moz-focus, [type="submit"]:-moz-focus {
-				outline: 1px dotted ButtonText;
-			}
-
-		a {
-			color: inherit;
-			text-decoration: inherit;
-		}
-
-		input {
-			padding: 2px 4px;
-		}
-
-		img {
-			display: block;
-		}
-
-		html {
-			scroll-behavior: smooth
-		}
-	</style>
-	<style data-tag="default-style-sheet">
-		html {
-			font-family: Poppins;
-			font-size: 16px;
-		}
-
-		body {
-			font-weight: 400;
-			font-style: normal;
-			text-decoration: none;
-			text-transform: none;
-			letter-spacing: normal;
-			line-height: 1.15;
-			color: var(--dl-color-scheme-green100);
-			background-color: var(--dl-color-scheme-yellow20);
-		}
-	</style>
-	<link rel="shortcut icon"
-		  href="~/img/logo1.png"
-		  type="icon/png"
-		  sizes="32x32" />
-	<link rel="stylesheet"
-		  href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-		  data-tag="font" />
-	<link rel="stylesheet"
-		  href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-		  data-tag="font" />
-	<link rel="stylesheet"
-		  href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-		  data-tag="font" />
-	<link rel="stylesheet"
-		  href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&amp;display=swap"
-		  data-tag="font" />
-
-
 	<link rel="stylesheet" href="~/css/styles.css" asp-append-version="true">
 	<div>
 		<link rel="stylesheet" href="~/css/register-page.css" asp-append-version="true">
 
 		<div class="register-page-container">
-			<div class="navbar-container">
-				<a class="register-page-logo" asp-controller="Home" asp-action="Index">
-					<img alt="image"
-						 src="~/img/logo-200h.png"
-						 class="register-page-image" />
-					<span class="brandName">
-						<span class="register-page-text01">NMIS-</span>
-						<span>&nbsp;SMFA</span>
-					</span>
-				</a>
-				<div class="register-page-links">
-					<a class="register-page-home" asp-controller="Home" asp-action="Index">HOME</a>
-					<a class="register-page-articles" href="/Home/Index#articles">ARTICLES</a>
-					<a class="register-page-faqs" href="/Home/Index#FAQs">FAQS</a>
-					<a class="register-page-aboutus"  href="/Home/Index#footer">ABOUT US</a>
-					<a class="button-secondary button" asp-controller="Trace" asp-action="Index">TRACE</a>
-					<a class="button button-primary" asp-area="Identity" asp-page="/Account/Login">LOG IN</a>
-				</div>
-				<div class="register-page-burger-menu navbar-burger-menu">
-					<svg viewBox="0 0 1024 1024" class="register-page-icon">
-						<path d="M128 256h768v86h-768v-86zM128 554v-84h768v84h-768zM128 768v-86h768v86h-768z"></path>
-					</svg>
-				</div>
-			</div>
 			<div class="register-page-container01">
 				<div class="register-page-container02">
 					<img alt="image"
 						 src="~/img/Login Page/login-background1.svg"
 						 class="register-page-image1" />
-					<form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+					<form method="post" enctype="multipart/form-data">
 						<div class="register-page-container03">
 							<div class="register-page-container04">
-								<a href="index.html" class="register-page-navlink">
+								<a asp-controller="Home" asp-action="Index" class="register-page-navlink">
 									<svg viewBox="0 0 1024 1024" class="register-page-icon02">
 										<path d="M854 470v84h-520l238 240-60 60-342-342 342-342 60 60-238 240h520z"></path>
 									</svg>
 								</a>
 								<div class="register-page-container05">
 									<img alt="image"
-										 src="~/img/logo-200h.png"
+										 src="~/img/logo/premess.ico"
 										 class="register-page-image2" />
 									<h1 class="register-page-text03">
-										<span class="register-page-text04">NMIS</span>
-										<span>- SMFA</span>
+										<span class="register-page-text04">PreMESS</span>
+										<span>- NMIS</span>
 									</h1>
 								</div>
 							</div>
@@ -405,7 +279,7 @@ else
 											<path d="M512 42l384 172v256q0 178-110 325t-274 187q-164-40-274-187t-110-325v-256zM512 512v382q118-38 200-143t98-239h-298zM512 512v-376l-298 132v244h298z"></path>
 										</svg>
 										<span class="register-page-text13">
-											<span>Confirm Pass</span>
+											<span>Confirm Password</span>
 											<br />
 										</span>
 									</div>
@@ -508,138 +382,7 @@ else
 
 }
 <script src="~/js/register.js"></script>
-<script>
-	//integration of Philippines Address JSON
-	fetch('@Url.Content("https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
-		.then(response => response.json())
-		.then(data => {
-			const regionSelect = document.getElementById('regionSelect');
-			const provinceSelect = document.getElementById('provinceSelect');
-			const citySelect = document.getElementById('citySelect');
-			const barangaySelect = document.getElementById('barangaySelect');
-			var addressInput = document.getElementById('addressInput');
-
-			// Define the desired order of regions
-			const regionOrder = [
-				{ regionCode: "NCR", regionName: "National Capital Region" },
-				{ regionCode: "CAR", regionName: "Cordillera Administrative Region" },
-				{ regionCode: "01", regionName: "Region I" },
-				{ regionCode: "02", regionName: "Region II" },
-				{ regionCode: "03", regionName: "Region III" },
-				{ regionCode: "4A", regionName: "Region IV-A" },
-				{ regionCode: "4B", regionName: "Region IV-B" },
-				{ regionCode: "05", regionName: "Region V" },
-				{ regionCode: "06", regionName: "Region VI" },
-				{ regionCode: "07", regionName: "Region VII" },
-				{ regionCode: "08", regionName: "Region VIII" },
-				{ regionCode: "09", regionName: "Region IX" },
-				{ regionCode: "10", regionName: "Region X" },
-				{ regionCode: "11", regionName: "Region XI" },
-				{ regionCode: "12", regionName: "Region XII" },
-				{ regionCode: "13", regionName: "Region XIII" },
-				{ regionCode: "BARMM", regionName: "Bangsamoro Autonomous Region in Muslim Mindanao" }
-			];
-
-			// Populate regions dropdown
-			regionOrder.forEach(region => {
-				const option = document.createElement('option');
-				option.value = region.regionCode;
-				option.textContent = region.regionName;
-				regionSelect.appendChild(option);
-			});
-
-			// Function to populate provinces based on the selected region
-			function populateProvinces() {
-				const selectedRegion = regionSelect.value;
-				provinceSelect.innerHTML = "<option hidden>Select Province</option>";
-				citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
-				barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-				if (selectedRegion !== "") {
-					const regionData = data[selectedRegion];
-					const provinceList = regionData.province_list;
-
-					for (const [provinceCode, province] of Object.entries(provinceList)) {
-						const option = document.createElement('option');
-						option.value = provinceCode;
-						option.textContent = provinceCode;
-						provinceSelect.appendChild(option);
-					}
-				}
-			}
-
-			// Function to populate cities/municipalities based on the selected province
-			function populateCities() {
-				const selectedRegion = regionSelect.value;
-				const selectedProvince = provinceSelect.value;
-				citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
-				barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-				if (selectedRegion !== "" && selectedProvince !== "") {
-					const regionData = data[selectedRegion];
-					const provinceData = regionData.province_list[selectedProvince];
-					const municipalityList = provinceData.municipality_list;
-
-					for (const [municipalityCode, municipality] of Object.entries(municipalityList)) {
-						const option = document.createElement('option');
-						option.value = municipalityCode;
-						option.textContent = municipalityCode;
-						citySelect.appendChild(option);
-					}
-				}
-			}
-
-			// Function to populate barangays based on the selected city/municipality
-			function populateBarangays() {
-				const selectedRegion = regionSelect.value;
-				const selectedProvince = provinceSelect.value;
-				const selectedCity = citySelect.value;
-				barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-				if (selectedRegion !== "" && selectedProvince !== "" && selectedCity !== "") {
-					const regionData = data[selectedRegion];
-					const provinceData = regionData.province_list[selectedProvince];
-					const municipalityData = provinceData.municipality_list[selectedCity];
-					const barangayList = municipalityData.barangay_list;
-
-					for (const barangay of barangayList) {
-						const option = document.createElement('option');
-						option.value = barangay;
-						option.textContent = barangay;
-						barangaySelect.appendChild(option);
-					}
-				}
-			}
-				function updateAddress() {
-					var regionSelect = document.getElementById('regionSelect');
-					var provinceSelect = document.getElementById('provinceSelect');
-					var citySelect = document.getElementById('citySelect');
-					var barangaySelect = document.getElementById('barangaySelect');
-					var addressInput = document.getElementById('addressInput');
-
-					var region = regionSelect.value || '';
-					var province = provinceSelect.value || '';
-					var city = citySelect.value || '';
-					var barangay = barangaySelect.value || '';
-
-					var address = region + ', ' + province + ', ' + city + ', ' + barangay;
-					@*var address = city + ', ' + barangay;*@
-					addressInput.value = address;
-				}
-
-
-				// Add event listeners to call the populate functions on change
-				regionSelect.addEventListener('change', populateProvinces);
-				provinceSelect.addEventListener('change', populateCities);
-				citySelect.addEventListener('change', populateBarangays);
-				document.getElementById('regionSelect').addEventListener('change', updateAddress);
-				document.getElementById('provinceSelect').addEventListener('change', updateAddress);
-				document.getElementById('citySelect').addEventListener('change', updateAddress);
-				document.getElementById('barangaySelect').addEventListener('change', updateAddress);
-		})
-		.catch(error => console.error('Error fetching JSON:', error));
-
-</script>
+<script src="~/js/address.js"></script>
 
 
 @section Scripts {

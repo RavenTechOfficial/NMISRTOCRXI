@@ -1,0 +1,87 @@
+﻿@model DomainLayer.Models.Antemortem
+<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<link href="~/css/inspectorsidenav.css" rel="stylesheet" />
+@{
+    ViewData["Title"] = "Delete";
+}
+<section id="content">
+
+
+    <!-- MAIN STARTS-->
+    <main>
+
+        <div class="FirstLayer">
+
+            <div class="applications">
+
+                <h1>Delete</h1>
+
+                <div>
+                    <div>
+                        <h4>ConductOfInspection</h4>
+                        <hr />
+                        <dl class="row">
+                            <dt class="col-sm-2">
+                                @Html.DisplayNameFor(model => model.Issue)
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.Issue)
+                            </dd>
+                            <dt class="col-sm-2">
+                                @Html.DisplayNameFor(model => model.NoOfHeads)
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.NoOfHeads)
+                            </dd>
+                            <dt class="col-sm-2">
+                                @Html.DisplayNameFor(model => model.Weight)
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.Weight)
+                            </dd>
+                            <dt class="col-sm-2">
+                                @Html.DisplayNameFor(model => model.Cause)
+                            </dt>
+                            <dd class="col-sm-10">
+                                @Html.DisplayFor(model => model.Cause)
+                            </dd>
+                        </dl>
+
+                        <form asp-action="Delete" id="deleteForm">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="submit" value="Delete" class="btn btn-danger" /> |
+                            <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                        </form>
+
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                        <script>
+                            document.getElementById('deleteForm').addEventListener('submit', function (e) {
+                                e.preventDefault();
+
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: "You won't be able to revert this!",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#d33',
+                                    cancelButtonColor: '#3085d6',
+                                    confirmButtonText: 'Yes, delete it!',
+                                    cancelButtonText: 'Cancel'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Proceed with form submission
+                                        document.getElementById('deleteForm').submit();
+                                    }
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+
+            </div>
+    </main>
+</section>

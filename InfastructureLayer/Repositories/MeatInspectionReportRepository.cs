@@ -2,25 +2,22 @@
 using ServiceLayer.Services.IRepositories;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
+using InfastructureLayer.Repositories;
 
-namespace thesis.Repositories
+namespace NMISRTOCXI.Repositories
 {
-    public class MeatInspectionReportRepository : IMeatInspectionReportRepository
+    public class MeatInspectionReportRepository : Repository<MeatInspectionReport>, IMeatInspectionReportRepository
     {
         private readonly AppDbContext _context;
 
-        public MeatInspectionReportRepository(AppDbContext context)
+        public MeatInspectionReportRepository(AppDbContext context) : base(context) 
         {
             _context = context;
         }
-        public async Task<ICollection<MeatInspectionReport>> GetAllMeatInspectionReports()
+
+        public void Update(MeatInspectionReport entity)
         {
-            //return await _context.meatInspectionReports
-            //    .Include(q => q.TotalNoFitForHumanConsumption)
-            //    .Include(q => q.SummaryAndDistributionOfMIC)
-            //    .Include(r => r.Receiving)
-            //    .ToListAsync();
-            throw new NotImplementedException();
+            _context.Update(entity);
         }
     }
 }

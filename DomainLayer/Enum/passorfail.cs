@@ -1,6 +1,6 @@
 ﻿namespace DomainLayer.Enum
 {
-	public enum passorfail
+	public enum PassOrFail
 	{
 		Pass,
 		Fail

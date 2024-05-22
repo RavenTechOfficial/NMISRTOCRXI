@@ -4,7 +4,7 @@ using InfastructureLayer.Data;
 using DomainLayer.Models;
 using InfastructureLayer.Repositories;
 
-namespace thesis.Repositories
+namespace NMISRTOCXI.Repositories
 {
     public class AccountDetailsRepository : Repository<AccountDetails>, IAccountDetailsRepository
     {
@@ -14,9 +14,9 @@ namespace thesis.Repositories
         {
             _context = context;
         }
-        public void Update(AccountDetails receivingReport)
+        public void Update(AccountDetails entity)
         {
-            _context.Update(receivingReport);
+            _context.Update(entity);
         }
     }
 }

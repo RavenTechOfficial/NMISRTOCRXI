@@ -1,10 +1,11 @@
 ﻿@using DomainLayer.Enum;
-@model DomainLayer.Models.ViewModels.MeatInspectionViewModel
+@using DomainLayer.Enum;
+@model DomainLayer.Models.ViewModels.ReceivingReportViewModel
 <link href="~/css/inspectorSideNav.css" rel="stylesheet" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/createMeatCheck.css" asp-append-version="true">
 
 @{
-    ViewData["Title"] = "CreateInspection";
+    ViewData["Title"] = "Inspection";
 
     <style>
         #content h1 {
@@ -178,25 +179,17 @@
 <head>
 
     <script>
-        var ReceivingReportId;
-        var MeatInspectionId;
-        var ConductOfInspectionId;
-        var AntemortemRowId;
-        var PassedForSlaughterId;
-        var PostmortemId;
-        var TotalFitId;
-
         $(document).ready(function () {
 
             var routeId = window.location.pathname.split('/').pop();
 
             // disable/enable elements
-            $('#section2 :input, #section2 button').prop('disabled', true);
-            $('#section3 :input, #section3 button').prop('disabled', true);
-            $('#section4 :input, #section4 button').prop('disabled', true);
+            $('#section2 :input, #section2 button').prop('disabled', false);
+            $('#section3 :input, #section3 button').prop('disabled', false);
+            $('#section4 :input, #section4 button').prop('disabled', false);
 
             $.ajax({
-                url: '/MeatInspections/GetIds',
+                url: '/CreateInspection',
                 type: 'GET',
                 data: {
                     routeId: routeId
@@ -225,11 +218,6 @@
 
                 if (MeatInspectionId !== null) {
 
-                    // disable/enable elements
-                    $('#startInspect').prop('disabled', true);
-                    $('#section2 :input, #section2 button').prop('disabled', false);
-                    $('#antemortemNext').prop('disabled', true);
-
                     var targetDivPosition = $('#section2').offset().top - 70;
                     $('html, body').animate({
                         scrollTop: targetDivPosition
@@ -238,9 +226,6 @@
                     $('#passedWeight').val($('#receivingWeight').val());
                 }
                 if (ConductOfInspectionId !== null) {
-
-                    // disable/enable elements
-                    $('#antemortemNext').prop('disabled', false);
 
                     $.ajax({
                         url: '/MeatInspections/GetAnteTableData',
@@ -424,7 +409,7 @@
                                         <div class="col-md-6">
                                             <div class="input-box">
                                                 <label class="control-label">Meat Dealer:</label>
-                                                <input readonly class="form-control" value="@Model.MeatDealer" />
+                                                <input readonly class="form-control" value=@Model.MeatDealer />
                                             </div>
                                         </div>
                                     </div>
@@ -433,9 +418,9 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="input-box">
-                                                <label asp-for="ReceivingNoOfHeads" class="control-label">No. of Heads:</label>
-                                                <input readonly id="receivingHead" asp-for="ReceivingNoOfHeads" class="form-control" />
-                                                <span asp-validation-for="ReceivingNoOfHeads" class="text-danger"></span>
+                                                <label asp-for="NoOfHeads" class="control-label">No. of Heads:</label>
+                                                <input readonly id="receivingHead" asp-for="NoOfHeads" class="form-control" />
+                                                <span asp-validation-for="NoOfHeads" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -448,24 +433,24 @@
                                     </div>
                                 </div>
                                 <div class="input-box">
-                                    <label asp-for="DateInspected" class="control-label">Date & Time Inspected:</label>
-                                    <input id="dateInspected" asp-for="DateInspected" class="form-control" />
-                                    <span asp-validation-for="DateInspected" class="text-danger"></span>
+                                    <label asp-for="MeatInspectionReport.RepDate" class="control-label">Date & Time Inspected:</label>
+                                    <input id="dateInspected" asp-for="MeatInspectionReport.RepDate" class="form-control" />
+                                    <span asp-validation-for="MeatInspectionReport.RepDate" class="text-danger"></span>
                                 </div>
-                                <div class="form-group">
+                                @* <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            @*   <label asp-for="MeatInspectionReportId" class="control-label" >Meat Inspection ID:</label>*@
+                                            
                                             <input hidden asp-for="MeatInspectionReportId" class="form-control" />
                                             <span asp-validation-for="MeatInspectionReportId" class="text-danger"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            @*<label asp-for="AntemortemId" class="control-label">Antemortem ID:</label>*@
+                                      
                                             <input hidden asp-for="AntemortemId" class="form-control" />
                                             <span asp-validation-for="AntemortemId" class="text-danger"></span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> *@
                             </div>
                         </div>
                     </div>
@@ -473,7 +458,7 @@
                     <br />
                 </form>
 
-                <input hidden id="receivingId" name="ReceivingId" value="@Model.ReceivingId" />
+                <input hidden id="receivingId" name="ReceivingId" value="@Model.Id" />
                 <div class="centerbtn">
                     <button id="startInspect" type="submit" class="btn btn-warning custombtn">
                         Inspect
@@ -487,39 +472,31 @@
 
         <!-- ANTE INSPECTION -->
         <div id="section2" class="container1">
-
-
-
             <h4 id="anteForm">B. CONDUCT OF ANTEMORTEM INSPECTION</h4>
             <div class="form-group">
                 <div class="input-box">
-                    <label asp-for="Issue" class="control-label">Issue:</label>
-                    <select id="conductIssue" asp-for="Issue" class="form-control" asp-items="@Html.GetEnumSelectList<Issue>()" name="IssueVal" value="@Model.Issue">
-                    </select>
-                    <span asp-validation-for="Issue" class="text-danger"></span>
+                    <label class="control-label">Issue:</label>
+                    <select id="conductIssue" class="form-control" asp-items="@Html.GetEnumSelectList<Issue>()" name="IssueVal"></select>
                 </div>
                 <div class="input-box">
-                    <label asp-for="Cause" class="control-label">Cause:</label>
-                    <select id="conductCause" asp-for="Cause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()" name="CauseVal" value="@Model.Cause"></select>
-                    <span asp-validation-for="Cause" class="text-danger"></span>
+                    <label class="control-label">Cause:</label>
+                    <select id="conductCause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()" name="CauseVal"></select>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="input-box">
-                    <label asp-for="NoOfHeads" class="control-label">No. of Heads:</label>
-                    <input id="conductHead" asp-for="NoOfHeads" class="form-control" name="Heads" value="@Model.NoOfHeads" />
-                    <span asp-validation-for="NoOfHeads" class="text-danger"></span>
+                    <label class="control-label">No. of Heads:</label>
+                    <input id="conductHead" class="form-control" name="Heads" />
                 </div>
                 <div class="input-box">
-                    <label asp-for="Weight" class="control-label">Weight:</label>
-                    <input id="conductWeight" asp-for="Weight" class="form-control" name="WeightVal" value="@Model.Weight" />
-                    <span asp-validation-for="Weight" class="text-danger"></span>
+                    <label class="control-label">Weight:</label>
+                    <input id="conductWeight" class="form-control" name="WeightVal" />
                 </div>
             </div>
             <br />
 
-            <input hidden name="MeatInsId" value="@Model.MeatInspectionReportId" />
+            <input hidden name="ReceivingReportId" value="@Model.Id" />
             <div class="centerbtn">
                 <button id="antemortemAdd" type="submit" class="btn btn-warning custombtn">
                     Add
@@ -535,7 +512,6 @@
                 </button>
 
             </div>
-
 
             <!-- KAY TABLE-ANTEMORTEM NI-->
             <div class="containertable">
@@ -564,55 +540,47 @@
             <h4>C. PASSED FOR SLAUGHTER</h4>
             <div class="form-group">
                 <div class="input-box">
-                    <label asp-for="NoOfHeadsPassed" class="control-label">No of Heads Passed for Slaughter:</label>
-                    <input readonly id="passedHead" asp-for="NoOfHeadsPassed" class="form-control" name="HeadsPassed" value="@Model.NoOfHeadsPassed" />
-                    <span asp-validation-for="NoOfHeadsPassed" class="text-danger"></span>
+                    <label asp-for="PassedForSlaughter.NoOfHeads" class="control-label">No of Heads Passed for Slaughter:</label>
+                    <input readonly id="passedHead" asp-for="PassedForSlaughter.NoOfHeads" class="form-control" name="HeadsPassed"
+                           value="@Model.PassedForSlaughter?.NoOfHeads ?? 0" />
+                    <span asp-validation-for="PassedForSlaughter.NoOfHeads" class="text-danger"></span>
                 </div>
                 <div class="input-box">
-                    <label asp-for="WeightPassed" class="control-label">Weight Passed for Slaughter:</label>
-                    <input readonly id="passedWeight" WeightPassed" class="form-control" name="WeightPassed" value="@Model.WeightPassed" />
-                    <span asp-validation-for="WeightPassed" class="text-danger"></span>
+                    <label asp-for="PassedForSlaughter.Weight" class="control-label">Weight Passed for Slaughter:</label>
+                    <input readonly id="passedWeight" asp-for="PassedForSlaughter.Weight" class="form-control" name="WeightPassed"
+                           value="@Model.PassedForSlaughter?.Weight  ?? 0" />
+                    <span asp-validation-for="PassedForSlaughter.Weight" class="text-danger"></span>
                 </div>
+                <input type="hidden" name="ReceivingId" value="@Model.Id" />
             </div>
             <br />
             <br />
-
-            <input type="hidden" name="ReceivingId" value="@Model.ReceivingId" />
-            <input type="hidden" name="HeadsPassed" value="@Model.NoOfHeadsPassed" />
-            <input type="hidden" name="WeightPassed" value="@Model.WeightPassed" />
-            <input type="hidden" name="PassedId" value="@Model.AntemortemId" />
-            <input type="hidden" name="MeatInsId" value="@Model.MeatInspectionReportId" />
             <button id="antemortemNext" type="submit" class="btn btn-warning">Next</button>
 
         </div>
-
 
         <!-- POST INSPECTION -->
         <div id="section3" class="container1">
             <h2 id="postForm">II. POSTMORTEM INSPECTION </h2>
             <div class="form-group">
                 <div class="input-box">
-                    <label asp-for="AnimalPart" class="control-label">Animal Part:</label>
-                    <select id="postPart" asp-for="AnimalPart" class="form-control" asp-items="@Html.GetEnumSelectList<AnimalPart>()" name="AnimalPartVal" value="@Model.AnimalPart"></select>
-                    <span asp-validation-for="AnimalPart" class="text-danger"></span>
+                    <label class="control-label">Animal Part:</label>
+                    <select id="postPart" class="form-control" asp-items="@Html.GetEnumSelectList<AnimalPart>()" name="AnimalPartVal"></select> 
                 </div>
                 <div class="input-box">
-                    <label asp-for="PostmortemCause" class="control-label">Postmortem Cause:</label>
-                    <select id="postCause" asp-for="PostmortemCause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()" name="CauseVal" value="@Model.PostmortemCause"></select>
-                    <span asp-validation-for="PostmortemCause" class="text-danger"></span>
+                    <label class="control-label">Postmortem Cause:</label>
+                    <select id="postCause" class="form-control" asp-items="@Html.GetEnumSelectList<Cause>()" name="CauseVal"></select>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="input-box">
-                    <label asp-for="PostmortemWeight" class="control-label">Postmortem Weight:</label>
-                    <input id="postWeight" asp-for="PostmortemWeight" class="form-control" name="WeightVal" value="@Model.PostmortemWeight" />
-                    <span asp-validation-for="PostmortemWeight" class="text-danger"></span>
+                    <label class="control-label">Postmortem Weight:</label>
+                    <input id="postWeight" class="form-control" name="WeightVal"/>
                 </div>
                 <div class="input-box">
-                    <label asp-for="PostmortemCarcassHead" class="control-label">Postmortem No. of Head (Carcass):</label>
-                    <input id="postHead" asp-for="PostmortemCarcassHead" class="form-control" name="CarcassHead" value="@Model.PostmortemCarcassHead" />
-                    <span asp-validation-for="PostmortemCarcassHead" class="text-danger"></span>
+                    <label class="control-label">Postmortem No. of Head (Carcass):</label>
+                    <input id="postHead" class="form-control" name="CarcassHead"/>
                 </div>
             </div>
             <br />
@@ -682,14 +650,16 @@
             <h2>III. FIT FOR HUMAN CONSUMPTION</h2>
             <div class="form-group">
                 <div class="input-box">
-                    <label asp-for="TotalNoOfHeads" class="control-label">Total No. of Heads Fit For Human Consumption:</label>
-                    <input readonly id="fitHead" asp-for="TotalNoOfHeads" class="form-control" name="HeadsPassed" value="@Model.TotalNoOfHeads" />
-                    <span asp-validation-for="TotalNoOfHeads" class="text-danger"></span>
+                    <label asp-for="TotalNoFitForHumanConsumption.NoOfHeads" class="control-label">Total No. of Heads Fit For Human Consumption:</label>
+                    <input readonly id="fitHead" asp-for="TotalNoFitForHumanConsumption.NoOfHeads" class="form-control" name="HeadsPassed"
+                           value="@Model.TotalNoFitForHumanConsumption?.NoOfHeads ?? string.Empty" />
+                    <span asp-validation-for="TotalNoFitForHumanConsumption.NoOfHeads" class="text-danger"></span>
                 </div>
                 <div class="input-box">
-                    <label asp-for="DressedWeight" class="control-label">Dressed Weight:</label>
-                    <input @* readonly *@ id="fitWeight" asp-for="DressedWeight" class="form-control" name="WeightPassed" value="@Model.DressedWeight" />
-                    <span asp-validation-for="DressedWeight" class="text-danger"></span>
+                    <label asp-for="TotalNoFitForHumanConsumption.DressedWeight" class="control-label">Dressed Weight:</label>
+                    <input @* readonly *@ id="fitWeight" asp-for="TotalNoFitForHumanConsumption.DressedWeight" class="form-control" name="WeightPassed" +
+                           value="@Model.TotalNoFitForHumanConsumption?.DressedWeight ?? string.Empty" />
+                    <span asp-validation-for="TotalNoFitForHumanConsumption.DressedWeight" class="text-danger"></span>
                 </div>
             </div>
             <br />
@@ -703,7 +673,7 @@
         </div>
 
 
-        <!-- SUMMARY DSTRBTN -->
+        @* <!-- SUMMARY DSTRBTN -->
         <div id="section4" class="container1">
             <form method="post" action="/MeatInspections/CreateSummaryTBL">
                 <h2>IV. SUMMARY & DISTRIBUTION OF MICs</h2>
@@ -766,8 +736,8 @@
                     <label asp-for="MICIssued" class="control-label">Meat Inspection Certificate (ISSUED):</label>
                     <input id="micIssued" asp-for="MICIssued" class="form-control" name="micIssued" value="@Model.MICIssued" />
                     <span asp-validation-for="MICIssued" class="text-danger"></span>
-                    @* </div>
-                    <div class="input-box"> *@
+                    </div>
+                    <div class="input-box">
                     <label asp-for="MICCancelled" class="control-label">Meat Inspection Certificate (CANCELLED):</label>
                     <input id="micCancelled" asp-for="MICCancelled" class="form-control" name="micCancelled" value="@Model.MICCancelled" />
                     <span asp-validation-for="MICCancelled" class="text-danger"></span>
@@ -776,9 +746,9 @@
                 <input type="hidden" name="ReceivingId" value="@Model.ReceivingId" />
                 <input type="hidden" name="NameVal" value="@Model.DestinationName" />
                 <input type="hidden" name="AddVal" value="@Model.DestinationAddress" />
-                @* <input type="hidden" name="CertStat" value="@Model.CertificateStatus" /> *@
+                <input type="hidden" name="CertStat" value="@Model.CertificateStatus" />
                 <input type="hidden" id="sumPassedId" name="PassedId" value="@Model.FitId" />
-                <input type="hidden" id="sumMeatInsId" name="MeatInsId" value="@Model.MeatInspectionReportId" />
+                <input type="hidden" id="sumReceivingReportId" name="ReceivingReportId" value="@Model.MeatInspectionReportId" />
 
                 <div class="centerbtn">
                     <button type="submit" class="btn btn-warning custombtn">
@@ -789,8 +759,8 @@
 
             </form>
             <br />
-        </div>
-
+        </div>*@
+ 
     </main>
 
 </section>
@@ -802,12 +772,12 @@
     }
 }
 <script src="~/js/register.js"></script>
+<script src="~/js/address.js"></script>
 <script src="/lib/jquery/dist/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 
 <script>
-
     var defaultDateTime = moment().format('YYYY-MM-DDTHH:mm');
     document.getElementById("dateInspected").value = defaultDateTime;
 
@@ -1236,7 +1206,6 @@
                     currentImages = 0
                     selectedFiles = [];
                     $('#fitHead').val(passedHead - response.totalhead);
-                    //  $('#fitWeight').val(passedWeight - response.totalweight);
                     PostMortemId = response.id
 
                     var fileName1 = response.image1 ? response.image1.split('\\').pop() : null;
@@ -1611,9 +1580,6 @@
 </script>
 
 <script>
-
-
-
     //next --> summary section // Create totalFitData
     $(document).ready(function () {
         $('#postmortemNext').click(function () {
@@ -1655,7 +1621,7 @@
                     TotalFitId = response.id
 
                     document.getElementById("sumPassedId").value = TotalFitId;
-                    document.getElementById("sumMeatInsId").value = MeatInspectionId;
+                    document.getElementById("sumReceivingReportId").value = MeatInspectionId;
                     document.getElementById('postWeight').value = '0';
                     document.getElementById('postHead').value = '0';
                     document.getElementById('postPart').selectedIndex = 0;

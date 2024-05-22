@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using DomainLayer.Models;
 @using DomainLayer.Enum;
-@model DomainLayer.Models.ReceivingReport
+@model DomainLayer.Models.ViewModels.CreateReceivingReportViewModel
 
 
 @inject SignInManager<AccountDetails> SignInManager
@@ -89,7 +89,7 @@
                 <form asp-action="Create" class="form">
                     <div class="column">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+                        <input asp-for="AccountDetailsId" class="form-control" hidden/>
                         <div class="input-box">
                             <label asp-for="RecTime" class="control-label">Date & Time:</label>
                             <input asp-for="RecTime" class="form-control" id="recTimeInput" />
@@ -103,9 +103,8 @@
                     </div>
                     <div class="column">
                         <div class="input-box">
-                            <label asp-for="Species" class="control-label">Specie:</label>
+                            <label asp-for="Species" class="control-label">Species:</label>
                             <select asp-for="Species" class="form-control" asp-items="@Html.GetEnumSelectList<Species>()">
-                                <option>--Select--</option>
                             </select>
                         </div>
                         <div class="input-box">
@@ -116,7 +115,6 @@
                         <div class="input-box">
                             <label asp-for="MeatDealersId" class="control-label">Meat Dealer:</label>
                             <select asp-for="MeatDealersId" class="form-control" asp-items="ViewBag.MeatDealersId">
-                                <option> --- Select ---</option>
                             </select>
                         </div>
                     </div>
@@ -139,11 +137,6 @@
                                 <span asp-validation-for="Origin" class="text-danger"></span>
                             </div>
                         </div>
-                        @* <div class="input-box">
-                        <label asp-for="Origin" class="control-label"></label>
-                        <input asp-for="Origin" class="form-control" />
-                        <span asp-validation-for="Origin" class="text-danger"></span>
-                        </div>*@
                         <div class="input-box address">
 
                             <label asp-for="Origin" class="control-label">Origin:</label>
@@ -176,74 +169,16 @@
                                 </div>
                             </div>
                         </div>
-
-                        <script>
-                            function updateAddressInput() {
-                                // Get the selected values from the dropdowns
-                                var barangay = document.getElement("barangaySelect").value;
-                                var city = document.getElementById("citySelect").value;
-                                var province = document.getElementById("provinceSelect").value;
-                                var region = document.getElementById("regionSelect").value;
-
-
-
-                                // Construct the address using the selected values
-                                var address = barangay + ", " + city + ", " + province + ", " + region;
-
-                                // Update the value of the address input box
-                                document.getElementBy("addressInput").value = Address;
-                            }
-                        </script>
                     </div>
-
 
                     <div class="input-box">
                         <label asp-for="ShippingDoc" class="control-label">Shipping Documents:</label>
-                        <div class="checkbox-list">
-                            <div class="checkbox-row">
-                                <label>
-                                    @*  <input type="checkbox" name="ShippingDoc" value="Certificate Of OwnerShip"> *@
-                                    <input type="checkbox" id="COO" class="checkbox">
-                                    Certificate Of Ownership
-                                </label>
-                                <label>
-                                    @*  <input type="checkbox" name="ShippingDoc" value="Certificate Of Transfer"> *@
-                                    <input type="checkbox" id="COT" class="checkbox">
-                                    Certificate Of Transfer
-                                </label>
-                            </div>
-                            <div class="checkbox-row">
-                                <label>
-                                    @*   <input type="checkbox" name="ShippingDoc" value="Veterinary Health Certificate"> *@
-                                    <input type="checkbox" id="VHC" class="checkbox">
-                                    Veterinary Health Certificate
-                                </label>
-                                <label>
-                                    @* <input type="checkbox" name="ShippingDoc" value="Shipping Permit"> *@
-                                    <input type="checkbox" id="SP" class="checkbox">
-                                    Shipping Permit
-                                </label>
-                            </div>
-                        </div>
-                        @*     <input asp-for="ShippingDoc" id="selectedShippingDocs" readonly>
-                        <span asp-validation-for="ShippingDoc" class="text-danger"></span> *@
+                        <select id="status" class="form-control" asp-for="ShippingDoc" 
+                            asp-items="@Html.GetEnumSelectList<ShippingDocuments>()" multiple>
+                        </select>
+                        <span asp-validation-for="ShippingDoc" class="text-danger"></span>
                         <input asp-for="ShippingDoc" type="text" id="result" readonly>
                     </div>
-
-                    <script>
-                        const checkboxes = document.querySelectorAll('.checkbox');
-                        const resultField = document.getElementById('result');
-
-                        checkboxes.forEach(checkbox => {
-                            checkbox.addEventListener('change', updateResult);
-                        });
-
-                        function updateResult() {
-                            const selectedCheckboxes = Array.from(checkboxes).filter(checkbox => checkbox.checked);
-                            const selectedValues = selectedCheckboxes.map(checkbox => checkbox.nextSibling.textContent.trim());
-                            resultField.value = selectedValues.join(', ');
-                        }
-                    </script>
 
                     <div class="column">
                         <div class="input-box">
@@ -257,12 +192,6 @@
                             <span asp-validation-for="ReceivingBy" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="column">
-                        <div class="input-box" style="display: none;">
-                            <label asp-for="AccountDetailsId" class="control-label"></label>
-                            <input id="accountDetailsInput" asp-for="AccountDetailsId" class="form-control" />
-                        </div>
-                    </div>
                     <div class="input-box">
                         <label asp-for="InspectionStatus" class="control-label">Inspection Status:</label>
                         <select asp-for="InspectionStatus" class="form-control">
@@ -270,9 +199,29 @@
                         </select>
                     </div>
                     <br />
-                    <button type="submit" value="Create">Create</button>
+                    <button type="submit" data-toggle="modal" data-target="#logoutModal" value="Create">Create</button>
 
-
+                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="logoutModalLabel">Receiving Report</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Confirm receiving report
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <form asp-area="ReceivingReports" asp-route-returnUrl="@Url.Action("/")" method="post">
+                                        <button type="submit" class="btn btn-danger">Logout</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
 
@@ -283,162 +232,46 @@
     </main>
 </section>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script>
     // Set the value of the input field to the current datetime
     var defaultDateTime = moment().format('YYYY-MM-DDTHH:mm');
     document.getElementById("recTimeInput").value = defaultDateTime;
 
-    // Retrieve the ID from UserManager.GetUsername
-    var selectedAccountId = "@UserManager.GetUserId(User)";
+    function getSelectedValues() {
+        // Get the selected options
+        var selectedOptions = $('#status option:selected');
 
-    // Get the input element
-    var inputElement = document.getElementById("accountDetailsInput");
+        // Initialize an array to store the text of selected options
+        var selectedTexts = [];
 
-    // Set the value of the input field to the obtained ID
-    inputElement.value = selectedAccountId;
+        // Iterate over the selected options and retrieve their text
+        selectedOptions.each(function () {
+            selectedTexts.push($(this).text());
+        });
+
+        // Join the array of selected texts into a comma-separated string
+        return selectedTexts.join(', ');
+    }
+
+
+    // Example of how to use the function
+    $('#status').change(function () {
+        var selectedValues = getSelectedValues(); // Get the selected values
+        $('#result').val(selectedValues); // Set the selected values to the input field
+    });
 
 </script>
 
 
 @section Scripts {
     @{
+        await Html.RenderPartialAsync("_Notifications");
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
 
 
 <script src="~/js/register.js"></script>
-<script>
-    //integration of Philippines Address JSON
-    fetch('@Url.Content("https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
-        .then(response => response.json())
-        .then(data => {
-            const regionSelect = document.getElementById('regionSelect');
-            const provinceSelect = document.getElementById('provinceSelect');
-            const citySelect = document.getElementById('citySelect');
-            const barangaySelect = document.getElementById('barangaySelect');
-            var addressInput = document.getElementById('addressInput');
-
-            // Define the desired order of regions
-            const regionOrder = [
-                { regionCode: "NCR", regionName: "National Capital Region" },
-                { regionCode: "CAR", regionName: "Cordillera Administrative Region" },
-                { regionCode: "01", regionName: "Region I" },
-                { regionCode: "02", regionName: "Region II" },
-                { regionCode: "03", regionName: "Region III" },
-                { regionCode: "4A", regionName: "Region IV-A" },
-                { regionCode: "4B", regionName: "Region IV-B" },
-                { regionCode: "05", regionName: "Region V" },
-                { regionCode: "06", regionName: "Region VI" },
-                { regionCode: "07", regionName: "Region VII" },
-                { regionCode: "08", regionName: "Region VIII" },
-                { regionCode: "09", regionName: "Region IX" },
-                { regionCode: "10", regionName: "Region X" },
-                { regionCode: "11", regionName: "Region XI" },
-                { regionCode: "12", regionName: "Region XII" },
-                { regionCode: "13", regionName: "Region XIII" },
-                { regionCode: "BARMM", regionName: "Bangsamoro Autonomous Region in Muslim Mindanao" }
-            ];
-
-            // Populate regions dropdown
-            regionOrder.forEach(region => {
-                const option = document.createElement('option');
-                option.value = region.regionCode;
-                option.textContent = region.regionName;
-                regionSelect.appendChild(option);
-            });
-
-            // Function to populate provinces based on the selected region
-            function populateProvinces() {
-                const selectedRegion = regionSelect.value;
-                provinceSelect.innerHTML = "<option hidden>Select Province</option>";
-                citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
-                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-                if (selectedRegion !== "") {
-                    const regionData = data[selectedRegion];
-                    const provinceList = regionData.province_list;
-
-                    for (const [provinceCode, province] of Object.entries(provinceList)) {
-                        const option = document.createElement('option');
-                        option.value = provinceCode;
-                        option.textContent = provinceCode;
-                        provinceSelect.appendChild(option);
-                    }
-                }
-            }
-
-            // Function to populate cities/municipalities based on the selected province
-            function populateCities() {
-                const selectedRegion = regionSelect.value;
-                const selectedProvince = provinceSelect.value;
-                citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
-                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-                if (selectedRegion !== "" && selectedProvince !== "") {
-                    const regionData = data[selectedRegion];
-                    const provinceData = regionData.province_list[selectedProvince];
-                    const municipalityList = provinceData.municipality_list;
-
-                    for (const [municipalityCode, municipality] of Object.entries(municipalityList)) {
-                        const option = document.createElement('option');
-                        option.value = municipalityCode;
-                        option.textContent = municipalityCode;
-                        citySelect.appendChild(option);
-                    }
-                }
-            }
-
-            // Function to populate barangays based on the selected city/municipality
-            function populateBarangays() {
-                const selectedRegion = regionSelect.value;
-                const selectedProvince = provinceSelect.value;
-                const selectedCity = citySelect.value;
-                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-                if (selectedRegion !== "" && selectedProvince !== "" && selectedCity !== "") {
-                    const regionData = data[selectedRegion];
-                    const provinceData = regionData.province_list[selectedProvince];
-                    const municipalityData = provinceData.municipality_list[selectedCity];
-                    const barangayList = municipalityData.barangay_list;
-
-                    for (const barangay of barangayList) {
-                        const option = document.createElement('option');
-                        option.value = barangay;
-                        option.textContent = barangay;
-                        barangaySelect.appendChild(option);
-                    }
-                }
-            }
-            function updateAddress() {
-                var regionSelect = document.getElementById('regionSelect');
-                var provinceSelect = document.getElementById('provinceSelect');
-                var citySelect = document.getElementById('citySelect');
-                var barangaySelect = document.getElementById('barangaySelect');
-                var addressInput = document.getElementById('addressInput');
-
-                var region = regionSelect.value || '';
-                var province = provinceSelect.value || '';
-                var city = citySelect.value || '';
-                var barangay = barangaySelect.value || '';
-
-                var address = region + ', ' + province + ', ' + city + ', ' + barangay;
-                addressInput.value = address;
-            }
-
-
-            // Add event listeners to call the populate functions on change
-            regionSelect.addEventListener('change', populateProvinces);
-            provinceSelect.addEventListener('change', populateCities);
-            citySelect.addEventListener('change', populateBarangays);
-            document.getElementById('regionSelect').addEventListener('change', updateAddress);
-            document.getElementById('provinceSelect').addEventListener('change', updateAddress);
-            document.getElementById('citySelect').addEventListener('change', updateAddress);
-            document.getElementById('barangaySelect').addEventListener('change', updateAddress);
-        })
-        .catch(error => console.error('Error fetching JSON:', error));
-
-</script>
+<script src="~/js/address.js"></script>
 

@@ -3,6 +3,20 @@
     font-weight: 50;
 }
 
+#content .FirstLayer .applications h3 {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 700;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    color: var(--black);
+}
+
+.backbtn {
+    margin-left: 5px;
+}
+
 #content main {
     max-height: 100%;
 }

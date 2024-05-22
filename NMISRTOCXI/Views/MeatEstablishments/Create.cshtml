@@ -1,6 +1,6 @@
 ﻿@using DomainLayer.Models.ViewModels;
 @using DomainLayer.Enum;
-@model MeatEstablishmentViewModel;
+@model CreateMeatEstablishmentViewModel;
 @using Azure.Core;
 
 <link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
@@ -48,13 +48,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="input-box">
                             <label asp-for="Type" class="control-label">Establishment Type:</label>
-                            <select asp-for="Type" class="form-control">
-                                <option>--Select--</option>
-                                <option value="SLH">Slaughter House</option>
-                                <option value="PDP">Poultry Dressing Plant</option>
-                                <option value="MCP">Meat Cutting Plant</option>
-                                <option value="CSW">Cold Storage Warehouse</option>
-                            </select>
+                            <select asp-for="Type" class="form-control" asp-items="@Html.GetEnumSelectList<EstablishmentType>()"></select>
                         </div>
                     </div>
                     <div class="input-box">
@@ -101,31 +95,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <script>
-                        function updateAddressInput() {
-                            // Get the selected values from the dropdowns
-                            var barangay = document.getElement("barangaySelect").value;
-                            var city = document.getElementById("citySelect").value;
-                            var province = document.getElementById("provinceSelect").value;
-                            var region = document.getElementById("regionSelect").value;
-
-
-
-                            // Construct the address using the selected values
-                            var address = barangay + ", " + city + ", " + province + ", " + region;
-
-                            // Update the value of the address input box
-                            document.getElementBy("addressInput").value = Address;
-                        }
-                    </script>
                     <div class="input-box">
                         <label class="control-label">License Status:</label>
-                        <select asp-for="LicenseStatus" class="form-control">
-                            <option>--Select--</option>
-                            <option value="Licensed">Licensed</option>
-                            <option value="NonLicensed">Non-Licensed</option>
-                        </select>
+                        <select asp-for="LicenseStatus" class="form-control" asp-items="@Html.GetEnumSelectList<LicenseStatus>()"></select>
                     </div>
                     <div class="input-box">
                         <label asp-for="LicenseToOperateNumber" class="control-label">LTO No.:</label>
@@ -154,7 +126,7 @@
 
 
 
-        <div class="FirstLayer">
+        @* <div class="FirstLayer">
 
             <div class="applications">
 
@@ -188,9 +160,6 @@
                             @if (item.Type != null && item.Name != null && item.Address != null && item.LicenseToOperateNumber != null)
                             {
                                 <tr class="filter-item">
-                                    @* <td>
-                            @Html.DisplayFor(modelItem => item.Type)
-                            </td>*@
                                     <td>
                                         @if (item.Type == EstablishmentType.SLH)
                                         {
@@ -231,8 +200,8 @@
                         }
                     </tbody>
                 </table>
-
-                <div /> <div /> <div />  <div />
+            </div>
+        </div> *@
     </main>
 
 

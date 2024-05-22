@@ -3,8 +3,9 @@ using ServiceLayer.Services.IRepositories;
 using InfastructureLayer.Data;
 using DomainLayer.Models;
 using InfastructureLayer.Repositories;
+using DomainLayer.Models.ViewModels;
 
-namespace thesis.Repositories
+namespace NMISRTOCXI.Repositories
 {
     public class ReceivingReportRepository : Repository<ReceivingReport>, IReceivingReportRepository
     {
@@ -14,9 +15,9 @@ namespace thesis.Repositories
         {
             _context = context;
         }
-        public void Update(ReceivingReport receivingReport)
+        public void Update(ReceivingReport entity)
         {
-            _context.Update(receivingReport);
+            _context.Update(entity);
         }
     }
 }

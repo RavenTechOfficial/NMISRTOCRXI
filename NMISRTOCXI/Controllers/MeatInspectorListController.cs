@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace thesis.Controllers
+namespace NMISRTOCXI.Controllers
 {
     public class MeatInspectorListController : Controller
     {

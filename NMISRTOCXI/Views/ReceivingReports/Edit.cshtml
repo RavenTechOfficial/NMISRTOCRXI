@@ -1,4 +1,4 @@
-﻿@model DomainLayer.Models.ReceivingReport
+﻿@model DomainLayer.Models.ViewModels.EditReceivingReportViewModel
 @using DomainLayer.Enum;
 @{
 
@@ -60,7 +60,7 @@
                                     <span asp-validation-for="RecTime" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="Species" class="control-label">Specie:</label>
+                                    <label asp-for="Species" class="control-label">Species:</label>
                                     <input asp-for="Species" class="form-control" disabled />
                                     <span asp-validation-for="Species" class="text-danger"></span>
                                 </div>
@@ -90,10 +90,7 @@
                             <br />
                             <a class="btn btn-primary" asp-controller="ConductOfInspections" asp-action="Create">Next</a>
                             </div>*@
-                            </form>
-                            <form method="post" action="/ReceivingReports/actionResult">
-                                <input type="hidden" name="Id" value="@Model.Id" />
-                                <button type="submit" class="btn btn-warning">Inspect</button>
+                                <button type="submit" asp-controller="ReceivingReports" asp-action="Inspect" asp-route-id="@Model.Id" class="btn btn-warning">Inspect</button>
                             </form>
                         </div>
                     </div>
@@ -195,68 +192,15 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <script>
-                                function updateAddressInput() {
-                                    // Get the selected values from the dropdowns
-                                    var barangay = document.getElement("barangaySelect").value;
-                                    var city = document.getElementById("citySelect").value;
-                                    var province = document.getElementById("provinceSelect").value;
-                                    var region = document.getElementById("regionSelect").value;
-
-
-
-                                    // Construct the address using the selected values
-                                    var address = barangay + ", " + city + ", " + province + ", " + region;
-
-                                    // Update the value of the address input box
-                                    document.getElementBy("addressInput").value = Address;
-                                }
-                            </script>
                         </div>
                         <div class="input-box">
                             <label asp-for="ShippingDoc" class="control-label">Shipping Documents:</label>
-                            <input asp-for="ShippingDoc" id="selectedShippingDocs">
+                            <select id="status" class="form-control" asp-for="ShippingDoc"
+                                    asp-items="@Html.GetEnumSelectList<ShippingDocuments>()" multiple>
+                            </select>
                             <span asp-validation-for="ShippingDoc" class="text-danger"></span>
-                            <div class="checkbox-list">
-                                <div class="checkbox-row">
-                                    <label>
-                                        <input type="checkbox" name="ShippingDoc" value="CertificateOfOwnerShip">
-                                        Certificate Of Ownership
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="ShippingDoc" value="CertificateOfTransfer">
-                                        Certificate Of Transfer
-                                    </label>
-                                </div>
-                                <div class="checkbox-row">
-                                    <label>
-                                        <input type="checkbox" name="ShippingDoc" value="VeterinaryHealthCertificate">
-                                        Veterinary Health Certificate
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="ShippingDoc" value="ShippingPermit">
-                                        Shipping Permit
-                                    </label>
-                                </div>
-                            </div>
-
+                            <input asp-for="ShippingDoc" type="text" id="result" readonly>
                         </div>
-                        <script>
-                            const checkboxes = document.querySelectorAll('input[type="checkbox"][name="ShippingDoc"]');
-                            const hiddenInput = document.getElementById('selectedShippingDocs');
-
-                            checkboxes.forEach(checkbox => {
-                                checkbox.addEventListener('change', () => {
-                                    const selectedDocs = Array.from(checkboxes)
-                                        .filter(cb => cb.checked)
-                                        .map(cb => cb.value)
-                                        .join(',');
-
-                                    hiddenInput.value = selectedDocs;
-                                });
-                            });
-                        </script>
                         <div class="column">
                             <div class="input-box">
                                 <label asp-for="HoldingPenNo" class="control-label">Holding Pen No.:</label>
@@ -281,16 +225,30 @@
                                 <option>Pending</option>
                             </select>
                         </div>
-                        <button type="submit" value="Create">Save</button>
+                        <button type="submit" data-toggle="modal" data-target="#logoutModal" value="Create">Save</button>
+
+                        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="logoutModalLabel">Receiving Report</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Confirm edited receiving report
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <form asp-area="ReceivingReports" asp-route-returnUrl="@Url.Action("/")" method="post">
+                                            <button type="submit" class="btn btn-danger">Logout</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
-                }
-
-
-
-                @section Scripts {
-                    @{
-                        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-                    }
                 }
             </div>
         </div>
@@ -298,137 +256,46 @@
     </main>
 </section>
 
-<script src="~/js/register.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script>
-    //integration of Philippines Address JSON
-    fetch('@Url.Content("https://raw.githubusercontent.com/Adrianne1001/Geojson-and-address-JSON/main/philippine_provinces_cities_municipalities_and_barangays_2019v2.json")')
-        .then(response => response.json())
-        .then(data => {
-            const regionSelect = document.getElementById('regionSelect');
-            const provinceSelect = document.getElementById('provinceSelect');
-            const citySelect = document.getElementById('citySelect');
-            const barangaySelect = document.getElementById('barangaySelect');
-            var addressInput = document.getElementById('addressInput');
+    // Set the value of the input field to the current datetime
+    var defaultDateTime = moment().format('YYYY-MM-DDTHH:mm');
+    document.getElementById("recTimeInput").value = defaultDateTime;
 
-            // Define the desired order of regions
-            const regionOrder = [
-                { regionCode: "NCR", regionName: "National Capital Region" },
-                { regionCode: "CAR", regionName: "Cordillera Administrative Region" },
-                { regionCode: "01", regionName: "Region I" },
-                { regionCode: "02", regionName: "Region II" },
-                { regionCode: "03", regionName: "Region III" },
-                { regionCode: "4A", regionName: "Region IV-A" },
-                { regionCode: "4B", regionName: "Region IV-B" },
-                { regionCode: "05", regionName: "Region V" },
-                { regionCode: "06", regionName: "Region VI" },
-                { regionCode: "07", regionName: "Region VII" },
-                { regionCode: "08", regionName: "Region VIII" },
-                { regionCode: "09", regionName: "Region IX" },
-                { regionCode: "10", regionName: "Region X" },
-                { regionCode: "11", regionName: "Region XI" },
-                { regionCode: "12", regionName: "Region XII" },
-                { regionCode: "13", regionName: "Region XIII" },
-                { regionCode: "BARMM", regionName: "Bangsamoro Autonomous Region in Muslim Mindanao" }
-            ];
+    function getSelectedValues() {
+        // Get the selected options
+        var selectedOptions = $('#status option:selected');
 
-            // Populate regions dropdown
-            regionOrder.forEach(region => {
-                const option = document.createElement('option');
-                option.value = region.regionCode;
-                option.textContent = region.regionName;
-                regionSelect.appendChild(option);
-            });
+        // Initialize an array to store the text of selected options
+        var selectedTexts = [];
 
-            // Function to populate provinces based on the selected region
-            function populateProvinces() {
-                const selectedRegion = regionSelect.value;
-                provinceSelect.innerHTML = "<option hidden>Select Province</option>";
-                citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
-                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
+        // Iterate over the selected options and retrieve their text
+        selectedOptions.each(function () {
+            selectedTexts.push($(this).text());
+        });
 
-                if (selectedRegion !== "") {
-                    const regionData = data[selectedRegion];
-                    const provinceList = regionData.province_list;
-
-                    for (const [provinceCode, province] of Object.entries(provinceList)) {
-                        const option = document.createElement('option');
-                        option.value = provinceCode;
-                        option.textContent = provinceCode;
-                        provinceSelect.appendChild(option);
-                    }
-                }
-            }
-
-            // Function to populate cities/municipalities based on the selected province
-            function populateCities() {
-                const selectedRegion = regionSelect.value;
-                const selectedProvince = provinceSelect.value;
-                citySelect.innerHTML = "<option hidden>Select City/Municipality</option>";
-                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-                if (selectedRegion !== "" && selectedProvince !== "") {
-                    const regionData = data[selectedRegion];
-                    const provinceData = regionData.province_list[selectedProvince];
-                    const municipalityList = provinceData.municipality_list;
-
-                    for (const [municipalityCode, municipality] of Object.entries(municipalityList)) {
-                        const option = document.createElement('option');
-                        option.value = municipalityCode;
-                        option.textContent = municipalityCode;
-                        citySelect.appendChild(option);
-                    }
-                }
-            }
-
-            // Function to populate barangays based on the selected city/municipality
-            function populateBarangays() {
-                const selectedRegion = regionSelect.value;
-                const selectedProvince = provinceSelect.value;
-                const selectedCity = citySelect.value;
-                barangaySelect.innerHTML = "<option hidden>Select Barangay</option>";
-
-                if (selectedRegion !== "" && selectedProvince !== "" && selectedCity !== "") {
-                    const regionData = data[selectedRegion];
-                    const provinceData = regionData.province_list[selectedProvince];
-                    const municipalityData = provinceData.municipality_list[selectedCity];
-                    const barangayList = municipalityData.barangay_list;
-
-                    for (const barangay of barangayList) {
-                        const option = document.createElement('option');
-                        option.value = barangay;
-                        option.textContent = barangay;
-                        barangaySelect.appendChild(option);
-                    }
-                }
-            }
-            function updateAddress() {
-                var regionSelect = document.getElementById('regionSelect');
-                var provinceSelect = document.getElementById('provinceSelect');
-                var citySelect = document.getElementById('citySelect');
-                var barangaySelect = document.getElementById('barangaySelect');
-                var addressInput = document.getElementById('addressInput');
-
-                var region = regionSelect.value || '';
-                var province = provinceSelect.value || '';
-                var city = citySelect.value || '';
-                var barangay = barangaySelect.value || '';
-
-                var address = region + ', ' + province + ', ' + city + ', ' + barangay;
-                addressInput.value = address;
-            }
+        // Join the array of selected texts into a comma-separated string
+        return selectedTexts.join(', ');
+    }
 
 
-            // Add event listeners to call the populate functions on change
-            regionSelect.addEventListener('change', populateProvinces);
-            provinceSelect.addEventListener('change', populateCities);
-            citySelect.addEventListener('change', populateBarangays);
-            document.getElementById('regionSelect').addEventListener('change', updateAddress);
-            document.getElementById('provinceSelect').addEventListener('change', updateAddress);
-            document.getElementById('citySelect').addEventListener('change', updateAddress);
-            document.getElementById('barangaySelect').addEventListener('change', updateAddress);
-        })
-        .catch(error => console.error('Error fetching JSON:', error));
+    // Example of how to use the function
+    $('#status').change(function () {
+        var selectedValues = getSelectedValues(); // Get the selected values
+        $('#result').val(selectedValues); // Set the selected values to the input field
+    });
 
 </script>
 
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_Notifications");
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+<script src="~/js/register.js"></script>
+<script src="~/js/address.js"></script>
 }
